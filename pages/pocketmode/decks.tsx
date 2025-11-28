@@ -161,8 +161,8 @@ const PocketDecks: NextPage = () => {
       case 'S': return 'from-red-500 to-red-600';
       case 'A': return 'from-orange-500 to-orange-600';
       case 'B': return 'from-yellow-500 to-yellow-600';
-      case 'C': return 'from-gray-500 to-gray-600';
-      default: return 'from-gray-400 to-gray-500';
+      case 'C': return 'from-stone-500 to-stone-600';
+      default: return 'from-stone-400 to-stone-500';
     }
   };
 
@@ -170,13 +170,13 @@ const PocketDecks: NextPage = () => {
   const getTypeColor = (type: string) => {
     const typeColors: Record<string, string> = {
       'Electric': 'from-yellow-400 to-yellow-500',
-      'Psychic': 'from-purple-400 to-purple-500',
+      'Psychic': 'from-amber-400 to-amber-500',
       'Fire': 'from-red-400 to-red-500',
-      'Water': 'from-blue-400 to-blue-500',
+      'Water': 'from-amber-400 to-amber-500',
       'Grass': 'from-green-400 to-green-500',
       'Fighting': 'from-orange-400 to-orange-500',
     };
-    return typeColors[type] || 'from-gray-400 to-gray-500';
+    return typeColors[type] || 'from-stone-400 to-stone-500';
   };
 
   return (
@@ -210,7 +210,7 @@ const PocketDecks: NextPage = () => {
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
               Top Pocket Decks
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
               Discover winning deck strategies and meta builds from top Pokémon TCG Pocket players
             </p>
           </div>
@@ -224,14 +224,14 @@ const PocketDecks: NextPage = () => {
                 <input
                   id="searchInput"
                   type="text"
-                  className="w-full pr-6 py-4 pl-12 glass-light border border-gray-200 dark:border-gray-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  className="w-full pr-6 py-4 pl-12 glass-light border border-stone-200 dark:border-stone-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
                   placeholder="Search decks (e.g., Pikachu, Mewtwo, Lightning)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6 text-gray-400 dark:text-gray-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-stone-400 dark:text-stone-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -244,11 +244,11 @@ const PocketDecks: NextPage = () => {
               <div className="flex flex-col md:flex-row gap-4 items-end">
             
                 <div className="flex-1">
-                  <label htmlFor="tierFilter" className="block text-sm font-semibold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mb-2">Filter by Tier</label>
+                  <label htmlFor="tierFilter" className="block text-sm font-semibold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">Filter by Tier</label>
                   <div className="relative">
                     <select
                       id="tierFilter"
-                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-gray-700 transition-all duration-300 text-gray-700 dark:text-gray-300 text-sm"
+                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-stone-700 transition-all duration-300 text-stone-700 dark:text-stone-300 text-sm"
                       value={filterTier}
                       onChange={(e) => setFilterTier(e.target.value)}
                     >
@@ -258,7 +258,7 @@ const PocketDecks: NextPage = () => {
                       ))}
                     </select>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
@@ -266,11 +266,11 @@ const PocketDecks: NextPage = () => {
                 </div>
 
                 <div className="flex-1">
-                  <label htmlFor="typeFilter" className="block text-sm font-semibold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mb-2">Filter by Type</label>
+                  <label htmlFor="typeFilter" className="block text-sm font-semibold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">Filter by Type</label>
                   <div className="relative">
                     <select
                       id="typeFilter"
-                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-gray-700 transition-all duration-300 text-gray-700 dark:text-gray-300 text-sm"
+                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-stone-700 transition-all duration-300 text-stone-700 dark:text-stone-300 text-sm"
                       value={filterType}
                       onChange={(e) => setFilterType(e.target.value)}
                     >
@@ -280,19 +280,19 @@ const PocketDecks: NextPage = () => {
                       ))}
                     </select>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
                   </div>
                 </div>
-            
+
                 <div className="flex-1">
-                  <label htmlFor="sortOption" className="block text-sm font-semibold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mb-2">Sort By</label>
+                  <label htmlFor="sortOption" className="block text-sm font-semibold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">Sort By</label>
                   <div className="relative">
                     <select
                       id="sortOption"
-                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-gray-700 transition-all duration-300 text-gray-700 dark:text-gray-300 text-sm"
+                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-stone-700 transition-all duration-300 text-stone-700 dark:text-stone-300 text-sm"
                       value={sortOption}
                       onChange={(e) => setSortOption(e.target.value as SortOption)}
                     >
@@ -303,19 +303,19 @@ const PocketDecks: NextPage = () => {
                       <option value="dateCreated">Date Created</option>
                     </select>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
                   </div>
                 </div>
-            
+
                 <div className="flex-1">
-                  <label htmlFor="sortDirection" className="block text-sm font-semibold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mb-2">Order</label>
+                  <label htmlFor="sortDirection" className="block text-sm font-semibold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">Order</label>
                   <div className="relative">
                     <select
                       id="sortDirection"
-                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-gray-700 transition-all duration-300 text-gray-700 dark:text-gray-300 text-sm"
+                      className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-full appearance-none cursor-pointer hover:border-orange-300 dark:hover:border-orange-500 focus:outline-none focus:border-orange-400 dark:focus:border-orange-500 focus:bg-white dark:focus:bg-stone-700 transition-all duration-300 text-stone-700 dark:text-stone-300 text-sm"
                       value={sortDirection}
                       onChange={(e) => setSortDirection(e.target.value as SortDirection)}
                     >
@@ -323,7 +323,7 @@ const PocketDecks: NextPage = () => {
                       <option value="asc">Low to High</option>
                     </select>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
@@ -362,14 +362,14 @@ const PocketDecks: NextPage = () => {
                 key={deck.id}
                 className="animate-fadeIn group"
               >
-                <div className={`relative flex flex-col h-full rounded-3xl overflow-hidden bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border cursor-pointer transition-all duration-300 border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-2xl hover:border-orange-300 dark:hover:border-orange-400`}>
-                  
+                <div className={`relative flex flex-col h-full rounded-3xl overflow-hidden bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm border cursor-pointer transition-all duration-300 border-stone-200/50 dark:border-stone-700/50 shadow-lg hover:shadow-2xl hover:border-orange-300 dark:hover:border-orange-400`}>
+
                   {/* Deck Header */}
-                  <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                  <div className="p-6 border-b border-stone-200 dark:border-stone-700">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        <h2 className="font-bold text-xl text-gray-800 dark:text-gray-100 mb-1">{deck.name}</h2>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">by {deck.creator}</p>
+                        <h2 className="font-bold text-xl text-stone-800 dark:text-stone-100 mb-1">{deck.name}</h2>
+                        <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">by {deck.creator}</p>
                       </div>
                       
                       {/* Tier Badge */}
@@ -390,19 +390,19 @@ const PocketDecks: NextPage = () => {
                       ))}
                     </div>
                     
-                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    <p className="text-sm text-stone-600 dark:text-stone-400 line-clamp-2">
                       {deck.description}
                     </p>
                   </div>
-                  
+
                   {/* Key Cards */}
                   <div className="p-6 flex-1">
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Key Cards</h3>
+                    <h3 className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Key Cards</h3>
                     <div className="grid grid-cols-4 gap-2 mb-4">
                       {deck.keyCards.slice(0, 4).map((card) => (
-                        <div key={card.id} className="bg-gray-100 dark:bg-gray-700 rounded-lg p-2 text-center">
-                          <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{card.name}</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">×{card.count}</div>
+                        <div key={card.id} className="bg-stone-100 dark:bg-stone-700 rounded-lg p-2 text-center">
+                          <div className="text-xs font-medium text-stone-700 dark:text-stone-300 mb-1">{card.name}</div>
+                          <div className="text-xs text-stone-500 dark:text-stone-400">×{card.count}</div>
                         </div>
                       ))}
                     </div>

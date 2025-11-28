@@ -3,6 +3,13 @@ import logger from '../utils/logger';
 import fs from 'fs';
 import path from 'path';
 
+// ============================================
+// REDIS TOGGLE - Set to false to disable Redis
+// Set back to true when you re-enable Redis
+// ============================================
+export const REDIS_ENABLED = false;
+// ============================================
+
 // Redis connection configuration
 const getRedisConfig = (redisUrl: string) => {
   const baseConfig = {
@@ -62,6 +69,11 @@ let isConnecting = false;
 let connectionPromise: Promise<Redis | null> | null = null;
 
 export async function getRedisClient(): Promise<Redis | null> {
+  // Check if Redis is enabled
+  if (!REDIS_ENABLED) {
+    return null;
+  }
+
   // Return existing ready client
   if (redisClient && (redisClient.status === 'ready' || redisClient.status === 'connect')) {
     return redisClient;
@@ -278,10 +290,14 @@ export async function disconnectRedis(): Promise<void> {
 
 // Function to check Redis health
 export async function isRedisHealthy(): Promise<boolean> {
+  if (!REDIS_ENABLED) {
+    return false;
+  }
+
   try {
     const client = await getRedisClient();
     if (!client) return false;
-    
+
     await client.ping();
     return true;
   } catch (error) {

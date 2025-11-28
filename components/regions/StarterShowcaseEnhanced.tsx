@@ -155,11 +155,11 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
     const gradients: Record<string, string> = {
       grass: 'from-green-400 to-green-600',
       fire: 'from-red-400 to-orange-600',
-      water: 'from-blue-400 to-blue-600',
-      flying: 'from-blue-300 to-indigo-400',
-      poison: 'from-purple-400 to-purple-600',
+      water: 'from-amber-400 to-amber-600',
+      flying: 'from-amber-300 to-amber-400',
+      poison: 'from-amber-400 to-amber-600',
     };
-    return gradients[type] || 'from-gray-400 to-gray-600';
+    return gradients[type] || 'from-stone-400 to-stone-600';
   };
 
   // Get evolution types based on Pokemon ID
@@ -200,7 +200,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
             <h2 className="text-3xl font-bold mb-3">
               Choose Your Starter
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-stone-600 dark:text-stone-400">
               {professor?.name} offers these starter Pokémon to new trainers
             </p>
           </div>
@@ -211,7 +211,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
           {/* Background gradient effect */}
           <div className={`absolute inset-0 bg-gradient-to-b ${
             theme === 'dark' 
-              ? 'from-gray-900/50 via-transparent to-gray-900/50' 
+              ? 'from-stone-900/50 via-transparent to-stone-900/50' 
               : 'from-white/50 via-transparent to-white/50'
           }`} />
           
@@ -285,7 +285,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       {/* Pokemon shadow */}
-                      <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-8 
+                      <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-8
                         bg-black/10 dark:bg-black/20 rounded-full blur-2xl" />
                       
                       {/* Pokemon sprite */}
@@ -311,7 +311,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                       >
                         <div className={`w-0 h-0 border-l-[12px] border-r-[12px] 
                           border-t-[20px] border-l-transparent border-r-transparent ${
-                          theme === 'dark' ? 'border-t-white' : 'border-t-gray-800'
+                          theme === 'dark' ? 'border-t-white' : 'border-t-stone-800'
                         } animate-bounce`} />
                       </motion.div>
                     )}
@@ -330,7 +330,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                 className={`w-3 h-3 rounded-full transition-all ${
                   selectedStarter === index 
                     ? `bg-gradient-to-r ${region.color} scale-150` 
-                    : 'bg-gray-400 dark:bg-gray-600'
+                    : 'bg-stone-400 dark:bg-stone-600'
                 }`}
               />
             ))}
@@ -340,7 +340,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
         {/* Selected Pokemon Details */}
         <FadeIn>
           <div className={`max-w-2xl mx-auto mt-8 p-8 rounded-3xl ${
-            theme === 'dark' ? 'bg-gray-800/50' : 'bg-gray-100/50'
+            theme === 'dark' ? 'bg-stone-800/50' : 'bg-stone-100/50'
           } backdrop-blur-sm`}>
             <h3 className="text-3xl font-bold text-center mb-6">
               {region.starters[selectedStarter]}
@@ -348,7 +348,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
             
             {starterInfo[region.starters[selectedStarter]] && (
               <>
-                <p className="text-lg text-center mb-8 text-gray-600 dark:text-gray-400">
+                <p className="text-lg text-center mb-8 text-stone-600 dark:text-stone-400">
                   {starterInfo[region.starters[selectedStarter]].description}
                 </p>
                 
@@ -356,7 +356,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                 <div className="grid grid-cols-3 gap-4">
                   {Object.entries(starterInfo[region.starters[selectedStarter]].stats).map(([stat, value]) => (
                     <div key={stat} className="text-center">
-                      <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                      <div className="text-sm font-medium text-stone-500 dark:text-stone-400 mb-1">
                         {stat.toUpperCase()}
                       </div>
                       <div className="text-2xl font-bold">{value}</div>
@@ -383,15 +383,15 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
         {showEvolutions && currentEvolutionLine.length > 0 && (
           <SlideUp>
             <div className={`relative rounded-3xl overflow-hidden ${
-              theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-50'
+              theme === 'dark' ? 'bg-gradient-to-br from-stone-900 via-stone-800 to-stone-900' : 'bg-gradient-to-br from-stone-50 via-white to-stone-50'
             } p-12 shadow-2xl`}>
               {/* Background decoration */}
               <div className={`absolute inset-0 bg-gradient-to-br ${region.color} opacity-10`} />
-              <div className="absolute -top-32 -right-32 w-64 h-64 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full opacity-20 blur-3xl" />
+              <div className="absolute -top-32 -right-32 w-64 h-64 bg-gradient-to-br from-amber-500 to-amber-500 rounded-full opacity-20 blur-3xl" />
               <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-gradient-to-br from-green-500 to-cyan-500 rounded-full opacity-20 blur-3xl" />
               
               <div className="relative z-10">
-                <h3 className="text-4xl font-black mb-12 text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <h3 className="text-4xl font-black mb-12 text-center bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                   {region.starters[selectedStarter]} Evolution Journey
                 </h3>
                 
@@ -405,7 +405,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                         <Scale delay={index * 0.2}>
                           <div 
                             className={`relative rounded-3xl overflow-hidden ${
-                              theme === 'dark' ? 'bg-gray-800/90' : 'bg-white/90'
+                              theme === 'dark' ? 'bg-stone-800/90' : 'bg-white/90'
                             } backdrop-blur-sm p-8 transition-all duration-300`}
                           >
                             <Link href={`/pokedex/${evo.id}`} className="group block">
@@ -425,7 +425,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                               
                               <div className="text-center mt-6">
                                 <p className="text-2xl font-bold mb-2">{evo.name}</p>
-                                <p className="text-base text-gray-500 dark:text-gray-400 mb-3">#{String(evo.id).padStart(3, '0')}</p>
+                                <p className="text-base text-stone-500 dark:text-stone-400 mb-3">#{String(evo.id).padStart(3, '0')}</p>
                                 
                                 {/* Type badges */}
                                 <div className="flex gap-2 justify-center mb-3">
@@ -436,7 +436,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                                 
                                 {/* Evolution level */}
                                 {evo.level > 1 && (
-                                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-sm shadow-lg">
+                                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-cyan-500 text-white font-semibold text-sm shadow-lg">
                                     <span>Level {evo.level}</span>
                                   </div>
                                 )}
@@ -451,7 +451,7 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
                             transition={{ delay: 0.5 + index * 0.2 }}
                             className="hidden md:block"
                           >
-                            <BsArrowRight className="text-5xl text-gray-400" />
+                            <BsArrowRight className="text-5xl text-stone-400" />
                           </motion.div>
                         )}
                       </React.Fragment>
@@ -467,12 +467,12 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
         <div className="mt-12 grid md:grid-cols-2 gap-6">
           <FadeIn>
             <div className={`p-6 rounded-2xl ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+              theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
             } flex items-center gap-4`}>
               <BsController className="text-4xl text-pokemon-blue" />
               <div>
                 <h4 className="font-bold mb-1">Available in Games</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-stone-600 dark:text-stone-400">
                   {region.games.join(', ')}
                 </p>
               </div>
@@ -481,12 +481,12 @@ const StarterShowcaseEnhanced: React.FC<StarterShowcaseEnhancedProps> = ({ regio
 
           <FadeIn delay={0.1}>
             <div className={`p-6 rounded-2xl ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+              theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
             } flex items-center gap-4`}>
               <BsCardList className="text-4xl text-pokemon-red" />
               <div>
                 <h4 className="font-bold mb-1">TCG Appearances</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-stone-600 dark:text-stone-400">
                   Featured in multiple card sets across generations
                 </p>
               </div>

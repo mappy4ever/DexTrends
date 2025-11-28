@@ -18,9 +18,9 @@ const sizeClasses = {
 };
 
 const variantClasses = {
-  default: 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700',
+  default: 'bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700',
   glass: '',
-  minimal: 'bg-transparent border-b-2 border-gray-300 dark:border-gray-600 rounded-none'
+  minimal: 'bg-transparent border-b-2 border-stone-300 dark:border-stone-600 rounded-none'
 };
 
 export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
@@ -47,7 +47,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block mb-2 text-sm font-medium text-stone-700 dark:text-stone-300">
             {label}
           </label>
         )}
@@ -55,7 +55,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
         <div className="relative">
           {icon && (
             <div className="absolute left-0 top-1/2 -translate-y-1/2 pl-2 pointer-events-none">
-              <div className="text-gray-500 dark:text-gray-400">
+              <div className="text-stone-500 dark:text-stone-400">
                 {icon}
               </div>
             </div>
@@ -65,9 +65,9 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
             ref={ref}
             className={cn(
               'w-full rounded-xl transition-all duration-200',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:rounded-xl',
-              'placeholder:text-gray-400 dark:placeholder:text-gray-500',
-              'text-gray-900 dark:text-white',
+              'focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:rounded-xl',
+              'placeholder:text-stone-400 dark:placeholder:text-stone-500',
+              'text-stone-900 dark:text-white',
               'text-left', // Ensure text alignment is left
               sizeClasses[inputSize],
               variantClasses[variant],
@@ -75,8 +75,8 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
               icon && 'pl-8',
               rightIcon && 'pr-10',
               error && 'border-red-500 dark:border-red-400',
-              'hover:border-gray-300 dark:hover:border-gray-600',
-              'focus:border-blue-500 dark:focus:border-blue-400',
+              'hover:border-stone-300 dark:hover:border-stone-600',
+              'focus:border-amber-500 dark:focus:border-amber-400',
               className
             )}
             {...props}
@@ -110,9 +110,9 @@ export const SearchInput = forwardRef<HTMLInputElement, Omit<StandardInputProps,
         variant="glass"
         placeholder="Search..."
         className={cn(
-          'bg-white/80 dark:bg-gray-800/80',
+          'bg-white/80 dark:bg-stone-800/80',
           'backdrop-blur-xl',
-          'border border-white/20 dark:border-gray-700/20',
+          'border border-white/20 dark:border-stone-700/20',
           'rounded-xl !rounded-xl',
           className
         )}

@@ -90,14 +90,14 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
       >
         <GlassContainer variant="light">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-purple-600 bg-clip-text text-transparent">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-amber-600 bg-clip-text text-transparent">
               Rarity Showcase
             </h2>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-sm text-gray-500"
+              className="text-sm text-stone-500"
             >
               {availableShowcaseRarities.length} rare types available
             </motion.div>
@@ -116,7 +116,7 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
                 >
                   {/* Holographic background effect for ultra/secret rarities */}
                   {shouldHaveHolographicEffect(rarity) && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 via-pink-400/10 to-yellow-400/10 animate-gradient-shift" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/10 via-pink-400/10 to-yellow-400/10 animate-gradient-shift" />
                   )}
                   
                   <div className="relative z-10">
@@ -135,13 +135,13 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
                         />
                       </motion.div>
                       <h3 className={`text-lg font-semibold ${
-                        tier === 'secret' ? 'text-purple-600' :
+                        tier === 'secret' ? 'text-amber-600' :
                         tier === 'ultra' ? 'text-yellow-600' :
-                        'text-gray-700 dark:text-gray-300'
+                        'text-stone-700 dark:text-stone-300'
                       }`}>
                         {rarity}
                       </h3>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-stone-500">
                         ({rarityCards.length} {rarityCards.length === 1 ? 'card' : 'cards'})
                       </span>
                     </div>
@@ -221,12 +221,12 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
                       {/* Scroll Indicator */}
                       {rarityCards.length > 8 && (
                         <motion.div
-                          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 rounded-full p-2 shadow-lg"
+                          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-stone-800/90 rounded-full p-2 shadow-lg"
                           initial={{ opacity: 0, x: 10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.5 }}
                         >
-                          <svg className="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="w-4 h-4 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
                         </motion.div>
@@ -243,9 +243,9 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"
+            className="mt-8 pt-6 border-t border-stone-200 dark:border-stone-700"
           >
-            <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">
+            <h3 className="text-lg font-semibold mb-4 text-stone-700 dark:text-stone-300">
               More Cards Coming Soon...
             </h3>
           </motion.div>

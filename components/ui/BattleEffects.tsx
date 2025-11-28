@@ -34,7 +34,7 @@ export const DamageNumber: React.FC<DamageNumberProps> = ({
 
   const getColor = () => {
     if (effectiveness >= 2) return 'text-green-500'; // Super effective
-    if (effectiveness <= 0.5) return 'text-gray-400'; // Not very effective
+    if (effectiveness <= 0.5) return 'text-stone-400'; // Not very effective
     if (isCritical) return 'text-yellow-500';
     return 'text-red-500';
   };
@@ -129,7 +129,7 @@ export const AnimatedHPBar: React.FC<AnimatedHPBarProps> = ({
     <div className="w-full">
       {showNumbers && (
         <div className="flex justify-between text-sm mb-1">
-          <span className="font-medium text-gray-600 dark:text-gray-400">HP</span>
+          <span className="font-medium text-stone-600 dark:text-stone-400">HP</span>
           <motion.span
             key={current}
             initial={{ scale: 1.2, color: '#ef4444' }}
@@ -140,7 +140,7 @@ export const AnimatedHPBar: React.FC<AnimatedHPBarProps> = ({
           </motion.span>
         </div>
       )}
-      <div className={`w-full bg-gray-200 dark:bg-gray-700 rounded-full ${heights[size]} overflow-hidden shadow-inner`}>
+      <div className={`w-full bg-stone-200 dark:bg-stone-700 rounded-full ${heights[size]} overflow-hidden shadow-inner`}>
         <motion.div
           className={`${heights[size]} rounded-full bg-gradient-to-r ${getBarColor()} shadow-sm`}
           initial={false}
@@ -179,11 +179,11 @@ export const BattleAnnouncement: React.FC<BattleAnnouncementProps> = ({
       case 'attack':
         return 'bg-gradient-to-r from-red-500 to-orange-500 text-white';
       case 'status':
-        return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
+        return 'bg-gradient-to-r from-amber-500 to-pink-500 text-white';
       case 'victory':
-        return 'bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900';
+        return 'bg-gradient-to-r from-yellow-400 to-amber-500 text-stone-900';
       default:
-        return 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white';
+        return 'bg-gradient-to-r from-amber-500 to-cyan-500 text-white';
     }
   };
 
@@ -243,14 +243,14 @@ export const TurnIndicator: React.FC<TurnIndicatorProps> = ({
       key={currentTurn}
       initial={{ opacity: 0, x: currentTurn === 1 ? -20 : 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="flex items-center justify-center gap-2 py-2 px-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-md"
+      className="flex items-center justify-center gap-2 py-2 px-4 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-full shadow-md"
     >
       <motion.div
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 1, repeat: Infinity }}
-        className={`w-3 h-3 rounded-full ${currentTurn === 1 ? 'bg-red-500' : 'bg-blue-500'}`}
+        className={`w-3 h-3 rounded-full ${currentTurn === 1 ? 'bg-red-500' : 'bg-amber-500'}`}
       />
-      <span className="font-semibold text-gray-700 dark:text-gray-300">
+      <span className="font-semibold text-stone-700 dark:text-stone-300">
         {currentTurn === 1 ? player1Name : player2Name}'s Turn
       </span>
     </motion.div>
@@ -302,17 +302,17 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, turns }) => {
         return 'bg-gradient-to-r from-orange-400 to-red-500 text-white';
       case 'poison':
       case 'badpoison':
-        return 'bg-gradient-to-r from-purple-400 to-purple-600 text-white';
+        return 'bg-gradient-to-r from-amber-400 to-amber-600 text-white';
       case 'paralysis':
-        return 'bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900';
+        return 'bg-gradient-to-r from-yellow-400 to-amber-500 text-stone-900';
       case 'sleep':
-        return 'bg-gradient-to-r from-indigo-400 to-purple-500 text-white';
+        return 'bg-gradient-to-r from-amber-400 to-amber-500 text-white';
       case 'freeze':
-        return 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white';
+        return 'bg-gradient-to-r from-cyan-400 to-amber-500 text-white';
       case 'confusion':
         return 'bg-gradient-to-r from-pink-400 to-rose-500 text-white';
       default:
-        return 'bg-gray-500 text-white';
+        return 'bg-stone-500 text-white';
     }
   };
 
@@ -353,23 +353,23 @@ export const MoveButton: React.FC<MoveButtonProps> = ({
   selected = false
 }) => {
   const typeColors: Record<string, string> = {
-    normal: 'from-gray-400 to-gray-500',
+    normal: 'from-stone-400 to-stone-500',
     fire: 'from-orange-400 to-red-500',
-    water: 'from-blue-400 to-blue-600',
+    water: 'from-amber-400 to-amber-600',
     electric: 'from-yellow-400 to-amber-500',
     grass: 'from-green-400 to-green-600',
-    ice: 'from-cyan-300 to-blue-400',
+    ice: 'from-cyan-300 to-amber-400',
     fighting: 'from-red-600 to-red-800',
-    poison: 'from-purple-400 to-purple-600',
+    poison: 'from-amber-400 to-amber-600',
     ground: 'from-amber-500 to-amber-700',
-    flying: 'from-indigo-300 to-purple-400',
+    flying: 'from-amber-300 to-amber-400',
     psychic: 'from-pink-400 to-pink-600',
     bug: 'from-lime-400 to-green-500',
     rock: 'from-amber-600 to-amber-800',
-    ghost: 'from-purple-500 to-indigo-600',
-    dragon: 'from-indigo-500 to-purple-700',
-    dark: 'from-gray-600 to-gray-800',
-    steel: 'from-gray-400 to-slate-500',
+    ghost: 'from-amber-500 to-amber-600',
+    dragon: 'from-amber-500 to-amber-700',
+    dark: 'from-stone-600 to-stone-800',
+    steel: 'from-stone-400 to-stone-500',
     fairy: 'from-pink-300 to-pink-500',
   };
 

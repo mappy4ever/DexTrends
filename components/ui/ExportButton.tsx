@@ -42,13 +42,13 @@ const ExportButton: React.FC<ExportButtonProps> = ({
       icon: <FiCode className="w-6 h-6" />,
       label: 'JSON',
       description: 'JavaScript Object Notation',
-      color: 'from-blue-400 to-blue-600',
+      color: 'from-amber-400 to-amber-600',
     },
     txt: {
       icon: <FiFile className="w-6 h-6" />,
       label: 'Text',
       description: 'Plain text format',
-      color: 'from-gray-400 to-gray-600',
+      color: 'from-stone-400 to-stone-600',
     },
   };
 
@@ -116,7 +116,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
               >
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                     {modalTitle}
                   </h2>
                   <button
@@ -130,13 +130,13 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                       rounded: 'full',
                     })} p-2 rounded-full hover:scale-110 transition-transform`}
                   >
-                    <FiX className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <FiX className="w-5 h-5 text-stone-600 dark:text-stone-400" />
                   </button>
                 </div>
 
                 {/* Format Selection */}
                 <div className="space-y-3 mb-6">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-3">
                     Select export format for {data.length} records
                   </p>
                   
@@ -161,15 +161,15 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                               })
                         }`}
                       >
-                        <div className={selectedFormat === format ? 'text-white' : 'text-gray-600 dark:text-gray-400'}>
+                        <div className={selectedFormat === format ? 'text-white' : 'text-stone-600 dark:text-stone-400'}>
                           {info.icon}
                         </div>
                         <div className="flex-1 text-left">
                           <div className="font-semibold">{info.label}</div>
                           <div className={`text-xs ${
-                            selectedFormat === format 
-                              ? 'text-white/80' 
-                              : 'text-gray-500 dark:text-gray-500'
+                            selectedFormat === format
+                              ? 'text-white/80'
+                              : 'text-stone-500 dark:text-stone-500'
                           }`}>
                             {info.description}
                           </div>

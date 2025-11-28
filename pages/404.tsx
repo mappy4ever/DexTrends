@@ -53,7 +53,7 @@ const Custom404: NextPage = () => {
             ease: "linear"
           }}
         >
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700" />
+          <div className="w-full h-full rounded-full bg-gradient-to-br from-stone-200 to-stone-300 dark:from-stone-600 dark:to-stone-700" />
         </motion.div>
       ))}
 
@@ -98,11 +98,11 @@ const Custom404: NextPage = () => {
             </motion.div>
           </motion.div>
 
-          <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-4">
+          <h2 className="text-3xl font-semibold text-stone-800 dark:text-white mb-4">
             Oops! This Pokemon has fled!
           </h2>
           
-          <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-base text-stone-600 dark:text-stone-400 mb-8">
             The page you're looking for has escaped into the tall grass.
             <br />
             Maybe it used Teleport?
@@ -139,7 +139,7 @@ const Custom404: NextPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="text-sm text-gray-500 dark:text-gray-500 mt-8 italic"
+            className="text-sm text-stone-500 dark:text-stone-500 mt-8 italic"
           >
             "We hope to see you again!" - Pokemon Center Nurse
           </motion.p>

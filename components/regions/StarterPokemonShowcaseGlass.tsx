@@ -82,33 +82,33 @@ const getTypeGradient = (starter: string): string => {
   const typeGradients: Record<string, string> = {
     'Bulbasaur': 'from-green-400 to-emerald-500',
     'Charmander': 'from-red-400 to-orange-500',
-    'Squirtle': 'from-blue-400 to-cyan-500',
+    'Squirtle': 'from-amber-400 to-cyan-500',
     'Chikorita': 'from-green-400 to-lime-500',
     'Cyndaquil': 'from-orange-400 to-red-500',
-    'Totodile': 'from-blue-400 to-indigo-500',
+    'Totodile': 'from-amber-400 to-amber-500',
     'Treecko': 'from-green-400 to-emerald-500',
     'Torchic': 'from-red-400 to-orange-500',
-    'Mudkip': 'from-blue-400 to-cyan-500',
+    'Mudkip': 'from-amber-400 to-cyan-500',
     'Turtwig': 'from-green-400 to-lime-500',
     'Chimchar': 'from-orange-400 to-red-500',
-    'Piplup': 'from-blue-400 to-sky-500',
+    'Piplup': 'from-amber-400 to-sky-500',
     'Snivy': 'from-green-400 to-emerald-500',
     'Tepig': 'from-red-400 to-orange-500',
-    'Oshawott': 'from-blue-400 to-cyan-500',
+    'Oshawott': 'from-amber-400 to-cyan-500',
     'Chespin': 'from-green-400 to-lime-500',
     'Fennekin': 'from-red-400 to-yellow-500',
-    'Froakie': 'from-blue-400 to-indigo-500',
+    'Froakie': 'from-amber-400 to-amber-500',
     'Rowlet': 'from-green-400 to-teal-500',
-    'Litten': 'from-red-400 to-gray-600',
-    'Popplio': 'from-blue-400 to-pink-400',
+    'Litten': 'from-red-400 to-stone-600',
+    'Popplio': 'from-amber-400 to-pink-400',
     'Grookey': 'from-green-400 to-lime-500',
     'Scorbunny': 'from-orange-400 to-red-500',
-    'Sobble': 'from-blue-400 to-cyan-500',
+    'Sobble': 'from-amber-400 to-cyan-500',
     'Sprigatito': 'from-green-400 to-lime-500',
     'Fuecoco': 'from-red-400 to-orange-500',
-    'Quaxly': 'from-blue-400 to-cyan-500'
+    'Quaxly': 'from-amber-400 to-cyan-500'
   };
-  return typeGradients[starter] || 'from-gray-400 to-gray-500';
+  return typeGradients[starter] || 'from-stone-400 to-stone-500';
 };
 
 const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ region, starters, theme }) => {
@@ -119,7 +119,7 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
   return (
     <div className="relative py-16 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900" />
+      <div className="absolute inset-0 bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 dark:from-stone-900 dark:via-amber-900/20 dark:to-stone-900" />
       
       <div className="relative max-w-7xl mx-auto px-4">
         {/* Header with glass effect */}
@@ -129,11 +129,11 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="inline-block backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl px-8 py-6 shadow-2xl border border-white/30 dark:border-gray-700/30">
-            <h2 className="text-4xl font-black mb-2 bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+          <div className="inline-block backdrop-blur-xl bg-white/70 dark:bg-stone-800/70 rounded-3xl px-8 py-6 shadow-2xl border border-white/30 dark:border-stone-700/30">
+            <h2 className="text-4xl font-black mb-2 bg-gradient-to-r from-stone-800 to-stone-600 dark:from-white dark:to-stone-300 bg-clip-text text-transparent">
               Choose Your Partner
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-stone-600 dark:text-stone-400">
               Begin your {region} journey with one of these amazing Pokémon
             </p>
           </div>
@@ -157,10 +157,10 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
                 className="relative"
               >
                 <div 
-                  className={`relative h-full backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-3xl border-2 shadow-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
+                  className={`relative h-full backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-3xl border-2 shadow-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
                     isSelected 
-                      ? 'border-blue-400/50 shadow-blue-400/20' 
-                      : 'border-white/30 dark:border-gray-700/30 hover:border-white/50'
+                      ? 'border-amber-400/50 shadow-amber-400/20' 
+                      : 'border-white/30 dark:border-stone-700/30 hover:border-white/50'
                   }`}
                   onClick={() => setSelectedStarter(index)}
                 >
@@ -174,7 +174,7 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute top-4 right-4 w-8 h-8 rounded-full bg-blue-400 flex items-center justify-center"
+                        className="absolute top-4 right-4 w-8 h-8 rounded-full bg-amber-400 flex items-center justify-center"
                       >
                         <BsStars className="text-white" />
                       </motion.div>
@@ -193,42 +193,42 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
 
                     {/* Name and Number */}
                     <div className="text-center mb-4">
-                      <h3 className="text-2xl font-black text-gray-800 dark:text-white">{starter}</h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">#{String(starterId).padStart(3, '0')}</p>
+                      <h3 className="text-2xl font-black text-stone-800 dark:text-white">{starter}</h3>
+                      <p className="text-sm text-stone-500 dark:text-stone-400">#{String(starterId).padStart(3, '0')}</p>
                     </div>
 
                     {/* Type badges with glass effect */}
                     <div className="flex justify-center gap-2 mb-4">
-                      <span className="px-4 py-2 rounded-full backdrop-blur-md bg-white/50 dark:bg-gray-700/50 border border-white/30 text-sm font-semibold">
+                      <span className="px-4 py-2 rounded-full backdrop-blur-md bg-white/50 dark:bg-stone-700/50 border border-white/30 text-sm font-semibold">
                         {index === 0 ? 'Grass' : index === 1 ? 'Fire' : 'Water'}
                       </span>
                     </div>
 
                     {/* Stats preview */}
                     <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 rounded-lg p-2">
+                      <div className="backdrop-blur-sm bg-white/30 dark:bg-stone-700/30 rounded-lg p-2">
                         <BsHeart className="mx-auto text-red-400 mb-1" />
-                        <p className="text-xs text-gray-600 dark:text-gray-400">Balanced</p>
+                        <p className="text-xs text-stone-600 dark:text-stone-400">Balanced</p>
                       </div>
-                      <div className="backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 rounded-lg p-2">
-                        <BsShield className="mx-auto text-blue-400 mb-1" />
-                        <p className="text-xs text-gray-600 dark:text-gray-400">Hardy</p>
+                      <div className="backdrop-blur-sm bg-white/30 dark:bg-stone-700/30 rounded-lg p-2">
+                        <BsShield className="mx-auto text-amber-400 mb-1" />
+                        <p className="text-xs text-stone-600 dark:text-stone-400">Hardy</p>
                       </div>
-                      <div className="backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 rounded-lg p-2">
+                      <div className="backdrop-blur-sm bg-white/30 dark:bg-stone-700/30 rounded-lg p-2">
                         <BsLightning className="mx-auto text-yellow-400 mb-1" />
-                        <p className="text-xs text-gray-600 dark:text-gray-400">Loyal</p>
+                        <p className="text-xs text-stone-600 dark:text-stone-400">Loyal</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Evolution Chain Preview */}
-                  <div className="relative border-t border-white/20 dark:border-gray-700/20 p-4 bg-gradient-to-b from-transparent to-white/10 dark:to-gray-800/10">
-                    <p className="text-xs text-center text-gray-500 dark:text-gray-400 mb-3">Evolution Chain</p>
+                  <div className="relative border-t border-white/20 dark:border-stone-700/20 p-4 bg-gradient-to-b from-transparent to-white/10 dark:to-stone-800/10">
+                    <p className="text-xs text-center text-stone-500 dark:text-stone-400 mb-3">Evolution Chain</p>
                     <div className="flex items-center justify-center gap-1">
                       {evolutions.map((evo, i) => (
                         <React.Fragment key={evo.id}>
                           <div className="relative">
-                            <div className="w-12 h-12 rounded-full bg-white/30 dark:bg-gray-700/30 backdrop-blur-sm p-1">
+                            <div className="w-12 h-12 rounded-full bg-white/30 dark:bg-stone-700/30 backdrop-blur-sm p-1">
                               <img
                                 src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
                                 alt={evo.name}
@@ -237,7 +237,7 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
                             </div>
                           </div>
                           {i < evolutions.length - 1 && (
-                            <BsChevronRight className="text-gray-400 text-xs" />
+                            <BsChevronRight className="text-stone-400 text-xs" />
                           )}
                         </React.Fragment>
                       ))}
@@ -264,19 +264,19 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
               transition={{ duration: 0.4 }}
               className="mt-8"
             >
-              <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-2xl p-8">
-                <h3 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">
+              <div className="backdrop-blur-xl bg-white/80 dark:bg-stone-800/80 rounded-3xl border border-white/30 dark:border-stone-700/30 shadow-2xl p-8">
+                <h3 className="text-2xl font-bold text-center mb-6 text-stone-800 dark:text-white">
                   {starters[selectedStarter]} - Your Perfect Partner
                 </h3>
                 
                 <div className="grid md:grid-cols-2 gap-8">
                   {/* Evolution Details */}
                   <div>
-                    <h4 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Full Evolution Line</h4>
+                    <h4 className="text-lg font-semibold mb-4 text-stone-700 dark:text-stone-300">Full Evolution Line</h4>
                     <div className="space-y-4">
                       {getEvolutionData(starters[selectedStarter]).map((evo, i) => (
                         <div key={evo.id} className="flex items-center gap-4">
-                          <div className="w-20 h-20 rounded-2xl bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm p-2">
+                          <div className="w-20 h-20 rounded-2xl bg-white/50 dark:bg-stone-700/50 backdrop-blur-sm p-2">
                             <img
                               src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${evo.id}.png`}
                               alt={evo.name}
@@ -284,8 +284,8 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
                             />
                           </div>
                           <div>
-                            <p className="font-semibold text-gray-800 dark:text-white">{evo.name}</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                            <p className="font-semibold text-stone-800 dark:text-white">{evo.name}</p>
+                            <p className="text-sm text-stone-500 dark:text-stone-400">
                               {i === 0 ? 'Base Form' : `Evolves at Lv.${evo.level}`}
                             </p>
                           </div>
@@ -296,26 +296,26 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
 
                   {/* Characteristics */}
                   <div>
-                    <h4 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Characteristics</h4>
+                    <h4 className="text-lg font-semibold mb-4 text-stone-700 dark:text-stone-300">Characteristics</h4>
                     <div className="space-y-3">
-                      <div className="backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 rounded-xl p-4">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Personality</p>
+                      <div className="backdrop-blur-sm bg-white/30 dark:bg-stone-700/30 rounded-xl p-4">
+                        <p className="text-sm text-stone-600 dark:text-stone-400 mb-1">Personality</p>
                         <p className="font-semibold">
                           {selectedStarter === 0 ? 'Calm and Reliable' : 
                            selectedStarter === 1 ? 'Brave and Passionate' : 
                            'Playful and Adaptable'}
                         </p>
                       </div>
-                      <div className="backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 rounded-xl p-4">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Best For</p>
+                      <div className="backdrop-blur-sm bg-white/30 dark:bg-stone-700/30 rounded-xl p-4">
+                        <p className="text-sm text-stone-600 dark:text-stone-400 mb-1">Best For</p>
                         <p className="font-semibold">
                           {selectedStarter === 0 ? 'Strategic Trainers' : 
                            selectedStarter === 1 ? 'Offensive Players' : 
                            'Balanced Teams'}
                         </p>
                       </div>
-                      <div className="backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 rounded-xl p-4">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Famous Trainers</p>
+                      <div className="backdrop-blur-sm bg-white/30 dark:bg-stone-700/30 rounded-xl p-4">
+                        <p className="text-sm text-stone-600 dark:text-stone-400 mb-1">Famous Trainers</p>
                         <p className="font-semibold">
                           {selectedStarter === 0 ? 'Professor Oak\'s Choice' : 
                            selectedStarter === 1 ? 'Champion\'s Favorite' : 
@@ -332,7 +332,7 @@ const StarterPokemonShowcaseGlass: React.FC<StarterPokemonShowcaseProps> = ({ re
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => router.push(`/pokedex/${getStarterId(starters[selectedStarter])}`)}
-                    className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="px-8 py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-400 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     View Full Details
                   </motion.button>

@@ -53,7 +53,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   return (
     <div 
       className={cn(
-        "relative overflow-hidden bg-gray-100 dark:bg-gray-800",
+        "relative overflow-hidden bg-stone-100 dark:bg-stone-800",
         className
       )}
       style={{ aspectRatio }}
@@ -74,7 +74,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
       {/* Skeleton loader */}
       {isLoading && (
         <div className="absolute inset-0 animate-pulse">
-          <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600" />
+          <div className="w-full h-full bg-gradient-to-br from-stone-200 to-stone-300 dark:from-stone-700 dark:to-stone-600" />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
         </div>
       )}
@@ -99,10 +99,10 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
 
       {/* Error state */}
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+        <div className="absolute inset-0 flex items-center justify-center bg-stone-100 dark:bg-stone-800">
           <div className="text-center p-4">
-            <svg 
-              className="w-12 h-12 mx-auto mb-2 text-gray-400"
+            <svg
+              className="w-12 h-12 mx-auto mb-2 text-stone-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -114,7 +114,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
               />
             </svg>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Failed to load</p>
+            <p className="text-xs text-stone-500 dark:text-stone-400">Failed to load</p>
           </div>
         </div>
       )}

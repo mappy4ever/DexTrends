@@ -350,7 +350,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         } catch (error) {
           logger.error('Error rendering BreedingTab:', error);
           return (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-stone-500">
               <p>Unable to load breeding information</p>
             </div>
           );
@@ -368,7 +368,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         } catch (error) {
           logger.error('Error rendering LocationsTab:', error);
           return (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-stone-500">
               <p>Unable to load location information</p>
             </div>
           );
@@ -400,7 +400,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
   
   return (
     <div 
-      className="rounded-lg border border-white/20 dark:border-gray-700/30 shadow-lg overflow-hidden backdrop-blur-sm"
+      className="rounded-lg border border-white/20 dark:border-stone-700/30 shadow-lg overflow-hidden backdrop-blur-sm"
       style={{
         background: theme === 'dark' 
           ? `linear-gradient(135deg, 
@@ -413,7 +413,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             )`
       }}>
       {/* Tab Header with Mobile-Optimized Design */}
-      <div className="tab-header-mobile backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700 relative z-50 shadow-md">
+      <div className="tab-header-mobile backdrop-blur-xl bg-white/95 dark:bg-stone-900/95 border-b border-stone-200 dark:border-stone-700 relative z-50 shadow-md">
         <div className="tab-scroll-container flex overflow-x-auto scrollbar-hide px-4 py-3 gap-2 md:gap-3">
           {POKEMON_TABS.map((tab) => (
             <button
@@ -433,8 +433,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
                 "px-4 py-2.5 md:px-5 md:py-2.5 font-medium text-sm transition-all duration-300 whitespace-nowrap flex items-center gap-2 rounded-full",
                 "transform hover:scale-[1.02] active:scale-[0.98] min-h-[48px]",
                 activeTab === tab.id
-                  ? "active bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg border-transparent"
-                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "active bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg border-transparent"
+                  : "bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-2 border-stone-300 dark:border-stone-600 hover:bg-stone-50 dark:hover:bg-stone-700"
               )}
             >
               <span className="text-lg md:text-base">{tab.icon}</span>
@@ -446,7 +446,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
       
       {/* Tab Content */}
       <div 
-        className="p-6 md:p-8 relative bg-gray-100/80 dark:bg-gray-900/40"
+        className="p-6 md:p-8 relative bg-stone-100/80 dark:bg-stone-900/40"
         style={{ 
           transform: 'translateZ(0)',
           willChange: 'auto'
@@ -472,10 +472,10 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
       </div>
       
       {/* Navigation hints */}
-      <div className="hidden md:block absolute bottom-4 right-4 text-xs text-gray-400 dark:text-gray-600">
+      <div className="hidden md:block absolute bottom-4 right-4 text-xs text-stone-400 dark:text-stone-600">
         Use ← → arrow keys to navigate tabs
       </div>
-      <div className="md:hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 dark:text-gray-600">
+      <div className="md:hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 text-xs text-stone-400 dark:text-stone-600">
         Swipe to navigate tabs
       </div>
     </div>

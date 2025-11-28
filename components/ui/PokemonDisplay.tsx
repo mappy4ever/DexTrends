@@ -26,23 +26,23 @@ import { useProgressiveImage } from '@/hooks/useProgressiveImage';
 
 // Type color mappings for gradients
 const typeGradients: Record<string, string> = {
-  normal: 'from-gray-300/60 via-gray-200/40 to-gray-100/60',
+  normal: 'from-stone-300/60 via-stone-200/40 to-stone-100/60',
   fire: 'from-red-300/60 via-orange-200/40 to-yellow-100/60',
-  water: 'from-blue-300/60 via-cyan-200/40 to-blue-100/60',
+  water: 'from-amber-300/60 via-amber-200/40 to-amber-100/60',
   electric: 'from-yellow-300/60 via-amber-200/40 to-yellow-100/60',
   grass: 'from-green-300/60 via-emerald-200/40 to-lime-100/60',
-  ice: 'from-cyan-300/60 via-blue-200/40 to-sky-100/60',
+  ice: 'from-cyan-300/60 via-amber-200/40 to-sky-100/60',
   fighting: 'from-red-400/60 via-orange-300/40 to-red-200/60',
-  poison: 'from-purple-400/60 via-purple-300/40 to-pink-200/60',
+  poison: 'from-amber-400/60 via-amber-300/40 to-amber-200/60',
   ground: 'from-yellow-500/60 via-amber-400/40 to-orange-300/60',
-  flying: 'from-indigo-300/60 via-blue-200/40 to-sky-100/60',
-  psychic: 'from-pink-400/60 via-purple-300/40 to-pink-200/60',
+  flying: 'from-amber-300/60 via-amber-200/40 to-sky-100/60',
+  psychic: 'from-amber-400/60 via-amber-300/40 to-amber-200/60',
   bug: 'from-lime-400/60 via-green-300/40 to-lime-200/60',
   rock: 'from-yellow-600/60 via-amber-500/40 to-yellow-400/60',
-  ghost: 'from-purple-500/60 via-indigo-400/40 to-purple-300/60',
-  dragon: 'from-indigo-500/60 via-purple-400/40 to-blue-300/60',
-  dark: 'from-gray-700/60 via-gray-600/40 to-gray-500/60',
-  steel: 'from-gray-400/60 via-slate-300/40 to-gray-200/60',
+  ghost: 'from-stone-500/60 via-stone-400/40 to-stone-300/60',
+  dragon: 'from-amber-500/60 via-amber-400/40 to-amber-300/60',
+  dark: 'from-stone-700/60 via-stone-600/40 to-stone-500/60',
+  steel: 'from-stone-400/60 via-stone-300/40 to-stone-200/60',
   fairy: 'from-pink-300/60 via-rose-200/40 to-pink-100/60',
 };
 
@@ -223,7 +223,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
               <div className={cn(
                 'px-2 py-0.5 rounded-full text-xs font-bold text-white',
                 isLegendary && 'bg-gradient-to-r from-yellow-500 to-amber-500',
-                isMythical && 'bg-gradient-to-r from-purple-500 to-pink-500',
+                isMythical && 'bg-gradient-to-r from-amber-500 to-orange-500',
                 isStarter && 'bg-gradient-to-r from-green-500 to-emerald-500'
               )}>
                 {specialStatus}
@@ -241,8 +241,8 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           onClick={handleClick}
           className={cn(
             'relative p-4 rounded-xl cursor-pointer',
-            'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm',
-            'border border-gray-200 dark:border-gray-700',
+            'bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm',
+            'border border-stone-200 dark:border-stone-700',
             'hover:shadow-lg transition-all duration-200',
             className
           )}
@@ -268,14 +268,14 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             {/* Info */}
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-gray-500 dark:text-gray-400">
+                <span className="text-stone-500 dark:text-stone-400">
                   #{String(id).padStart(3, '0')}
                 </span>
                 {showBadges && specialStatus && (
                   <span className={cn(
                     'px-2 py-0.5 rounded-full text-xs font-bold text-white',
                     isLegendary && 'bg-yellow-500',
-                    isMythical && 'bg-purple-500',
+                    isMythical && 'bg-amber-500',
                     isStarter && 'bg-green-500'
                   )}>
                     {specialStatus}
@@ -283,7 +283,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
                 )}
               </div>
               
-              <h3 className="font-bold text-gray-900 dark:text-white capitalize">
+              <h3 className="font-bold text-stone-900 dark:text-white capitalize">
                 {name}
               </h3>
               
@@ -299,29 +299,29 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           
           {/* Stats */}
           {showStats && (hp || attack || defense || speed) && (
-            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+            <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700">
               <div className="grid grid-cols-4 gap-2 text-xs">
                 {hp && (
                   <div>
-                    <span className="text-gray-500">HP</span>
+                    <span className="text-stone-500">HP</span>
                     <div className="font-bold">{hp}</div>
                   </div>
                 )}
                 {attack && (
                   <div>
-                    <span className="text-gray-500">ATK</span>
+                    <span className="text-stone-500">ATK</span>
                     <div className="font-bold">{attack}</div>
                   </div>
                 )}
                 {defense && (
                   <div>
-                    <span className="text-gray-500">DEF</span>
+                    <span className="text-stone-500">DEF</span>
                     <div className="font-bold">{defense}</div>
                   </div>
                 )}
                 {speed && (
                   <div>
-                    <span className="text-gray-500">SPD</span>
+                    <span className="text-stone-500">SPD</span>
                     <div className="font-bold">{speed}</div>
                   </div>
                 )}
@@ -338,7 +338,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           onClick={handleClick}
           className={cn(
             'flex items-center gap-2 p-2 rounded-lg cursor-pointer',
-            'hover:bg-gray-100 dark:hover:bg-gray-800',
+            'hover:bg-stone-100 dark:hover:bg-stone-800',
             'transition-colors duration-200',
             className
           )}
@@ -353,20 +353,20 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             />
           )}
           <div className="flex-1 min-w-0">
-            <div className="font-medium text-gray-900 dark:text-white truncate">
+            <div className="font-medium text-stone-900 dark:text-white truncate">
               {name}
             </div>
             {showTypes && (
               <div className="flex gap-1">
                 {typeNames.map(type => (
-                  <span key={type} className="text-xs text-gray-500">
+                  <span key={type} className="text-xs text-stone-500">
                     {type}
                   </span>
                 ))}
               </div>
             )}
           </div>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-stone-400">
             #{String(id).padStart(3, '0')}
           </span>
         </motion.div>

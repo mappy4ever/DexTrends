@@ -68,7 +68,7 @@ const CollectionsPage: NextPage = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+            className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent"
           >
             My Collections
           </motion.h1>
@@ -76,7 +76,7 @@ const CollectionsPage: NextPage = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-gray-600 dark:text-gray-400"
+            className="text-lg text-stone-600 dark:text-stone-400"
           >
             Manage your Pokemon card collection, track prices, and set alerts
           </motion.p>
@@ -173,7 +173,7 @@ const PortfolioOverview: React.FC = () => {
           transition={{ delay: 0.1 }}
         >
           <GlassContainer variant="colored" hover className="h-full">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Total Value</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Total Value</div>
             <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
               {formatCurrency(portfolioData.totalValue)}
             </div>
@@ -189,11 +189,11 @@ const PortfolioOverview: React.FC = () => {
           transition={{ delay: 0.2 }}
         >
           <GlassContainer variant="medium" hover className="h-full">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Total Cards</div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-white">
+            <div className="text-sm text-stone-600 dark:text-stone-400">Total Cards</div>
+            <div className="text-3xl font-bold text-stone-800 dark:text-white">
               {portfolioData.totalCards}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
               across all collections
             </div>
           </GlassContainer>
@@ -205,11 +205,11 @@ const PortfolioOverview: React.FC = () => {
           transition={{ delay: 0.3 }}
         >
           <GlassContainer variant="medium" hover className="h-full">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Unique Cards</div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-white">
+            <div className="text-sm text-stone-600 dark:text-stone-400">Unique Cards</div>
+            <div className="text-3xl font-bold text-stone-800 dark:text-white">
               {portfolioData.uniqueCards}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
               different cards
             </div>
           </GlassContainer>
@@ -221,11 +221,11 @@ const PortfolioOverview: React.FC = () => {
           transition={{ delay: 0.4 }}
         >
           <GlassContainer variant="medium" hover className="h-full">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Avg Card Value</div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-white">
+            <div className="text-sm text-stone-600 dark:text-stone-400">Avg Card Value</div>
+            <div className="text-3xl font-bold text-stone-800 dark:text-white">
               {formatCurrency(portfolioData.totalValue / portfolioData.totalCards)}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
               per card
             </div>
           </GlassContainer>
@@ -235,21 +235,21 @@ const PortfolioOverview: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Performing Cards */}
         <GlassContainer variant="medium">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+          <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-4">
             Top Performing Cards
           </h3>
           <div className="space-y-3">
               {portfolioData.topCards.map((card, index) => (
-                <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+                <div key={index} className="flex items-center justify-between p-3 hover:bg-stone-50 dark:hover:bg-stone-700 rounded">
                   <div className="flex items-center gap-3">
-                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400 w-6">
+                    <div className="text-sm font-medium text-stone-500 dark:text-stone-400 w-6">
                       #{index + 1}
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="font-medium text-stone-900 dark:text-white">
                         {card.name}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-sm text-stone-500 dark:text-stone-400">
                         {formatCurrency(card.value)}
                       </div>
                     </div>
@@ -265,7 +265,7 @@ const PortfolioOverview: React.FC = () => {
         {/* Recent Activity */}
         <DefaultCard 
           variant="featured"
-          className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+          className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm"
           padding="none"
         >
           <CardHeader className="p-4">
@@ -276,15 +276,15 @@ const PortfolioOverview: React.FC = () => {
           <CardContent className="p-4">
             <div className="space-y-3">
               {portfolioData.recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+                <div key={index} className="flex items-center gap-3 p-3 hover:bg-stone-50 dark:hover:bg-stone-700 rounded">
                   <div className={`w-2 h-2 rounded-full ${
-                    activity.action === 'Added' ? 'bg-green-500' : 'bg-blue-500'
+                    activity.action === 'Added' ? 'bg-green-500' : 'bg-amber-500'
                   }`}></div>
                   <div className="flex-1">
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="font-medium text-stone-900 dark:text-white">
                       {activity.action} {activity.card}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm text-stone-500 dark:text-stone-400">
                       {new Date(activity.date).toLocaleDateString()} • {formatCurrency(activity.value)}
                     </div>
                   </div>
@@ -298,10 +298,10 @@ const PortfolioOverview: React.FC = () => {
       {/* Portfolio Distribution */}
       <DefaultCard 
         variant="featured"
-        className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+        className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm"
       >
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
             Portfolio Distribution
           </h3>
         </div>
@@ -309,7 +309,7 @@ const PortfolioOverview: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* By Set */}
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">By Set</h4>
+              <h4 className="font-medium text-stone-900 dark:text-white mb-3">By Set</h4>
               <div className="space-y-2">
                 {[
                   { name: 'Base Set', percentage: 35, value: 857.76 },
@@ -324,9 +324,9 @@ const PortfolioOverview: React.FC = () => {
                         className="w-3 h-3 rounded"
                         style={{ backgroundColor: `hsl(${index * 60}, 70%, 50%)` }}
                       ></div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{set.name}</span>
+                      <span className="text-sm text-stone-600 dark:text-stone-400">{set.name}</span>
                     </div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    <div className="text-sm font-medium text-stone-900 dark:text-white">
                       {set.percentage}% ({formatCurrency(set.value)})
                     </div>
                   </div>
@@ -336,7 +336,7 @@ const PortfolioOverview: React.FC = () => {
 
             {/* By Rarity */}
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">By Rarity</h4>
+              <h4 className="font-medium text-stone-900 dark:text-white mb-3">By Rarity</h4>
               <div className="space-y-2">
                 {[
                   { name: 'Rare Holo', percentage: 45, value: 1102.84 },
@@ -350,9 +350,9 @@ const PortfolioOverview: React.FC = () => {
                         className="w-3 h-3 rounded"
                         style={{ backgroundColor: `hsl(${index * 80 + 20}, 60%, 55%)` }}
                       ></div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{rarity.name}</span>
+                      <span className="text-sm text-stone-600 dark:text-stone-400">{rarity.name}</span>
                     </div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    <div className="text-sm font-medium text-stone-900 dark:text-white">
                       {rarity.percentage}% ({formatCurrency(rarity.value)})
                     </div>
                   </div>
@@ -362,7 +362,7 @@ const PortfolioOverview: React.FC = () => {
 
             {/* By Condition */}
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">By Condition</h4>
+              <h4 className="font-medium text-stone-900 dark:text-white mb-3">By Condition</h4>
               <div className="space-y-2">
                 {[
                   { name: 'Near Mint', percentage: 60, value: 1470.45 },
@@ -376,9 +376,9 @@ const PortfolioOverview: React.FC = () => {
                         className="w-3 h-3 rounded"
                         style={{ backgroundColor: `hsl(${index * 90 + 40}, 65%, 50%)` }}
                       ></div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{condition.name}</span>
+                      <span className="text-sm text-stone-600 dark:text-stone-400">{condition.name}</span>
                     </div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    <div className="text-sm font-medium text-stone-900 dark:text-white">
                       {condition.percentage}% ({formatCurrency(condition.value)})
                     </div>
                   </div>
@@ -392,16 +392,16 @@ const PortfolioOverview: React.FC = () => {
       {/* Performance Chart Placeholder */}
       <DefaultCard 
         variant="featured"
-        className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+        className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm"
       >
         <div className="p-4 flex justify-between items-center">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
             Portfolio Performance
           </h3>
           <select
             value={timeframe}
             onChange={(e) => setTimeframe(e.target.value)}
-            className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800"
+            className="px-3 py-1 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-800"
           >
             <option value="7d">7 Days</option>
             <option value="30d">30 Days</option>
@@ -410,8 +410,8 @@ const PortfolioOverview: React.FC = () => {
           </select>
         </div>
         <div className="p-4">
-          <div className="h-64 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <div className="text-center text-gray-500 dark:text-gray-400">
+          <div className="h-64 flex items-center justify-center bg-stone-50 dark:bg-stone-700 rounded-lg">
+            <div className="text-center text-stone-500 dark:text-stone-400">
               <svg className="w-16 h-16 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>

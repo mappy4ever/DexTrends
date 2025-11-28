@@ -332,18 +332,18 @@ export default function AdvancedDeckBuilder({
   const getTypeIcon = (type: string) => {
     const icons: Record<string, React.ReactElement> = {
       Fire: <BsFire className="text-red-500" />,
-      Water: <BsDroplet className="text-blue-500" />,
+      Water: <BsDroplet className="text-amber-500" />,
       Lightning: <BsLightning className="text-yellow-500" />,
       Grass: <BsFlower1 className="text-green-500" />,
       Fighting: <GiHighGrass className="text-orange-600" />,
-      Psychic: <GiPsychicWaves className="text-purple-500" />,
-      Darkness: <BsFillCircleFill className="text-gray-800" />,
-      Metal: <GiMetalBar className="text-gray-500" />,
+      Psychic: <GiPsychicWaves className="text-amber-500" />,
+      Darkness: <BsFillCircleFill className="text-stone-800" />,
+      Metal: <GiMetalBar className="text-stone-500" />,
       Fairy: <GiFairyWand className="text-pink-500" />,
-      Dragon: <GiDragonHead className="text-indigo-600" />,
-      Colorless: <BsFillCircleFill className="text-gray-400" />
+      Dragon: <GiDragonHead className="text-amber-600" />,
+      Colorless: <BsFillCircleFill className="text-stone-400" />
     };
-    return icons[type] || <BsFillCircleFill className="text-gray-400" />;
+    return icons[type] || <BsFillCircleFill className="text-stone-400" />;
   };
 
   const exportDeck = (): void => {
@@ -360,7 +360,7 @@ export default function AdvancedDeckBuilder({
   return (
     <div className="advanced-deck-builder max-w-7xl mx-auto">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex-1">
             <input
@@ -368,19 +368,19 @@ export default function AdvancedDeckBuilder({
               value={deck.name}
               onChange={(e) => setDeck(prev => ({ ...prev, name: e.target.value }))}
               placeholder="Deck Name"
-              className="text-2xl font-bold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-500 w-full" />
+              className="text-2xl font-bold bg-transparent border-none outline-none text-stone-900 dark:text-white placeholder-stone-500 w-full" />
             <input
               type="text"
               value={deck.description}
               onChange={(e) => setDeck(prev => ({ ...prev, description: e.target.value }))}
               placeholder="Deck description..."
-              className="text-gray-600 dark:text-gray-400 bg-transparent border-none outline-none w-full mt-1" />
+              className="text-stone-600 dark:text-stone-400 bg-transparent border-none outline-none w-full mt-1" />
           </div>
           <div className="flex items-center space-x-3">
             <select
               value={deck.format}
               onChange={(e) => setDeck(prev => ({ ...prev, format: e.target.value as Deck['format'] }))}
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
+              className="px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md dark:bg-stone-700 dark:text-white">
 
               <option value="standard">Standard</option>
               <option value="expanded">Expanded</option>
@@ -388,7 +388,7 @@ export default function AdvancedDeckBuilder({
             </select>
             <button
               onClick={() => onSaveDeck?.(deck)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2">
+              className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 flex items-center space-x-2">
 
               <FaSave />
               <span>Save</span>
@@ -405,13 +405,13 @@ export default function AdvancedDeckBuilder({
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg mb-6">
+      <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg mb-6">
         <button
           onClick={() => setActiveTab('builder')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'builder'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <BsCardList className="inline mr-2" />
@@ -421,8 +421,8 @@ export default function AdvancedDeckBuilder({
           onClick={() => setActiveTab('analysis')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'analysis'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <FaChartBar className="inline mr-2" />
@@ -432,8 +432,8 @@ export default function AdvancedDeckBuilder({
           onClick={() => setActiveTab('validation')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'validation'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           {validation.isValid ? (
@@ -451,8 +451,8 @@ export default function AdvancedDeckBuilder({
           {activeTab === 'builder' && (
             <>
               {/* Card Search */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+                <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Add Cards
                 </h3>
                 <div className="relative mb-4">
@@ -464,24 +464,24 @@ export default function AdvancedDeckBuilder({
                       searchCards(e.target.value);
                     }}
                     placeholder="Search for cards..."
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" />
-                  <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    className="w-full px-4 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-700 dark:text-white" />
+                  <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
                 </div>
 
                 {searchResults.length > 0 && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
                     {searchResults.map(card => (
-                      <div key={card.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                      <div key={card.id} className="border border-stone-200 dark:border-stone-700 rounded-lg p-3">
                         <div className="flex items-center space-x-3">
                           <img
                             src={card.images.small}
                             alt={card.name}
                             className="w-12 h-16 object-cover rounded"  />
                           <div className="flex-1">
-                            <div className="font-medium text-gray-900 dark:text-white text-sm">
+                            <div className="font-medium text-stone-900 dark:text-white text-sm">
                               {card.name}
                             </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                            <div className="text-xs text-stone-500 dark:text-stone-400">
                               {card.set.name} • {card.rarity}
                             </div>
                             <div className="flex items-center space-x-1 mt-1">
@@ -494,7 +494,7 @@ export default function AdvancedDeckBuilder({
                           </div>
                           <button
                             onClick={() => addCardToDeck(card)}
-                            className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            className="p-2 bg-amber-600 text-white rounded hover:bg-amber-700">
 
                             <FaPlus className="w-3 h-3" />
                           </button>
@@ -507,30 +507,30 @@ export default function AdvancedDeckBuilder({
 
               {/* Suggestions */}
               {suggestions.length > 0 && (
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+                  <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                     Deck Suggestions
                   </h3>
                   <div className="space-y-3">
                     {suggestions.map((suggestion, index) => (
-                      <div key={index} className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                      <div key={index} className="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
                         <div className="flex items-start justify-between">
                           <div>
-                            <div className="font-medium text-blue-900 dark:text-blue-100">
+                            <div className="font-medium text-amber-900 dark:text-amber-100">
                               {suggestion.category}
                             </div>
-                            <div className="text-sm text-blue-700 dark:text-blue-300">
+                            <div className="text-sm text-amber-700 dark:text-amber-300">
                               {suggestion.reason}
                             </div>
                             {suggestion.cards && (
-                              <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                              <div className="text-xs text-amber-600 dark:text-amber-400 mt-1">
                                 Consider: {suggestion.cards.join(', ')}
                               </div>
                             )}
                           </div>
                           <span className={`px-2 py-1 text-xs rounded-full ${
                             suggestion.type === 'add' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                            suggestion.type === 'tech' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' :
+                            suggestion.type === 'tech' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200' :
                             'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                           }`}>
                             {suggestion.type}
@@ -547,44 +547,44 @@ export default function AdvancedDeckBuilder({
           {activeTab === 'analysis' && (
             <div className="space-y-6">
               {/* Meta Analysis */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+                <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Meta Game Analysis
                 </h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                    <div className="text-2xl font-bold text-stone-900 dark:text-white">
                       {metaAnalysis.score}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">Meta Score</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-400">Meta Score</div>
                   </div>
-                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                    <div className="text-2xl font-bold text-stone-900 dark:text-white">
                       {metaAnalysis.tier}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">Tier Rating</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-400">Tier Rating</div>
                   </div>
-                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                    <div className="text-2xl font-bold text-stone-900 dark:text-white">
                       {metaAnalysis.popularity}%
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">Popularity</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-400">Popularity</div>
                   </div>
                 </div>
 
                 {/* Matchup Analysis */}
                 <div className="mb-6">
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-3">
+                  <h4 className="font-medium text-stone-900 dark:text-white mb-3">
                     Predicted Matchups
                   </h4>
                   <div className="space-y-2">
                     {metaAnalysis.matchups?.map((matchup, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                        <span className="text-gray-900 dark:text-white">{matchup.archetype}</span>
+                      <div key={index} className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700 rounded">
+                        <span className="text-stone-900 dark:text-white">{matchup.archetype}</span>
                         <div className="flex items-center space-x-2">
-                          <div className="w-32 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                            <div 
+                          <div className="w-32 bg-stone-200 dark:bg-stone-600 rounded-full h-2">
+                            <div
                               className={`h-2 rounded-full ${
                                 matchup.winRate >= 60 ? 'bg-green-500' :
                                 matchup.winRate >= 40 ? 'bg-yellow-500' : 'bg-red-500'
@@ -592,7 +592,7 @@ export default function AdvancedDeckBuilder({
                               style={{ width: `${matchup.winRate}%` }}
                             />
                           </div>
-                          <span className="text-sm text-gray-600 dark:text-gray-400 w-12">
+                          <span className="text-sm text-stone-600 dark:text-stone-400 w-12">
                             {matchup.winRate}%
                           </span>
                         </div>
@@ -604,21 +604,21 @@ export default function AdvancedDeckBuilder({
                 {/* Type Distribution */}
                 {metaAnalysis.dominantTypes && metaAnalysis.dominantTypes.length > 0 && (
                   <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-3">
+                    <h4 className="font-medium text-stone-900 dark:text-white mb-3">
                       Type Distribution
                     </h4>
                     <div className="space-y-2">
                       {metaAnalysis.dominantTypes.map(([type, count]) => (
                         <div key={type} className="flex items-center space-x-3">
                           {getTypeIcon(type)}
-                          <span className="text-gray-900 dark:text-white">{type}</span>
-                          <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                            <div 
-                              className="h-2 bg-blue-500 rounded-full"
+                          <span className="text-stone-900 dark:text-white">{type}</span>
+                          <div className="flex-1 bg-stone-200 dark:bg-stone-600 rounded-full h-2">
+                            <div
+                              className="h-2 bg-amber-500 rounded-full"
                               style={{ width: `${(count / Math.max(...Object.values(metaAnalysis.typeDistribution))) * 100}%` }}
                             />
                           </div>
-                          <span className="text-sm text-gray-600 dark:text-gray-400">{count}</span>
+                          <span className="text-sm text-stone-600 dark:text-stone-400">{count}</span>
                         </div>
                       ))}
                     </div>
@@ -629,8 +629,8 @@ export default function AdvancedDeckBuilder({
           )}
 
           {activeTab === 'validation' && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                 Deck Validation
               </h3>
 
@@ -687,31 +687,31 @@ export default function AdvancedDeckBuilder({
               {/* Deck Stats */}
               {validation.stats && (
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-3">Deck Statistics</h4>
+                  <h4 className="font-medium text-stone-900 dark:text-white mb-3">Deck Statistics</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                      <div className="text-xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded">
+                      <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.totalCards}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Total Cards</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Total Cards</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                      <div className="text-xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded">
+                      <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.pokemon}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Pokémon</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Pokémon</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                      <div className="text-xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded">
+                      <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.trainers}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Trainers</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Trainers</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                      <div className="text-xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded">
+                      <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.energy}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Energy</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Energy</div>
                     </div>
                   </div>
                 </div>
@@ -721,12 +721,12 @@ export default function AdvancedDeckBuilder({
         </div>
 
         {/* Deck List Sidebar */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
               Deck List
             </h3>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-sm text-stone-500 dark:text-stone-400">
               {deck.cards.reduce((sum, card) => sum + card.quantity, 0)}/60
             </div>
           </div>
@@ -738,17 +738,17 @@ export default function AdvancedDeckBuilder({
 
               return (
                 <div key={supertype}>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                  <h4 className="font-medium text-stone-900 dark:text-white mb-2">
                     {supertype} ({cards.reduce((sum, card) => sum + card.quantity, 0)})
                   </h4>
                   <div className="space-y-1">
                     {cards.map(card => (
-                      <div key={card.id} className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+                      <div key={card.id} className="flex items-center justify-between p-2 hover:bg-stone-50 dark:hover:bg-stone-700 rounded">
                         <div className="flex-1">
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="text-sm font-medium text-stone-900 dark:text-white">
                             {card.quantity}x {card.name}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                          <div className="text-xs text-stone-500 dark:text-stone-400">
                             {card.set?.name}
                           </div>
                         </div>
@@ -775,7 +775,7 @@ export default function AdvancedDeckBuilder({
           </div>
 
           {deck.cards.length === 0 && (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-8 text-stone-500 dark:text-stone-400">
               <BsCardList className="w-12 h-12 mx-auto mb-4" />
               <p>Your deck is empty</p>
               <p className="text-sm">Search and add cards to get started</p>

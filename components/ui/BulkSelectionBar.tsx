@@ -97,19 +97,19 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
                 })} w-6 h-6 rounded-md flex items-center justify-center transition-all hover:scale-110`}
               >
                 {isAllSelected && (
-                  <FiCheck className="w-4 h-4 text-purple-600" />
+                  <FiCheck className="w-4 h-4 text-amber-600" />
                 )}
                 {isPartiallySelected && !isAllSelected && (
-                  <div className="w-2 h-2 bg-purple-600 rounded-sm" />
+                  <div className="w-2 h-2 bg-amber-600 rounded-sm" />
                 )}
               </button>
               
               {showCount && (
                 <div className="text-sm font-medium">
-                  <span className="text-purple-600 dark:text-purple-400">
+                  <span className="text-amber-600 dark:text-amber-400">
                     {selectedCount}
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-stone-600 dark:text-stone-400">
                     {' / '}
                     {totalCount} selected
                   </span>
@@ -118,14 +118,14 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
             </div>
 
             {/* Divider */}
-            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600" />
+            <div className="w-px h-6 bg-stone-300 dark:bg-stone-600" />
 
             {/* Actions */}
             <div className="flex items-center gap-2">
               {displayActions.map((action) => {
                 const variantStyles = {
-                  primary: 'from-purple-500 to-pink-500',
-                  secondary: 'from-blue-500 to-cyan-500',
+                  primary: 'from-amber-500 to-amber-600',
+                  secondary: 'from-amber-500 to-amber-600',
                   danger: 'from-red-500 to-orange-500',
                 };
 
@@ -177,7 +177,7 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
                 rounded: 'full',
               })} p-2 rounded-full hover:scale-110 transition-transform ml-2`}
             >
-              <FiX className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+              <FiX className="w-4 h-4 text-stone-600 dark:text-stone-400" />
             </button>
           </div>
         </motion.div>

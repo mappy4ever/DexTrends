@@ -142,8 +142,8 @@ export const PillBadgeGroup: React.FC<PillBadgeGroupProps> = ({
           <motion.button
             className={cn(
               'inline-flex items-center gap-1 px-3 py-1 text-sm',
-              'text-gray-600 dark:text-gray-400',
-              'hover:text-gray-900 dark:hover:text-gray-100',
+              'text-stone-600 dark:text-stone-400',
+              'hover:text-stone-900 dark:hover:text-stone-100',
               'transition-colors duration-200'
             )}
             onClick={() => setShowMore(!showMore)}
@@ -167,7 +167,7 @@ export const PillBadgeGroup: React.FC<PillBadgeGroupProps> = ({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <span className="text-gray-600 dark:text-gray-400">
+          <span className="text-stone-600 dark:text-stone-400">
             {selectedValues.length} selected
           </span>
           <button

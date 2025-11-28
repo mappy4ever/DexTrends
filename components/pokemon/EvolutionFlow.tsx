@@ -78,7 +78,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
   if (!evolutionTree) {
     return (
       <GlassContainer variant="dark" className={cn("text-center py-12", className)}>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-stone-600 dark:text-stone-400">
           No evolution data available
         </p>
       </GlassContainer>
@@ -105,7 +105,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
             transition={{ delay: depth * 0.2, duration: 0.3 }}
             className="mx-4 flex flex-col items-center"
           >
-            <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
+            <div className="flex items-center gap-2 px-4 py-2 bg-stone-100 dark:bg-stone-800 rounded-lg">
               <span className="text-2xl">
                 {EVOLUTION_TRIGGER_ICONS[node.evolutionDetails[0]?.trigger || 'other']}
               </span>
@@ -124,7 +124,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
                 )}
               </div>
             </div>
-            <div className="w-8 h-0.5 bg-gray-300 dark:bg-gray-600 mt-2" />
+            <div className="w-8 h-0.5 bg-stone-300 dark:bg-stone-600 mt-2" />
           </motion.div>
         )}
         
@@ -135,7 +135,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
             onClick={() => onPokemonClick?.(node.id)}
             className={cn(
               "cursor-pointer transition-all duration-300",
-              isCurrentPokemon && "ring-4 ring-purple-500 ring-offset-4"
+              isCurrentPokemon && "ring-4 ring-amber-500 ring-offset-4"
             )}
           >
             <div className="relative w-full h-full p-4">
@@ -146,7 +146,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
               />
               {isCurrentPokemon && (
                 <motion.div
-                  className="absolute -top-2 -right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full"
+                  className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", delay: 0.5 }}
@@ -158,7 +158,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
           </CircularCard>
           <div className="mt-3 text-center">
             <h4 className="font-bold capitalize">{node.name.replace(/-/g, ' ')}</h4>
-            <div className="text-sm text-gray-600 dark:text-gray-400">#{node.id.toString().padStart(3, '0')}</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">#{node.id.toString().padStart(3, '0')}</div>
           </div>
         </div>
         
@@ -195,15 +195,15 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
       </div>
       
       {/* Evolution method legend */}
-      <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3">
+      <div className="mt-8 pt-6 border-t border-stone-200 dark:border-stone-700">
+        <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-3">
           Evolution Methods
         </h4>
         <div className="flex flex-wrap gap-3">
           {Object.entries(EVOLUTION_TRIGGER_ICONS).slice(0, -1).map(([key, icon]) => (
             <div key={key} className="flex items-center gap-2 text-sm">
               <span className="text-lg">{icon}</span>
-              <span className="capitalize text-gray-600 dark:text-gray-400">
+              <span className="capitalize text-stone-600 dark:text-stone-400">
                 {key.replace(/-/g, ' ')}
               </span>
             </div>

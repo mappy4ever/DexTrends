@@ -72,8 +72,8 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         value: rarity,
         label: rarity,
         count,
-        color: 'text-gray-300',
-        gradient: 'from-gray-300 via-gray-100 to-gray-300',
+        color: 'text-stone-300',
+        gradient: 'from-stone-300 via-stone-100 to-stone-300',
         icon: 'SS',
         glow: '0 0 25px rgba(209, 213, 219, 0.6)'
       };
@@ -86,7 +86,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         label: rarity,
         count,
         color: 'text-cyan-400',
-        gradient: 'from-cyan-300 via-blue-300 to-cyan-400',
+        gradient: 'from-cyan-300 via-cyan-300 to-cyan-400',
         icon: 'D',
         glow: '0 0 25px rgba(34, 211, 238, 0.6)'
       };
@@ -111,10 +111,10 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         value: rarity,
         label: rarity,
         count,
-        color: 'text-purple-500',
-        gradient: 'from-purple-400 via-pink-400 to-purple-500',
+        color: 'text-amber-500',
+        gradient: 'from-amber-400 via-pink-400 to-amber-500',
         icon: 'SR',
-        glow: '0 0 20px rgba(168, 85, 247, 0.5)'
+        glow: '0 0 20px rgba(217, 119, 6, 0.5)'
       };
     }
     
@@ -125,7 +125,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         label: rarity,
         count,
         color: 'text-pink-500',
-        gradient: 'from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400',
+        gradient: 'from-red-400 via-yellow-400 via-green-400 via-cyan-400 to-amber-400',
         icon: 'RR',
         glow: '0 0 20px rgba(236, 72, 153, 0.5)'
       };
@@ -163,10 +163,10 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         value: rarity,
         label: rarity,
         count,
-        color: 'text-blue-500',
-        gradient: 'from-blue-400 to-indigo-500',
+        color: 'text-amber-500',
+        gradient: 'from-amber-400 to-amber-500',
         icon: 'V',
-        glow: '0 0 15px rgba(59, 130, 246, 0.4)'
+        glow: '0 0 15px rgba(217, 119, 6, 0.4)'
       };
     }
     
@@ -177,7 +177,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         label: rarity,
         count,
         color: 'text-red-500',
-        gradient: 'from-red-400 to-purple-500',
+        gradient: 'from-red-400 to-amber-500',
         icon: 'VM',
         glow: '0 0 15px rgba(239, 68, 68, 0.4)'
       };
@@ -189,10 +189,10 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         value: rarity,
         label: rarity,
         count,
-        color: 'text-purple-500',
-        gradient: 'from-purple-400 to-indigo-500',
+        color: 'text-amber-500',
+        gradient: 'from-amber-400 to-amber-500',
         icon: 'EX',
-        glow: '0 0 15px rgba(168, 85, 247, 0.4)'
+        glow: '0 0 15px rgba(217, 119, 6, 0.4)'
       };
     }
     
@@ -202,10 +202,10 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         value: rarity,
         label: rarity,
         count,
-        color: 'text-blue-500',
-        gradient: 'from-blue-400 to-purple-500',
+        color: 'text-amber-500',
+        gradient: 'from-amber-400 to-amber-500',
         icon: 'GX',
-        glow: '0 0 15px rgba(59, 130, 246, 0.4)'
+        glow: '0 0 15px rgba(217, 119, 6, 0.4)'
       };
     }
     
@@ -215,10 +215,10 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         value: rarity,
         label: rarity,
         count,
-        color: 'text-blue-400',
-        gradient: 'from-blue-300 to-purple-400',
+        color: 'text-amber-400',
+        gradient: 'from-amber-300 to-amber-400',
         icon: 'H',
-        glow: '0 0 10px rgba(96, 165, 250, 0.3)'
+        glow: '0 0 10px rgba(217, 119, 6, 0.3)'
       };
     }
     
@@ -254,8 +254,8 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
         value: rarity,
         label: rarity,
         count,
-        color: 'text-gray-400',
-        gradient: 'from-gray-300 to-gray-500',
+        color: 'text-stone-400',
+        gradient: 'from-stone-300 to-stone-500',
         icon: 'C',
         glow: ''
       };
@@ -266,8 +266,8 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
       value: rarity,
       label: rarity,
       count,
-      color: 'text-gray-500',
-      gradient: 'from-gray-400 to-gray-600',
+      color: 'text-stone-500',
+      gradient: 'from-stone-400 to-stone-600',
       icon: '?',
       glow: ''
     };
@@ -289,21 +289,21 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
           onClick={() => setIsExpanded(!isExpanded)}
           className={cn(
             'w-full px-4 py-3 flex items-center justify-between',
-            'hover:bg-white/10 dark:hover:bg-gray-700/10',
+            'hover:bg-white/10 dark:hover:bg-stone-700/10',
             'transition-all duration-300'
           )}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
             </div>
             <div className="text-left">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+              <h3 className="text-lg font-bold text-stone-800 dark:text-stone-200">
                 Rarity Filter
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-stone-600 dark:text-stone-400">
                 {selectedRarity ? (
                   <span className="flex items-center gap-2">
                     <span className={cn(
@@ -324,11 +324,11 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
             </div>
           </div>
           
-          <svg 
+          <svg
             className={cn(
-              'w-5 h-5 text-gray-600 dark:text-gray-400 transition-transform duration-300',
+              'w-5 h-5 text-stone-600 dark:text-stone-400 transition-transform duration-300',
               isExpanded && 'rotate-180'
-            )} 
+            )}
             fill="none" 
             viewBox="0 0 24 24" 
             stroke="currentColor"
@@ -352,16 +352,16 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
                     }}
                     className={cn(
                       'relative px-3 py-2 rounded-2xl',
-                      'bg-gradient-to-r from-gray-100/80 to-gray-200/80',
+                      'bg-gradient-to-r from-stone-100/80 to-stone-200/80',
                       'backdrop-blur-md border border-white/30',
-                      'hover:from-gray-200/90 hover:to-gray-300/90',
+                      'hover:from-stone-200/90 hover:to-stone-300/90',
                       'hover:scale-105 active:scale-95',
                       'transition-all duration-300',
-                      !selectedRarity && 'ring-2 ring-purple-400 ring-offset-2 ring-offset-transparent'
+                      !selectedRarity && 'ring-2 ring-amber-400 ring-offset-2 ring-offset-transparent'
                     )}
                   >
-                    <div className="text-xs font-bold text-gray-700">ALL</div>
-                    <div className="text-xs text-gray-600 mt-1">
+                    <div className="text-xs font-bold text-stone-700">ALL</div>
+                    <div className="text-xs text-stone-600 mt-1">
                       {Object.values(rarities).reduce((sum, count) => sum + count, 0)} cards
                     </div>
                   </button>
@@ -381,7 +381,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
                         'backdrop-blur-md border border-white/30',
                         'hover:scale-105 active:scale-95',
                         'transition-all duration-300',
-                        selectedRarity === option.value && 'ring-2 ring-purple-400 ring-offset-2 ring-offset-transparent'
+                        selectedRarity === option.value && 'ring-2 ring-amber-400 ring-offset-2 ring-offset-transparent'
                       )}
                       style={{
                         background: `linear-gradient(135deg, ${option.gradient.replace('from-', '').replace('to-', '').split(' ')[0]}88, ${option.gradient.replace('from-', '').replace('to-', '').split(' ').pop()}88)`,
@@ -419,33 +419,33 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
             className="mt-4 transition-all duration-200"
           >
             <GlassContainer variant="light" rounded="2xl" className="p-4">
-              <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
+              <h4 className="text-sm font-bold text-stone-700 dark:text-stone-300 mb-3">
                 Rarity Legend
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-yellow-400 to-amber-500 flex items-center justify-center text-white font-bold">GS</span>
-                  <span className="text-gray-600 dark:text-gray-400">Gold Star</span>
+                  <span className="text-stone-600 dark:text-stone-400">Gold Star</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-gray-300 to-gray-400 flex items-center justify-center text-white font-bold">SS</span>
-                  <span className="text-gray-600 dark:text-gray-400">Silver Star</span>
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-stone-300 to-stone-400 flex items-center justify-center text-white font-bold">SS</span>
+                  <span className="text-stone-600 dark:text-stone-400">Silver Star</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-300 to-blue-400 flex items-center justify-center text-white font-bold">D</span>
-                  <span className="text-gray-600 dark:text-gray-400">Diamond</span>
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-300 to-cyan-400 flex items-center justify-center text-white font-bold">D</span>
+                  <span className="text-stone-600 dark:text-stone-400">Diamond</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold">SR</span>
-                  <span className="text-gray-600 dark:text-gray-400">Secret Rare</span>
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 flex items-center justify-center text-white font-bold">SR</span>
+                  <span className="text-stone-600 dark:text-stone-400">Secret Rare</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-red-400 to-purple-400 flex items-center justify-center text-white font-bold">RR</span>
-                  <span className="text-gray-600 dark:text-gray-400">Rainbow Rare</span>
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-red-400 to-amber-400 flex items-center justify-center text-white font-bold">RR</span>
+                  <span className="text-stone-600 dark:text-stone-400">Rainbow Rare</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center text-white font-bold">UR</span>
-                  <span className="text-gray-600 dark:text-gray-400">Ultra Rare</span>
+                  <span className="text-stone-600 dark:text-stone-400">Ultra Rare</span>
                 </div>
               </div>
             </GlassContainer>

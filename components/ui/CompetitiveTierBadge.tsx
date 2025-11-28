@@ -29,10 +29,10 @@ export const CompetitiveTierBadge: React.FC<CompetitiveTierBadgeProps> = ({
     switch (tier) {
       case 'S':
         return {
-          gradient: 'from-purple-500 to-pink-500',
-          shadow: 'shadow-lg shadow-purple-500/25',
+          gradient: 'from-amber-500 to-pink-500',
+          shadow: 'shadow-lg shadow-amber-500/25',
           text: 'text-white',
-          glow: 'ring-2 ring-purple-400/50'
+          glow: 'ring-2 ring-amber-400/50'
         };
       case 'A':
         return {
@@ -43,10 +43,10 @@ export const CompetitiveTierBadge: React.FC<CompetitiveTierBadgeProps> = ({
         };
       case 'B':
         return {
-          gradient: 'from-blue-400 to-cyan-400',
-          shadow: 'shadow-md shadow-blue-400/25',
+          gradient: 'from-amber-400 to-cyan-400',
+          shadow: 'shadow-md shadow-amber-400/25',
           text: 'text-white',
-          glow: 'ring-1 ring-blue-400/30'
+          glow: 'ring-1 ring-amber-400/30'
         };
       case 'C':
         return {
@@ -57,16 +57,16 @@ export const CompetitiveTierBadge: React.FC<CompetitiveTierBadgeProps> = ({
         };
       case 'D':
         return {
-          gradient: 'from-gray-400 to-gray-500',
+          gradient: 'from-stone-400 to-stone-500',
           shadow: '',
           text: 'text-white',
           glow: ''
         };
       default:
         return {
-          gradient: 'from-gray-300 to-gray-400',
+          gradient: 'from-stone-300 to-stone-400',
           shadow: '',
-          text: 'text-gray-700 dark:text-gray-300',
+          text: 'text-stone-700 dark:text-stone-300',
           glow: ''
         };
     }
@@ -99,7 +99,7 @@ export const CompetitiveTierBadge: React.FC<CompetitiveTierBadgeProps> = ({
       </span>
       {showValue && (
         <span className={cn(
-          'text-gray-500 dark:text-gray-400',
+          'text-stone-500 dark:text-stone-400',
           size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : size === 'md' ? 'text-sm' : 'text-base'
         )}>
           ({rating.toFixed(1)})
@@ -112,12 +112,12 @@ export const CompetitiveTierBadge: React.FC<CompetitiveTierBadgeProps> = ({
 // Tier legend component for explaining the tiers
 export const TierLegend: React.FC<{ className?: string }> = ({ className = '' }) => {
   const tiers = [
-    { tier: 'S', rating: '4.5+', description: 'Meta-defining', color: 'from-purple-500 to-pink-500' },
+    { tier: 'S', rating: '4.5+', description: 'Meta-defining', color: 'from-amber-500 to-pink-500' },
     { tier: 'A', rating: '4.0+', description: 'Excellent', color: 'from-yellow-400 to-orange-400' },
-    { tier: 'B', rating: '3.5+', description: 'Good', color: 'from-blue-400 to-cyan-400' },
+    { tier: 'B', rating: '3.5+', description: 'Good', color: 'from-amber-400 to-cyan-400' },
     { tier: 'C', rating: '3.0+', description: 'Average', color: 'from-green-400 to-emerald-400' },
-    { tier: 'D', rating: '2.0+', description: 'Below Average', color: 'from-gray-400 to-gray-500' },
-    { tier: 'F', rating: '<2.0', description: 'Poor', color: 'from-gray-300 to-gray-400' }
+    { tier: 'D', rating: '2.0+', description: 'Below Average', color: 'from-stone-400 to-stone-500' },
+    { tier: 'F', rating: '<2.0', description: 'Poor', color: 'from-stone-300 to-stone-400' }
   ];
 
   return (
@@ -130,7 +130,7 @@ export const TierLegend: React.FC<{ className?: string }> = ({ className = '' })
           )}>
             {tier}
           </span>
-          <span className="text-xs text-gray-600 dark:text-gray-400">
+          <span className="text-xs text-stone-600 dark:text-stone-400">
             {rating} • {description}
           </span>
         </div>

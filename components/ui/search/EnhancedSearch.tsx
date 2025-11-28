@@ -143,7 +143,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
           className="search-icon"
           animate={{
             scale: isFocused ? 1.1 : 1,
-            color: isFocused ? '#3b82f6' : '#9ca3af'
+            color: isFocused ? '#d97706' : '#9ca3af'
           }}
           transition={{ duration: 0.2 }}
         >
@@ -264,7 +264,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    whileHover={{ backgroundColor: 'rgba(59, 130, 246, 0.05)' }}
+                    whileHover={{ backgroundColor: 'rgba(217, 119, 6, 0.05)' }}
                   >
                     {result.icon && (
                       <span className="result-icon">{result.icon}</span>
@@ -305,7 +305,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    whileHover={{ backgroundColor: 'rgba(59, 130, 246, 0.05)' }}
+                    whileHover={{ backgroundColor: 'rgba(217, 119, 6, 0.05)' }}
                   >
                     <svg className="history-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                       <path fillRule="evenodd" d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm-.5 2a.5.5 0 01.5.5V8h2.5a.5.5 0 010 1h-3a.5.5 0 01-.5-.5v-3a.5.5 0 01.5-.5z" clipRule="evenodd" />
@@ -328,7 +328,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    whileHover={{ backgroundColor: 'rgba(59, 130, 246, 0.05)' }}
+                    whileHover={{ backgroundColor: 'rgba(217, 119, 6, 0.05)' }}
                   >
                     <svg className="trending-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                       <path fillRule="evenodd" d="M1.5 8a.5.5 0 01.5-.5h2a.5.5 0 010 1H2a.5.5 0 01-.5-.5zm3.5 4a.5.5 0 01.5-.5h2a.5.5 0 010 1h-2a.5.5 0 01-.5-.5zm4-8a.5.5 0 01.5-.5h2a.5.5 0 010 1h-2a.5.5 0 01-.5-.5zM13 1a.5.5 0 01.5.5v13a.5.5 0 01-1 0v-13A.5.5 0 0113 1z" clipRule="evenodd" />
@@ -371,7 +371,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
           padding: 0 16px;
           background: rgba(255, 255, 255, 0.7);
           backdrop-filter: blur(10px);
-          border: 1px solid rgba(209, 213, 219, 0.5);
+          border: 1px solid rgba(214, 211, 209, 0.5);
           border-radius: 24px;
           transition: all 0.3s ease;
           overflow: hidden;
@@ -379,10 +379,10 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
         .search-input-container.focused {
           background: rgba(255, 255, 255, 0.9);
-          border-color: #3b82f6;
+          border-color: #d97706;
           box-shadow: 
-            0 0 0 3px rgba(59, 130, 246, 0.1),
-            0 4px 16px rgba(59, 130, 246, 0.1);
+            0 0 0 3px rgba(217, 119, 6, 0.1),
+            0 4px 16px rgba(217, 119, 6, 0.1);
         }
 
         .search-icon,
@@ -413,7 +413,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
         }
 
         .search-spinner {
-          color: #3b82f6;
+          color: #d97706;
         }
 
         .search-clear {
@@ -435,7 +435,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
           left: 24px;
           right: 24px;
           height: 2px;
-          background: #3b82f6;
+          background: #d97706;
           transform-origin: center;
         }
 
@@ -447,7 +447,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
           z-index: 50;
           background: rgba(255, 255, 255, 0.98);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(209, 213, 219, 0.3);
+          border: 1px solid rgba(214, 211, 209, 0.3);
           border-radius: 16px;
           box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.1),
@@ -478,7 +478,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
         .clear-recent {
           font-size: 11px;
-          color: #3b82f6;
+          color: #d97706;
           background: transparent;
           border: none;
           cursor: pointer;
@@ -501,7 +501,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
         }
 
         .search-result.selected {
-          background: rgba(59, 130, 246, 0.08);
+          background: rgba(217, 119, 6, 0.08);
         }
 
         .result-icon,
@@ -540,8 +540,8 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
         .result-category {
           font-size: 11px;
           padding: 2px 8px;
-          background: rgba(59, 130, 246, 0.1);
-          color: #3b82f6;
+          background: rgba(217, 119, 6, 0.1);
+          color: #d97706;
           border-radius: 4px;
           white-space: nowrap;
         }
@@ -575,7 +575,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
         @media (prefers-color-scheme: dark) {
           .search-input-container {
             background: rgba(31, 41, 55, 0.7);
-            border-color: rgba(75, 85, 99, 0.5);
+            border-color: rgba(68, 64, 60, 0.5);
           }
 
           .search-input-container.focused {
@@ -588,7 +588,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
           .search-dropdown {
             background: rgba(31, 41, 55, 0.98);
-            border-color: rgba(75, 85, 99, 0.3);
+            border-color: rgba(68, 64, 60, 0.3);
           }
 
           .result-title {

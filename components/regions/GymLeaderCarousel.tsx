@@ -177,10 +177,10 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
     <div className="relative">
       <FadeIn>
         <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+          <h3 className="text-2xl font-bold mb-2 text-stone-900 dark:text-white">
             Gym Leader Challenge
           </h3>
-          <p className="text-base text-gray-600 dark:text-gray-400">
+          <p className="text-base text-stone-600 dark:text-stone-400">
             Defeat all {gymLeaders.length} Gym Leaders to earn their badges
           </p>
         </div>
@@ -191,15 +191,15 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
           {/* Navigation Buttons - Enhanced Design */}
           <button
             onClick={handlePrev}
-            className="absolute -left-4 sm:-left-8 md:-left-20 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
+            className="absolute -left-4 sm:-left-8 md:-left-20 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
           >
-            <BsChevronLeft className="text-2xl text-gray-700 dark:text-gray-200 group-hover:-translate-x-1 transition-transform" />
+            <BsChevronLeft className="text-2xl text-stone-700 dark:text-stone-200 group-hover:-translate-x-1 transition-transform" />
           </button>
           <button
             onClick={handleNext}
-            className="absolute -right-4 sm:-right-8 md:-right-20 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
+            className="absolute -right-4 sm:-right-8 md:-right-20 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
           >
-            <BsChevronRight className="text-2xl text-gray-700 dark:text-gray-200 group-hover:translate-x-1 transition-transform" />
+            <BsChevronRight className="text-2xl text-stone-700 dark:text-stone-200 group-hover:translate-x-1 transition-transform" />
           </button>
 
           {/* Carousel */}
@@ -297,7 +297,7 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
                 className={`h-3 rounded-full transition-all ${
                   index === activeIndex 
                     ? `w-12 bg-gradient-to-r ${region.color}` 
-                    : 'w-3 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                    : 'w-3 bg-stone-300 dark:bg-stone-600 hover:bg-stone-400 dark:hover:bg-stone-500'
                 }`}
               />
             ))}

@@ -78,15 +78,15 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
             {/* Classic portrait frame */}
             <div className="relative w-80 h-80 mx-auto">
               {/* Elegant double border frame */}
-              <div className="absolute inset-0 rounded-full border-2 border-gray-300 dark:border-gray-600" />
-              <div className="absolute inset-2 rounded-full border-4 border-white dark:border-gray-800 shadow-2xl">
+              <div className="absolute inset-0 rounded-full border-2 border-stone-300 dark:border-stone-600" />
+              <div className="absolute inset-2 rounded-full border-4 border-white dark:border-stone-800 shadow-2xl">
                 {/* Type-colored accent - static, subtle */}
                 <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${ringGradient} opacity-10`} />
                 
                 {/* Clean white inner area */}
-                <div className="absolute inset-4 rounded-full bg-white dark:bg-gray-900 shadow-inner">
+                <div className="absolute inset-4 rounded-full bg-white dark:bg-stone-900 shadow-inner">
                   {/* Pokemon image container */}
-                  <div className="relative w-full h-full rounded-full bg-gray-50 dark:bg-gray-800 overflow-hidden">
+                  <div className="relative w-full h-full rounded-full bg-stone-50 dark:bg-stone-800 overflow-hidden">
                     <AnimatePresence mode="wait">
                       <motion.img
                         key={`${pokemon.id}-${showShiny}`}
@@ -104,7 +104,7 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
                     
                     {imageLoading && (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 border-4 border-gray-200 border-t-gray-600 rounded-full animate-spin" />
+                        <div className="w-16 h-16 border-4 border-stone-200 border-t-stone-600 rounded-full animate-spin" />
                       </div>
                     )}
                   </div>
@@ -161,7 +161,7 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
             <h1 className="text-5xl lg:text-6xl font-serif capitalize mb-3 tracking-wide" data-testid="pokemon-name">
               {pokemon.name.replace(/-/g, ' ')}
             </h1>
-            <p className="text-xl uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-4" data-testid="pokemon-genus">
+            <p className="text-xl uppercase tracking-widest text-stone-600 dark:text-stone-300 mb-4" data-testid="pokemon-genus">
               {species.genera?.find(g => g.language.name === 'en')?.genus || 'Unknown Pokémon'}
             </p>
             
@@ -175,11 +175,11 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
             {/* Quick info */}
             <div className="flex justify-center lg:justify-start gap-8 text-base">
               <div>
-                <span className="text-gray-600 dark:text-gray-400 font-medium">Height:</span>{' '}
+                <span className="text-stone-600 dark:text-stone-400 font-medium">Height:</span>{' '}
                 <span className="font-bold text-lg">{((pokemon.height || 0) / 10).toFixed(1)}m</span>
               </div>
               <div>
-                <span className="text-gray-600 dark:text-gray-400 font-medium">Weight:</span>{' '}
+                <span className="text-stone-600 dark:text-stone-400 font-medium">Weight:</span>{' '}
                 <span className="font-bold text-lg">{((pokemon.weight || 0) / 10).toFixed(1)}kg</span>
               </div>
             </div>
@@ -188,19 +188,19 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
           {/* Classic two-column info layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left: Pokedex Data */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+            <div className="bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700 p-6 shadow-sm">
+              <h3 className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-4">
                 Pokédex Data
               </h3>
               <dl className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">National №</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">National №</dt>
                   <dd className="font-mono font-semibold text-base" data-testid="pokemon-number">
                     #{String(pokemon.id).padStart(4, '0')}
                   </dd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">Type</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">Type</dt>
                   <dd className="flex gap-2">
                     {pokemon.types?.map(typeInfo => (
                       <TypeBadge key={typeInfo.slot} type={typeInfo.type.name} size="sm" />
@@ -208,42 +208,42 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
                   </dd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">Species</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">Species</dt>
                   <dd className="font-semibold text-sm">
                     {species.genera?.find(g => g.language.name === 'en')?.genus?.replace(' Pokémon', '') || 'Unknown'}
                   </dd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">Generation</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">Generation</dt>
                   <dd className="font-semibold text-sm">{getGenerationText()}</dd>
                 </div>
               </dl>
             </div>
             
             {/* Right: Training Data */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+            <div className="bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700 p-6 shadow-sm">
+              <h3 className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-4">
                 Training Data
               </h3>
               <dl className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">Base Stats</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">Base Stats</dt>
                   <dd className="font-mono font-semibold text-base">{totalStats}</dd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">Catch Rate</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">Catch Rate</dt>
                   <dd className={cn("font-mono font-semibold text-base", catchRate.color)}>
                     {catchRate.percentage.toFixed(0)}%
                   </dd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">Base Exp.</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">Base Exp.</dt>
                   <dd className="font-mono font-semibold text-base">
                     {pokemon.base_experience || '—'}
                   </dd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <dt className="text-sm text-gray-600 dark:text-gray-400">Growth Rate</dt>
+                  <dt className="text-sm text-stone-600 dark:text-stone-400">Growth Rate</dt>
                   <dd className="font-semibold text-sm capitalize">
                     {species.growth_rate?.name.replace(/-/g, ' ') || '—'}
                   </dd>
@@ -254,22 +254,22 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
           
           {/* Gender Ratio */}
           {!genderRatio.genderless && (
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+            <div className="bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700 p-6 shadow-sm">
+              <h3 className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-4">
                 Gender Ratio
               </h3>
               <div className="space-y-2">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-blue-700 dark:text-blue-400 text-xl font-bold flex items-center gap-2">
+                  <span className="text-amber-700 dark:text-amber-400 text-xl font-bold flex items-center gap-2">
                     ♂ {genderRatio.male.toFixed(1)}%
                   </span>
                   <span className="text-pink-700 dark:text-pink-400 text-xl font-bold flex items-center gap-2">
                     {genderRatio.female.toFixed(1)}% ♀
                   </span>
                 </div>
-                <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner">
+                <div className="relative h-6 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden shadow-inner">
                   <div 
-                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-600 to-blue-500"
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-amber-600 to-amber-500"
                     style={{ width: `${genderRatio.male}%` }}
                   />
                   <div 
@@ -285,8 +285,8 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
           )}
           
           {/* Type Effectiveness */}
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-            <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+          <div className="bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700 p-6 shadow-sm">
+            <h3 className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-4">
               Type Effectiveness
             </h3>
             <TypeEffectivenessChart types={pokemon.types || []} variant="compact" />

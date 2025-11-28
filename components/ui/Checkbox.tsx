@@ -64,9 +64,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     // Color configurations
     const colorConfig = {
       blue: {
-        checked: 'bg-blue-600 border-blue-600 dark:bg-blue-500 dark:border-blue-500',
-        hover: 'hover:border-blue-500 dark:hover:border-blue-400',
-        focus: 'focus:ring-blue-500'
+        checked: 'bg-amber-600 border-amber-600 dark:bg-amber-500 dark:border-amber-500',
+        hover: 'hover:border-amber-500 dark:hover:border-amber-400',
+        focus: 'focus:ring-amber-500'
       },
       green: {
         checked: 'bg-green-600 border-green-600 dark:bg-green-500 dark:border-green-500',
@@ -79,9 +79,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         focus: 'focus:ring-red-500'
       },
       purple: {
-        checked: 'bg-purple-600 border-purple-600 dark:bg-purple-500 dark:border-purple-500',
-        hover: 'hover:border-purple-500 dark:hover:border-purple-400',
-        focus: 'focus:ring-purple-500'
+        checked: 'bg-amber-600 border-amber-600 dark:bg-amber-500 dark:border-amber-500',
+        hover: 'hover:border-amber-500 dark:hover:border-amber-400',
+        focus: 'focus:ring-amber-500'
       },
       yellow: {
         checked: 'bg-yellow-500 border-yellow-500 dark:bg-yellow-400 dark:border-yellow-400',
@@ -122,7 +122,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             'relative rounded transition-all duration-200',
             sizeConfig[size].box,
             variantStyles[variant],
-            'border-gray-300 dark:border-gray-600',
+            'border-stone-300 dark:border-stone-600',
             !disabled && colorConfig[color].hover,
             checked && colorConfig[color].checked,
             disabled && 'opacity-50 cursor-not-allowed',
@@ -155,7 +155,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         <label
           htmlFor={props.id}
           className={cn(
-            'block font-medium text-gray-900 dark:text-white',
+            'block font-medium text-stone-900 dark:text-white',
             sizeConfig[size].label,
             disabled && 'opacity-50'
           )}
@@ -166,7 +166,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           <p
             id={`${props.id}-description`}
             className={cn(
-              'mt-0.5 text-gray-600 dark:text-gray-400',
+              'mt-0.5 text-stone-600 dark:text-stone-400',
               sizeConfig[size].description
             )}
           >
@@ -224,11 +224,11 @@ export const CheckboxGroup: React.FC<{
     <div className={cn('space-y-2', className)} role="group" aria-labelledby={label ? 'group-label' : undefined}>
       {label && (
         <div id="group-label" className="mb-2">
-          <h3 className="text-base font-medium text-gray-900 dark:text-white">
+          <h3 className="text-base font-medium text-stone-900 dark:text-white">
             {label}
           </h3>
           {description && (
-            <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-0.5 text-sm text-stone-600 dark:text-stone-400">
               {description}
             </p>
           )}

@@ -483,10 +483,10 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
       {/* Elite Four Header */}
       <FadeIn>
         <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold mb-3 text-gray-900 dark:text-white">
+          <h3 className="text-3xl font-bold mb-3 text-stone-900 dark:text-white">
             Elite Four & Champion
           </h3>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-lg text-stone-600 dark:text-stone-400">
             The ultimate challenge awaits at the Pokémon League
           </p>
         </div>
@@ -497,15 +497,15 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
         {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
-          className="absolute -left-4 sm:-left-8 md:-left-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
+          className="absolute -left-4 sm:-left-8 md:-left-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
         >
-          <BsChevronLeft className="text-2xl text-gray-700 dark:text-gray-200 group-hover:-translate-x-1 transition-transform" />
+          <BsChevronLeft className="text-2xl text-stone-700 dark:text-stone-200 group-hover:-translate-x-1 transition-transform" />
         </button>
         <button
           onClick={handleNext}
-          className="absolute -right-4 sm:-right-8 md:-right-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
+          className="absolute -right-4 sm:-right-8 md:-right-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
         >
-          <BsChevronRight className="text-2xl text-gray-700 dark:text-gray-200 group-hover:translate-x-1 transition-transform" />
+          <BsChevronRight className="text-2xl text-stone-700 dark:text-stone-200 group-hover:translate-x-1 transition-transform" />
         </button>
 
         {/* Carousel */}
@@ -568,9 +568,9 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
               key={index}
               onClick={() => scrollToMember(index)}
               className={`h-4 rounded-full transition-all duration-300 ${
-                index === activeIndex 
-                  ? 'w-16 bg-gradient-to-r from-purple-500 via-yellow-500 to-purple-500 shadow-lg animate-pulse' 
-                  : 'w-4 bg-gradient-to-r from-purple-800 to-indigo-800 hover:from-purple-600 hover:to-indigo-600 hover:scale-110'
+                index === activeIndex
+                  ? 'w-16 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500 shadow-lg animate-pulse'
+                  : 'w-4 bg-gradient-to-r from-amber-800 to-amber-800 hover:from-amber-600 hover:to-amber-600 hover:scale-110'
               }`}
             />
           ))}
@@ -610,7 +610,7 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
                     </div>
                   </button>
                   
-                  <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 font-semibold">
+                  <p className="mt-4 text-lg text-stone-600 dark:text-stone-300 font-semibold">
                     Face the ultimate test of your skills
                   </p>
                 </div>

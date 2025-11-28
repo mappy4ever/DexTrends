@@ -59,7 +59,7 @@ const CardFlipAnimation: React.FC<CardFlipAnimationProps> = ({
               className={`absolute top-2 right-2 p-1.5 rounded-full transition-colors ${
                 isFavorite
                   ? 'bg-red-500 text-white'
-                  : 'bg-white/80 text-gray-600 hover:bg-red-100'
+                  : 'bg-white/80 text-stone-600 hover:bg-red-100'
               }`}
             >
               <svg className="w-4 h-4" fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ const CardFlipAnimation: React.FC<CardFlipAnimationProps> = ({
               e.stopPropagation();
               onFlip();
             }}
-            className="absolute bottom-2 right-2 p-1.5 rounded-full bg-white/80 text-gray-600 hover:bg-gray-200 transition-colors"
+            className="absolute bottom-2 right-2 p-1.5 rounded-full bg-white/80 text-stone-600 hover:bg-stone-200 transition-colors"
             title="Flip card"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,14 +83,14 @@ const CardFlipAnimation: React.FC<CardFlipAnimationProps> = ({
         </div>
         {/* Back of card - Info */}
         <div
-          className="absolute inset-0 rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-gray-800 to-gray-900 p-3 flex flex-col justify-between"
+          className="absolute inset-0 rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-stone-800 to-stone-900 p-3 flex flex-col justify-between"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <div>
             <h4 className="text-white font-bold text-sm truncate">{card.name}</h4>
-            <p className="text-gray-400 text-xs mt-1">#{card.number}</p>
+            <p className="text-stone-400 text-xs mt-1">#{card.number}</p>
             {card.rarity && (
-              <p className="text-purple-400 text-xs mt-1">{getRaritySymbol(card.rarity)} {card.rarity}</p>
+              <p className="text-amber-400 text-xs mt-1">{getRaritySymbol(card.rarity)} {card.rarity}</p>
             )}
           </div>
           {card.tcgplayer?.prices && (
@@ -237,7 +237,7 @@ export const TCGCardGrid: React.FC<TCGCardGridProps> = ({
                     </div>
                     {enableMicroInteractions && hoveredCard === card.id && (
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-purple-500/20 to-transparent rounded-lg"
+                        className="absolute inset-0 bg-gradient-to-t from-amber-500/20 to-transparent rounded-lg"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -246,10 +246,10 @@ export const TCGCardGrid: React.FC<TCGCardGridProps> = ({
                   </motion.div>
                   
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                    <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-1">
                       {card.name}
                     </h3>
-                    <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="flex items-center gap-4 text-sm text-stone-600 dark:text-stone-400">
                       <span>#{card.number}</span>
                       {card.rarity && (
                         <span className="flex items-center gap-1">
@@ -285,7 +285,7 @@ export const TCGCardGrid: React.FC<TCGCardGridProps> = ({
                       className={`p-2 rounded-full ${
                         isFavorite(card) 
                           ? 'bg-red-500 text-white' 
-                          : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                          : 'bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-400'
                       }`}
                     >
                       <svg className="w-5 h-5" fill={isFavorite(card) ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
@@ -340,7 +340,7 @@ export const TCGCardGrid: React.FC<TCGCardGridProps> = ({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-purple-500/20 via-transparent to-transparent rounded-xl blur-xl" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-amber-500/20 via-transparent to-transparent rounded-xl blur-xl" />
                 </motion.div>
                 
                 {/* Particle effects for rare cards */}

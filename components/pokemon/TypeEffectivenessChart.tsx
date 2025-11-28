@@ -66,7 +66,7 @@ const TypeEffectivenessChart: React.FC<TypeEffectivenessChartProps> = ({
         {/* Immunities */}
         {immunities.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Immune:</span>
+            <span className="text-xs font-semibold text-stone-600 dark:text-stone-400">Immune:</span>
             {immunities.map(type => (
               <TypeBadge key={type} type={type} multiplier={0} />
             ))}
@@ -119,7 +119,7 @@ const TypeEffectivenessChart: React.FC<TypeEffectivenessChartProps> = ({
           <span>2× Damage</span>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-4 h-4 rounded bg-gray-400"></div>
+          <div className="w-4 h-4 rounded bg-stone-400"></div>
           <span>1× Damage</span>
         </div>
         <div className="flex items-center gap-1">
@@ -131,7 +131,7 @@ const TypeEffectivenessChart: React.FC<TypeEffectivenessChartProps> = ({
           <span>0.25× Damage</span>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-4 h-4 rounded bg-gray-500"></div>
+          <div className="w-4 h-4 rounded bg-stone-500"></div>
           <span>No Effect</span>
         </div>
       </div>

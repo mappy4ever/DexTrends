@@ -122,10 +122,10 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
     { 
       id: 'immunity', 
       label: 'Immune to', 
-      color: 'from-gray-500 to-gray-600',
-      bgColor: 'bg-gray-100 dark:bg-gray-900/30',
-      borderColor: 'border-gray-300 dark:border-gray-700',
-      icon: <FaBan className="text-gray-500" />,
+      color: 'from-stone-500 to-stone-600',
+      bgColor: 'bg-stone-100 dark:bg-stone-900/30',
+      borderColor: 'border-stone-300 dark:border-stone-700',
+      icon: <FaBan className="text-stone-500" />,
       count: groupedRelations.immunity.length
     }
   ];
@@ -150,7 +150,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               "border-2",
               selectedCategory === category.id
                 ? `${category.bgColor} ${category.borderColor}`
-                : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                : "border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600"
             )}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -178,7 +178,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               )}>
                 {category.count}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">
+              <div className="text-xs text-stone-600 dark:text-stone-400">
                 {category.count === 1 ? 'type' : 'types'}
               </div>
             </div>
@@ -233,11 +233,11 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
                           exit={{ opacity: 0, y: 10 }}
                           className="absolute -top-10 left-1/2 transform -translate-x-1/2 z-20"
                         >
-                          <div className="bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          <div className="bg-stone-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
                             {relation.effectiveness}× damage
                           </div>
                           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
-                            <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-gray-900" />
+                            <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-stone-900" />
                           </div>
                         </motion.div>
                       )}
@@ -253,7 +253,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
       {/* Visual effectiveness chart */}
       {!selectedCategory && (
         <GlassContainer variant="dark" className="p-6">
-          <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-4 text-center">
+          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-4 text-center">
             Click a category above to see type matchups
           </h4>
           
@@ -263,7 +263,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               <div className="text-3xl mb-1">
                 <FaCircle className="text-red-500 mx-auto" />
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-stone-600 dark:text-stone-400">
                 {groupedRelations.weakness.filter(r => r.effectiveness >= 4).length} double weaknesses
               </div>
             </div>
@@ -271,15 +271,15 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               <div className="text-3xl mb-1">
                 <FaCircle className="text-green-500 mx-auto" />
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-stone-600 dark:text-stone-400">
                 {groupedRelations.resistance.filter(r => r.effectiveness <= 0.25).length} double resistances
               </div>
             </div>
             <div>
               <div className="text-3xl mb-1">
-                <FaCircle className="text-gray-400 mx-auto" />
+                <FaCircle className="text-stone-400 mx-auto" />
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-stone-600 dark:text-stone-400">
                 {groupedRelations.normal.length} normal damage
               </div>
             </div>

@@ -213,19 +213,19 @@ export function UnifiedSearch({
           autoFocus={autoFocus}
           className={cn(
             'w-full px-4 py-3 pl-12 pr-4',
-            'bg-white dark:bg-gray-800',
-            'border border-gray-200 dark:border-gray-700',
+            'bg-white dark:bg-stone-800',
+            'border border-stone-200 dark:border-stone-700',
             'rounded-xl shadow-sm',
-            'text-gray-900 dark:text-white',
-            'placeholder-gray-500 dark:placeholder-gray-400',
-            'focus:outline-none focus:ring-2 focus:ring-purple-500',
+            'text-stone-900 dark:text-white',
+            'placeholder-stone-500 dark:placeholder-stone-400',
+            'focus:outline-none focus:ring-2 focus:ring-amber-500',
             'transition-all'
           )}
         />
         
         {/* Search Icon */}
         <svg
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -241,7 +241,7 @@ export function UnifiedSearch({
         {/* Loading Spinner */}
         {isLoading && (
           <div className="absolute right-4 top-1/2 -translate-y-1/2">
-            <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
@@ -252,9 +252,9 @@ export function UnifiedSearch({
               setQuery('');
               inputRef.current?.focus();
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors"
           >
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -271,8 +271,8 @@ export function UnifiedSearch({
             exit={{ opacity: 0, y: -10 }}
             className={cn(
               'absolute top-full mt-2 w-full',
-              'bg-white dark:bg-gray-800',
-              'border border-gray-200 dark:border-gray-700',
+              'bg-white dark:bg-stone-800',
+              'border border-stone-200 dark:border-stone-700',
               'rounded-xl shadow-xl',
               'max-h-96 overflow-y-auto',
               'z-50'
@@ -280,8 +280,8 @@ export function UnifiedSearch({
           >
             {/* Recent Searches */}
             {!query && recentSearches.length > 0 && (
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+              <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+                <h3 className="text-sm font-medium text-stone-600 dark:text-stone-400 mb-2">
                   Recent Searches
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -291,9 +291,9 @@ export function UnifiedSearch({
                       onClick={() => setQuery(search)}
                       className={cn(
                         'px-3 py-1 rounded-lg',
-                        'bg-gray-100 dark:bg-gray-700',
-                        'text-sm text-gray-700 dark:text-gray-300',
-                        'hover:bg-gray-200 dark:hover:bg-gray-600',
+                        'bg-stone-100 dark:bg-stone-700',
+                        'text-sm text-stone-700 dark:text-stone-300',
+                        'hover:bg-stone-200 dark:hover:bg-stone-600',
                         'transition-colors'
                       )}
                     >
@@ -318,7 +318,7 @@ export function UnifiedSearch({
                 ))}
               </div>
             ) : query && !isLoading ? (
-              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+              <div className="p-8 text-center text-stone-500 dark:text-stone-400">
                 No results found for "{query}"
               </div>
             ) : null}
@@ -345,10 +345,10 @@ function SearchResultItem({
 }) {
   const typeColors = {
     pokemon: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-    card: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+    card: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
     move: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
     item: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
-    ability: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
+    ability: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
     'tcg-set': 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300'
   };
 
@@ -358,9 +358,9 @@ function SearchResultItem({
       onMouseEnter={onMouseEnter}
       className={cn(
         'w-full px-4 py-3 flex items-center gap-3',
-        'hover:bg-gray-50 dark:hover:bg-gray-700',
+        'hover:bg-stone-50 dark:hover:bg-stone-700',
         'transition-colors text-left',
-        isSelected && 'bg-gray-50 dark:bg-gray-700'
+        isSelected && 'bg-stone-50 dark:bg-stone-700'
       )}
       whileHover={{ x: 4 }}
       transition={{ duration: 0.2 }}
@@ -377,7 +377,7 @@ function SearchResultItem({
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="font-medium text-gray-900 dark:text-white truncate">
+          <span className="font-medium text-stone-900 dark:text-white truncate">
             {result.title}
           </span>
           <span className={cn(
@@ -388,7 +388,7 @@ function SearchResultItem({
           </span>
         </div>
         {result.subtitle && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+          <p className="text-sm text-stone-500 dark:text-stone-400 truncate">
             {result.subtitle}
           </p>
         )}
@@ -396,7 +396,7 @@ function SearchResultItem({
 
       {/* Arrow */}
       <svg
-        className="w-5 h-5 text-gray-400"
+        className="w-5 h-5 text-stone-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -464,17 +464,17 @@ export function GlobalSearchModal() {
         onClick={() => setIsOpen(true)}
         className={cn(
           'flex items-center gap-2 px-4 py-2',
-          'bg-gray-100 dark:bg-gray-800',
-          'border border-gray-200 dark:border-gray-700',
-          'rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700',
+          'bg-stone-100 dark:bg-stone-800',
+          'border border-stone-200 dark:border-stone-700',
+          'rounded-lg hover:bg-stone-200 dark:hover:bg-stone-700',
           'transition-colors'
         )}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <span className="text-gray-600 dark:text-gray-400">Search</span>
-        <kbd className="px-2 py-1 text-xs bg-white dark:bg-gray-900 rounded border border-gray-300 dark:border-gray-600">
+        <span className="text-stone-600 dark:text-stone-400">Search</span>
+        <kbd className="px-2 py-1 text-xs bg-white dark:bg-stone-900 rounded border border-stone-300 dark:border-stone-600">
           ⌘K
         </kbd>
       </button>

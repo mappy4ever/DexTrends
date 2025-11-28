@@ -34,7 +34,7 @@ export interface GlobalSearchModalHandle {
 
 // Memoized search result components for better performance
 const SearchResultCard = memo(({ card }: { card: TCGCard }) => (
-  <Link href={`/cards/${card.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+  <Link href={`/cards/${card.id}`} className="flex items-center p-2 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors">
     {card.images?.small && (
       <div className="relative w-8 h-12 mr-3 rounded overflow-hidden">
         <Image 
@@ -51,22 +51,22 @@ const SearchResultCard = memo(({ card }: { card: TCGCard }) => (
     )}
     <div>
       <div className="font-medium text-sm">{card.name}</div>
-      <div className="text-xs text-gray-500">{card.set?.name}</div>
+      <div className="text-xs text-stone-500">{card.set?.name}</div>
     </div>
   </Link>
 ));
 SearchResultCard.displayName = 'SearchResultCard';
 
 const SearchResultSet = memo(({ set }: { set: CardSet }) => (
-  <Link href={`/tcgexpansions/${set.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+  <Link href={`/tcgexpansions/${set.id}`} className="flex items-center p-2 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors">
     {set.images?.logo && (
       <div className="relative w-8 h-8 mr-3 rounded overflow-hidden">
-        <Image 
-          src={set.images.logo} 
-          alt={set.name} 
-          width={32} 
-          height={32} 
-          className="rounded object-cover" 
+        <Image
+          src={set.images.logo}
+          alt={set.name}
+          width={32}
+          height={32}
+          className="rounded object-cover"
           loading="lazy"
           placeholder="blur"
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
@@ -75,7 +75,7 @@ const SearchResultSet = memo(({ set }: { set: CardSet }) => (
     )}
     <div>
       <div className="font-medium text-sm">{set.name}</div>
-      <div className="text-xs text-gray-500">{set.series}</div>
+      <div className="text-xs text-stone-500">{set.series}</div>
     </div>
   </Link>
 ));
@@ -84,7 +84,7 @@ SearchResultSet.displayName = 'SearchResultSet';
 const SearchResultPokemon = memo(({ pokemon }: { pokemon: PokemonResult }) => {
   const pokemonId = pokemon.url.split('/').slice(-2, -1)[0];
   return (
-    <Link href={`/pokedex/${pokemonId}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+    <Link href={`/pokedex/${pokemonId}`} className="flex items-center p-2 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors">
       <div className="relative w-8 h-8 mr-3">
         <Image 
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`} 
@@ -197,21 +197,21 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
       onClick={handleBackdropClick}
     >
       <div
-        className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 w-full max-w-lg mx-auto relative flex flex-col items-center modal-content"
+        className="bg-white dark:bg-stone-900 rounded-xl shadow-2xl p-6 w-full max-w-lg mx-auto relative flex flex-col items-center modal-content"
         onClick={e => e.stopPropagation()}
         tabIndex={-1}
-        style={{ 
-          outline: 'none', 
-          maxHeight: 'calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))' 
+        style={{
+          outline: 'none',
+          maxHeight: 'calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
         }}
       >
         <div className="w-full flex flex-col items-center mb-2">
           <input
             ref={inputRef}
             autoFocus
-            className="w-full max-w-md px-5 py-3 rounded-xl border-2 border-primary focus:ring-4 focus:ring-primary/30 text-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-lg mb-2 outline-none transition-all duration-200 placeholder-gray-400 caret-primary"
-            style={{ 
-              boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)', 
+            className="w-full max-w-md px-5 py-3 rounded-xl border-2 border-primary focus:ring-4 focus:ring-primary/30 text-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-lg mb-2 outline-none transition-all duration-200 placeholder-stone-400 caret-primary"
+            style={{
+              boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)',
               background: 'rgba(255,255,255,0.98)',
               fontSize: '16px',
               minHeight: '44px'
@@ -226,9 +226,9 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
           />
         </div>
         <div className="min-h-[120px] w-full">
-          {loading && <div className="text-center text-gray-400 py-4">Searching...</div>}
+          {loading && <div className="text-center text-stone-400 py-4">Searching...</div>}
           {!loading && !hasResults && (
-            <div className="text-gray-400 text-center py-4">Type to search...</div>
+            <div className="text-stone-400 text-center py-4">Type to search...</div>
           )}
           {results.cards.length > 0 && (
             <div>
@@ -261,9 +261,9 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
             </div>
           )}
         </div>
-        <button 
-          onClick={handleClose} 
-          className="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl font-bold bg-white/80 dark:bg-gray-800/80 rounded-full w-10 h-10 flex items-center justify-center shadow-md" 
+        <button
+          onClick={handleClose}
+          className="absolute top-2 right-2 text-stone-400 hover:text-primary text-2xl font-bold bg-white/80 dark:bg-stone-800/80 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
           aria-label="Close search"
         >
           &times;

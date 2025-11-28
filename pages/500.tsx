@@ -103,11 +103,11 @@ const Custom500: NextPage = () => {
             </motion.div>
           </motion.div>
 
-          <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-4">
+          <h2 className="text-3xl font-semibold text-stone-800 dark:text-white mb-4">
             Critical Hit! Server Error!
           </h2>
           
-          <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-base text-stone-600 dark:text-stone-400 mb-8">
             The server used Self-Destruct!
             <br />
             It's super effective... at breaking things.
@@ -158,7 +158,7 @@ const Custom500: NextPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="text-sm text-gray-500 dark:text-gray-500 mt-8 italic"
+            className="text-sm text-stone-500 dark:text-stone-500 mt-8 italic"
           >
             "Team Rocket's blasting off again!" - Team Rocket
           </motion.p>

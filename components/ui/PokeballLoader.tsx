@@ -9,9 +9,9 @@ interface PokeballType {
 const pokeballTypes: PokeballType[] = [
   { name: 'pokeball', topColor: '#ee1515', bottomColor: '#f5f5f5' },
   { name: 'greatball', topColor: '#3B82F6', bottomColor: '#f5f5f5' },
-  { name: 'ultraball', topColor: '#1f2937', bottomColor: '#fbbf24' },
+  { name: 'ultraball', topColor: '#78350f', bottomColor: '#fbbf24' },
   { name: 'masterball', topColor: '#7c3aed', bottomColor: '#f5f5f5' },
-  { name: 'luxuryball', topColor: '#1f2937', bottomColor: '#fbbf24' },
+  { name: 'luxuryball', topColor: '#78350f', bottomColor: '#fbbf24' },
   { name: 'premierball', topColor: '#f5f5f5', bottomColor: '#dc2626' },
   { name: 'timerball', topColor: '#f5f5f5', bottomColor: '#ef4444' },
   { name: 'diveball', topColor: '#3b82f6', bottomColor: '#60a5fa' },
@@ -56,17 +56,17 @@ export default function PokeballLoader({
       <div className="relative">
         {/* Pokeball animation - matching pokedex page exactly */}
         <div className={`${sizeClasses[size]} mx-auto mb-6 relative`}>
-          <div className={`${sizeClasses[size]} border-8 border-gray-200 rounded-full animate-spin`}>
+          <div className={`${sizeClasses[size]} border-8 border-stone-200 rounded-full animate-spin`}>
             <div className={`absolute top-0 left-0 w-full h-1/2 rounded-t-full`} style={{ backgroundColor: selectedBall.topColor }}></div>
-            <div className={`absolute bottom-0 left-0 w-full h-1/2 rounded-b-full border-t-4 border-gray-800`} style={{ backgroundColor: selectedBall.bottomColor }}></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white border-4 border-gray-800 rounded-full"></div>
+            <div className={`absolute bottom-0 left-0 w-full h-1/2 rounded-b-full border-t-4 border-stone-800`} style={{ backgroundColor: selectedBall.bottomColor }}></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white border-4 border-stone-800 rounded-full"></div>
           </div>
         </div>
         
         {text && (
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">{text}</h2>
-            <p className="text-gray-600">
+            <h2 className="text-2xl font-bold text-stone-800 mb-2">{text}</h2>
+            <p className="text-stone-600">
               {mounted ? (
                 <>
                   {selectedBall.name === 'pokeball' && 'Catching wild Pokémon...'}
@@ -96,7 +96,7 @@ interface PokemonLoaderProps {
 
 export function PokemonLoader({ text = "Catching Pokemon..." }: PokemonLoaderProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-blue-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-amber-50 flex items-center justify-center">
       <PokeballLoader size="large" text={text} randomBall={true} />
     </div>
   );
@@ -109,7 +109,7 @@ interface CardLoaderProps {
 
 export function CardLoader({ text = "Loading cards..." }: CardLoaderProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-blue-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-amber-50 flex items-center justify-center">
       <PokeballLoader size="medium" text={text} randomBall={true} />
     </div>
   );

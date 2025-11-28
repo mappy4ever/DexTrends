@@ -47,12 +47,12 @@ class TCGSetErrorBoundary extends Component<Props, State> {
         <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
           <GlassContainer variant="colored" className="text-center max-w-2xl">
             <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading TCG Set</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-stone-600 dark:text-stone-400 mb-4">
               An error occurred while loading this TCG set. This might be due to a navigation issue or invalid set data.
             </p>
-            
+
             {process.env.NODE_ENV === 'development' && this.state.error && (
-              <details className="text-left mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+              <details className="text-left mb-4 p-4 bg-stone-100 dark:bg-stone-800 rounded-lg">
                 <summary className="cursor-pointer font-semibold mb-2">Error Details</summary>
                 <pre className="text-xs overflow-auto">
                   {this.state.error.toString()}

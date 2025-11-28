@@ -264,7 +264,7 @@ const PocketMode: NextPage = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent inline-block mb-3">
+            <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 bg-clip-text text-transparent inline-block mb-3">
               Pokémon TCG Pocket Cards
             </h1>
             <div className="flex justify-center">
@@ -276,7 +276,7 @@ const PocketMode: NextPage = () => {
                 shadow: 'md',
                 rounded: 'full'
               })} px-4 py-2`}>
-                <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{pokemon.length} Total Cards</span>
+                <span className="text-sm font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">{pokemon.length} Total Cards</span>
               </div>
             </div>
           </motion.div>
@@ -305,7 +305,7 @@ const PocketMode: NextPage = () => {
                   border: 'medium',
                   shadow: 'md',
                   rounded: 'full'
-                })} px-4 py-2 font-semibold text-sm bg-gradient-to-r from-purple-600 to-pink-600 text-white transition-all hover:scale-105`}
+                })} px-4 py-2 font-semibold text-sm bg-gradient-to-r from-amber-600 to-pink-600 text-white transition-all hover:scale-105`}
               >
                 Card List
               </button>
@@ -318,7 +318,7 @@ const PocketMode: NextPage = () => {
                   border: 'subtle',
                   shadow: 'sm',
                   rounded: 'full'
-                })} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
+                })} px-4 py-2 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-all hover:scale-105`}
               >
                 Deck Builder
               </button>
@@ -331,7 +331,7 @@ const PocketMode: NextPage = () => {
                   border: 'subtle',
                   shadow: 'sm',
                   rounded: 'full'
-                })} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
+                })} px-4 py-2 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-all hover:scale-105`}
               >
                 Pre-Built Decks
               </button>
@@ -354,14 +354,14 @@ const PocketMode: NextPage = () => {
               shadow: 'md',
               rounded: 'xl'
             })} flex items-center gap-3 p-3`}>
-              <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent ml-1">Rarity</span>
+              <span className="text-sm font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent ml-1">Rarity</span>
               <div className="flex flex-wrap gap-1 flex-1">
                 <button
                   onClick={() => setRarityFilter('all')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === 'all' 
-                      ? 'bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+                    rarityFilter === 'all'
+                      ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
                   }`}
                 >
                   All
@@ -369,95 +369,95 @@ const PocketMode: NextPage = () => {
                 <button
                   onClick={() => setRarityFilter('◊')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊' 
-                      ? 'bg-gray-100 dark:bg-gray-800 border-gray-400/50 text-gray-700 dark:text-gray-300' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                    rarityFilter === '◊'
+                      ? 'bg-stone-100 dark:bg-stone-800 border-stone-400/50 text-stone-700 dark:text-stone-300'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
                   }`}
                 >
-                  <span className="text-gray-500">♦</span>
+                  <span className="text-stone-500">♦</span>
                 </button>
                 <button
                   onClick={() => setRarityFilter('◊◊')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊◊' 
-                      ? 'bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-green-400/50 text-green-700 dark:text-green-300' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                    rarityFilter === '◊◊'
+                      ? 'bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-green-400/50 text-green-700 dark:text-green-300'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
                   }`}
                 >
-                  <span className="text-gray-500">♦♦</span>
+                  <span className="text-stone-500">♦♦</span>
                 </button>
                 <button
                   onClick={() => setRarityFilter('◊◊◊')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊◊◊' 
-                      ? 'bg-gradient-to-r from-blue-100 to-sky-100 dark:from-blue-900/30 dark:to-sky-900/30 border-blue-400/50 text-blue-700 dark:text-blue-300' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                    rarityFilter === '◊◊◊'
+                      ? 'bg-gradient-to-r from-amber-100 to-sky-100 dark:from-amber-900/30 dark:to-sky-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
                   }`}
                 >
-                  <span className="text-gray-500">♦♦♦</span>
+                  <span className="text-stone-500">♦♦♦</span>
                 </button>
                 <button
                   onClick={() => setRarityFilter('◊◊◊◊')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊◊◊◊' 
-                      ? 'bg-gradient-to-r from-purple-100 to-violet-100 dark:from-purple-900/30 dark:to-violet-900/30 border-purple-400/50 text-purple-700 dark:text-purple-300' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                    rarityFilter === '◊◊◊◊'
+                      ? 'bg-gradient-to-r from-amber-100 to-violet-100 dark:from-amber-900/30 dark:to-violet-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
                   }`}
                 >
-                  <span className="text-gray-500">♦♦♦♦</span>
+                  <span className="text-stone-500">♦♦♦♦</span>
                 </button>
                 <button
                   onClick={() => setRarityFilter('★')}
                   className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
-                    rarityFilter === '★' 
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                    rarityFilter === '★'
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
                   }`}
                 >
-                  <span className={rarityFilter === '★' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-gray-500 dark:text-gray-400'}>
+                  <span className={rarityFilter === '★' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-stone-500 dark:text-stone-400'}>
                     ★
                   </span>
                 </button>
                 <button
                   onClick={() => setRarityFilter('☆☆')}
                   className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
-                    rarityFilter === '☆☆' 
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                    rarityFilter === '☆☆'
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
                   }`}
                 >
-                  <span className={rarityFilter === '☆☆' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-gray-500 dark:text-gray-400'}>
+                  <span className={rarityFilter === '☆☆' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-stone-500 dark:text-stone-400'}>
                     ★★
                   </span>
                 </button>
                 <button
                   onClick={() => setRarityFilter('immersive')}
                   className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
-                    rarityFilter === 'immersive' 
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                    rarityFilter === 'immersive'
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
                   }`}
                 >
-                  <span className={rarityFilter === 'immersive' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-orange-500 bg-clip-text text-transparent' : 'text-gray-500 dark:text-gray-400'}>
+                  <span className={rarityFilter === 'immersive' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-orange-500 bg-clip-text text-transparent' : 'text-stone-500 dark:text-stone-400'}>
                     ★★★
                   </span>
                 </button>
                 <button
                   onClick={() => setRarityFilter('★★')}
                   className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-                    rarityFilter === '★★' 
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                    rarityFilter === '★★'
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
                   }`}
                 >
-                  <FaCrown className={rarityFilter === '★★' ? 'text-yellow-500' : 'text-gray-500 dark:text-gray-400'} size={16} />
+                  <FaCrown className={rarityFilter === '★★' ? 'text-yellow-500' : 'text-stone-500 dark:text-stone-400'} size={16} />
                 </button>
                 <button
                   onClick={() => setRarityFilter('fullart')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === 'fullart' 
-                      ? 'bg-gradient-to-r from-purple-100/90 to-pink-100/90 dark:from-purple-900/40 dark:to-pink-900/40 border-purple-300/50 text-purple-700 dark:text-purple-300 shadow-lg shadow-purple-500/20 dark:shadow-purple-500/10' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                    rarityFilter === 'fullart'
+                      ? 'bg-gradient-to-r from-amber-100/90 to-pink-100/90 dark:from-amber-900/40 dark:to-pink-900/40 border-amber-300/50 text-amber-700 dark:text-amber-300 shadow-lg shadow-amber-500/20 dark:shadow-amber-500/10'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
                   }`}
                 >
                   Full Art
@@ -474,14 +474,14 @@ const PocketMode: NextPage = () => {
               shadow: 'md',
               rounded: 'xl'
             })} flex items-center gap-3 p-3`}>
-              <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ml-1">Type</span>
+              <span className="text-sm font-bold bg-gradient-to-r from-amber-600 to-amber-600 bg-clip-text text-transparent ml-1">Type</span>
               <div className="flex flex-wrap gap-1 flex-1">
                 <button
                   onClick={() => setTypeFilter('all')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase transition-all backdrop-blur-md border ${
-                    typeFilter === 'all' 
-                      ? 'bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300 ring-2 ring-purple-400/50' 
-                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+                    typeFilter === 'all'
+                      ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300 ring-2 ring-amber-400/50'
+                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
                   }`}
                 >
                   All Types
@@ -490,23 +490,23 @@ const PocketMode: NextPage = () => {
                   const typeColors: Record<string, { bg: string; border: string; text: string; ring: string }> = {
                     'grass': { bg: 'from-green-200 to-green-300', border: 'border-green-500', text: 'text-green-800 dark:text-green-200', ring: 'ring-green-500' },
                     'fire': { bg: 'from-red-200 to-orange-200', border: 'border-red-500', text: 'text-red-800 dark:text-red-200', ring: 'ring-red-500' },
-                    'water': { bg: 'from-blue-200 to-cyan-200', border: 'border-blue-500', text: 'text-blue-800 dark:text-blue-200', ring: 'ring-blue-500' },
+                    'water': { bg: 'from-amber-200 to-cyan-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
                     'lightning': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800 dark:text-yellow-200', ring: 'ring-yellow-500' },
                     'electric': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800 dark:text-yellow-200', ring: 'ring-yellow-500' },
-                    'psychic': { bg: 'from-purple-200 to-pink-200', border: 'border-purple-500', text: 'text-purple-800 dark:text-purple-200', ring: 'ring-purple-500' },
+                    'psychic': { bg: 'from-amber-200 to-pink-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
                     'fighting': { bg: 'from-orange-200 to-red-200', border: 'border-orange-500', text: 'text-orange-800 dark:text-orange-200', ring: 'ring-orange-500' },
-                    'darkness': { bg: 'from-gray-300 to-purple-200', border: 'border-gray-600', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-600' },
-                    'dark': { bg: 'from-gray-300 to-purple-200', border: 'border-gray-600', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-600' },
-                    'metal': { bg: 'from-gray-200 to-slate-200', border: 'border-gray-500', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-500' },
-                    'steel': { bg: 'from-gray-200 to-slate-200', border: 'border-gray-500', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-500' },
-                    'dragon': { bg: 'from-indigo-200 to-purple-200', border: 'border-indigo-500', text: 'text-indigo-800 dark:text-indigo-200', ring: 'ring-indigo-500' },
-                    'colorless': { bg: 'from-gray-100 to-gray-200', border: 'border-gray-400', text: 'text-gray-700 dark:text-gray-300', ring: 'ring-gray-400' },
+                    'darkness': { bg: 'from-stone-300 to-amber-200', border: 'border-stone-600', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-600' },
+                    'dark': { bg: 'from-stone-300 to-amber-200', border: 'border-stone-600', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-600' },
+                    'metal': { bg: 'from-stone-200 to-stone-200', border: 'border-stone-500', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-500' },
+                    'steel': { bg: 'from-stone-200 to-stone-200', border: 'border-stone-500', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-500' },
+                    'dragon': { bg: 'from-amber-200 to-amber-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
+                    'colorless': { bg: 'from-stone-100 to-stone-200', border: 'border-stone-400', text: 'text-stone-700 dark:text-stone-300', ring: 'ring-stone-400' },
                     'fairy': { bg: 'from-pink-200 to-rose-200', border: 'border-pink-500', text: 'text-pink-800 dark:text-pink-200', ring: 'ring-pink-500' },
-                    'item': { bg: 'from-blue-200 to-blue-300', border: 'border-blue-500', text: 'text-blue-800 dark:text-blue-200', ring: 'ring-blue-500' },
+                    'item': { bg: 'from-amber-200 to-amber-300', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
                     'supporter': { bg: 'from-amber-200 to-orange-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
-                    'tool': { bg: 'from-slate-200 to-gray-200', border: 'border-slate-500', text: 'text-slate-800 dark:text-slate-200', ring: 'ring-slate-500' },
+                    'tool': { bg: 'from-stone-200 to-stone-200', border: 'border-stone-500', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-500' },
                   };
-                  const colors = typeColors[type.toLowerCase()] || { bg: 'from-gray-200 to-gray-300', border: 'border-gray-500', text: 'text-gray-700 dark:text-gray-300', ring: 'ring-gray-400' };
+                  const colors = typeColors[type.toLowerCase()] || { bg: 'from-stone-200 to-stone-300', border: 'border-stone-500', text: 'text-stone-700 dark:text-stone-300', ring: 'ring-stone-400' };
                   
                   return (
                     <button
@@ -560,7 +560,7 @@ const PocketMode: NextPage = () => {
           ) : (
             <>
               <div className="text-center mb-3">
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-stone-500 dark:text-stone-400">
                   Showing {filteredPokemon.length} {filteredPokemon.length === 1 ? 'card' : 'cards'}
                   {(search || typeFilter !== 'all' || rarityFilter !== 'all') && ' (filtered)'}
                 </p>

@@ -20,8 +20,8 @@ const regions = [
     id: "kanto",
     name: "Kanto",
     generation: 1,
-    color: "from-red-500 to-blue-500",
-    gradient: "from-red-500/20 to-blue-500/20",
+    color: "from-red-500 to-amber-500",
+    gradient: "from-red-500/20 to-amber-500/20",
     starters: "Bulbasaur • Charmander • Squirtle",
     starterIds: [1, 4, 7],
     games: "Red • Blue • Yellow • FireRed • LeafGreen",
@@ -42,8 +42,8 @@ const regions = [
     id: "hoenn",
     name: "Hoenn", 
     generation: 3,
-    color: "from-emerald-500 to-blue-500",
-    gradient: "from-emerald-500/20 to-blue-500/20",
+    color: "from-emerald-500 to-amber-500",
+    gradient: "from-emerald-500/20 to-amber-500/20",
     starters: "Treecko • Torchic • Mudkip",
     starterIds: [252, 255, 258],
     games: "Ruby • Sapphire • Emerald • Omega Ruby • Alpha Sapphire",
@@ -53,8 +53,8 @@ const regions = [
     id: "sinnoh",
     name: "Sinnoh",
     generation: 4,
-    color: "from-indigo-500 to-purple-500",
-    gradient: "from-indigo-500/20 to-purple-500/20",
+    color: "from-amber-500 to-purple-500",
+    gradient: "from-amber-500/20 to-purple-500/20",
     starters: "Turtwig • Chimchar • Piplup",
     starterIds: [387, 390, 393],
     games: "Diamond • Pearl • Platinum • Brilliant Diamond • Shining Pearl",
@@ -64,8 +64,8 @@ const regions = [
     id: "unova",
     name: "Unova",
     generation: 5,
-    color: "from-gray-600 to-slate-600",
-    gradient: "from-gray-600/20 to-slate-600/20",
+    color: "from-stone-600 to-stone-600",
+    gradient: "from-stone-600/20 to-stone-600/20",
     starters: "Snivy • Tepig • Oshawott",
     starterIds: [495, 498, 501],
     games: "Black • White • Black 2 • White 2",
@@ -75,8 +75,8 @@ const regions = [
     id: "kalos",
     name: "Kalos",
     generation: 6,
-    color: "from-pink-500 to-purple-500",
-    gradient: "from-pink-500/20 to-purple-500/20",
+    color: "from-pink-500 to-amber-500",
+    gradient: "from-pink-500/20 to-amber-500/20",
     starters: "Chespin • Fennekin • Froakie",
     starterIds: [650, 653, 656],
     games: "X • Y",
@@ -97,8 +97,8 @@ const regions = [
     id: "galar",
     name: "Galar", 
     generation: 8,
-    color: "from-blue-600 to-indigo-600",
-    gradient: "from-blue-600/20 to-indigo-600/20",
+    color: "from-amber-600 to-amber-600",
+    gradient: "from-amber-600/20 to-amber-600/20",
     starters: "Grookey • Scorbunny • Sobble",
     starterIds: [810, 813, 816],
     games: "Sword • Shield",
@@ -108,8 +108,8 @@ const regions = [
     id: "paldea",
     name: "Paldea",
     generation: 9,
-    color: "from-violet-500 to-purple-600",
-    gradient: "from-violet-500/20 to-purple-600/20",
+    color: "from-violet-500 to-amber-600",
+    gradient: "from-violet-500/20 to-amber-600/20",
     starters: "Sprigatito • Fuecoco • Quaxly",
     starterIds: [906, 909, 912],
     games: "Scarlet • Violet",
@@ -216,7 +216,7 @@ const StartersPage: NextPage = () => {
         </div>
 
         {/* Main Content */}
-        <div className="relative bg-gradient-to-b from-transparent to-gray-50/50 dark:from-transparent dark:to-gray-900/50">
+        <div className="relative bg-gradient-to-b from-transparent to-stone-50/50 dark:from-transparent dark:to-stone-900/50">
           <div className="container mx-auto px-4 py-12 max-w-7xl">
             
             {/* Empty space for moved content */}
@@ -238,7 +238,7 @@ const StartersPage: NextPage = () => {
               {/* Header with Region Selection moved here */}
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-bold mb-4">
-                  <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">
                     Choose Your Starter
                   </span>
                 </h2>
@@ -278,17 +278,17 @@ const StartersPage: NextPage = () => {
                 
                 {/* Region Info */}
                 <div className="mb-4">
-                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+                  <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200 mb-2">
                     {currentRegion.name} Region
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
+                  <p className="text-stone-600 dark:text-stone-400 text-sm mb-3">
                     {currentRegion.description}
                   </p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {currentRegion.starters.split(' • ').map((starter, idx) => (
                       <span
                         key={starter}
-                        className="px-3 py-1 rounded-full bg-white/80 text-xs font-semibold text-gray-700"
+                        className="px-3 py-1 rounded-full bg-white/80 text-xs font-semibold text-stone-700"
                       >
                         {starter}
                       </span>
@@ -330,8 +330,8 @@ const StartersPage: NextPage = () => {
                 })} p-6 rounded-2xl cursor-pointer group`}
               >
                 <FiBook className="w-8 h-8 mb-3 text-purple-500 group-hover:text-purple-600 transition-colors" />
-                <h4 className="font-bold text-gray-800 dark:text-white mb-1">Pokedex</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Browse all Pokemon</p>
+                <h4 className="font-bold text-stone-800 dark:text-white mb-1">Pokedex</h4>
+                <p className="text-xs text-stone-600 dark:text-stone-400">Browse all Pokemon</p>
               </motion.div>
               
               <motion.div
@@ -348,9 +348,9 @@ const StartersPage: NextPage = () => {
                   hover: 'lift',
                 })} p-6 rounded-2xl cursor-pointer group`}
               >
-                <FiMapPin className="w-8 h-8 mb-3 text-blue-500 group-hover:text-blue-600 transition-colors" />
-                <h4 className="font-bold text-gray-800 dark:text-white mb-1">Regions</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Explore worlds</p>
+                <FiMapPin className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors" />
+                <h4 className="font-bold text-stone-800 dark:text-white mb-1">Regions</h4>
+                <p className="text-xs text-stone-600 dark:text-stone-400">Explore worlds</p>
               </motion.div>
               
               <motion.div
@@ -368,8 +368,8 @@ const StartersPage: NextPage = () => {
                 })} p-6 rounded-2xl cursor-pointer group`}
               >
                 <FiLayers className="w-8 h-8 mb-3 text-pink-500 group-hover:text-pink-600 transition-colors" />
-                <h4 className="font-bold text-gray-800 dark:text-white mb-1">TCG Sets</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Card collections</p>
+                <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Sets</h4>
+                <p className="text-xs text-stone-600 dark:text-stone-400">Card collections</p>
               </motion.div>
               
               <motion.div
@@ -387,8 +387,8 @@ const StartersPage: NextPage = () => {
                 })} p-6 rounded-2xl cursor-pointer group`}
               >
                 <FiSmartphone className="w-8 h-8 mb-3 text-green-500 group-hover:text-green-600 transition-colors" />
-                <h4 className="font-bold text-gray-800 dark:text-white mb-1">TCG Pocket</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Mobile game cards</p>
+                <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Pocket</h4>
+                <p className="text-xs text-stone-600 dark:text-stone-400">Mobile game cards</p>
               </motion.div>
             </motion.div>
 
@@ -401,7 +401,7 @@ const StartersPage: NextPage = () => {
               className="mt-12"
             >
               <h3 className="text-3xl font-bold text-center mb-8">
-                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">
                   Did You Know?
                 </span>
               </h3>
@@ -410,7 +410,7 @@ const StartersPage: NextPage = () => {
                   <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent mb-3">
                     27
                   </div>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                  <p className="text-sm text-stone-700 dark:text-stone-300 font-medium">
                     Total starter Pokemon across all generations
                   </p>
                 </GlassContainer>
@@ -419,16 +419,16 @@ const StartersPage: NextPage = () => {
                   <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent mb-3">
                     3
                   </div>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                  <p className="text-sm text-stone-700 dark:text-stone-300 font-medium">
                     Starters in each generation - always Grass, Fire, and Water
                   </p>
                 </GlassContainer>
                 
                 <GlassContainer variant="light" rounded="2xl" padding="md" className="text-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-3">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-amber-400 bg-clip-text text-transparent mb-3">
                     87.5%
                   </div>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                  <p className="text-sm text-stone-700 dark:text-stone-300 font-medium">
                     Male gender ratio for all starter Pokemon
                   </p>
                 </GlassContainer>

@@ -182,15 +182,15 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
 
   const getTypeGradient = (types: string[]) => {
     const type = types[0];
-    return TYPE_GRADIENTS[type as keyof typeof TYPE_GRADIENTS] || 'from-gray-400 to-gray-600';
+    return TYPE_GRADIENTS[type as keyof typeof TYPE_GRADIENTS] || 'from-stone-400 to-stone-600';
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading starter Pokemon...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <p className="text-stone-600 dark:text-stone-400">Loading starter Pokemon...</p>
         </div>
       </div>
     );
@@ -203,7 +203,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
     <div className="relative">
       {/* Background Gradient */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-amber-500 to-amber-500 animate-pulse" />
       </div>
 
       <div className={createGlassStyle({ 
@@ -216,10 +216,10 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
         
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-3">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 via-amber-600 to-amber-600 bg-clip-text text-transparent mb-3">
             Choose Your Partner
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-lg text-stone-600 dark:text-stone-400">
             Select your starter and explore their evolution journey
           </p>
         </div>
@@ -237,7 +237,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                 onClick={() => setSelectedStarter(index)}
                 className={`relative p-6 rounded-2xl transition-all duration-300 ${
                   isSelected
-                    ? 'ring-4 ring-purple-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900'
+                    ? 'ring-4 ring-amber-500 ring-offset-2 ring-offset-white dark:ring-offset-stone-900'
                     : ''
                 }`}
                 style={{
@@ -284,7 +284,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                 </div>
 
                 {/* Pokemon Info */}
-                <h3 className="text-base sm:text-lg md:text-xl font-bold capitalize text-gray-800 dark:text-white mb-2">
+                <h3 className="text-base sm:text-lg md:text-xl font-bold capitalize text-stone-800 dark:text-white mb-2">
                   {starter}
                 </h3>
                 
@@ -304,7 +304,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
 
                 {/* Evolution Preview */}
                 <div className="flex items-center justify-center gap-1 mt-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                  <div className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
                     <Image
                       src={chain.stage1.sprite}
                       alt="Stage 1"
@@ -315,8 +315,8 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                   </div>
                   {chain.stage2 && (
                     <>
-                      <BsChevronRight className="text-gray-400 text-xs" />
-                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                      <BsChevronRight className="text-stone-400 text-xs" />
+                      <div className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
                         <Image
                           src={chain.stage2.sprite}
                           alt="Stage 2"
@@ -329,8 +329,8 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                   )}
                   {chain.stage3 && (
                     <>
-                      <BsChevronRight className="text-gray-400 text-xs" />
-                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                      <BsChevronRight className="text-stone-400 text-xs" />
+                      <div className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
                         <Image
                           src={chain.stage3.sprite}
                           alt="Stage 3"
@@ -359,10 +359,10 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
           >
             {/* Evolution Path Header */}
             <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+              <h3 className="text-2xl font-bold text-stone-800 dark:text-white mb-2">
                 Evolution Journey
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-stone-600 dark:text-stone-400">
                 Watch your {starters[selectedStarter]} grow stronger through each evolution
               </p>
             </div>
@@ -382,14 +382,14 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
               {currentChain.stage2 && (
                 <div className="hidden md:flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    <div className="text-xs text-stone-600 dark:text-stone-400 mb-2">
                       Level {currentChain.stage2.evolutionLevel}
                     </div>
                     <motion.div
                       animate={{ x: [0, 10, 0] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                     >
-                      <BsArrowRight className="text-3xl text-purple-500 mx-auto" />
+                      <BsArrowRight className="text-3xl text-amber-500 mx-auto" />
                     </motion.div>
                   </div>
                 </div>
@@ -410,14 +410,14 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
               {currentChain.stage3 && (
                 <div className="hidden md:flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    <div className="text-xs text-stone-600 dark:text-stone-400 mb-2">
                       Level {currentChain.stage3.evolutionLevel}
                     </div>
                     <motion.div
                       animate={{ x: [0, 10, 0] }}
                       transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
                     >
-                      <BsArrowRight className="text-3xl text-purple-500 mx-auto" />
+                      <BsArrowRight className="text-3xl text-amber-500 mx-auto" />
                     </motion.div>
                   </div>
                 </div>
@@ -439,7 +439,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
             <div className="text-center">
               <button
                 onClick={() => setShowStats(!showStats)}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 <div className="flex items-center gap-2">
                   <BsGraphUp />
@@ -479,7 +479,7 @@ const EvolutionCard: React.FC<{
 }> = ({ pokemon, stage, isHovered, onHover, onLeave }) => {
   const getTypeGradient = (types: string[]) => {
     const type = types[0];
-    return TYPE_GRADIENTS[type as keyof typeof TYPE_GRADIENTS] || 'from-gray-400 to-gray-600';
+    return TYPE_GRADIENTS[type as keyof typeof TYPE_GRADIENTS] || 'from-stone-400 to-stone-600';
   };
 
   return (
@@ -501,9 +501,9 @@ const EvolutionCard: React.FC<{
           {/* Stage Badge */}
           <div className="absolute top-3 left-3 z-10">
             <div className={`px-2 py-1 rounded-full text-xs font-bold text-white ${
-              stage === 1 ? 'bg-purple-500' : 
+              stage === 1 ? 'bg-amber-500' : 
               stage === 2 ? 'bg-pink-500' : 
-              'bg-blue-500'
+              'bg-amber-500'
             } shadow-lg`}>
               Stage {stage}
             </div>
@@ -535,7 +535,7 @@ const EvolutionCard: React.FC<{
 
           {/* Info */}
           <div className="px-4 pb-4">
-            <h4 className="text-lg font-bold text-center text-gray-800 dark:text-white mb-2 capitalize">
+            <h4 className="text-lg font-bold text-center text-stone-800 dark:text-white mb-2 capitalize">
               {pokemon.name}
             </h4>
             
@@ -555,15 +555,15 @@ const EvolutionCard: React.FC<{
 
             {/* Key Stats */}
             <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-2">
+              <div className="bg-white/50 dark:bg-stone-800/50 rounded-lg p-2">
                 <GiSwordWound className="text-red-500 mx-auto mb-1 text-sm" />
                 <div className="text-xs font-bold">{pokemon.stats.attack}</div>
               </div>
-              <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-2">
+              <div className="bg-white/50 dark:bg-stone-800/50 rounded-lg p-2">
                 <GiShield className="text-blue-500 mx-auto mb-1 text-sm" />
                 <div className="text-xs font-bold">{pokemon.stats.defense}</div>
               </div>
-              <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-2">
+              <div className="bg-white/50 dark:bg-stone-800/50 rounded-lg p-2">
                 <GiRunningNinja className="text-green-500 mx-auto mb-1 text-sm" />
                 <div className="text-xs font-bold">{pokemon.stats.speed}</div>
               </div>
@@ -571,8 +571,8 @@ const EvolutionCard: React.FC<{
 
             {/* Total Stats */}
             <div className="mt-3 text-center">
-              <span className="text-xs text-gray-600 dark:text-gray-400">Total: </span>
-              <span className="text-sm font-bold text-gray-800 dark:text-white">{pokemon.stats.total}</span>
+              <span className="text-xs text-stone-600 dark:text-stone-400">Total: </span>
+              <span className="text-sm font-bold text-stone-800 dark:text-white">{pokemon.stats.total}</span>
             </div>
           </div>
         </div>
@@ -597,7 +597,7 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
       rounded: 'xl',
       shadow: 'md'
     })} style={{ padding: '1.5rem' }}>
-      <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-4 text-center">
+      <h4 className="text-lg font-bold text-stone-800 dark:text-white mb-4 text-center">
         Stats Progression Chart
       </h4>
       
@@ -611,32 +611,32 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
           return (
             <div key={statName}>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-24">
+                <span className="text-sm font-medium text-stone-700 dark:text-stone-300 w-24">
                   {statName}
                 </span>
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="text-purple-600 dark:text-purple-400 font-bold">{stage1Value}</span>
+                  <span className="text-amber-600 dark:text-amber-400 font-bold">{stage1Value}</span>
                   {stage2Value && (
                     <>
-                      <BsChevronRight className="text-gray-400" />
-                      <span className="text-pink-600 dark:text-pink-400 font-bold">{stage2Value}</span>
+                      <BsChevronRight className="text-stone-400" />
+                      <span className="text-amber-600 dark:text-amber-400 font-bold">{stage2Value}</span>
                     </>
                   )}
                   {stage3Value && (
                     <>
-                      <BsChevronRight className="text-gray-400" />
-                      <span className="text-blue-600 dark:text-blue-400 font-bold">{stage3Value}</span>
+                      <BsChevronRight className="text-stone-400" />
+                      <span className="text-amber-600 dark:text-amber-400 font-bold">{stage3Value}</span>
                     </>
                   )}
                 </div>
               </div>
               
               {/* Progress Bars */}
-              <div className="relative h-6 bg-gray-200/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
+              <div className="relative h-6 bg-stone-200/50 dark:bg-stone-700/50 rounded-full overflow-hidden">
                 {/* Stage 3 Bar (back) */}
                 {stage3Value && (
                   <motion.div
-                    className="absolute h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+                    className="absolute h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${getPercentage(stage3Value)}%` }}
                     transition={{ duration: 1, delay: 0.4 + index * 0.05 }}
@@ -646,7 +646,7 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
                 {/* Stage 2 Bar (middle) */}
                 {stage2Value && (
                   <motion.div
-                    className="absolute h-full bg-gradient-to-r from-pink-400 to-pink-600 rounded-full"
+                    className="absolute h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${getPercentage(stage2Value)}%` }}
                     transition={{ duration: 1, delay: 0.2 + index * 0.05 }}
@@ -655,7 +655,7 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
                 
                 {/* Stage 1 Bar (front) */}
                 <motion.div
-                  className="absolute h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-end pr-2"
+                  className="absolute h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full flex items-center justify-end pr-2"
                   initial={{ width: 0 }}
                   animate={{ width: `${getPercentage(stage1Value)}%` }}
                   transition={{ duration: 1, delay: index * 0.05 }}
@@ -671,25 +671,25 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
       </div>
       
       {/* Total Stats Summary */}
-      <div className="mt-6 pt-6 border-t border-gray-200/30 dark:border-gray-700/30">
+      <div className="mt-6 pt-6 border-t border-stone-200/30 dark:border-stone-700/30">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Total Base Stats</span>
+          <span className="text-sm font-medium text-stone-700 dark:text-stone-300">Total Base Stats</span>
           <div className="flex items-center gap-3">
-            <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold">
+            <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
               {chain.stage1.stats.total}
             </span>
             {chain.stage2 && (
               <>
-                <BsArrowRight className="text-gray-400" />
-                <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-700 dark:text-pink-300 font-bold">
+                <BsArrowRight className="text-stone-400" />
+                <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
                   {chain.stage2.stats.total}
                 </span>
               </>
             )}
             {chain.stage3 && (
               <>
-                <BsArrowRight className="text-gray-400" />
-                <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-300 font-bold">
+                <BsArrowRight className="text-stone-400" />
+                <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
                   {chain.stage3.stats.total}
                 </span>
               </>

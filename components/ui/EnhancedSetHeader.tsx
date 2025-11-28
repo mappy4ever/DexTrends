@@ -48,7 +48,7 @@ const CircularProgress: React.FC<{
           fill="none"
           stroke="currentColor"
           strokeWidth={config.strokeWidth}
-          className="text-gray-200 dark:text-gray-700"
+          className="text-stone-200 dark:text-stone-700"
         />
         {/* Progress circle */}
         <circle
@@ -73,10 +73,10 @@ const CircularProgress: React.FC<{
         </defs>
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className={cn(config.fontSize, 'font-bold text-gray-700 dark:text-gray-300')}>
+        <span className={cn(config.fontSize, 'font-bold text-stone-700 dark:text-stone-300')}>
           {value.toLocaleString()}
         </span>
-        <span className="text-[10px] text-gray-500 dark:text-gray-400">{label}</span>
+        <span className="text-[10px] text-stone-500 dark:text-stone-400">{label}</span>
       </div>
     </div>
   );
@@ -109,7 +109,7 @@ export const EnhancedSetHeader: React.FC<EnhancedSetHeaderProps> = ({
     >
       <div className="relative">
         {/* Minimal Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 via-pink-600/5 to-blue-600/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-600/5 via-pink-600/5 to-amber-600/5" />
         
         {/* Compact Content */}
         <div className="relative z-10 p-4 md:p-6">
@@ -132,10 +132,10 @@ export const EnhancedSetHeader: React.FC<EnhancedSetHeaderProps> = ({
             
             {/* Set Name and Details */}
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
+              <h1 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-200">
                 {setInfo.name}
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
                 {setInfo.series} • {new Date(setInfo.releaseDate).toLocaleDateString()}
               </p>
             </div>
@@ -156,24 +156,24 @@ export const EnhancedSetHeader: React.FC<EnhancedSetHeaderProps> = ({
           
           {/* Compact Stat Tabs */}
           <div className="flex gap-2 mb-4 overflow-x-auto">
-            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Cards</span>
-              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{cardCount}</span>
+            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-stone-800/50 rounded-lg border border-stone-200/50 dark:border-stone-700/50">
+              <span className="text-sm font-semibold text-stone-700 dark:text-stone-300">Total Cards</span>
+              <span className="text-lg font-bold text-stone-900 dark:text-stone-100">{cardCount}</span>
             </div>
-            
-            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Value</span>
+
+            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-stone-800/50 rounded-lg border border-stone-200/50 dark:border-stone-700/50">
+              <span className="text-sm font-semibold text-stone-700 dark:text-stone-300">Total Value</span>
               <span className="text-lg font-bold text-green-600 dark:text-green-400">${totalValue.toFixed(0)}</span>
             </div>
-            
-            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Rarities</span>
-              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{Object.keys(statistics.rarityDistribution).length}</span>
+
+            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-stone-800/50 rounded-lg border border-stone-200/50 dark:border-stone-700/50">
+              <span className="text-sm font-semibold text-stone-700 dark:text-stone-300">Rarities</span>
+              <span className="text-lg font-bold text-stone-900 dark:text-stone-100">{Object.keys(statistics.rarityDistribution).length}</span>
             </div>
-            
-            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Avg Value</span>
-              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">${(totalValue / cardCount).toFixed(0)}</span>
+
+            <div className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-stone-800/50 rounded-lg border border-stone-200/50 dark:border-stone-700/50">
+              <span className="text-sm font-semibold text-stone-700 dark:text-stone-300">Avg Value</span>
+              <span className="text-lg font-bold text-stone-900 dark:text-stone-100">${(totalValue / cardCount).toFixed(0)}</span>
             </div>
           </div>
         </div>
@@ -191,14 +191,14 @@ const StatPill: React.FC<{
 }> = ({ icon, label, value, gradient }) => (
   <div className={cn(
     'px-3 py-2 rounded-full',
-    'backdrop-blur-md bg-white/60 dark:bg-gray-800/60',
-    'border border-white/50 dark:border-gray-700/50',
+    'backdrop-blur-md bg-white/60 dark:bg-stone-800/60',
+    'border border-white/50 dark:border-stone-700/50',
     'flex items-center gap-2',
     'hover:scale-105 transition-transform duration-200'
   )}>
     <span className="text-base">{icon}</span>
     <div className="flex flex-col">
-      <span className="text-[10px] text-gray-500 dark:text-gray-400">{label}</span>
+      <span className="text-[10px] text-stone-500 dark:text-stone-400">{label}</span>
       <span className={cn(
         'text-xs font-bold bg-gradient-to-r bg-clip-text text-transparent',
         gradient

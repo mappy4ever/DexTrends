@@ -74,18 +74,18 @@ const getRarityGlowClass = (rarity: string | undefined): string => {
 
 // Rarity styling for TCG cards - moved to top to avoid hoisting issues
 const rarityMap: Record<string, { label: string; color: string }> = {
-  'Common': { label: 'C', color: 'bg-gray-200 border border-gray-400 text-gray-700' },
+  'Common': { label: 'C', color: 'bg-stone-200 border border-stone-400 text-stone-700' },
   'Uncommon': { label: 'U', color: 'bg-green-200 border border-green-500 text-green-900' },
   'Rare': { label: 'R', color: 'bg-yellow-200 border border-yellow-500 text-yellow-900' },
-  'Rare Holo': { label: 'RH', color: 'bg-blue-100 border border-blue-400 text-blue-900' },
-  'Rare Holo GX': { label: 'GX', color: 'bg-blue-200 border border-blue-700 text-blue-900' },
-  'Rare Holo EX': { label: 'EX', color: 'bg-blue-50 border border-blue-400 text-blue-900' },
+  'Rare Holo': { label: 'RH', color: 'bg-amber-100 border border-amber-400 text-amber-900' },
+  'Rare Holo GX': { label: 'GX', color: 'bg-amber-200 border border-amber-700 text-amber-900' },
+  'Rare Holo EX': { label: 'EX', color: 'bg-amber-50 border border-amber-400 text-amber-900' },
   'Rare Holo V': { label: 'V', color: 'bg-red-100 border border-red-400 text-red-800' },
   'Rare Holo VMAX': { label: 'VMAX', color: 'bg-red-200 border border-red-600 text-red-900' },
-  'Rare Ultra': { label: 'UR', color: 'bg-purple-200 border border-purple-600 text-purple-900' },
+  'Rare Ultra': { label: 'UR', color: 'bg-amber-200 border border-amber-600 text-amber-900' },
   'Rare Secret': { label: 'SR', color: 'bg-pink-100 border border-pink-400 text-pink-800' },
-  'Rare Rainbow': { label: 'RR', color: 'bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100 border border-gray-300 text-gray-800' },
-  'Rare Full Art': { label: 'FA', color: 'bg-indigo-100 border border-indigo-400 text-indigo-900' },
+  'Rare Rainbow': { label: 'RR', color: 'bg-gradient-to-r from-pink-100 via-yellow-100 to-amber-100 border border-stone-300 text-stone-800' },
+  'Rare Full Art': { label: 'FA', color: 'bg-amber-100 border border-amber-400 text-amber-900' },
   'Rare Prism Star': { label: 'PR', color: 'bg-black border border-yellow-300 text-yellow-200' },
   'Promo': { label: 'PR', color: 'bg-orange-100 border border-orange-400 text-orange-900' },
   'Illustration Rare': { label: 'IR', color: 'bg-amber-100 border border-amber-400 text-amber-900' },
@@ -234,33 +234,33 @@ const getDisplayType = (type: string, card: { name?: string }) => {
 const getTypeColorClass = (type: string, displayType: string) => {
   const typeColorMap: Record<string, string> = {
     fire: 'bg-red-500 text-white border-red-600',
-    water: 'bg-blue-500 text-white border-blue-600',
+    water: 'bg-amber-500 text-white border-amber-600',
     grass: 'bg-green-500 text-white border-green-600',
     electric: 'bg-yellow-400 text-black border-yellow-500',
     lightning: 'bg-yellow-400 text-black border-yellow-500',
     psychic: 'bg-pink-500 text-white border-pink-600',
     ice: 'bg-cyan-400 text-white border-cyan-500',
-    dragon: 'bg-indigo-600 text-white border-indigo-700',
-    dark: 'bg-gray-800 text-white border-gray-900',
-    darkness: 'bg-gray-800 text-white border-gray-900',
+    dragon: 'bg-amber-600 text-white border-amber-700',
+    dark: 'bg-stone-800 text-white border-stone-900',
+    darkness: 'bg-stone-800 text-white border-stone-900',
     fairy: 'bg-pink-400 text-white border-pink-500',
-    normal: 'bg-gray-400 text-white border-gray-500',
+    normal: 'bg-stone-400 text-white border-stone-500',
     fighting: 'bg-amber-700 text-white border-amber-800',
-    flying: 'bg-indigo-400 text-white border-indigo-500',
-    poison: 'bg-purple-500 text-white border-purple-600',
+    flying: 'bg-amber-400 text-white border-amber-500',
+    poison: 'bg-amber-500 text-white border-amber-600',
     ground: 'bg-yellow-600 text-white border-yellow-700',
     rock: 'bg-stone-500 text-white border-stone-600',
     bug: 'bg-lime-400 text-black border-lime-500',
-    ghost: 'bg-purple-600 text-white border-purple-700',
-    steel: 'bg-slate-500 text-white border-slate-600',
-    metal: 'bg-slate-500 text-white border-slate-600',
-    colorless: 'bg-gray-300 text-gray-800 border-gray-400',
+    ghost: 'bg-amber-600 text-white border-purple-700',
+    steel: 'bg-stone-500 text-white border-stone-600',
+    metal: 'bg-stone-500 text-white border-stone-600',
+    colorless: 'bg-stone-300 text-stone-800 border-stone-400',
     trainer: 'bg-emerald-500 text-white border-emerald-600',
     // Trainer subtypes
-    item: 'bg-blue-500 text-white border-blue-600',
+    item: 'bg-amber-500 text-white border-amber-600',
     supporter: 'bg-orange-500 text-white border-orange-600',
-    fossil: 'bg-blue-500 text-white border-blue-600', // Same as item since fossils are items
-    tool: 'bg-purple-500 text-white border-purple-600'
+    fossil: 'bg-amber-500 text-white border-amber-600', // Same as item since fossils are items
+    tool: 'bg-amber-500 text-white border-amber-600'
   };
   
   // For trainer cards, use the display type for color
@@ -269,15 +269,15 @@ const getTypeColorClass = (type: string, displayType: string) => {
     return typeColorMap[displayTypeLower] || typeColorMap.trainer;
   }
   
-  return typeColorMap[type as string] || 'bg-gray-200 text-gray-700 border-gray-300';
+  return typeColorMap[type as string] || 'bg-stone-200 text-stone-700 border-stone-300';
 };
 
 // Pocket card rarity styling - moved to top to avoid hoisting issues
 const pocketRarityMap: Record<string, { label: string; color: string; glow: string }> = {
-  '◊': { label: 'C', color: 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-300', glow: 'shadow-gray-200/50' },
+  '◊': { label: 'C', color: 'bg-gradient-to-r from-stone-100 to-stone-200 text-stone-700 border-stone-300', glow: 'shadow-stone-200/50' },
   '◊◊': { label: 'U', color: 'bg-gradient-to-r from-green-100 to-green-200 text-green-800 border-green-300', glow: 'shadow-green-200/50' },
-  '◊◊◊': { label: 'R', color: 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border-blue-300', glow: 'shadow-blue-200/50' },
-  '◊◊◊◊': { label: 'RR', color: 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 border-purple-300', glow: 'shadow-purple-200/50' },
+  '◊◊◊': { label: 'R', color: 'bg-gradient-to-r from-amber-100 to-amber-200 text-blue-800 border-blue-300', glow: 'shadow-amber-200/50' },
+  '◊◊◊◊': { label: 'RR', color: 'bg-gradient-to-r from-amber-100 to-amber-200 text-amber-800 border-amber-300', glow: 'shadow-amber-200/50' },
   '★': { label: 'EX', color: 'bg-gradient-to-r from-yellow-100 to-amber-200 text-amber-800 border-amber-300', glow: 'shadow-amber-200/50' },
   '★★': { label: 'Crown', color: 'bg-gradient-to-r from-red-100 to-rose-200 text-red-800 border-red-300', glow: 'shadow-red-200/50' }
 };
@@ -454,13 +454,13 @@ const TCGCard = memo(({
     if (cardType === "pocket") {
       return pocketRarityMap[normalizedCard.rarity || ''] || { 
         label: '?', 
-        color: 'bg-gray-100 text-gray-500 border-gray-200', 
-        glow: 'shadow-gray-100/50' 
+        color: 'bg-stone-100 text-stone-500 border-stone-200', 
+        glow: 'shadow-stone-100/50' 
       };
     }
     return rarityMap[normalizedCard.rarity || ''] || { 
       label: '?', 
-      color: 'bg-gray-100 text-gray-500 border-gray-200' 
+      color: 'bg-stone-100 text-stone-500 border-stone-200' 
     };
   }, [cardType, normalizedCard.rarity]);
 
@@ -616,8 +616,8 @@ const TCGCard = memo(({
         className={`
           ${className}
           w-full
-          bg-white dark:bg-gray-800 
-          border border-gray-200 dark:border-gray-700 
+          bg-white dark:bg-stone-800 
+          border border-stone-200 dark:border-stone-700 
           rounded-lg overflow-hidden 
           shadow-sm 
           ${cardType === "pocket" ? "pocket-card" : cardType === "tcg" ? "tcg-card" : "unified-card"}
@@ -661,12 +661,12 @@ const TCGCard = memo(({
         {/* Magnify button overlay */}
         {onMagnifyClick && (
           <button
-            className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity magnifier-icon"
+            className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-stone-800/80 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity magnifier-icon"
             onClick={handleMagnifyClick}
             title="View card details"
             aria-label="View card details"
           >
-            <svg className="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-stone-600 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
             </svg>
           </button>
@@ -687,7 +687,7 @@ const TCGCard = memo(({
               </span>
             )}
             {normalizedCard.set?.tag && normalizedCard.number && (
-              <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-semibold rounded-full border border-gray-500">
+              <span className="px-3 py-1 bg-stone-100 text-stone-700 text-xs font-semibold rounded-full border border-stone-500">
                 {normalizedCard.set.tag.charAt(0).toUpperCase() + normalizedCard.set.tag.slice(1).toLowerCase()}-{normalizedCard.number.padStart(3, '0')}
               </span>
             )}
@@ -697,16 +697,16 @@ const TCGCard = memo(({
         /* Original Layout for TCG and Pokedex Cards */
         <div className="p-3 space-y-2">
           {/* Card Name */}
-          <h3 className="font-medium text-center text-sm truncate group-hover:text-blue-600 transition-colors">
+          <h3 className="font-medium text-center text-sm truncate group-hover:text-amber-600 transition-colors">
             {normalizedCard.name}
           </h3>
 
           {/* Set and Number Info - Simplified */}
           {(showSet || normalizedCard.number) && (
-            <div className="text-center text-xs text-gray-600 dark:text-gray-400">
+            <div className="text-center text-xs text-stone-600 dark:text-stone-400">
               <div className="flex items-center justify-center gap-2">
                 {showSet && normalizedCard.set && (
-                  <span className="font-medium bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">
+                  <span className="font-medium bg-stone-100 dark:bg-stone-700 px-2 py-0.5 rounded">
                     {normalizedCard.set.tag}
                   </span>
                 )}
@@ -783,7 +783,7 @@ const TCGCard = memo(({
           transition={{ duration: 0.2 }}
         >
           <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${
-            swipeX < -60 ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-600'
+            swipeX < -60 ? 'bg-amber-500 text-white' : 'bg-stone-300 text-stone-600'
           }`}>
             <span className="text-sm font-medium">Swipe for actions</span>
             <motion.span
@@ -816,7 +816,7 @@ const TCGCard = memo(({
             </motion.button>
             
             <motion.button
-              className="p-3 bg-blue-500 text-white rounded-full shadow-lg"
+              className="p-3 bg-amber-500 text-white rounded-full shadow-lg"
               whileTap={{ scale: 0.9 }}
               onClick={handleShare}
               title="Share card"
@@ -825,7 +825,7 @@ const TCGCard = memo(({
             </motion.button>
             
             <motion.button
-              className="p-3 bg-gray-500 text-white rounded-full shadow-lg"
+              className="p-3 bg-stone-500 text-white rounded-full shadow-lg"
               whileTap={{ scale: 0.9 }}
               onClick={handleDelete}
               title="Remove card"

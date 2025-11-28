@@ -56,7 +56,7 @@ const pokemonGames: Generation[] = [
   {
     generation: 1,
     era: "Classic Era",
-    color: "from-red-500 to-blue-500",
+    color: "from-red-500 to-amber-500",
     region: "Kanto",
     games: [
       {
@@ -90,7 +90,7 @@ const pokemonGames: Generation[] = [
   {
     generation: 2,
     era: "Golden Era",
-    color: "from-yellow-500 to-gray-400",
+    color: "from-yellow-500 to-stone-400",
     region: "Johto",
     games: [
       {
@@ -115,7 +115,7 @@ const pokemonGames: Generation[] = [
   {
     generation: 3,
     era: "Advanced Era",
-    color: "from-emerald-500 to-blue-600",
+    color: "from-emerald-500 to-amber-600",
     region: "Hoenn",
     games: [
       {
@@ -149,7 +149,7 @@ const pokemonGames: Generation[] = [
   {
     generation: 4,
     era: "Diamond Era",
-    color: "from-indigo-500 to-purple-600",
+    color: "from-amber-500 to-amber-600",
     region: "Sinnoh",
     games: [
       {
@@ -174,7 +174,7 @@ const pokemonGames: Generation[] = [
   {
     generation: 8,
     era: "Modern Era",
-    color: "from-purple-600 to-red-600",
+    color: "from-amber-600 to-red-600",
     region: "Galar",
     games: [
       {
@@ -270,7 +270,7 @@ const GamesPage: NextPage = () => {
       {/* Hero Section */}
       <div className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-red-400 via-blue-500 to-purple-600">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-400 via-amber-500 to-amber-600">
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         </div>
         
@@ -381,7 +381,7 @@ const GamesPage: NextPage = () => {
         >
           <div className="text-center mb-8">
             <h2 className="text-4xl font-bold mb-4">Discover Pokémon Games</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
               Search and filter through the complete collection of Pokémon games
             </p>
           </div>
@@ -449,7 +449,7 @@ const GamesPage: NextPage = () => {
                 className={cn(
                   "px-4 py-2 rounded-full font-medium transition-all duration-200",
                   selectedGeneration === null
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                    ? "bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-lg"
                     : createGlassStyle({
                         opacity: theme === 'dark' ? 'subtle' : 'strong',
                         blur: 'sm',
@@ -466,7 +466,7 @@ const GamesPage: NextPage = () => {
                   className={cn(
                     "px-3 py-2 rounded-full font-medium transition-all duration-200",
                     selectedGeneration === gen
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                      ? "bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-lg"
                       : createGlassStyle({
                           opacity: theme === 'dark' ? 'subtle' : 'strong',
                           blur: 'sm',
@@ -491,7 +491,7 @@ const GamesPage: NextPage = () => {
         >
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6">Game Timeline</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-stone-600 dark:text-stone-400 max-w-3xl mx-auto">
               Journey through the evolution of Pokémon games, from the iconic originals to the latest open-world adventures
             </p>
           </div>
@@ -617,7 +617,7 @@ const GamesPage: NextPage = () => {
                         )}
                       >
                         {/* Game Cover */}
-                        <div className="relative h-80 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700">
+                        <div className="relative h-80 bg-gradient-to-br from-stone-200 to-stone-300 dark:from-stone-600 dark:to-stone-700">
                           <div className="flex h-full">
                             {/* Main Cover */}
                             <div className="flex-1 relative">
@@ -690,8 +690,8 @@ const GamesPage: NextPage = () => {
                           >
                             {game.name}
                           </motion.h4>
-                          <motion.div 
-                            className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3"
+                          <motion.div
+                            className="flex items-center gap-4 text-sm text-stone-600 dark:text-stone-400 mb-3"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: gameIndex * 0.1 + 0.3 }}
@@ -705,8 +705,8 @@ const GamesPage: NextPage = () => {
                               <span>{game.year}</span>
                             </div>
                           </motion.div>
-                          <motion.p 
-                            className="text-gray-600 dark:text-gray-400 mb-4"
+                          <motion.p
+                            className="text-stone-600 dark:text-stone-400 mb-4"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: gameIndex * 0.1 + 0.4 }}

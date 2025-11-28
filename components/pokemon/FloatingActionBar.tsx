@@ -69,7 +69,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
               size="icon"
               variant="secondary"
               onClick={scrollToTop}
-              className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-gray-800/90"
+              className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-stone-800/90"
               title="Scroll to top"
             >
               <FaArrowUp />
@@ -85,7 +85,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
           <CircularButton
             size="icon"
             variant="secondary"
-            className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-gray-800/90"
+            className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-stone-800/90"
             title="Share Pokemon"
           >
             <FaShare />
@@ -115,7 +115,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
           "shadow-lg backdrop-blur-sm",
           isFavorite 
             ? "bg-red-500 hover:bg-red-600" 
-            : "bg-white/90 dark:bg-gray-800/90"
+            : "bg-white/90 dark:bg-stone-800/90"
         )}
         title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       >

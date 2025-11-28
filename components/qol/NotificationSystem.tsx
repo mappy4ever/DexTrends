@@ -133,7 +133,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onDis
           {!persistent && (
             <button
               onClick={handleDismiss}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+              className="flex-shrink-0 text-stone-400 hover:text-stone-600 dark:text-stone-500 dark:hover:text-stone-300"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -141,17 +141,17 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onDis
             </button>
           )}
         </div>
-        
+
         {/* Progress bar (from Toast component) */}
         {showProgress !== false && duration && duration > 0 && !persistent && (
-          <div className="h-1 bg-gray-200 dark:bg-gray-700 mt-3 -mx-4 -mb-4">
+          <div className="h-1 bg-stone-200 dark:bg-stone-700 mt-3 -mx-4 -mb-4">
             <div
               className={`h-full transition-all duration-75 ease-linear ${
                 type === 'SUCCESS' ? 'bg-green-500' :
                 type === 'ERROR' ? 'bg-red-500' :
                 type === 'WARNING' ? 'bg-yellow-500' :
-                type === 'INFO' ? 'bg-blue-500' :
-                'bg-gray-500'
+                type === 'INFO' ? 'bg-amber-500' :
+                'bg-stone-500'
               }`}
               style={{ width: `${progress}%` }}
             />

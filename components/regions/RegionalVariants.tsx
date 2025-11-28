@@ -185,7 +185,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
     galar: {
       title: 'Galarian Forms',
       description: 'Pokémon that evolved differently in Galar\'s unique environment',
-      icon: <BsCloudRain className="text-gray-500" />,
+      icon: <BsCloudRain className="text-stone-500" />,
       categories: ['fighting', 'poison', 'psychic', 'all'],
       variants: [
         {
@@ -387,7 +387,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
     paldea: {
       title: 'Paldean Forms',
       description: 'Ancient and unique variants found only in Paldea',
-      icon: <GiCrystalGrowth className="text-purple-500" />,
+      icon: <GiCrystalGrowth className="text-amber-500" />,
       categories: ['fighting', 'poison', 'ground', 'all'],
       variants: [
         {
@@ -419,7 +419,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
     hisui: {
       title: 'Hisuian Forms',
       description: 'Ancient forms from the Hisui region (ancient Sinnoh)',
-      icon: <GiSnowflake2 className="text-blue-400" />,
+      icon: <GiSnowflake2 className="text-amber-400" />,
       categories: ['ghost', 'fighting', 'ice', 'all'],
       variants: [
         {
@@ -609,15 +609,15 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
   const filteredVariants = variantData.variants;
 
   return (
-    <div className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+    <div className={`py-16 ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <BsArrowRepeat className="text-blue-500" />
+              <BsArrowRepeat className="text-amber-500" />
               {variantData.title}
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-stone-600 dark:text-stone-400 max-w-3xl mx-auto">
               {variantData.description}
             </p>
           </div>
@@ -697,7 +697,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                 <CardHover>
                   <div 
                     className={`relative rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 ${
-                      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                      theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                     } shadow-md hover:shadow-xl`}
                     onClick={() => {
                       if (basePokemonId) {
@@ -707,7 +707,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                     }}
                   >
                     {/* Pokemon Image */}
-                    <div className="relative h-32 w-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                    <div className="relative h-32 w-full flex items-center justify-center bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-800">
                       <Image
                         src={variant.variantImage}
                         alt={`${variantData.title.replace(' Forms', '')} ${variant.name}`}
@@ -719,10 +719,10 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                       <div className="absolute top-2 right-2">
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${
                           region.id === 'alola' ? 'from-orange-500 to-yellow-500' :
-                          region.id === 'galar' ? 'from-gray-600 to-purple-600' :
-                          region.id === 'paldea' ? 'from-red-500 to-purple-500' :
-                          region.id === 'hisui' ? 'from-blue-500 to-teal-500' :
-                          'from-gray-500 to-gray-600'
+                          region.id === 'galar' ? 'from-stone-600 to-amber-600' :
+                          region.id === 'paldea' ? 'from-red-500 to-amber-500' :
+                          region.id === 'hisui' ? 'from-amber-500 to-teal-500' :
+                          'from-stone-500 to-stone-600'
                         }`}>
                           {region.id === 'alola' ? 'A' : 
                            region.id === 'galar' ? 'G' : 
@@ -746,7 +746,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                       </div>
 
                       {/* Quick Description */}
-                      <p className="text-xs text-gray-600 dark:text-gray-400 text-center line-clamp-2">
+                      <p className="text-xs text-stone-600 dark:text-stone-400 text-center line-clamp-2">
                         {variant.description}
                       </p>
                     </div>
@@ -754,7 +754,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                     {/* Click Indicator */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black/20 transition-opacity">
                       <div className="bg-white/90 rounded-full p-2">
-                        <BsChevronRight className="w-4 h-4 text-gray-700" />
+                        <BsChevronRight className="w-4 h-4 text-stone-700" />
                       </div>
                     </div>
                   </div>

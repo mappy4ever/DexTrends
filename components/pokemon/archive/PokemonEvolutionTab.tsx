@@ -51,7 +51,7 @@ const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({
           <h3 className="font-bold text-lg">Evolution Chain</h3>
           <button
             onClick={() => setShowShinyEvolutionSprite(!showShinyEvolutionSprite)}
-            className="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 text-xs font-medium rounded-md bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600 transition-colors flex items-center gap-1.5"
             title={showShinyEvolutionSprite ? "Show default sprites" : "Show shiny sprites"}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles">
@@ -67,7 +67,7 @@ const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({
         
         {/* Eevee special case */}
         {pokemonDetails?.name === 'eevee' && (
-          <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900/40 rounded text-yellow-900 dark:text-yellow-100 text-center font-semibold">
+          <div className="mb-4 p-3 bg-amber-100 dark:bg-amber-900/40 rounded text-amber-900 dark:text-amber-100 text-center font-semibold">
             Eevee has multiple unique evolutions! Select any branch below to explore its forms.
           </div>
         )}
@@ -80,7 +80,7 @@ const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({
             formatEvolutionDetails={formatEvolutionDetails}
           />
         ) : (
-          <p className="text-center text-gray-500 dark:text-gray-400 text-sm py-4">No evolution data available.</p>
+          <p className="text-center text-stone-500 dark:text-stone-400 text-sm py-4">No evolution data available.</p>
         )}
       </div>
     </FadeIn>

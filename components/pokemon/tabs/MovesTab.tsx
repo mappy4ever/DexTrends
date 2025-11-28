@@ -38,10 +38,10 @@ const learnMethodLabels: Record<string, string> = {
 
 const learnMethodColors: Record<string, string> = {
   'level-up': 'from-green-400 to-green-500',
-  'machine': 'from-blue-400 to-blue-500',
+  'machine': 'from-amber-400 to-amber-500',
   'egg': 'from-pink-400 to-pink-500',
-  'tutor': 'from-purple-400 to-purple-500',
-  'other': 'from-gray-400 to-gray-500'
+  'tutor': 'from-amber-400 to-amber-500',
+  'other': 'from-stone-400 to-stone-500'
 };
 
 const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors }) => {
@@ -222,7 +222,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
       <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
         <div className="p-6 text-center">
           <div className="text-6xl mb-4">🔍</div>
-          <p className="text-gray-500">Pokemon data not available</p>
+          <p className="text-stone-500">Pokemon data not available</p>
         </div>
       </GlassContainer>
     );
@@ -240,7 +240,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
           <div className="p-6">
             {/* Title and Generation Selector */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                 Move Pool Analysis
               </h2>
               
@@ -248,7 +248,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                 <select
                   value={selectedGeneration}
                   onChange={(e) => setSelectedGeneration(Number(e.target.value))}
-                  className="px-4 py-2 bg-white/10 dark:bg-gray-800/50 rounded-lg border border-gray-300 dark:border-gray-600"
+                  className="px-4 py-2 bg-white/10 dark:bg-stone-800/50 rounded-lg border border-stone-300 dark:border-stone-600"
                 >
                   {[9, 8, 7, 6, 5, 4, 3, 2, 1].map(gen => (
                     <option key={gen} value={gen}>Generation {gen}</option>
@@ -260,9 +260,9 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                     type="checkbox"
                     checked={showCumulative}
                     onChange={(e) => setShowCumulative(e.target.checked)}
-                    className="rounded text-blue-500"
+                    className="rounded text-amber-500"
                   />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-stone-600 dark:text-stone-400">
                     Show all up to Gen {selectedGeneration}
                   </span>
                 </label>
@@ -271,13 +271,13 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
 
             {/* Search Bar */}
             <div className="relative mb-4">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
               <input
                 type="text"
                 placeholder="Search moves..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/10 dark:bg-gray-800/50 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 bg-white/10 dark:bg-stone-800/50 rounded-lg border border-stone-300 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
 
@@ -290,8 +290,8 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                   className={cn(
                     "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                     selectedMethod === 'all'
-                      ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white"
-                      : "bg-white/10 text-gray-600 dark:text-gray-300"
+                      ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white"
+                      : "bg-white/10 text-stone-600 dark:text-stone-300"
                   )}
                 >
                   All Methods
@@ -304,7 +304,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                       "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                       selectedMethod === method
                         ? `bg-gradient-to-r ${learnMethodColors[method]} text-white`
-                        : "bg-white/10 text-gray-600 dark:text-gray-300"
+                        : "bg-white/10 text-stone-600 dark:text-stone-300"
                     )}
                   >
                     {learnMethodLabels[method]}
@@ -319,8 +319,8 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                   className={cn(
                     "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                     selectedType === 'all'
-                      ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
-                      : "bg-white/10 text-gray-600 dark:text-gray-300"
+                      ? "bg-gradient-to-r from-stone-500 to-stone-600 text-white"
+                      : "bg-white/10 text-stone-600 dark:text-stone-300"
                   )}
                 >
                   All Types
@@ -332,8 +332,8 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                     className={cn(
                       "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                       selectedType === type
-                        ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white"
-                        : "bg-white/10 text-gray-600 dark:text-gray-300"
+                        ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white"
+                        : "bg-white/10 text-stone-600 dark:text-stone-300"
                     )}
                   >
                     {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -348,8 +348,8 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                   className={cn(
                     "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                     selectedCategory === 'all'
-                      ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
-                      : "bg-white/10 text-gray-600 dark:text-gray-300"
+                      ? "bg-gradient-to-r from-stone-500 to-stone-600 text-white"
+                      : "bg-white/10 text-stone-600 dark:text-stone-300"
                   )}
                 >
                   All Categories
@@ -361,8 +361,8 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                     className={cn(
                       "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                       selectedCategory === category
-                        ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white"
-                        : "bg-white/10 text-gray-600 dark:text-gray-300"
+                        ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white"
+                        : "bg-white/10 text-stone-600 dark:text-stone-300"
                     )}
                   >
                     {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -385,15 +385,15 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
         <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
-                <FaBookOpen className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
+                <FaBookOpen className="w-5 h-5 text-amber-400" />
               </div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-blue-400">Total Moves</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400">Total Moves</h3>
             </div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+            <div className="text-3xl font-bold text-stone-800 dark:text-stone-100">
               {stats.total}
             </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-xs text-stone-600 dark:text-stone-400 mt-1">
               Available moves
             </p>
           </div>
@@ -408,10 +408,10 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
               </div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-orange-400">Physical</h3>
             </div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+            <div className="text-3xl font-bold text-stone-800 dark:text-stone-100">
               {stats.physical}
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+            <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2 mt-2">
               <div 
                 className="bg-gradient-to-r from-orange-400 to-orange-500 h-2 rounded-full"
                 style={{ width: `${stats.total > 0 ? (stats.physical / stats.total) * 100 : 0}%` }}
@@ -424,17 +424,17 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
         <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
-                <BsLightning className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
+                <BsLightning className="w-5 h-5 text-amber-400" />
               </div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-blue-400">Special</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400">Special</h3>
             </div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+            <div className="text-3xl font-bold text-stone-800 dark:text-stone-100">
               {stats.special}
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-              <div 
-                className="bg-gradient-to-r from-blue-400 to-blue-500 h-2 rounded-full"
+            <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2 mt-2">
+              <div
+                className="bg-gradient-to-r from-amber-400 to-amber-500 h-2 rounded-full"
                 style={{ width: `${stats.total > 0 ? (stats.special / stats.total) * 100 : 0}%` }}
               />
             </div>
@@ -445,17 +445,17 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
         <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-500/20 to-gray-600/10 flex items-center justify-center">
-                <BsShield className="w-5 h-5 text-gray-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center">
+                <BsShield className="w-5 h-5 text-stone-400" />
               </div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Status</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-stone-400">Status</h3>
             </div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+            <div className="text-3xl font-bold text-stone-800 dark:text-stone-100">
               {stats.status}
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-              <div 
-                className="bg-gradient-to-r from-gray-400 to-gray-500 h-2 rounded-full"
+            <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2 mt-2">
+              <div
+                className="bg-gradient-to-r from-stone-400 to-stone-500 h-2 rounded-full"
                 style={{ width: `${stats.total > 0 ? (stats.status / stats.total) * 100 : 0}%` }}
               />
             </div>
@@ -473,12 +473,12 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
           <div className="p-6">
             {loading ? (
               <div className="text-center py-8">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                <p className="mt-4 text-gray-500">Loading moves...</p>
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+                <p className="mt-4 text-stone-500">Loading moves...</p>
               </div>
             ) : processedMoves.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500">No moves found matching your filters</p>
+                <p className="text-stone-500">No moves found matching your filters</p>
               </div>
             ) : selectedMethod === 'all' ? (
               // Grouped view
@@ -493,11 +493,11 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                       <div className="flex items-center justify-between mb-4">
                         <h3 className={cn(
                           "text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent",
-                          learnMethodColors[method] || 'from-gray-400 to-gray-500'
+                          learnMethodColors[method] || 'from-stone-400 to-stone-500'
                         )}>
                           {learnMethodLabels[method] || method}
                         </h3>
-                        <span className="text-sm bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full">
+                        <span className="text-sm bg-stone-200 dark:bg-stone-700 px-3 py-1 rounded-full">
                           {methodMoves.length} moves
                         </span>
                       </div>
@@ -558,12 +558,12 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, moveData, expanded, onToggle 
   return (
     <motion.div
       layout
-      className="bg-white/5 dark:bg-gray-800/50 rounded-lg p-4 hover:bg-white/10 dark:hover:bg-gray-700/50 transition-all cursor-pointer"
+      className="bg-white/5 dark:bg-stone-800/50 rounded-lg p-4 hover:bg-white/10 dark:hover:bg-stone-700/50 transition-all cursor-pointer"
       onClick={onToggle}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <h4 className="font-semibold text-stone-900 dark:text-stone-100 mb-2">
             {formatMoveName(move.move_name)}
           </h4>
           
@@ -582,7 +582,7 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, moveData, expanded, onToggle 
           </div>
 
           {moveData && (
-            <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-3 text-xs text-stone-600 dark:text-stone-400">
               {moveData.power && (
                 <span>Power: {moveData.power}</span>
               )}
@@ -598,9 +598,9 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, moveData, expanded, onToggle 
         
         <div className="ml-2">
           {expanded ? (
-            <BsChevronUp className="w-4 h-4 text-gray-400" />
+            <BsChevronUp className="w-4 h-4 text-stone-400" />
           ) : (
-            <BsChevronDown className="w-4 h-4 text-gray-400" />
+            <BsChevronDown className="w-4 h-4 text-stone-400" />
           )}
         </div>
       </div>
@@ -612,13 +612,13 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, moveData, expanded, onToggle 
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700"
+            className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700"
           >
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-stone-600 dark:text-stone-400">
               {'No description available'}
             </p>
             {moveData.priority !== 0 && (
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+              <p className="text-xs text-stone-500 dark:text-stone-500 mt-2">
                 Priority: {moveData.priority > 0 ? '+' : ''}{moveData.priority}
               </p>
             )}

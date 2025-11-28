@@ -279,7 +279,7 @@ export default function VoiceSearchInterface({
 
   if (!isEnabled) {
     return (
-      <div className="text-center text-gray-500 dark:text-gray-400">
+      <div className="text-center text-stone-500 dark:text-stone-400">
         Voice search not available
       </div>
     );
@@ -295,7 +295,7 @@ export default function VoiceSearchInterface({
           className={`relative p-6 rounded-full border-4 transition-all duration-300 ${
             isListening
               ? 'bg-red-500 border-red-400 text-white shadow-lg scale-110'
-              : 'bg-blue-500 hover:bg-blue-600 border-blue-400 text-white shadow-md hover:scale-105'
+              : 'bg-amber-500 hover:bg-amber-600 border-amber-400 text-white shadow-md hover:scale-105'
           } ${
             isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'
           }`}
@@ -324,7 +324,7 @@ export default function VoiceSearchInterface({
         {/* Status Text */}
         <div className="text-center">
           {isProcessing && (
-            <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400">
+            <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-400">
               <FaSpinner className="animate-spin" />
               <span>Processing...</span>
             </div>
@@ -338,7 +338,7 @@ export default function VoiceSearchInterface({
           )}
           
           {!isListening && !isProcessing && (
-            <span className="text-gray-600 dark:text-gray-400">
+            <span className="text-stone-600 dark:text-stone-400">
               Click to start voice search
             </span>
           )}
@@ -346,20 +346,20 @@ export default function VoiceSearchInterface({
 
         {/* Transcript Display */}
         {(transcript || interimTranscript) && (
-          <div className="w-full max-w-md p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border">
-            <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+          <div className="w-full max-w-md p-4 bg-stone-50 dark:bg-stone-800 rounded-lg border">
+            <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">
               Voice Input:
             </div>
-            <div className="text-gray-900 dark:text-white">
+            <div className="text-stone-900 dark:text-white">
               {transcript && (
                 <span className="font-medium">{transcript}</span>
               )}
               {interimTranscript && (
-                <span className="text-gray-500 italic">{interimTranscript}</span>
+                <span className="text-stone-500 italic">{interimTranscript}</span>
               )}
             </div>
             {confidence > 0 && (
-              <div className="text-xs text-gray-400 mt-1">
+              <div className="text-xs text-stone-400 mt-1">
                 Confidence: {Math.round(confidence * 100)}%
               </div>
             )}
@@ -376,11 +376,11 @@ export default function VoiceSearchInterface({
         )}
 
         {/* Voice Commands Help */}
-        <div className="w-full max-w-md p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-          <div className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
+        <div className="w-full max-w-md p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+          <div className="text-sm font-medium text-amber-900 dark:text-amber-100 mb-2">
             Voice Commands:
           </div>
-          <div className="text-xs text-blue-700 dark:text-blue-300 space-y-1">
+          <div className="text-xs text-amber-700 dark:text-amber-300 space-y-1">
             <div>"Find Charizard"</div>
             <div>"Show rare cards"</div>
             <div>"Search fire type"</div>

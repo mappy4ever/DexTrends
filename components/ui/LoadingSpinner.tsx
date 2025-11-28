@@ -16,10 +16,10 @@ const spinnerSizes = {
 };
 
 const spinnerColors = {
-  primary: 'border-purple-500 border-r-transparent dark:border-purple-400',
+  primary: 'border-amber-500 border-r-transparent dark:border-amber-400',
   white: 'border-white border-r-transparent',
-  gray: 'border-gray-400 border-r-transparent dark:border-gray-500',
-  purple: 'border-purple-600 border-r-transparent dark:border-purple-500',
+  gray: 'border-stone-400 border-r-transparent dark:border-stone-500',
+  purple: 'border-amber-600 border-r-transparent dark:border-amber-500',
 };
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
@@ -50,7 +50,7 @@ export const PageLoadingSpinner: React.FC<{ message?: string }> = ({ message }) 
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
       <LoadingSpinner size="xl" />
       {message && (
-        <p className="text-sm text-gray-600 dark:text-gray-400">{message}</p>
+        <p className="text-sm text-stone-600 dark:text-stone-400">{message}</p>
       )}
     </div>
   );

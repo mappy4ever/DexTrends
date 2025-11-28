@@ -99,12 +99,12 @@ export const SmartTooltip: React.FC<SmartTooltipProps> = ({
       {isVisible && (
         <div
           ref={tooltipRef}
-          className={`absolute z-50 px-3 py-2 text-sm text-white bg-gray-900 dark:bg-gray-700 rounded-lg shadow-lg whitespace-nowrap max-w-xs ${getPositionClasses()}`}
+          className={`absolute z-50 px-3 py-2 text-sm text-white bg-stone-900 dark:bg-stone-700 rounded-lg shadow-lg whitespace-nowrap max-w-xs ${getPositionClasses()}`}
           style={{ pointerEvents: 'none' }}
         >
           {content}
           {/* Arrow */}
-          <div className={`absolute w-2 h-2 bg-gray-900 dark:bg-gray-700 transform rotate-45 ${
+          <div className={`absolute w-2 h-2 bg-stone-900 dark:bg-stone-700 transform rotate-45 ${
             position === 'top' ? 'top-full left-1/2 -translate-x-1/2 -mt-1' :
             position === 'bottom' ? 'bottom-full left-1/2 -translate-x-1/2 -mb-1' :
             position === 'left' ? 'left-full top-1/2 -translate-y-1/2 -ml-1' :
@@ -238,15 +238,15 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
       
       {/* Help mode indicator */}
       {helpMode && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg">
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-amber-600 text-white px-4 py-2 rounded-lg shadow-lg">
           <div className="flex items-center space-x-2">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>Help Mode Active - Click elements to learn more</span>
-            <button 
+            <button
               onClick={() => setHelpMode(false)}
-              className="ml-2 text-white hover:text-gray-200">
+              className="ml-2 text-white hover:text-stone-200">
 
               ×
             </button>
@@ -257,40 +257,40 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
       {/* Help modal */}
       {helpMode && currentHelp && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full max-h-80 overflow-y-auto">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl max-w-lg w-full max-h-80 overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
                   {currentHelp.title}
                 </h2>
-                <button 
+                <button
                   onClick={() => setHelpMode(false)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  className="text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200">
 
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              
+
               <div className="space-y-4">
                 {currentHelp.sections.map((section, index) => (
                   <div key={index}>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">
+                    <h3 className="font-semibold text-stone-800 dark:text-stone-200 mb-1">
                       {section.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    <p className="text-stone-600 dark:text-stone-300 text-sm">
                       {section.content}
                     </p>
                   </div>
                 ))}
               </div>
-              
-              <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+
+              <div className="mt-6 pt-4 border-t border-stone-200 dark:border-stone-700">
+                <h3 className="font-semibold text-stone-800 dark:text-stone-200 mb-2">
                   Keyboard Shortcuts
                 </h3>
-                <div className="grid grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <div className="grid grid-cols-2 gap-2 text-sm text-stone-600 dark:text-stone-300">
                   <div>Ctrl+K: Search</div>
                   <div>F1: Help</div>
                   <div>Ctrl+Shift+P: Pokedex</div>
@@ -320,9 +320,9 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
             <button
               onClick={toggleHelpMode}
               className={`w-12 h-12 rounded-full shadow-lg transition-colors flex items-center justify-center ${
-                helpMode 
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                  : 'bg-gray-600 hover:bg-gray-700 text-white dark:bg-gray-700 dark:hover:bg-gray-600'
+                helpMode
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  : 'bg-stone-600 hover:bg-stone-700 text-white dark:bg-stone-700 dark:hover:bg-stone-600'
               }`}
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

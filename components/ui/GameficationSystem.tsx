@@ -134,7 +134,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'collection_starter',
         name: 'Collection Starter',
         description: 'Add 10 cards to your collection',
-        icon: <BsCollection className="text-blue-500" />,
+        icon: <BsCollection className="text-amber-500" />,
         points: 100,
         rarity: 'common',
         unlocked: true,
@@ -146,7 +146,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'social_butterfly',
         name: 'Social Butterfly',
         description: 'Make 5 friends in the community',
-        icon: <BsPeople className="text-purple-500" />,
+        icon: <BsPeople className="text-amber-500" />,
         points: 200,
         rarity: 'uncommon',
         unlocked: true,
@@ -203,7 +203,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'early_adopter',
         name: 'Early Adopter',
         description: 'Join during beta period',
-        icon: <GiStarMedal className="text-indigo-500" />,
+        icon: <GiStarMedal className="text-amber-500" />,
         points: 1500,
         rarity: 'legendary',
         unlocked: true,
@@ -230,7 +230,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'daily_collection',
         name: 'Collection Curator',
         description: 'Add 2 cards to your collection',
-        icon: <BsCollection className="text-blue-500" />,
+        icon: <BsCollection className="text-amber-500" />,
         reward: { coins: 75, experience: 30 },
         progress: 2,
         maxProgress: 2,
@@ -294,12 +294,12 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
 
   const getRarityColor = (rarity: Achievement['rarity']) => {
     switch (rarity) {
-      case 'common': return 'text-gray-600 bg-gray-100 dark:bg-gray-800';
+      case 'common': return 'text-stone-600 bg-stone-100 dark:bg-stone-800';
       case 'uncommon': return 'text-green-600 bg-green-100 dark:bg-green-900';
-      case 'rare': return 'text-blue-600 bg-blue-100 dark:bg-blue-900';
-      case 'epic': return 'text-purple-600 bg-purple-100 dark:bg-purple-900';
+      case 'rare': return 'text-amber-600 bg-amber-100 dark:bg-amber-900';
+      case 'epic': return 'text-amber-600 bg-amber-100 dark:bg-amber-900';
       case 'legendary': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';
-      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-800';
+      default: return 'text-stone-600 bg-stone-100 dark:bg-stone-800';
     }
   };
 
@@ -340,7 +340,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
   return (
     <div className="gamification-system space-y-6">
       {/* User Profile Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-lg p-6">
+      <div className="bg-gradient-to-r from-amber-600 to-amber-600 text-white rounded-lg shadow-lg p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center space-x-4 mb-4 lg:mb-0">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
@@ -348,7 +348,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
             </div>
             <div>
               <h2 className="text-2xl font-bold">Level {userProfile.level}</h2>
-              <p className="text-purple-100">{userProfile.title}</p>
+              <p className="text-amber-100">{userProfile.title}</p>
               <div className="flex items-center space-x-4 mt-2 text-sm">
                 <div className="flex items-center space-x-1">
                   <GiTwoCoins className="text-yellow-300" />
@@ -367,7 +367,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
           </div>
 
           <div className="text-right">
-            <div className="text-sm text-purple-100 mb-1">Experience</div>
+            <div className="text-sm text-amber-100 mb-1">Experience</div>
             <div className="text-lg font-bold mb-2">
               {userProfile.experience.toLocaleString()} / {userProfile.experienceToNext.toLocaleString()} XP
             </div>
@@ -381,7 +381,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         </div>
       </div>
       {/* Navigation Tabs */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+      <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg">
         {[
           { id: 'overview' as const, label: 'Overview', icon: <FaTrophy /> },
           { id: 'achievements' as const, label: 'Achievements', icon: <FaMedal /> },
@@ -393,8 +393,8 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${
               activeTab === tab.id
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             {tab.icon}
@@ -406,17 +406,17 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
       {activeTab === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Stats */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
               Your Stats
             </h3>
             <div className="grid grid-cols-2 gap-4">
               {Object.entries(userProfile.stats).map(([key, value]) => (
-                <div key={key} className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-xl font-bold text-gray-900 dark:text-white">
+                <div key={key} className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                  <div className="text-xl font-bold text-stone-900 dark:text-white">
                     {typeof value === 'number' && value > 1000 ? value.toLocaleString() : value}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">
+                  <div className="text-xs text-stone-500 dark:text-stone-400 capitalize">
                     {key.replace(/([A-Z])/g, ' $1').trim()}
                   </div>
                 </div>
@@ -425,25 +425,25 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
               Recent Activity
             </h3>
             <div className="space-y-3">
               {recentActivity.map(activity => (
-                <div key={activity.id} className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div key={activity.id} className="flex items-center space-x-3 p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    activity.type === 'achievement' ? 'bg-yellow-100 text-yellow-600' :
-                    activity.type === 'level_up' ? 'bg-purple-100 text-purple-600' :
-                    'bg-blue-100 text-blue-600'
+                    activity.type === 'achievement' ? 'bg-stone-200 text-stone-700 dark:bg-stone-700 dark:text-stone-200' :
+                    activity.type === 'level_up' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400' :
+                    'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400'
                   }`}>
                     {activity.type === 'achievement' ? <FaTrophy className="w-4 h-4" /> :
                      activity.type === 'level_up' ? <FaStar className="w-4 h-4" /> :
                      <FaGift className="w-4 h-4" />}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm text-gray-900 dark:text-white">{activity.message}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-stone-900 dark:text-white">{activity.message}</p>
+                    <p className="text-xs text-stone-500 dark:text-stone-400">
                       +{activity.points} points • {formatTimeAgo(activity.timestamp)}
                     </p>
                   </div>
@@ -457,38 +457,38 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
       {activeTab === 'achievements' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {achievements.map(achievement => (
-            <div key={achievement.id} className={`bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 ${
+            <div key={achievement.id} className={`bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6 ${
               !achievement.unlocked ? 'opacity-75' : ''
             }`}>
               <div className="flex items-start space-x-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                  achievement.unlocked ? getRarityColor(achievement.rarity) : 'bg-gray-200 text-gray-400'
+                  achievement.unlocked ? getRarityColor(achievement.rarity) : 'bg-stone-200 text-stone-400'
                 }`}>
                   {achievement.unlocked ? achievement.icon : <FaLock />}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
-                    <h4 className="font-semibold text-gray-900 dark:text-white">
+                    <h4 className="font-semibold text-stone-900 dark:text-white">
                       {achievement.name}
                     </h4>
                     <span className={`px-2 py-1 text-xs rounded-full capitalize ${getRarityColor(achievement.rarity)}`}>
                       {achievement.rarity}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
                     {achievement.description}
                   </p>
-                  
+
                   {/* Progress Bar */}
                   <div className="mb-2">
-                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 mb-1">
                       <span>Progress</span>
                       <span>{Math.min(achievement.progress, achievement.maxProgress)} / {achievement.maxProgress}</span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                      <div 
+                    <div className="w-full bg-stone-200 dark:bg-stone-600 rounded-full h-2">
+                      <div
                         className={`h-2 rounded-full transition-all duration-300 ${
-                          achievement.unlocked ? 'bg-green-500' : 'bg-blue-500'
+                          achievement.unlocked ? 'bg-green-500' : 'bg-amber-500'
                         }`}
                         style={{ width: `${Math.min((achievement.progress / achievement.maxProgress) * 100, 100)}%` }}
                       />
@@ -496,7 +496,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    <span className="text-sm font-medium text-stone-900 dark:text-white">
                       {achievement.points} points
                     </span>
                     {achievement.unlocked ? (
@@ -504,7 +504,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                         Unlocked {new Date(achievement.unlockedAt!).toLocaleDateString()}
                       </span>
                     ) : (
-                      <FaLock className="text-gray-400" />
+                      <FaLock className="text-stone-400" />
                     )}
                   </div>
                 </div>
@@ -516,39 +516,39 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
       {/* Daily Tasks Tab */}
       {activeTab === 'daily' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
                 Daily Tasks
               </h3>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-stone-500 dark:text-stone-400">
                 Resets in {Math.floor(Math.random() * 20 + 4)} hours
               </div>
             </div>
 
             <div className="space-y-4">
               {dailyTasks.map(task => (
-                <div key={task.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <div key={task.id} className="border border-stone-200 dark:border-stone-700 rounded-lg p-4">
                   <div className="flex items-center space-x-4">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      task.completed ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'
+                      task.completed ? 'bg-green-100 text-green-600' : 'bg-stone-100 text-stone-600'
                     }`}>
                       {task.completed ? <FaUnlock /> : task.icon}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900 dark:text-white">{task.name}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{task.description}</p>
-                      
+                      <h4 className="font-medium text-stone-900 dark:text-white">{task.name}</h4>
+                      <p className="text-sm text-stone-600 dark:text-stone-400">{task.description}</p>
+
                       {/* Progress */}
                       <div className="mt-2">
-                        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                        <div className="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 mb-1">
                           <span>Progress</span>
                           <span>{task.progress} / {task.maxProgress}</span>
                         </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                          <div 
+                        <div className="w-full bg-stone-200 dark:bg-stone-600 rounded-full h-2">
+                          <div
                             className={`h-2 rounded-full ${
-                              task.completed ? 'bg-green-500' : 'bg-blue-500'
+                              task.completed ? 'bg-green-500' : 'bg-amber-500'
                             }`}
                             style={{ width: `${(task.progress / task.maxProgress) * 100}%` }}
                           />
@@ -556,7 +556,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm font-medium text-stone-900 dark:text-white">
                         {task.reward.coins && (
                           <div className="flex items-center space-x-1">
                             <GiTwoCoins className="text-yellow-500" />
@@ -565,7 +565,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                         )}
                         {task.reward.experience && (
                           <div className="flex items-center space-x-1 mt-1">
-                            <FaStar className="text-purple-500" />
+                            <FaStar className="text-amber-500" />
                             <span>{task.reward.experience} XP</span>
                           </div>
                         )}
@@ -588,23 +588,23 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
       )}
       {/* Leaderboard Tab */}
       {activeTab === 'leaderboard' && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+        <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-6">
             Global Leaderboard
           </h3>
-          
+
           <div className="space-y-3">
             {leaderboard.map(player => (
               <div key={player.rank} className={`flex items-center space-x-4 p-4 rounded-lg ${
-                player.username === 'YourUsername' 
-                  ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'
-                  : 'bg-gray-50 dark:bg-gray-700'
+                player.username === 'YourUsername'
+                  ? 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800'
+                  : 'bg-stone-50 dark:bg-stone-700'
               }`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                   player.rank === 1 ? 'bg-yellow-500 text-white' :
-                  player.rank === 2 ? 'bg-gray-400 text-white' :
+                  player.rank === 2 ? 'bg-stone-400 text-white' :
                   player.rank === 3 ? 'bg-orange-600 text-white' :
-                  'bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-gray-300'
+                  'bg-stone-200 text-stone-700 dark:bg-stone-600 dark:text-stone-300'
                 }`}>
                   {player.rank}
                 </div>
@@ -613,21 +613,21 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                   src={player.avatar} 
                   alt={player.username}
                   className="w-10 h-10 rounded-full object-cover"  />
-                
+
                 <div className="flex-1">
-                  <div className="font-medium text-gray-900 dark:text-white">
+                  <div className="font-medium text-stone-900 dark:text-white">
                     {player.username}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-stone-500 dark:text-stone-400">
                     Level {player.level}
                   </div>
                 </div>
-                
+
                 <div className="text-right">
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-stone-900 dark:text-white">
                     {player.points.toLocaleString()}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-stone-500 dark:text-stone-400">
                     points
                   </div>
                 </div>

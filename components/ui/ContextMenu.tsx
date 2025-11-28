@@ -97,7 +97,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
 
           {/* Center point */}
           <motion.div
-            className="absolute w-4 h-4 bg-purple-500 rounded-full"
+            className="absolute w-4 h-4 bg-amber-500 rounded-full"
             style={{ left: position.x - 8, top: position.y - 8 }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -116,8 +116,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                 key={item.id}
                 className={`absolute w-14 h-14 rounded-full shadow-lg flex items-center justify-center ${
                   item.disabled
-                    ? 'bg-gray-200 text-gray-400'
-                    : item.color || 'bg-white hover:bg-gray-50'
+                    ? 'bg-stone-200 text-stone-400'
+                    : item.color || 'bg-white hover:bg-stone-50'
                 } transition-colors`}
                 style={{ left: x - 28, top: y - 28 }}
                 initial={{ scale: 0, opacity: 0 }}
@@ -163,7 +163,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     <AnimatePresence>
       <motion.div
         ref={menuRef}
-        className="fixed z-50 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+        className="fixed z-50 bg-white dark:bg-stone-800 rounded-lg shadow-xl border border-stone-200 dark:border-stone-700 overflow-hidden"
         style={{ left: adjustedPosition.x, top: adjustedPosition.y }}
         initial={{ opacity: 0, scale: 0.8, y: -10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -176,8 +176,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
               key={item.id}
               className={`w-full px-4 py-3 flex items-center gap-3 text-left transition-colors ${
                 item.disabled
-                  ? 'text-gray-400 bg-gray-50 dark:bg-gray-900'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'text-stone-400 bg-stone-50 dark:bg-stone-900'
+                  : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700'
               }`}
               initial={{ opacity: 0, x: -20 }}
               animate={{

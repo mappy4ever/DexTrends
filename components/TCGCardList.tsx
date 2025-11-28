@@ -108,17 +108,17 @@ const TCGCardItem = memo<TCGCardProps>(({
     const typeColors: Record<string, string> = {
       'grass': 'from-green-100/60 via-green-50/40 via-70% to-transparent',
       'fire': 'from-red-100/60 via-orange-50/40 via-70% to-transparent',
-      'water': 'from-blue-100/60 via-cyan-50/40 via-70% to-transparent',
+      'water': 'from-amber-100/60 via-cyan-50/40 via-70% to-transparent',
       'lightning': 'from-yellow-100/60 via-amber-50/40 via-70% to-transparent',
       'electric': 'from-yellow-100/60 via-amber-50/40 via-70% to-transparent',
-      'psychic': 'from-purple-100/60 via-pink-50/40 via-70% to-transparent',
+      'psychic': 'from-amber-100/60 via-pink-50/40 via-70% to-transparent',
       'fighting': 'from-orange-100/60 via-red-50/40 via-70% to-transparent',
-      'darkness': 'from-purple-100/60 via-gray-50/40 via-70% to-transparent',
-      'dark': 'from-purple-100/60 via-gray-50/40 via-70% to-transparent',
-      'metal': 'from-gray-100/60 via-slate-50/40 via-70% to-transparent',
-      'steel': 'from-gray-100/60 via-slate-50/40 via-70% to-transparent',
-      'dragon': 'from-indigo-100/60 via-purple-50/40 via-70% to-transparent',
-      'colorless': 'from-gray-50/60 via-gray-50/40 via-70% to-transparent',
+      'darkness': 'from-amber-100/60 via-stone-50/40 via-70% to-transparent',
+      'dark': 'from-amber-100/60 via-stone-50/40 via-70% to-transparent',
+      'metal': 'from-stone-100/60 via-stone-50/40 via-70% to-transparent',
+      'steel': 'from-stone-100/60 via-stone-50/40 via-70% to-transparent',
+      'dragon': 'from-amber-100/60 via-amber-50/40 via-70% to-transparent',
+      'colorless': 'from-stone-50/60 via-stone-50/40 via-70% to-transparent',
       'fairy': 'from-pink-100/60 via-rose-50/40 via-70% to-transparent',
     };
     
@@ -651,7 +651,7 @@ export default function TCGCardList(props: TCGCardListProps) {
         <div className="min-h-96 flex items-center justify-center p-8">
           <div className="glass-medium rounded-xl p-6 text-center max-w-md">
             <div className="text-4xl mb-4">🎴</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Unable to load TCG cards</h3>
+            <h3 className="text-lg font-semibold text-stone-900 mb-2">Unable to load TCG cards</h3>
             <p className="text-stone-600 mb-4">There was an error loading the Trading Card Game cards. Please try refreshing the page.</p>
             <button
               onClick={() => window.location.reload()}

@@ -27,12 +27,12 @@ interface BadgeCollectionProps {
 
 const BadgeCollection: React.FC<BadgeCollectionProps> = ({ region, gymLeaders, theme }) => {
   return (
-    <div className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
+    <div className={`py-20 ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'}`}>
       <div className="max-w-7xl mx-auto px-8">
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-5xl font-bold mb-4">Badge Collection</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-stone-600 dark:text-stone-400">
               Collect all {gymLeaders.length} badges to challenge the Pokémon League
             </p>
           </div>
@@ -45,7 +45,7 @@ const BadgeCollection: React.FC<BadgeCollectionProps> = ({ region, gymLeaders, t
               <div className="text-center group">
                 <Scale>
                   <div className={`relative w-24 h-24 mx-auto mb-3 rounded-full ${
-                    theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                    theme === 'dark' ? 'bg-stone-700' : 'bg-white'
                   } shadow-lg group-hover:shadow-2xl transition-all duration-300 p-4`}>
                     <Image
                       src={getBadgeImage(leader.badge, region.id)}
@@ -77,14 +77,14 @@ const BadgeCollection: React.FC<BadgeCollectionProps> = ({ region, gymLeaders, t
                   </div>
                 </Scale>
                 <h3 className="font-semibold text-sm">{leader.badge}</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">{leader.name}</p>
+                <p className="text-xs text-stone-600 dark:text-stone-400">{leader.name}</p>
               </div>
             </SlideUp>
           ))}
         </StaggeredChildren>
 
         {/* Progress Bar */}
-        <div className={`rounded-full h-4 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} overflow-hidden`}>
+        <div className={`rounded-full h-4 ${theme === 'dark' ? 'bg-stone-700' : 'bg-stone-200'} overflow-hidden`}>
           <div 
             className={`h-full bg-gradient-to-r ${region.color} transition-all duration-1000 ease-out`}
             style={{ width: '100%' }}
@@ -99,7 +99,7 @@ const BadgeCollection: React.FC<BadgeCollectionProps> = ({ region, gymLeaders, t
                 All Badges Collected!
               </span>
             </p>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-stone-600 dark:text-stone-400 mt-2">
               You're ready to challenge the Elite Four
             </p>
           </FadeIn>

@@ -41,7 +41,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className={`rounded-2xl p-8 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}
+        className={`rounded-2xl p-8 ${theme === 'dark' ? 'bg-stone-900' : 'bg-stone-50'}`}
       >
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Column - Stats and Info */}
@@ -49,10 +49,10 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
             {/* Description */}
             <div>
               <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
-                <BsBookmark className="text-blue-500" />
+                <BsBookmark className="text-amber-500" />
                 Pokédex Entry
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
                 {starter.description}
               </p>
             </div>
@@ -69,7 +69,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
                     <span className="w-16 text-sm font-medium capitalize">
                       {stat.replace('spAtk', 'Sp.Atk').replace('spDef', 'Sp.Def')}
                     </span>
-                    <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-4 relative overflow-hidden">
+                    <div className="flex-1 bg-stone-200 dark:bg-stone-700 rounded-full h-4 relative overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${(value / 255) * 100}%` }}
@@ -90,7 +90,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
             {/* Abilities */}
             <div>
               <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
-                <GiSparkles className="text-purple-500" />
+                <GiSparkles className="text-amber-500" />
                 Abilities
               </h3>
               <div className="space-y-2">
@@ -98,15 +98,15 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
                   <div 
                     key={ability}
                     className={`p-3 rounded-lg ${
-                      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                    } ${idx === 1 ? 'border-2 border-purple-500' : ''}`}
+                      theme === 'dark' ? 'bg-stone-800' : 'bg-white'
+                    } ${idx === 1 ? 'border-2 border-amber-500' : ''}`}
                   >
                     <p className="font-semibold flex items-center gap-2">
                       {ability}
-                      {idx === 1 && <span className="text-xs text-purple-500">Hidden</span>}
+                      {idx === 1 && <span className="text-xs text-amber-500">Hidden</span>}
                     </p>
                     {idx === 1 && starter.hiddenAbility && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
                         {starter.hiddenAbility.split(' - ')[1]}
                       </p>
                     )}
@@ -120,7 +120,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
               <h3 className="text-xl font-bold mb-3">Gender Ratio</h3>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <BsGenderMale className="text-blue-500" />
+                  <BsGenderMale className="text-amber-500" />
                   <span>{starter.genderRatio.male}%</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -144,8 +144,8 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
                   <React.Fragment key={evo.name}>
                     {idx > 0 && (
                       <div className="flex flex-col items-center">
-                        <BsArrowRight className="text-2xl text-gray-400" />
-                        <span className="text-xs text-gray-500">Lv.{evo.level}</span>
+                        <BsArrowRight className="text-2xl text-stone-400" />
+                        <span className="text-xs text-stone-500">Lv.{evo.level}</span>
                       </div>
                     )}
                     <div 
@@ -164,7 +164,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
                           className="object-contain group-hover:brightness-110 transition-all"
                         />
                       </div>
-                      <p className="font-semibold text-sm group-hover:text-blue-500 transition-colors">{evo.name}</p>
+                      <p className="font-semibold text-sm group-hover:text-amber-500 transition-colors">{evo.name}</p>
                       <div className="flex flex-wrap gap-1 justify-center mt-1">
                         {evo.types?.map((type, typeIdx) => (
                           <TypeBadge key={typeIdx} type={type} size="xs" />
@@ -177,7 +177,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
 
               {/* Mega Evolution / Gigantamax */}
               {(starter.megaEvolution || starter.gigantamax) && (
-                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30">
+                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-amber-500/20 to-pink-500/20 border border-amber-500/30">
                   <p className="text-sm font-semibold text-center">
                     {starter.megaEvolution ? 'Mega Evolution Available!' : 'Gigantamax Form Available!'}
                   </p>
@@ -196,7 +196,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
                   {starter.strengths.map((strength, idx) => (
                     <li key={idx} className="text-sm flex items-start gap-2">
                       <span className="text-green-500 mt-1">•</span>
-                      <span className="text-gray-600 dark:text-gray-300">{strength}</span>
+                      <span className="text-stone-600 dark:text-stone-300">{strength}</span>
                     </li>
                   ))}
                 </ul>
@@ -210,7 +210,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
                   {starter.weaknesses.map((weakness, idx) => (
                     <li key={idx} className="text-sm flex items-start gap-2">
                       <span className="text-red-500 mt-1">•</span>
-                      <span className="text-gray-600 dark:text-gray-300">{weakness}</span>
+                      <span className="text-stone-600 dark:text-stone-300">{weakness}</span>
                     </li>
                   ))}
                 </ul>
@@ -218,26 +218,26 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
             </div>
 
             {/* Competitive Info */}
-            <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
               <h4 className="font-bold mb-3 flex items-center gap-2">
                 <BsTrophy className="text-yellow-500" />
                 Competitive Information
               </h4>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <p className="text-gray-500">Role</p>
+                  <p className="text-stone-500">Role</p>
                   <p className="font-semibold">{starter.competitiveRole}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Tier</p>
+                  <p className="text-stone-500">Tier</p>
                   <p className="font-semibold">{starter.tier}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Signature Move</p>
+                  <p className="text-stone-500">Signature Move</p>
                   <p className="font-semibold">{starter.signature}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Notable Users</p>
+                  <p className="text-stone-500">Notable Users</p>
                   <p className="font-semibold">{starter.notableTrainers[0]}</p>
                 </div>
               </div>
@@ -251,7 +251,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
               </h4>
               <ul className="space-y-2">
                 {starter.funFacts.map((fact, idx) => (
-                  <li key={idx} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
+                  <li key={idx} className="text-sm text-stone-600 dark:text-stone-300 flex items-start gap-2">
                     <BsStars className="text-yellow-500 mt-1 flex-shrink-0" />
                     {fact}
                   </li>

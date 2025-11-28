@@ -41,60 +41,60 @@ const rarityConfig: Record<string, {
   'Common': {
     symbol: <CircleSymbol className="w-full h-full" />,
     label: 'Common',
-    color: 'text-gray-600',
-    bgColor: 'bg-gray-50',
-    borderColor: 'border-gray-300'
+    color: 'text-stone-600',
+    bgColor: 'bg-stone-50',
+    borderColor: 'border-stone-300'
   },
   'Uncommon': {
     symbol: <DiamondSymbol className="w-full h-full" />,
     label: 'Uncommon',
-    color: 'text-gray-700',
-    bgColor: 'bg-gray-100',
-    borderColor: 'border-gray-400'
+    color: 'text-stone-700',
+    bgColor: 'bg-stone-100',
+    borderColor: 'border-stone-400'
   },
   'Rare': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Rare',
-    color: 'text-gray-800',
-    bgColor: 'bg-gray-100',
-    borderColor: 'border-gray-500'
+    color: 'text-stone-800',
+    bgColor: 'bg-stone-100',
+    borderColor: 'border-stone-500'
   },
   
   // Holo Variations
   'Rare Holo': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Rare Holo',
-    color: 'text-blue-600',
-    bgColor: 'bg-gradient-to-br from-blue-50 to-purple-50',
-    borderColor: 'border-blue-400'
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-amber-100',
+    borderColor: 'border-amber-400'
   },
   'Rare Holo EX': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'EX',
-    color: 'text-red-600',
-    bgColor: 'bg-gradient-to-br from-red-50 to-orange-50',
-    borderColor: 'border-red-400'
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-amber-100',
+    borderColor: 'border-amber-400'
   },
   'Rare Holo GX': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'GX',
-    color: 'text-blue-700',
-    bgColor: 'bg-gradient-to-br from-blue-50 to-indigo-50',
-    borderColor: 'border-blue-500'
+    color: 'text-amber-700',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-amber-50',
+    borderColor: 'border-amber-500'
   },
   'Rare Holo V': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'V',
-    color: 'text-purple-600',
-    bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
-    borderColor: 'border-purple-400'
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-amber-100',
+    borderColor: 'border-amber-400'
   },
   'Rare Holo VMAX': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'VMAX',
-    color: 'text-purple-700',
-    bgColor: 'bg-gradient-to-br from-purple-100 to-pink-100',
-    borderColor: 'border-purple-500'
+    color: 'text-amber-700',
+    bgColor: 'bg-gradient-to-br from-amber-100 to-amber-100',
+    borderColor: 'border-amber-500'
   },
   'Rare Holo VSTAR': {
     symbol: <StarSymbol className="w-full h-full" />,
@@ -113,9 +113,9 @@ const rarityConfig: Record<string, {
       </div>
     ),
     label: 'Double Rare',
-    color: 'text-gray-800',
-    bgColor: 'bg-gray-100',
-    borderColor: 'border-gray-600'
+    color: 'text-stone-800',
+    bgColor: 'bg-stone-100',
+    borderColor: 'border-stone-600'
   },
   'Rare Ultra': {
     symbol: (
@@ -125,9 +125,9 @@ const rarityConfig: Record<string, {
       </div>
     ),
     label: 'Ultra Rare',
-    color: 'text-purple-600',
-    bgColor: 'bg-gradient-to-br from-purple-100 to-blue-100',
-    borderColor: 'border-purple-500'
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-100 to-amber-100',
+    borderColor: 'border-amber-500'
   },
   'Illustration Rare': {
     symbol: <StarSymbol className="w-full h-full text-yellow-500" />,
@@ -164,28 +164,28 @@ const rarityConfig: Record<string, {
   'Rare Secret': {
     symbol: (
       <div className="flex gap-0.5 w-full h-full items-center justify-center">
-        <StarSymbol className="w-[30%] h-[30%] text-purple-500" />
-        <StarSymbol className="w-[30%] h-[30%] text-purple-500" />
-        <StarSymbol className="w-[30%] h-[30%] text-purple-500" />
+        <StarSymbol className="w-[30%] h-[30%] text-amber-500" />
+        <StarSymbol className="w-[30%] h-[30%] text-amber-500" />
+        <StarSymbol className="w-[30%] h-[30%] text-amber-500" />
       </div>
     ),
     label: 'Secret',
-    color: 'text-purple-700',
-    bgColor: 'bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100',
-    borderColor: 'border-purple-600'
+    color: 'text-amber-700',
+    bgColor: 'bg-gradient-to-br from-amber-100 via-amber-100 to-amber-100',
+    borderColor: 'border-amber-600'
   },
   'Rare Rainbow': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Rainbow',
-    color: 'text-transparent bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 bg-clip-text',
-    bgColor: 'bg-gradient-to-br from-red-50 via-yellow-50 via-green-50 via-blue-50 to-purple-50',
-    borderColor: 'border-gray-400'
+    color: 'text-transparent bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-amber-500 to-amber-500 bg-clip-text',
+    bgColor: 'bg-gradient-to-br from-red-50 via-yellow-50 via-green-50 via-amber-50 to-amber-50',
+    borderColor: 'border-stone-400'
   },
   'Rare Shining': {
     symbol: <StarSymbol className="w-full h-full text-cyan-500" />,
     label: 'Shining',
     color: 'text-cyan-600',
-    bgColor: 'bg-gradient-to-br from-cyan-50 to-blue-50',
+    bgColor: 'bg-gradient-to-br from-cyan-50 to-amber-50',
     borderColor: 'border-cyan-400'
   },
   'Amazing Rare': {
@@ -205,9 +205,9 @@ const rarityConfig: Record<string, {
   'Trainer Gallery Rare Holo': {
     symbol: <span className="font-bold text-xs">TG</span>,
     label: 'Trainer Gallery',
-    color: 'text-blue-600',
-    bgColor: 'bg-gradient-to-br from-blue-50 to-purple-50',
-    borderColor: 'border-blue-400'
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-amber-100',
+    borderColor: 'border-amber-400'
   },
   'ACE SPEC Rare': {
     symbol: <span className="font-bold text-[8px]">ACE</span>,
@@ -219,9 +219,9 @@ const rarityConfig: Record<string, {
   'Promo': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Promo',
-    color: 'text-blue-600',
-    bgColor: 'bg-gradient-to-br from-blue-50 to-indigo-50',
-    borderColor: 'border-blue-400'
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-amber-100',
+    borderColor: 'border-amber-400'
   }
 };
 
@@ -261,7 +261,7 @@ export const ProfessionalRarityIcon: React.FC<RarityIconProps> = ({
         config.bgColor,
         config.borderColor,
         config.color,
-        isActive && 'ring-2 ring-purple-400 ring-offset-1'
+        isActive && 'ring-2 ring-amber-400 ring-offset-1'
       )}>
         {config.symbol}
       </div>
@@ -271,7 +271,7 @@ export const ProfessionalRarityIcon: React.FC<RarityIconProps> = ({
         <span className={cn(
           'font-medium',
           size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : 'text-sm',
-          isActive ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-600 dark:text-gray-400'
+          isActive ? 'text-stone-900 dark:text-white font-semibold' : 'text-stone-600 dark:text-stone-400'
         )}>
           {config.label}
         </span>
@@ -305,7 +305,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
 
   return (
     <div className={cn(
-      'p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700',
+      'p-4 bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-700',
       className
     )}>
       {/* All Cards Button */}
@@ -314,8 +314,8 @@ export const ProfessionalRarityFilterBar: React.FC<{
         className={cn(
           'mb-3 px-4 py-2 rounded-lg text-sm font-medium transition-all',
           selectedRarity === null
-            ? 'bg-purple-600 text-white shadow-md'
-            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+            ? 'bg-amber-600 text-white shadow-md'
+            : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
         )}
       >
         All Cards
@@ -326,7 +326,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Basic Rarities */}
         {groupedRarities.basic.filter((r: string) => availableRarities.includes(r)).length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
               Basic
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -347,7 +347,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Holo Rarities */}
         {groupedRarities.holo.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
               Holo Variants
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -368,7 +368,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Special Rarities */}
         {groupedRarities.special.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
               Special
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -389,7 +389,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Other Rarities */}
         {groupedRarities.other.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
               Other
             </h4>
             <div className="flex flex-wrap gap-2">

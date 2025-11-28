@@ -71,7 +71,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
           animate="floating"
           className="absolute top-4 left-1/4 w-8 h-8"
         >
-          <BsDiamond className="w-full h-full text-blue-400 opacity-30" />
+          <BsDiamond className="w-full h-full text-amber-400 opacity-30" />
         </motion.div>
         <motion.div
           variants={decorationVariants}
@@ -79,7 +79,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
           className="absolute top-8 right-1/3 w-6 h-6"
           style={{ animationDelay: '2s' }}
         >
-          <BsHexagon className="w-full h-full text-purple-400 opacity-40" />
+          <BsHexagon className="w-full h-full text-amber-400 opacity-40" />
         </motion.div>
         <motion.div
           variants={decorationVariants}
@@ -93,7 +93,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
 
       {/* Main header content */}
       <motion.div
-        className={`relative bg-gradient-to-r ${regionData?.color || 'from-blue-600 to-purple-600'} rounded-3xl p-8 md:p-12 text-white shadow-2xl`}
+        className={`relative bg-gradient-to-r ${regionData?.color || 'from-amber-600 to-amber-600'} rounded-3xl p-8 md:p-12 text-white shadow-2xl`}
         whileHover={{ 
           scale: 1.02,
           boxShadow: "0 25px 60px rgba(0,0,0,0.3)"
@@ -149,12 +149,12 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
             </div>
             <div className="w-1 h-6 bg-white opacity-50" />
             <div className="flex items-center gap-2">
-              <BsDiamond className="text-blue-300" />
+              <BsDiamond className="text-amber-300" />
               <span>Gym Badges</span>
             </div>
             <div className="w-1 h-6 bg-white opacity-50" />
             <div className="flex items-center gap-2">
-              <BsHexagon className="text-purple-300" />
+              <BsHexagon className="text-amber-300" />
               <span>Type Masters</span>
             </div>
           </motion.div>
@@ -169,7 +169,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
 
       {/* Bottom accent line */}
       <motion.div
-        className={`mt-4 h-2 bg-gradient-to-r ${regionData?.color || 'from-blue-600 to-purple-600'} rounded-full mx-auto w-32`}
+        className={`mt-4 h-2 bg-gradient-to-r ${regionData?.color || 'from-amber-600 to-amber-600'} rounded-full mx-auto w-32`}
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 1, delay: 1 }}

@@ -59,7 +59,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
         change: 8.7,
         trend: 'up',
         color: '#8B5CF6',
-        gradient: 'from-purple-400 to-purple-600'
+        gradient: 'from-amber-400 to-amber-600'
       },
       {
         label: 'Budget Cards',
@@ -67,7 +67,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
         change: 0,
         trend: 'stable',
         color: '#6B7280',
-        gradient: 'from-gray-400 to-gray-600'
+        gradient: 'from-stone-400 to-stone-600'
       }
     ];
     
@@ -138,10 +138,10 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+          <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
             Market Pulse
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
             Real-time market analytics and trends
           </p>
         </div>
@@ -163,8 +163,8 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
               className={cn(
                 "px-4 py-2 rounded-full text-sm font-medium transition-all",
                 timeRange === range
-                  ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
-                  : "text-gray-600 dark:text-gray-400"
+                  ? "bg-gradient-to-r from-amber-500 to-cyan-500 text-white"
+                  : "text-stone-600 dark:text-stone-400"
               )}
             >
               {range}
@@ -187,9 +187,9 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
               transition={{ delay: index * 0.1 }}
               className={cn(
                 "relative p-4 rounded-xl",
-                "backdrop-blur-md bg-white/60 dark:bg-gray-800/60",
-                "border border-white/30 dark:border-gray-700/30",
-                "hover:bg-white/80 dark:hover:bg-gray-800/80",
+                "backdrop-blur-md bg-white/60 dark:bg-stone-800/60",
+                "border border-white/30 dark:border-stone-700/30",
+                "hover:bg-white/80 dark:hover:bg-stone-800/80",
                 "transition-all cursor-pointer hover:scale-[1.02]"
               )}
               onClick={() => setSelectedMetric(metric.label)}
@@ -197,10 +197,10 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
               {/* Metric Value and Change */}
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">
                     {metric.label}
                   </p>
-                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                  <p className="text-2xl font-bold text-stone-800 dark:text-stone-200">
                     {metric.label.includes('Value') || metric.label.includes('Cap')
                       ? `$${metric.value.toFixed(2)}`
                       : metric.value.toFixed(0)}
@@ -210,7 +210,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
                   "px-2 py-1 rounded-full text-xs font-semibold",
                   metric.trend === 'up' && "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400",
                   metric.trend === 'down' && "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400",
-                  metric.trend === 'stable' && "bg-gray-100 text-gray-700 dark:bg-gray-900/50 dark:text-gray-400"
+                  metric.trend === 'stable' && "bg-stone-100 text-stone-700 dark:bg-stone-900/50 dark:text-stone-400"
                 )}>
                   {metric.trend === 'up' && '↑'}
                   {metric.trend === 'down' && '↓'}
@@ -253,7 +253,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
             rounded: 'xl'
           })
         )}>
-          <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+          <h4 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4 flex items-center gap-2">
             <span className="text-green-500">↑</span>
             Top Gainers
           </h4>
@@ -264,24 +264,24 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="flex items-center justify-between p-2 rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 cursor-pointer transition-all"
+                className="flex items-center justify-between p-2 rounded-lg hover:bg-white/50 dark:hover:bg-stone-800/50 cursor-pointer transition-all"
                 onClick={() => onCardClick?.(item.card)}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
                     {index + 1}.
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                    <p className="text-sm font-medium text-stone-800 dark:text-stone-200">
                       {item.card.name}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-stone-500 dark:text-stone-400">
                       #{item.card.number}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                  <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">
                     ${item.price.toFixed(2)}
                   </p>
                   <p className="text-xs font-medium text-green-600 dark:text-green-400">
@@ -303,7 +303,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
             rounded: 'xl'
           })
         )}>
-          <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+          <h4 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4 flex items-center gap-2">
             <span className="text-red-500">↓</span>
             Top Losers
           </h4>
@@ -314,24 +314,24 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="flex items-center justify-between p-2 rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 cursor-pointer transition-all"
+                className="flex items-center justify-between p-2 rounded-lg hover:bg-white/50 dark:hover:bg-stone-800/50 cursor-pointer transition-all"
                 onClick={() => onCardClick?.(item.card)}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
                     {index + 1}.
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                    <p className="text-sm font-medium text-stone-800 dark:text-stone-200">
                       {item.card.name}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-stone-500 dark:text-stone-400">
                       #{item.card.number}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                  <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">
                     ${item.price.toFixed(2)}
                   </p>
                   <p className="text-xs font-medium text-red-600 dark:text-red-400">
@@ -345,11 +345,11 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
       </div>
       
       {/* Market Insights */}
-      <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20">
-        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+      <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-amber-50/50 to-amber-50/50 dark:from-amber-900/20 dark:to-amber-900/20">
+        <h4 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
           Market Insights
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-gray-600 dark:text-gray-400">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-stone-600 dark:text-stone-400">
           <div>
             <span className="font-medium">Trading Volume:</span> High
           </div>

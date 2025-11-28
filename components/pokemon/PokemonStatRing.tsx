@@ -38,7 +38,7 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
   value,
   maxValue = 255,
   size = 'md',
-  typeColors = { from: 'from-blue-500', to: 'to-purple-500' },
+  typeColors = { from: 'from-amber-500', to: 'to-amber-500' },
   showLabel = true,
   animate = true
 }) => {
@@ -64,9 +64,9 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
 
   // Color based on stat value
   const getStatColor = () => {
-    if (value >= 150) return 'from-purple-500 to-pink-500';
-    if (value >= 120) return 'from-blue-500 to-purple-500';
-    if (value >= 90) return 'from-green-500 to-blue-500';
+    if (value >= 150) return 'from-amber-500 to-pink-500';
+    if (value >= 120) return 'from-amber-500 to-amber-500';
+    if (value >= 90) return 'from-green-500 to-amber-500';
     if (value >= 60) return 'from-yellow-500 to-green-500';
     if (value >= 30) return 'from-orange-500 to-yellow-500';
     return 'from-red-500 to-orange-500';
@@ -98,7 +98,7 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
       <div
         className={cn(
           "absolute inset-0",
-          "bg-gray-100/50 dark:bg-gray-800/50",
+          "bg-stone-100/50 dark:bg-stone-800/50",
           "backdrop-blur-sm"
         )}
         style={{
@@ -132,7 +132,7 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
           fill="none"
           stroke="currentColor"
           strokeWidth={config.strokeWidth / 2}
-          className="text-gray-200 dark:text-gray-700"
+          className="text-stone-200 dark:text-stone-700"
         />
 
         {/* Progress hexagon */}
@@ -162,7 +162,7 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
             {value}
           </div>
           {showLabel && (
-            <div className={cn("text-gray-600 dark:text-gray-400",
+            <div className={cn("text-stone-600 dark:text-stone-400",
               size === 'sm' ? 'text-xs' : 'text-sm'
             )}>
               {statLabel}

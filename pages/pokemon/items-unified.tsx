@@ -27,11 +27,11 @@ interface Item {
 }
 
 const ITEM_CATEGORIES = [
-  { key: 'all', name: 'All', color: 'from-gray-400 to-gray-500' },
+  { key: 'all', name: 'All', color: 'from-stone-400 to-stone-500' },
   { key: 'medicine', name: 'Medicine', color: 'from-green-400 to-emerald-500' },
   { key: 'berries', name: 'Berries', color: 'from-red-400 to-pink-500' },
-  { key: 'holdable', name: 'Competitive', color: 'from-blue-400 to-indigo-500' },
-  { key: 'evolution', name: 'Evolution', color: 'from-purple-400 to-violet-500' },
+  { key: 'holdable', name: 'Competitive', color: 'from-amber-400 to-amber-500' },
+  { key: 'evolution', name: 'Evolution', color: 'from-amber-400 to-amber-500' },
   { key: 'mega-stones', name: 'Mega Stones', color: 'from-red-500 to-pink-600' },
   { key: 'z-crystals', name: 'Z-Crystals', color: 'from-yellow-500 to-orange-500' },
   { key: 'treasures', name: 'Treasures', color: 'from-yellow-400 to-amber-500' },
@@ -152,11 +152,11 @@ const UnifiedItemsPage: NextPage = () => {
             />
           </div>
           <div className="min-w-0">
-            <div className="font-medium text-gray-900 dark:text-white truncate">
+            <div className="font-medium text-stone-900 dark:text-white truncate">
               {item.displayName}
             </div>
             {item.is_competitive && (
-              <span className="inline-block text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded mt-0.5">
+              <span className="inline-block text-xs px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 rounded mt-0.5">
                 Competitive
               </span>
             )}
@@ -176,7 +176,7 @@ const UnifiedItemsPage: NextPage = () => {
           <span className={cn(
             'inline-block px-2 py-1 rounded-full text-xs font-medium',
             'bg-gradient-to-r text-white',
-            categoryInfo ? `${categoryInfo.color}` : 'from-gray-400 to-gray-500'
+            categoryInfo ? `${categoryInfo.color}` : 'from-stone-400 to-stone-500'
           )}>
             {item.category}
           </span>
@@ -189,7 +189,7 @@ const UnifiedItemsPage: NextPage = () => {
       priority: 'detail',
       sortable: false,
       renderCell: (item: Item) => (
-        <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+        <div className="text-sm text-stone-600 dark:text-stone-400 line-clamp-2">
           {item.short_effect}
         </div>
       ),
@@ -202,7 +202,7 @@ const UnifiedItemsPage: NextPage = () => {
       sortable: true,
       align: 'center',
       renderCell: (item: Item) => item.generation ? (
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
           {item.generation}
         </span>
       ) : '-'
@@ -226,10 +226,10 @@ const UnifiedItemsPage: NextPage = () => {
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all"
+      className="bg-white dark:bg-stone-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all"
     >
       <div className="flex gap-3">
-        <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg">
+        <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-stone-100 dark:bg-stone-700 rounded-lg">
           <img 
             src={item.sprite} 
             alt={item.displayName}
@@ -238,7 +238,7 @@ const UnifiedItemsPage: NextPage = () => {
           />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 dark:text-white truncate">
+          <h3 className="font-semibold text-stone-900 dark:text-white truncate">
             {item.displayName}
           </h3>
           <div className="flex items-center gap-2 mt-1">
@@ -252,15 +252,15 @@ const UnifiedItemsPage: NextPage = () => {
               </span>
             )}
             {item.is_competitive && (
-              <span className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded">
+              <span className="text-xs px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 rounded">
                 Competitive
               </span>
             )}
           </div>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">
+          <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 line-clamp-2">
             {item.short_effect}
           </p>
-          <div className="flex gap-4 mt-2 text-xs text-gray-500 dark:text-gray-500">
+          <div className="flex gap-4 mt-2 text-xs text-stone-500 dark:text-stone-500">
             {item.generation && (
               <span>Gen {item.generation}</span>
             )}
@@ -300,10 +300,10 @@ const UnifiedItemsPage: NextPage = () => {
             </CircularButton>
             
             <div className="text-center">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
                 Items
               </h1>
-              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">
+              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 hidden sm:block">
                 Browse Pokemon items and equipment
               </p>
             </div>
@@ -312,17 +312,17 @@ const UnifiedItemsPage: NextPage = () => {
               createGlassStyle({ blur: 'sm', opacity: 'subtle' }),
               'px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-center'
             )}>
-              <div className="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400">
+              <div className="text-sm sm:text-lg font-bold text-amber-600 dark:text-amber-400">
                 {filteredItems.length}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Items</div>
+              <div className="text-xs text-stone-600 dark:text-stone-400">Items</div>
             </div>
           </div>
         </div>
       </motion.div>
 
       {/* Category Filter - Responsive scrollable */}
-      <div className="sticky top-[73px] sm:top-[89px] z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700">
+      <div className="sticky top-[73px] sm:top-[89px] z-40 bg-white/80 dark:bg-stone-900/80 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
         <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
             {ITEM_CATEGORIES.map(category => (
@@ -335,7 +335,7 @@ const UnifiedItemsPage: NextPage = () => {
                   'px-3 sm:px-4 py-1.5 sm:py-2 rounded-full whitespace-nowrap text-xs sm:text-sm font-medium transition-all',
                   selectedCategory === category.key
                     ? 'bg-gradient-to-r text-white shadow-lg ' + category.color
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                 )}
               >
                 {category.name}

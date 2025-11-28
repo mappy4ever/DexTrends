@@ -38,7 +38,7 @@ const regions: Region[] = [
     generation: 1,
     description: "The region where it all began. Home to the original 151 Pokémon.",
     mapImage: "/images/scraped/maps/PE_Kanto_Map.png",
-    color: "from-red-600/80 to-blue-600/80",
+    color: "from-red-600/80 to-amber-600/80",
     starters: "Bulbasaur • Charmander • Squirtle",
     starterIds: [1, 4, 7],
     icon: "🔴"
@@ -60,7 +60,7 @@ const regions: Region[] = [
     generation: 3,
     description: "A tropical region with diverse ecosystems and weather phenomena.",
     mapImage: "/images/scraped/maps/Hoenn_ORAS.png",
-    color: "from-emerald-600/80 to-blue-600/80",
+    color: "from-emerald-600/80 to-amber-600/80",
     starters: "Treecko • Torchic • Mudkip",
     starterIds: [252, 255, 258],
     icon: "🟢"
@@ -71,7 +71,7 @@ const regions: Region[] = [
     generation: 4, 
     description: "A region rich in mythology, featuring Mt. Coronet at its center.",
     mapImage: "/images/scraped/maps/Sinnoh_BDSP_artwork.png",
-    color: "from-indigo-600/80 to-purple-600/80",
+    color: "from-amber-600/80 to-amber-600/80",
     starters: "Turtwig • Chimchar • Piplup",
     starterIds: [387, 390, 393],
     icon: "🔵"
@@ -82,7 +82,7 @@ const regions: Region[] = [
     generation: 5,
     description: "A diverse region inspired by New York, featuring only new Pokémon initially.", 
     mapImage: "/images/scraped/maps/Unova_B2W2_alt.png",
-    color: "from-gray-700/80 to-slate-700/80",
+    color: "from-stone-700/80 to-stone-700/80",
     starters: "Snivy • Tepig • Oshawott",
     starterIds: [495, 498, 501],
     icon: "⚫"
@@ -93,7 +93,7 @@ const regions: Region[] = [
     generation: 6,
     description: "A beautiful region inspired by France, introducing Mega Evolution.",
     mapImage: "/images/scraped/maps/Kalos_map.png",
-    color: "from-pink-600/80 to-purple-600/80",
+    color: "from-pink-600/80 to-amber-600/80",
     starters: "Chespin • Fennekin • Froakie",
     starterIds: [650, 653, 656],
     icon: "🩷"
@@ -115,7 +115,7 @@ const regions: Region[] = [
     generation: 8,
     description: "An industrial region inspired by Great Britain with Dynamax battles.",
     mapImage: "/images/scraped/maps/Galar_artwork.png",
-    color: "from-blue-700/80 to-indigo-700/80",
+    color: "from-amber-700/80 to-amber-700/80",
     starters: "Grookey • Scorbunny • Sobble",
     starterIds: [810, 813, 816],
     icon: "💙"
@@ -126,7 +126,7 @@ const regions: Region[] = [
     generation: 9,
     description: "An open-world region inspired by Spain with three storylines to explore.",
     mapImage: "/images/scraped/maps/Paldea_artwork.png",
-    color: "from-violet-600/80 to-purple-600/80",
+    color: "from-violet-600/80 to-amber-600/80",
     starters: "Sprigatito • Fuecoco • Quaxly",
     starterIds: [906, 909, 912],
     icon: "💜"
@@ -139,12 +139,12 @@ const getGenerationColor = (generation: number): string => {
     1: 'rgba(239, 68, 68, 1)',    // red-500
     2: 'rgba(245, 158, 11, 1)',   // amber-500
     3: 'rgba(34, 197, 94, 1)',    // green-500
-    4: 'rgba(99, 102, 241, 1)',   // indigo-500
-    5: 'rgba(107, 114, 128, 1)',  // gray-500
+    4: 'rgba(217, 119, 6, 1)',   // amber-500
+    5: 'rgba(120, 113, 108, 1)',  // stone-500
     6: 'rgba(236, 72, 153, 1)',   // pink-500
     7: 'rgba(251, 146, 60, 1)',   // orange-500
-    8: 'rgba(147, 51, 234, 1)',   // purple-600
-    9: 'rgba(168, 85, 247, 1)'    // purple-500
+    8: 'rgba(217, 119, 6, 1)',   // amber-600
+    9: 'rgba(217, 119, 6, 1)'    // amber-500
   };
   return colors[generation] || 'rgba(156, 163, 175, 1)';
 };
@@ -357,7 +357,7 @@ const RegionsPage: NextPage = () => {
           >
             <h1 className="text-6xl md:text-8xl font-black text-white uppercase tracking-wider text-center mb-4"
                 style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.8)' }}>
-              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-amber-400 bg-clip-text text-transparent animate-gradient">
                 Pokemon Regions
               </span>
             </h1>
@@ -427,13 +427,13 @@ const RegionsPage: NextPage = () => {
                     <span className="text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                       Generation {region.generation}
                     </span>
-                    <span className="text-gray-400">•</span>
-                    <span className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
+                    <span className="text-stone-400">•</span>
+                    <span className="text-sm font-semibold text-stone-300 uppercase tracking-wide">
                       {region.name} Region
                     </span>
                   </div>
                   <div className="ml-auto flex items-center gap-2">
-                    <span className="text-xs text-gray-400">{region.starters}</span>
+                    <span className="text-xs text-stone-400">{region.starters}</span>
                   </div>
                 </motion.div>
                 
@@ -460,7 +460,7 @@ const RegionsPage: NextPage = () => {
             })} p-8 rounded-3xl`}
           >
             <h2 className="text-3xl font-bold text-center mb-8">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">
                 Regional Statistics
               </span>
             </h2>
@@ -479,7 +479,7 @@ const RegionsPage: NextPage = () => {
                 <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent mb-2">
                   9
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Total Regions</p>
+                <p className="text-sm text-stone-600 dark:text-stone-400">Total Regions</p>
               </motion.div>
               
               <motion.div
@@ -496,7 +496,7 @@ const RegionsPage: NextPage = () => {
                 <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent mb-2">
                   1000+
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Total Pokemon</p>
+                <p className="text-sm text-stone-600 dark:text-stone-400">Total Pokemon</p>
               </motion.div>
               
               <motion.div
@@ -510,10 +510,10 @@ const RegionsPage: NextPage = () => {
                   rounded: 'xl',
                 })} p-6 rounded-2xl text-center`}
               >
-                <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-2">
+                <div className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-amber-400 bg-clip-text text-transparent mb-2">
                   27
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Starter Pokemon</p>
+                <p className="text-sm text-stone-600 dark:text-stone-400">Starter Pokemon</p>
               </motion.div>
             </div>
           </motion.div>

@@ -28,13 +28,13 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
 
   if (isLoading) {
     return (
-      <div className={cn("animate-pulse rounded-lg p-4 space-y-3 bg-gray-800 dark:bg-gray-800", className)}>
+      <div className={cn("animate-pulse rounded-lg p-4 space-y-3 bg-stone-800 dark:bg-stone-800", className)}>
         {/* Header skeleton */}
         <div className="flex items-center justify-between">
-          <div className="h-5 bg-gray-700 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="h-5 bg-stone-700 dark:bg-stone-700 rounded w-1/3"></div>
           <div className="flex gap-2">
-            <div className="h-6 bg-gray-700 dark:bg-gray-700 rounded-full w-16"></div>
-            <div className="h-6 bg-gray-700 dark:bg-gray-700 rounded w-6"></div>
+            <div className="h-6 bg-stone-700 dark:bg-stone-700 rounded-full w-16"></div>
+            <div className="h-6 bg-stone-700 dark:bg-stone-700 rounded w-6"></div>
           </div>
         </div>
 
@@ -42,16 +42,16 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
         <div className="grid grid-cols-3 gap-2">
           {[1, 2, 3].map(i => (
             <div key={i} className="text-center space-y-1">
-              <div className="h-3 bg-gray-700 dark:bg-gray-700 rounded w-16 mx-auto"></div>
-              <div className="h-4 bg-gray-700 dark:bg-gray-700 rounded w-12 mx-auto"></div>
+              <div className="h-3 bg-stone-700 dark:bg-stone-700 rounded w-16 mx-auto"></div>
+              <div className="h-4 bg-stone-700 dark:bg-stone-700 rounded w-12 mx-auto"></div>
             </div>
           ))}
         </div>
 
         {/* Description skeleton */}
         <div className="space-y-1">
-          <div className="h-3 bg-gray-700 dark:bg-gray-700 rounded w-full"></div>
-          <div className="h-3 bg-gray-700 dark:bg-gray-700 rounded w-4/5"></div>
+          <div className="h-3 bg-stone-700 dark:bg-stone-700 rounded w-full"></div>
+          <div className="h-3 bg-stone-700 dark:bg-stone-700 rounded w-4/5"></div>
         </div>
       </div>
     );
@@ -62,11 +62,11 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
     return null;
   }
 
-  const typeColor = moveData.type ? typeColors[moveData.type.toLowerCase()]?.bg : 'bg-gray-600';
+  const typeColor = moveData.type ? typeColors[moveData.type.toLowerCase()]?.bg : 'bg-stone-600';
 
   return (
     <div
-      className={cn("bg-gray-800 rounded-lg p-4 space-y-3", className)}
+      className={cn("bg-stone-800 rounded-lg p-4 space-y-3", className)}
       data-testid="enhanced-move-display"
     >
       {/* Move Header */}
@@ -85,15 +85,15 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-2 text-sm">
         <div className="text-center">
-          <div className="text-gray-400">Power</div>
+          <div className="text-amber-400">Power</div>
           <div className="font-medium">{moveData.power || '—'}</div>
         </div>
         <div className="text-center">
-          <div className="text-gray-400">Accuracy</div>
+          <div className="text-amber-400">Accuracy</div>
           <div className="font-medium">{moveData.accuracy ? `${moveData.accuracy}%` : '—'}</div>
         </div>
         <div className="text-center">
-          <div className="text-gray-400">Priority</div>
+          <div className="text-amber-400">Priority</div>
           <div className="font-medium">{moveData.priority > 0 ? `+${moveData.priority}` : moveData.priority}</div>
         </div>
       </div>
@@ -104,7 +104,7 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
           {moveData.flags.map(flag => (
             <span
               key={flag}
-              className="text-xs bg-gray-700 px-2 py-1 rounded"
+              className="text-xs bg-stone-700 px-2 py-1 rounded"
               title={getFlagDescription(flag)}
             >
               {flag}
@@ -115,15 +115,15 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
 
       {/* Secondary Effects */}
       {moveData.secondary_effect && (
-        <div className="text-sm text-gray-300">
-          <span className="text-gray-400">Effect: </span>
+        <div className="text-sm text-amber-300">
+          <span className="text-amber-400">Effect: </span>
           {formatSecondaryEffects(moveData.secondary_effect)}
         </div>
       )}
 
       {/* Description */}
       {moveData.short_description && (
-        <p className="text-sm text-gray-300">{moveData.short_description}</p>
+        <p className="text-sm text-amber-300">{moveData.short_description}</p>
       )}
     </div>
   );

@@ -16,12 +16,12 @@ import VirtualCardGrid from "../../components/ui/VirtualizedCardGrid";
 // SimpleCardWrapper removed - using div instead
 const SimpleCardWrapper = ({ children, className, rarity }: { children: React.ReactNode; className?: string; rarity?: string }) => {
   const getBorderClass = () => {
-    if (!rarity) return 'border-gray-300';
+    if (!rarity) return 'border-stone-300';
     const rarityLower = rarity.toLowerCase();
     if (rarityLower.includes('secret') || rarityLower.includes('rainbow')) return 'border-yellow-400';
-    if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) return 'border-purple-400';
-    if (rarityLower.includes('rare')) return 'border-blue-400';
-    return 'border-gray-300';
+    if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) return 'border-amber-400';
+    if (rarityLower.includes('rare')) return 'border-amber-400';
+    return 'border-stone-300';
   };
   return <div className={`relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
 };
@@ -519,7 +519,7 @@ const SetIdPage: NextPage = () => {
           <div className="mb-4 sm:mb-6">
             <button
               onClick={() => router.push('/tcgexpansions')}
-              className="group flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors min-h-[44px] touch-target"
+              className="group flex items-center gap-2 text-amber-600 dark:text-amber-400 hover:text-amber-900 dark:hover:text-white transition-colors min-h-[44px] touch-target"
             >
               <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -561,20 +561,20 @@ const SetIdPage: NextPage = () => {
             hover: 'shadowOnly'
           })} relative overflow-hidden`}>
             {/* Subtle gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-100/10 via-transparent to-blue-100/10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-100/10 via-transparent to-amber-100/10 pointer-events-none" />
             
             <div className="relative z-10">
               {/* Integrated Header with Controls */}
-              <div className="p-4 sm:p-6 md:p-8 lg:p-10 border-b border-white/10 dark:border-gray-700/10">
+              <div className="p-4 sm:p-6 md:p-8 lg:p-10 border-b border-white/10 dark:border-stone-700/10">
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4">
                   {/* Title Section */}
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2 sm:gap-3">
-                    <svg className="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-800 dark:text-amber-200 flex items-center gap-2 sm:gap-3">
+                    <svg className="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                     <span>
                       Collection
-                      <span className="ml-2 text-lg text-gray-600 dark:text-gray-400">
+                      <span className="ml-2 text-lg text-amber-600 dark:text-amber-400">
                         ({filteredCards.length} {filteredCards.length !== cards.length && `of ${cards.length}`} cards)
                       </span>
                     </span>
@@ -608,7 +608,7 @@ const SetIdPage: NextPage = () => {
                 <div className="mt-4 sm:mt-6 flex flex-wrap gap-2 sm:gap-3">
                   {/* Rarity Filter Pills */}
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Rarity:</span>
+                    <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">Rarity:</span>
                     <button
                       onClick={() => setFilterRarity('')}
                       className={cn(
@@ -639,7 +639,7 @@ const SetIdPage: NextPage = () => {
                   
                   {/* Type Filter Pills */}
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Type:</span>
+                    <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">Type:</span>
                     <button
                       onClick={() => setFilterSupertype('')}
                       className={cn(
@@ -737,9 +737,9 @@ const SetIdPage: NextPage = () => {
                       setModalOpen(false);
                       setModalCard(null);
                     }}
-                    className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur-md border border-gray-300/50 flex items-center justify-center hover:bg-white/90 transition-colors"
+                    className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-amber-50/80 backdrop-blur-md border border-amber-300/50 flex items-center justify-center hover:bg-amber-50/90 transition-colors"
                   >
-                    <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -779,8 +779,8 @@ const SetIdPage: NextPage = () => {
                       <div className="grid grid-cols-2 gap-4">
                         {/* Rarity Card */}
                         {modalCard.rarity && (
-                          <div className="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-gray-300/50">
-                            <p className="text-xs text-gray-600 mb-1 font-medium">Rarity</p>
+                          <div className="bg-amber-50/70 backdrop-blur-md rounded-2xl p-4 border border-amber-300/50">
+                            <p className="text-xs text-amber-600 mb-1 font-medium">Rarity</p>
                             <div className="flex items-center gap-2">
                               <RarityIcon
                                 rarity={getActualRarity(modalCard)}
@@ -793,17 +793,17 @@ const SetIdPage: NextPage = () => {
                         
                         {/* Artist Card */}
                         {modalCard.artist && (
-                          <div className="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-gray-300/50">
-                            <p className="text-xs text-gray-600 mb-1 font-medium">Artist</p>
-                            <p className="font-bold text-gray-800">{modalCard.artist}</p>
+                          <div className="bg-amber-50/70 backdrop-blur-md rounded-2xl p-4 border border-amber-300/50">
+                            <p className="text-xs text-amber-600 mb-1 font-medium">Artist</p>
+                            <p className="font-bold text-amber-800">{modalCard.artist}</p>
                           </div>
                         )}
                       </div>
 
                       {/* Pricing Section */}
                       {modalCard.tcgplayer?.prices && (
-                        <div className="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-gray-300/50">
-                          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <div className="bg-amber-50/70 backdrop-blur-md rounded-2xl p-6 border border-amber-300/50">
+                          <h3 className="text-lg font-bold text-amber-800 mb-4 flex items-center gap-2">
                             <span className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
                               <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -819,7 +819,7 @@ const SetIdPage: NextPage = () => {
                               .map(([type, prices]) => {
                                 return (
                                   <div key={type} className="flex justify-between items-center">
-                                    <span className="text-gray-700 capitalize font-medium">
+                                    <span className="text-amber-700 capitalize font-medium">
                                       {type.replace(/([A-Z])/g, ' $1').trim()}
                                     </span>
                                     <span className="font-bold text-xl text-green-600">

@@ -30,7 +30,7 @@ export const Dialog: React.FC<DialogProps> = ({
   ...modalProps
 }) => {
   const variantStyles = {
-    default: 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500',
+    default: 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-500',
     danger: 'bg-red-600 hover:bg-red-700 focus:ring-red-500',
     warning: 'bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500',
     success: 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
@@ -57,10 +57,10 @@ export const Dialog: React.FC<DialogProps> = ({
               onClick={handleCancel}
               className={cn(
                 'px-4 py-2 rounded-lg font-medium',
-                'bg-gray-200 dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'hover:bg-gray-300 dark:hover:bg-gray-600',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500',
+                'bg-stone-200 dark:bg-stone-700',
+                'text-stone-900 dark:text-stone-100',
+                'hover:bg-stone-300 dark:hover:bg-stone-600',
+                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-500',
                 'transition-colors duration-200'
               )}
               {...cancelButtonProps}
@@ -85,7 +85,7 @@ export const Dialog: React.FC<DialogProps> = ({
     >
       <div className="py-4">
         {typeof message === 'string' ? (
-          <p className="text-gray-700 dark:text-gray-300">{message}</p>
+          <p className="text-stone-700 dark:text-stone-300">{message}</p>
         ) : (
           message
         )}

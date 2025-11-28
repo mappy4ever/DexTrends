@@ -39,7 +39,7 @@ const BaseBackToTop: React.FC = () => {
       {mounted && isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-4 right-4 z-50 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+          className="fixed bottom-4 right-4 z-50 bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-full shadow-lg transition-all duration-300"
           aria-label="Back to top"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

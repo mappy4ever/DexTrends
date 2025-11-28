@@ -35,8 +35,8 @@ const StatItem: React.FC<{
         </div>
       )}
       <div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
-        <p className="text-lg font-bold text-gray-900 dark:text-white">{value}</p>
+        <p className="text-xs text-stone-500 dark:text-stone-400">{label}</p>
+        <p className="text-lg font-bold text-stone-900 dark:text-white">{value}</p>
       </div>
     </motion.div>
   );
@@ -65,7 +65,7 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
     )}>
       <div className="relative overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-pink-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-pink-500/5" />
         
         {/* Content */}
         <div className="relative px-6 py-4">
@@ -81,7 +81,7 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
                   className={cn(
                     'w-20 h-20 rounded-xl flex items-center justify-center p-2',
                     createGlassStyle({ blur: 'sm', opacity: 'strong', border: 'strong' }),
-                    'bg-gradient-to-br from-purple-500/30 to-pink-500/30 shadow-lg'
+                    'bg-gradient-to-br from-amber-500/30 to-pink-500/30 shadow-lg'
                   )}
                 >
                   <img 
@@ -101,7 +101,7 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
                   className={cn(
                     'w-16 h-16 rounded-xl flex items-center justify-center p-2',
                     createGlassStyle({ blur: 'sm', opacity: 'medium', border: 'medium' }),
-                    'bg-gradient-to-br from-blue-500/20 to-cyan-500/20'
+                    'bg-gradient-to-br from-amber-500/20 to-cyan-500/20'
                   )}
                 >
                   <img 
@@ -121,10 +121,10 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
                   className={cn(
                     'w-20 h-20 rounded-xl flex items-center justify-center',
                     createGlassStyle({ blur: 'sm', opacity: 'strong', border: 'strong' }),
-                    'bg-gradient-to-br from-purple-500/30 to-pink-500/30 shadow-lg'
+                    'bg-gradient-to-br from-amber-500/30 to-pink-500/30 shadow-lg'
                   )}
                 >
-                  <span className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                  <span className="text-3xl font-bold text-amber-600 dark:text-amber-400">
                     {setInfo.name.substring(0, 2).toUpperCase()}
                   </span>
                 </motion.div>
@@ -132,10 +132,10 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
               
               {/* Set Name and Series */}
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-2xl font-bold text-stone-900 dark:text-white">
                   {setInfo.name}
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-stone-600 dark:text-stone-400">
                   {setInfo.series} • {releaseYear}
                 </p>
               </div>
@@ -148,7 +148,7 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
                 value={cardCount}
                 delay={0.1}
                 icon={
-                  <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
                 }
@@ -172,7 +172,7 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
                 value={`$${averagePrice.toFixed(2)}`}
                 delay={0.3}
                 icon={
-                  <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 }

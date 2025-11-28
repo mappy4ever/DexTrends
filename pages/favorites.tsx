@@ -254,11 +254,11 @@ const FavoritesPage: NextPage = () => {
       </Head>
       <FullBleedWrapper gradient="pokedex">
         <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-          <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Your Favorites</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">Your Favorites</h1>
       
         {/* Tabs */}
         <div className="flex justify-center mb-8">
-          <div className="flex bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg p-1">
+          <div className="flex bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-full shadow-lg p-1">
             <CircularButton
               variant={activeTab === 'dashboard' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('dashboard')}
@@ -334,7 +334,7 @@ const FavoritesPage: NextPage = () => {
                     <p className="text-sm">{pokemonError}</p>
                   </div>
                   {retryCount.pokemon > 0 && (
-                    <div className="text-xs text-gray-500 mb-4">
+                    <div className="text-xs text-stone-500 mb-4">
                       Attempted {retryCount.pokemon} time{retryCount.pokemon !== 1 ? 's' : ''}
                     </div>
                   )}
@@ -369,12 +369,12 @@ const FavoritesPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow">
-                  <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="text-center py-12 bg-white dark:bg-stone-800 rounded-lg shadow">
+                  <svg className="w-16 h-16 text-stone-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                   </svg>
                   <h3 className="text-xl font-semibold mb-2">No favorite Pokémon yet</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  <p className="text-stone-500 dark:text-stone-400 mb-6">
                     Add Pokémon to your favorites by clicking the heart icon on their page.
                   </p>
                   <Link 
@@ -401,7 +401,7 @@ const FavoritesPage: NextPage = () => {
                     <p className="text-sm">{cardsError}</p>
                   </div>
                   {retryCount.cards > 0 && (
-                    <div className="text-xs text-gray-500 mb-4">
+                    <div className="text-xs text-stone-500 mb-4">
                       Attempted {retryCount.cards} time{retryCount.cards !== 1 ? 's' : ''}
                     </div>
                   )}
@@ -417,7 +417,7 @@ const FavoritesPage: NextPage = () => {
                   {cardsData.map(card => (
                     <div 
                       key={card.id}
-                      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg hover:-translate-y-1"
+                      className="bg-white dark:bg-stone-800 rounded-lg shadow-md overflow-hidden border border-stone-200 dark:border-stone-700 transition-all hover:shadow-lg hover:-translate-y-1"
                     >
                       <div className="relative">
                         <Image
@@ -431,7 +431,7 @@ const FavoritesPage: NextPage = () => {
                           style={{ cursor: 'pointer' }}
                         />
                         <button
-                          className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-md text-red-500"
+                          className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-stone-800/80 rounded-full shadow-md text-red-500"
                           onClick={() => removeFromFavorites('cards', card.id)}
                           title="Remove from favorites"
                         >
@@ -443,7 +443,7 @@ const FavoritesPage: NextPage = () => {
                       <div className="p-3">
                         <h3 className="text-sm font-semibold line-clamp-1" title={card.name}>{card.name}</h3>
                         <div className="flex justify-between items-center mt-1">
-                          <span className="text-xs text-gray-600 dark:text-gray-400">{card.set?.name}</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-400">{card.set?.name}</span>
                           {card.tcgplayer?.prices?.holofoil?.market && (
                             <span className="text-sm font-bold">${card.tcgplayer.prices.holofoil.market.toFixed(2)}</span>
                           )}
@@ -453,12 +453,12 @@ const FavoritesPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow">
-                  <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="text-center py-12 bg-white dark:bg-stone-800 rounded-lg shadow">
+                  <svg className="w-16 h-16 text-stone-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                   </svg>
                   <h3 className="text-xl font-semibold mb-2">No favorite cards yet</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  <p className="text-stone-500 dark:text-stone-400 mb-6">
                     Add cards to your favorites by clicking the heart icon on card details.
                   </p>
                   <Link 

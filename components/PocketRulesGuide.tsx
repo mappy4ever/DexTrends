@@ -19,7 +19,7 @@ export default function PocketRulesGuide() {
           <div className="my-6">
             <h3 className="text-xl font-bold mb-3">Key Differences</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
                 <h4 className="text-lg font-semibold mb-2">Standard TCG</h4>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>60-card decks</li>
@@ -46,7 +46,7 @@ export default function PocketRulesGuide() {
         </div>
         
         <div className="lg:w-1/3">
-          <div className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm">
+          <div className="bg-white dark:bg-stone-800 p-5 rounded-lg shadow-sm">
             <h3 className="text-xl font-bold mb-3 flex items-center">
               <svg className="w-5 h-5 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -129,7 +129,7 @@ export default function PocketRulesGuide() {
         </div>
       </div>
       
-      <div className="mt-8 p-5 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+      <div className="mt-8 p-5 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
         <h3 className="text-xl font-bold mb-3">Competitive Play</h3>
         <p>
           Pokémon TCG Pocket features its own competitive ladder system with exclusive rewards.

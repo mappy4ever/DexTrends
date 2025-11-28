@@ -129,7 +129,7 @@ const PocketExpansions: NextPage = () => {
         <FadeIn>
           {/* Hero Section */}
           <motion.div
-            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 border border-white/50 dark:border-gray-700/50 shadow-xl"
+            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-2xl p-6 border border-white/50 dark:border-stone-700/50 shadow-xl"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -138,7 +138,7 @@ const PocketExpansions: NextPage = () => {
               <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent">
                 Pokémon TCG Pocket Expansions
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-stone-600 dark:text-stone-400 mt-2">
                 Explore all {expansions.length} expansion sets
               </p>
             </div>
@@ -147,7 +147,7 @@ const PocketExpansions: NextPage = () => {
             <div className="flex justify-center gap-2 mb-4">
               <button
                 onClick={() => router.push('/pocketmode')}
-                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-stone-800/60 border border-white/30 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:bg-white/80 transition-all"
               >
                 Card List
               </button>
@@ -158,7 +158,7 @@ const PocketExpansions: NextPage = () => {
               </button>
               <button
                 onClick={() => router.push('/pocketmode/deckbuilder')}
-                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-stone-800/60 border border-white/30 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:bg-white/80 transition-all"
               >
                 Deck Builder
               </button>
@@ -167,7 +167,7 @@ const PocketExpansions: NextPage = () => {
 
           {/* Search and Filters */}
           <motion.div
-            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-2xl p-4 border border-white/50 dark:border-gray-700/50 shadow-lg"
+            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-2xl p-4 border border-white/50 dark:border-stone-700/50 shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -176,20 +176,20 @@ const PocketExpansions: NextPage = () => {
             <div className="mb-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <input
                   type="text"
-                  className="w-full pl-12 pr-4 py-3 bg-white/80 dark:bg-gray-700/80 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                  className="w-full pl-12 pr-4 py-3 bg-white/80 dark:bg-stone-700/80 border border-stone-200 dark:border-stone-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
                   placeholder="Search expansions..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 {search && (
                   <button
-                    className="absolute inset-y-0 right-0 pr-4 text-gray-400 hover:text-gray-600"
+                    className="absolute inset-y-0 right-0 pr-4 text-stone-400 hover:text-stone-600"
                     onClick={() => setSearch('')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -203,9 +203,9 @@ const PocketExpansions: NextPage = () => {
             {/* Sort Controls */}
             <div className="flex flex-wrap gap-3 items-end">
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Sort By</label>
+                <label className="block text-sm font-semibold text-amber-700 dark:text-amber-300 mb-1">Sort By</label>
                 <select
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl text-sm"
+                  className="w-full px-3 py-2 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-xl text-sm"
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value as SortOption)}
                 >
@@ -216,9 +216,9 @@ const PocketExpansions: NextPage = () => {
               </div>
 
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Order</label>
+                <label className="block text-sm font-semibold text-amber-700 dark:text-amber-300 mb-1">Order</label>
                 <select
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl text-sm"
+                  className="w-full px-3 py-2 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-xl text-sm"
                   value={sortDirection}
                   onChange={(e) => setSortDirection(e.target.value as SortDirection)}
                 >
@@ -245,9 +245,9 @@ const PocketExpansions: NextPage = () => {
         {loading ? (
           <PageLoader text="Loading Pocket expansions..." />
         ) : error ? (
-          <div className="text-center p-8 bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-lg">
+          <div className="text-center p-8 bg-white/90 dark:bg-stone-800/90 rounded-2xl shadow-lg">
             <h2 className="text-xl font-bold text-red-600 mb-4">Failed to Load Expansions</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
+            <p className="text-stone-600 dark:text-stone-400 mb-4">{error}</p>
             <GradientButton
               variant="primary"
               onClick={() => window.location.reload()}
@@ -263,7 +263,7 @@ const PocketExpansions: NextPage = () => {
                 className="animate-fadeIn group"
                 onClick={() => handleExpansionClick(expansion)}
               >
-                <div className="relative flex flex-col h-full rounded-2xl overflow-hidden bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-yellow-400">
+                <div className="relative flex flex-col h-full rounded-2xl overflow-hidden bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm border border-stone-200/50 dark:border-stone-700/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-yellow-400">
 
                   {/* Expansion Logo */}
                   <div className="relative h-40 w-full flex items-center justify-center p-4 bg-gradient-to-br from-yellow-100 via-orange-50 to-amber-100 dark:from-yellow-900/30 dark:via-orange-900/20 dark:to-amber-900/30">
@@ -286,9 +286,9 @@ const PocketExpansions: NextPage = () => {
 
                   {/* Expansion Info */}
                   <div className="p-5 flex-1 flex flex-col">
-                    <h2 className="font-bold text-lg text-gray-800 dark:text-gray-100 mb-1">{expansion.name}</h2>
+                    <h2 className="font-bold text-lg text-stone-800 dark:text-stone-100 mb-1">{expansion.name}</h2>
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                    <p className="text-sm text-stone-600 dark:text-stone-400 mb-4 line-clamp-2">
                       {expansion.description}
                     </p>
 
@@ -328,8 +328,8 @@ const PocketExpansions: NextPage = () => {
         {/* Results info */}
         {!loading && !error && sortedExpansions.length > 0 && (
           <div className="text-center mt-8">
-            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 rounded-full px-6 py-3 shadow-md">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-stone-800/80 rounded-full px-6 py-3 shadow-md">
+              <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
                 Showing {visibleExpansions.length} of {sortedExpansions.length} expansions
               </span>
             </div>
@@ -337,10 +337,10 @@ const PocketExpansions: NextPage = () => {
         )}
 
         {!loading && !error && sortedExpansions.length === 0 && (
-          <div className="text-center py-20 bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-lg">
+          <div className="text-center py-20 bg-white/90 dark:bg-stone-800/90 rounded-2xl shadow-lg">
             <div className="text-6xl mb-4">🔍</div>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">No Expansions Found</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-200 mb-4">No Expansions Found</h2>
+            <p className="text-stone-600 dark:text-stone-400 mb-6">
               {search ? `No expansions match "${search}".` : "No Pocket expansions available."}
             </p>
             {search && (

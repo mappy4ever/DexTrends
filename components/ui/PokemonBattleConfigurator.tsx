@@ -85,12 +85,12 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
 }) => {
   const colorClasses: Record<'blue' | 'red', ColorClasses> = {
     blue: {
-      gradient: 'from-blue-400 to-blue-600',
-      bg: 'bg-blue-50',
-      border: 'border-blue-200',
-      text: 'text-blue-900',
-      hover: 'hover:bg-blue-100',
-      focus: 'focus:border-blue-400 focus:ring-blue-100'
+      gradient: 'from-amber-400 to-amber-600',
+      bg: 'bg-amber-50',
+      border: 'border-amber-200',
+      text: 'text-amber-900',
+      hover: 'hover:bg-amber-100',
+      focus: 'focus:border-amber-400 focus:ring-amber-100'
     },
     red: {
       gradient: 'from-red-400 to-red-600',
@@ -115,20 +115,20 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
             onChange={(e) => setPokemonConfig(prev => ({ ...prev, name: e.target.value }))}
             onBlur={() => setEditingPlayer(false)}
             onKeyPress={(e) => e.key === 'Enter' && setEditingPlayer(false)}
-            className={`text-xl font-bold text-center bg-transparent border-b-2 border-${playerColor}-600 text-${playerColor}-700 mb-4 outline-none`}
+            className={`text-xl font-bold text-center bg-transparent border-b-2 border-amber-600 text-amber-700 mb-4 outline-none focus:border-amber-700`}
             autoFocus
           />
         ) : (
           <div className="flex items-center justify-center gap-2 mb-4">
             <h3 
-              className={`text-xl font-bold text-${playerColor}-700 cursor-pointer hover:text-${playerColor}-800`}
+              className={`text-xl font-bold text-amber-700 cursor-pointer hover:text-amber-800`}
               onClick={() => setEditingPlayer(true)}
             >
               {playerName}
             </h3>
             <button
               onClick={() => setEditingPlayer(true)}
-              className={`text-${playerColor}-600 hover:text-${playerColor}-800 transition-colors`}
+              className={`text-amber-600 hover:text-amber-800 transition-colors`}
               title="Edit name"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,9 +151,9 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
             max="100"
             value={pokemonConfig.level}
             onChange={(e) => setPokemonConfig(prev => ({ ...prev, level: parseInt(e.target.value) }))}
-            className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            className="flex-1 h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer"
             style={{
-              background: `linear-gradient(to right, ${playerColor === 'blue' ? '#3b82f6' : '#dc2626'} 0%, ${playerColor === 'blue' ? '#3b82f6' : '#dc2626'} ${(pokemonConfig.level - 1) / 99 * 100}%, #e5e7eb ${(pokemonConfig.level - 1) / 99 * 100}%, #e5e7eb 100%)`
+              background: `linear-gradient(to right, #b45309 0%, #b45309 ${(pokemonConfig.level - 1) / 99 * 100}%, #e5e7eb ${(pokemonConfig.level - 1) / 99 * 100}%, #e5e7eb 100%)`
             }}
           />
         </div>
@@ -184,10 +184,10 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                       </div>
                     );
                   }
-                  return <span className="text-xs text-gray-500">No stat changes</span>;
+                  return <span className="text-xs text-stone-500 dark:text-stone-400">No stat changes</span>;
                 })()}
               </div>
-              <svg className={`w-5 h-5 text-${playerColor}-600`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className={`w-5 h-5 text-amber-600`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
@@ -201,7 +201,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                   setPokemonConfig(prev => ({ ...prev, nature: nature.name }));
                   document.getElementById(`nature-select-${playerNumber}`)?.classList.add('hidden');
                 }}
-                className={`w-full px-3 py-2 text-left hover:${colors.bg} transition-colors border-b border-gray-100 last:border-b-0`}
+                className={`w-full px-3 py-2 text-left hover:${colors.bg} transition-colors border-b border-stone-200 last:border-b-0`}
               >
                 <div className="font-medium capitalize">{nature.name}</div>
                 {nature.increased_stat && nature.decreased_stat ? (
@@ -210,7 +210,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                     <span className="text-xs text-red-600">-{nature.decreased_stat.name.replace('special-', 'Sp.')}</span>
                   </div>
                 ) : (
-                  <span className="text-xs text-gray-500">Neutral</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400">Neutral</span>
                 )}
               </button>
             ))}
@@ -226,12 +226,12 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
         >
           <div className="flex items-center gap-2">
             <span className={`font-semibold ${colors.text}`}>IVs & EVs Configuration</span>
-            <span className={`text-xs text-${playerColor}-600 bg-${playerColor}-100 px-2 py-1 rounded-full`}>
+            <span className={`text-xs text-amber-600 bg-amber-100 px-2 py-1 rounded-full`}>
               Advanced
             </span>
           </div>
           <div className={`transform transition-transform duration-300 ${showIVsEVs ? 'rotate-180' : ''}`}>
-            <svg className={`w-5 h-5 text-${playerColor}-600`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className={`w-5 h-5 text-amber-600`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </div>
@@ -241,7 +241,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
           <div className="px-4 pb-4 space-y-4 animate-fadeIn">
             {/* Quick Actions */}
             <div>
-              <p className={`text-xs font-medium text-${playerColor}-700 mb-2`}>Quick Actions:</p>
+              <p className={`text-xs font-medium text-amber-700 mb-2`}>Quick Actions:</p>
               <div className="grid grid-cols-1 gap-1 mb-2">
                 <button
                   onClick={() => {
@@ -256,7 +256,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                       return newConfig;
                     });
                   }}
-                  className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs hover:bg-gray-200 transition-colors"
+                  className="px-2 py-1 bg-stone-100 border border-stone-300 rounded text-xs hover:bg-stone-200 transition-colors"
                 >
                   Max IVs
                 </button>
@@ -267,7 +267,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                     ...prev,
                     evs: { hp: 0, attack: 252, defense: 0, specialAttack: 0, specialDefense: 4, speed: 252 }
                   }))}
-                  className="px-2 py-1 bg-white border border-blue-300 rounded text-xs hover:bg-blue-100 transition-colors"
+                  className="px-2 py-1 bg-white border border-amber-300 rounded text-xs hover:bg-amber-100 transition-colors"
                 >
                   Physical Sweeper
                 </button>
@@ -276,7 +276,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                     ...prev,
                     evs: { hp: 0, attack: 0, defense: 0, specialAttack: 252, specialDefense: 4, speed: 252 }
                   }))}
-                  className="px-2 py-1 bg-white border border-blue-300 rounded text-xs hover:bg-blue-100 transition-colors"
+                  className="px-2 py-1 bg-white border border-amber-300 rounded text-xs hover:bg-amber-100 transition-colors"
                 >
                   Special Sweeper
                 </button>
@@ -285,7 +285,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                     ...prev,
                     evs: { hp: 252, attack: 0, defense: 252, specialAttack: 0, specialDefense: 4, speed: 0 }
                   }))}
-                  className="px-2 py-1 bg-white border border-blue-300 rounded text-xs hover:bg-blue-100 transition-colors"
+                  className="px-2 py-1 bg-white border border-amber-300 rounded text-xs hover:bg-amber-100 transition-colors"
                 >
                   Physical Tank
                 </button>
@@ -294,7 +294,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                     ...prev,
                     evs: { hp: 252, attack: 0, defense: 4, specialAttack: 0, specialDefense: 252, speed: 0 }
                   }))}
-                  className="px-2 py-1 bg-white border border-blue-300 rounded text-xs hover:bg-blue-100 transition-colors"
+                  className="px-2 py-1 bg-white border border-amber-300 rounded text-xs hover:bg-amber-100 transition-colors"
                 >
                   Special Tank
                 </button>
@@ -341,7 +341,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
       <BattleStatsDisplay
         pokemonConfig={pokemonConfig}
         setPokemonConfig={setPokemonConfig}
-        playerColor={playerColor}
+        playerColor="blue"
       />
     </div>
   );
@@ -365,11 +365,11 @@ const IVEVConfigurator: React.FC<IVEVConfiguratorProps> = ({
     <div className="grid grid-cols-2 gap-4">
       {/* IVs Section */}
       <div>
-        <label className="block font-semibold text-blue-900 mb-2 text-xs text-center">IVs (0-31)</label>
+        <label className="block font-semibold text-amber-900 mb-2 text-xs text-center">IVs (0-31)</label>
         <div className="grid grid-cols-2 gap-1">
           {(Object.entries(pokemonConfig.ivs) as [keyof PokemonStats, number][]).map(([stat, value]) => (
-            <div key={stat} className="bg-white rounded-lg p-1.5 border border-blue-200">
-              <label className="text-xs font-medium text-blue-700 capitalize block mb-1 text-center">
+            <div key={stat} className="bg-white rounded-lg p-1.5 border border-amber-200">
+              <label className="text-xs font-medium text-amber-700 capitalize block mb-1 text-center">
                 {stat.replace('special', 'Sp.')}
               </label>
               <input
@@ -389,11 +389,11 @@ const IVEVConfigurator: React.FC<IVEVConfiguratorProps> = ({
                     return newConfig;
                   });
                 }}
-                className="w-full px-1 py-1 border border-blue-200 rounded text-xs text-center font-bold focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                className="w-full px-1 py-1 border border-amber-200 rounded text-xs text-center font-bold focus:border-amber-400 focus:ring-1 focus:ring-amber-100"
               />
-              <div className="mt-1 h-1 bg-gray-200 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-blue-500 transition-all duration-300"
+              <div className="mt-1 h-1 bg-stone-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-amber-500 transition-all duration-300"
                   style={{ width: `${(value / 31) * 100}%` }}
                 />
               </div>
@@ -413,7 +413,7 @@ const IVEVConfigurator: React.FC<IVEVConfiguratorProps> = ({
               return newConfig;
             });
           }}
-          className="w-full mt-2 px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs hover:bg-gray-200 transition-colors"
+          className="w-full mt-2 px-2 py-1 bg-stone-100 border border-stone-300 rounded text-xs hover:bg-stone-200 transition-colors"
         >
           Reset IVs
         </button>
@@ -421,7 +421,7 @@ const IVEVConfigurator: React.FC<IVEVConfiguratorProps> = ({
 
       {/* EVs Section */}
       <div>
-        <label className="block font-semibold text-blue-900 mb-2 text-xs text-center">EVs (0-252)</label>
+        <label className="block font-semibold text-amber-900 mb-2 text-xs text-center">EVs (0-252)</label>
         <div className="grid grid-cols-2 gap-1">
           {(Object.entries(pokemonConfig.evs) as [keyof PokemonStats, number][]).map(([stat, value]) => (
             <div key={stat} className="bg-white rounded-lg p-1.5 border border-orange-200">
@@ -447,8 +447,8 @@ const IVEVConfigurator: React.FC<IVEVConfiguratorProps> = ({
                 }}
                 className="w-full px-1 py-1 border border-orange-200 rounded text-xs text-center font-bold focus:border-orange-400 focus:ring-1 focus:ring-orange-100"
               />
-              <div className="mt-1 h-1 bg-gray-200 rounded-full overflow-hidden">
-                <div 
+              <div className="mt-1 h-1 bg-stone-200 rounded-full overflow-hidden">
+                <div
                   className="h-full bg-gradient-to-r from-orange-400 to-orange-600 transition-all duration-300"
                   style={{ width: `${(value / 252) * 100}%` }}
                 />
@@ -469,7 +469,7 @@ const IVEVConfigurator: React.FC<IVEVConfiguratorProps> = ({
               return newConfig;
             });
           }}
-          className="w-full mt-2 px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs hover:bg-gray-200 transition-colors"
+          className="w-full mt-2 px-2 py-1 bg-stone-100 border border-stone-300 rounded text-xs hover:bg-stone-200 transition-colors"
         >
           Reset EVs
         </button>
@@ -490,20 +490,13 @@ const BattleStatsDisplay: React.FC<BattleStatsDisplayProps> = ({
   setPokemonConfig, 
   playerColor = 'blue' 
 }) => {
-  const colorMap = {
-    blue: 'indigo',
-    red: 'pink'
-  };
-  
-  const gradientColor = colorMap[playerColor];
-
   return (
-    <div className={`bg-gradient-to-br from-${gradientColor}-50 to-${gradientColor}-50 rounded-xl p-3`}>
+    <div className={`bg-gradient-to-br from-amber-50 to-amber-50 rounded-xl p-3`}>
       <div className="flex items-center gap-2 mb-2">
-        <label className={`block font-semibold text-${gradientColor}-900 text-sm`}>Battle Stats</label>
+        <label className={`block font-semibold text-amber-900 text-sm`}>Battle Stats</label>
         <button
           onClick={() => setPokemonConfig(prev => ({ ...prev, manualStats: !prev.manualStats }))}
-          className={`text-${gradientColor}-600 hover:text-${gradientColor}-800 transition-colors`}
+          className={`text-amber-600 hover:text-amber-800 transition-colors`}
           title={pokemonConfig.manualStats ? "Switch to auto calculate" : "Manual edit stats"}
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -528,7 +521,7 @@ const BattleStatsDisplay: React.FC<BattleStatsDisplayProps> = ({
           return (
             <div key={stat} className="bg-white rounded-lg p-2">
               <div className="flex justify-between items-center mb-1">
-                <label className="text-xs font-semibold text-gray-700 capitalize">
+                <label className="text-xs font-semibold text-stone-700 capitalize">
                   {stat.replace('special', 'Sp.')}
                 </label>
                 <div className="flex items-center gap-2">
@@ -540,15 +533,15 @@ const BattleStatsDisplay: React.FC<BattleStatsDisplayProps> = ({
                         ...prev,
                         stats: { ...prev.stats, [stat]: parseInt(e.target.value) || 0 }
                       }))}
-                      className="w-16 px-1 py-0.5 border border-gray-300 rounded text-xs text-center"
+                      className="w-16 px-1 py-0.5 border border-stone-300 rounded text-xs text-center"
                     />
                   ) : (
-                    <span className="text-sm font-bold text-gray-800">{value}</span>
+                    <span className="text-sm font-bold text-stone-800">{value}</span>
                   )}
                 </div>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div 
+              <div className="h-2 bg-stone-200 rounded-full overflow-hidden">
+                <div
                   className={`${barColor} h-2 rounded-full transition-all duration-500`}
                   style={{ width: `${Math.min(percentage, 100)}%` }}
                 />

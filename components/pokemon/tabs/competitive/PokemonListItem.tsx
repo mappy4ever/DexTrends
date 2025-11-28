@@ -32,21 +32,21 @@ export const PokemonListItem: React.FC<PokemonListItemProps> = ({
       return 'from-yellow-500 to-orange-600';
     } else {
       if (value >= 40) return 'from-green-500 to-emerald-600';
-      if (value >= 30) return 'from-blue-500 to-green-500';
-      return 'from-gray-500 to-blue-500';
+      if (value >= 30) return 'from-amber-500 to-green-500';
+      return 'from-stone-500 to-amber-500';
     }
   };
 
   return (
     <motion.div
-      className="flex items-center gap-3 p-3 rounded-xl bg-white/5 dark:bg-gray-800/50 hover:bg-white/10 dark:hover:bg-gray-800 transition-all cursor-pointer"
+      className="flex items-center gap-3 p-3 rounded-xl bg-white/5 dark:bg-stone-800/50 hover:bg-white/10 dark:hover:bg-stone-800 transition-all cursor-pointer"
       onClick={onClick}
       whileHover={{ scale: 1.02, x: 5 }}
       whileTap={{ scale: 0.98 }}
     >
       {/* Pokemon Image */}
       <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-white/10 to-white/5 p-1">
-        <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-800 overflow-hidden">
           <Image
             src={spriteUrl}
             alt={name}
@@ -59,8 +59,8 @@ export const PokemonListItem: React.FC<PokemonListItemProps> = ({
       
       {/* Name and Stats */}
       <div className="flex-1">
-        <h4 className="font-semibold text-gray-900 dark:text-white capitalize">{name.replace('-', ' ')}</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">
+        <h4 className="font-semibold text-stone-900 dark:text-white capitalize">{name.replace('-', ' ')}</h4>
+        <p className="text-sm text-stone-600 dark:text-stone-400 font-mono">
           {pokemonId ? formatPokedexNumber(pokemonId) : '#???'}
         </p>
       </div>

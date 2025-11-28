@@ -282,14 +282,14 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+    <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h3 className="text-2xl font-bold text-stone-900 dark:text-white">
           EV Optimization Heat Map
         </h3>
         <div className="text-sm">
-          <span className="text-gray-600 dark:text-gray-400">Remaining EVs: </span>
-          <span className={`font-bold ${remainingEVs > 0 ? 'text-blue-600' : 'text-green-600'}`}>
+          <span className="text-stone-600 dark:text-stone-400">Remaining EVs: </span>
+          <span className={`font-bold ${remainingEVs > 0 ? 'text-amber-600' : 'text-green-600'}`}>
             {remainingEVs}
           </span>
         </div>
@@ -336,11 +336,11 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
             const { gain } = calculateEVGains(baseStat, 0, value, level, nature, statKey);
             
             return (
-              <div 
-                key={stat} 
+              <div
+                key={stat}
                 className={`p-3 rounded-lg border ${
-                  hoveredStat === stat ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 
-                  'border-gray-200 dark:border-gray-700'
+                  hoveredStat === stat ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20' :
+                  'border-stone-200 dark:border-stone-700'
                 }`}
                 onMouseEnter={() => setHoveredStat(statKey)}
                 onMouseLeave={() => setHoveredStat(null)}
@@ -349,7 +349,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
                   <span className="font-medium text-sm">{STAT_SHORT_NAMES[stat]}</span>
                   <div className="text-right">
                     <span className="text-lg font-bold">{value}</span>
-                    <span className="text-xs text-gray-500 ml-1">EVs</span>
+                    <span className="text-xs text-stone-500 ml-1">EVs</span>
                     <div className="text-xs text-green-600 dark:text-green-400">+{gain} stat</div>
                   </div>
                 </div>
@@ -362,13 +362,13 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
                     step="4"
                     value={value}
                     onChange={(e) => updateEV(statKey, parseInt(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                    className="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer dark:bg-stone-700"
                     style={{
-                      background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(value / 252) * 100}%, #E5E7EB ${(value / 252) * 100}%, #E5E7EB 100%)`,
+                      background: `linear-gradient(to right, #F59E0B 0%, #F59E0B ${(value / 252) * 100}%, #E5E7EB ${(value / 252) * 100}%, #E5E7EB 100%)`,
                     }}
                   />
                   <div
-                    className="absolute -top-1 w-4 h-4 bg-blue-600 rounded-full cursor-grab active:cursor-grabbing"
+                    className="absolute -top-1 w-4 h-4 bg-amber-600 rounded-full cursor-grab active:cursor-grabbing"
                     style={{ left: `${(value / 252) * 100}%`, transform: 'translateX(-50%)' }}
                     onMouseDown={(e) => handleDragStart(statKey, e)}
                   />
@@ -389,8 +389,8 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
               onClick={() => applySpread(key)}
               className={`p-2 rounded-lg text-xs font-medium transition-all ${
                 selectedSpread === key
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-amber-600 text-white'
+                  : 'bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
               }`}
               title={spread.description}
             >
@@ -409,7 +409,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
             setSelectedSpread(null);
             onEVUpdate?.(resetEvs);
           }}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+          className="px-4 py-2 bg-stone-600 text-white rounded-lg hover:bg-stone-700 transition-colors"
         >
           Reset EVs
         </button>

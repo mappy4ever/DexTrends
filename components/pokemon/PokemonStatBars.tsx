@@ -61,17 +61,17 @@ const STAT_CONFIG = {
   },
   'special-defense': {
     label: 'Sp. Def',
-    color: 'bg-blue-500',
-    darkColor: 'dark:bg-blue-600',
-    barColor: 'rgb(59, 130, 246)',  // Same as bg-blue-500
+    color: 'bg-amber-500',
+    darkColor: 'dark:bg-amber-600',
+    barColor: 'rgb(59, 130, 246)',  // Same as bg-amber-500
     barColorDark: 'rgb(37, 99, 235)',
     borderColor: 'rgb(59, 130, 246)'
   },
   'speed': {
     label: 'Speed',
-    color: 'bg-purple-500',
-    darkColor: 'dark:bg-purple-600',
-    barColor: 'rgb(168, 85, 247)',  // Same as bg-purple-500
+    color: 'bg-amber-500',
+    darkColor: 'dark:bg-amber-600',
+    barColor: 'rgb(168, 85, 247)',  // Same as bg-amber-500
     barColorDark: 'rgb(147, 51, 234)',
     borderColor: 'rgb(168, 85, 247)'
   }
@@ -148,7 +148,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
   return (
     <div className="w-full space-y-1">
       {/* Header */}
-      <div className="grid grid-cols-12 gap-2 mb-2 text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
+      <div className="grid grid-cols-12 gap-2 mb-2 text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-400">
         <div className="col-span-3 text-center">Stat</div>
         <div className="col-span-6"></div>
         <div className="col-span-3 text-center hidden sm:block">Range</div>
@@ -163,8 +163,8 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
         // Fallback config if stat name doesn't match
         const fallbackConfig = {
           label: stat.name.charAt(0).toUpperCase() + stat.name.slice(1),
-          color: 'bg-gray-500',
-          darkColor: 'dark:bg-gray-600',
+          color: 'bg-stone-500',
+          darkColor: 'dark:bg-stone-600',
           barColor: 'rgb(107, 114, 128)',  // gray-500
           barColorDark: 'rgb(75, 85, 99)',
           borderColor: 'rgb(107, 114, 128)'
@@ -200,10 +200,10 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
             <div className="col-span-3 relative">
               <div className={cn(
                 "px-2 sm:px-3 py-1.5 sm:py-2 font-bold text-xs sm:text-sm rounded-xl backdrop-blur-md border",
-                "bg-white/20 dark:bg-gray-900/20 border-white/30 dark:border-gray-700/30"
+                "bg-white/20 dark:bg-stone-900/20 border-white/30 dark:border-stone-700/30"
               )}>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                  <span className="flex items-center gap-1 text-stone-700 dark:text-stone-300">
                     {finalConfig.label}:
                   </span>
                   <span className="flex items-center text-gray-900 dark:text-white">
@@ -223,7 +223,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
             {/* Stat Bar with Glass Effect */}
             <div className="col-span-6 relative">
-              <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 overflow-hidden">
+              <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 overflow-hidden">
                 <motion.div
                   className="h-full relative rounded-full"
                   style={{
@@ -241,8 +241,8 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
             {/* Range with Glass Badge */}
             <div className="col-span-3 flex justify-center">
-              <div className="px-3 py-1 rounded-full bg-white/20 dark:bg-gray-900/20 backdrop-blur-sm border border-white/30 dark:border-gray-700/30">
-                <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+              <div className="px-3 py-1 rounded-full bg-white/20 dark:bg-stone-900/20 backdrop-blur-sm border border-white/30 dark:border-stone-700/30">
+                <span className="text-xs text-stone-600 dark:text-stone-400 font-medium">
                   <span className="hidden sm:inline">{range.min} - {range.max}</span>
                   <span className="inline sm:hidden">{range.min}-{range.max}</span>
                 </span>
@@ -255,7 +255,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
       {/* Total Stats Row */}
       {totalStats && ranking && (
         <motion.div
-          className="grid grid-cols-12 gap-2 items-center mt-1 pt-1 border-t border-gray-200 dark:border-gray-700"
+          className="grid grid-cols-12 gap-2 items-center mt-1 pt-1 border-t border-stone-200 dark:border-stone-700"
           initial={animate ? { opacity: 0, x: -20 } : {}}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
@@ -272,7 +272,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1">
                   TOTAL:
-                  {baseTotal && <span className="text-[10px] text-gray-300">({baseTotal})</span>}
+                  {baseTotal && <span className="text-[10px] text-stone-300">({baseTotal})</span>}
                 </span>
                 <span className="flex items-center gap-2">
                   <span className={cn(
@@ -289,7 +289,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
           {/* Total Bar */}
           <div className="col-span-6 relative">
-            <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 overflow-hidden">
+            <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 overflow-hidden">
               <motion.div
                 className="h-full relative rounded-full"
                 initial={animate ? { width: 0 } : { width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
@@ -309,7 +309,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
           </div>
 
           {/* Total Range */}
-          <div className="col-span-3 text-xs text-center text-gray-600 dark:text-gray-400 font-medium">
+          <div className="col-span-3 text-xs text-center text-stone-600 dark:text-stone-400 font-medium">
             {(() => {
               const totalRange = calculateTotalRange();
               return (
@@ -325,7 +325,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
       {/* Notes */}
       {showNotes && (
-        <div className="mt-8 space-y-1 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
+        <div className="mt-8 space-y-1 text-[10px] sm:text-xs text-amber-500 dark:text-stone-400">
           <div className="flex items-start gap-2">
             <span className="text-purple-500">•</span>
             <span>Minimum stats are calculated with 0 EVs, IVs of 0, and (if applicable) a hindering nature.</span>

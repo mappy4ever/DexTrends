@@ -181,8 +181,8 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
     const types: Record<AlertType, AlertTypeDisplay> = {
       'price_drop': { label: 'Price Drop', color: 'text-red-600', icon: '↘' },
       'price_rise': { label: 'Price Rise', color: 'text-green-600', icon: '↗' },
-      'percentage_change': { label: 'Percent Change', color: 'text-blue-600', icon: '📊' },
-      'trend_reversal': { label: 'Trend Reversal', color: 'text-purple-600', icon: '🔄' }
+      'percentage_change': { label: 'Percent Change', color: 'text-amber-600', icon: '📊' },
+      'trend_reversal': { label: 'Trend Reversal', color: 'text-amber-600', icon: '🔄' }
     };
     return types[alertType];
   };
@@ -237,11 +237,11 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-48"></div>
+          <div className="h-6 bg-stone-300 dark:bg-stone-600 rounded w-48"></div>
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-16 bg-gray-300 dark:bg-gray-600 rounded"></div>
+            <div key={i} className="h-16 bg-stone-300 dark:bg-stone-600 rounded"></div>
           ))}
         </div>
       </div>
@@ -252,12 +252,12 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
           Price Alerts
         </h2>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
+          className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 flex items-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM4 7h16M7 17V7m10 0v10" />
@@ -266,9 +266,9 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
         </button>
       </div>
       {/* Active Alerts */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg">
+        <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
             Active Alerts ({alerts.filter(a => a.is_active).length})
           </h3>
         </div>
@@ -278,22 +278,22 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
               {alerts.filter(a => a.is_active).map((alert) => {
                 const typeDisplay = getAlertTypeDisplay(alert.alert_type);
                 return (
-                  <div key={alert.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                  <div key={alert.id} className="flex items-center justify-between p-4 border border-stone-200 dark:border-stone-700 rounded-lg">
                     <div className="flex items-center gap-4">
                       <div className="text-2xl">{typeDisplay.icon}</div>
                       <div>
                         <Link
                           href={`/cards/${alert.card_id}`}
-                          className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                          className="font-medium text-stone-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400"
                         >
                           {alert.card_name}
                         </Link>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-sm text-stone-500 dark:text-stone-400">
                           <span className={typeDisplay.color}>{typeDisplay.label}</span>
                           {alert.target_price && ` - Target: $${alert.target_price}`}
                           {alert.percentage_change && ` - ${alert.percentage_change > 0 ? '+' : ''}${alert.percentage_change}%`}
                         </div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs text-stone-400">
                           Created {new Date(alert.created_at).toLocaleDateString()}
                         </div>
                       </div>
@@ -319,12 +319,12 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
             </div>
           ) : (
             <div className="text-center py-8">
-              <div className="text-gray-500 dark:text-gray-400 mb-4">
+              <div className="text-stone-500 dark:text-stone-400 mb-4">
                 No active alerts. Create your first alert to get notified of price changes!
               </div>
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700"
               >
                 Create Alert
               </button>
@@ -334,9 +334,9 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
       </div>
       {/* Triggered Alerts History */}
       {alerts.filter(a => a.triggered_at).length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg">
+          <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
               Recent Notifications
             </h3>
           </div>
@@ -345,13 +345,13 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
               {alerts.filter(a => a.triggered_at).slice(0, 5).map((alert) => {
                 const typeDisplay = getAlertTypeDisplay(alert.alert_type);
                 return (
-                  <div key={alert.id} className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div key={alert.id} className="flex items-center gap-4 p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
                     <div className="text-lg opacity-60">{typeDisplay.icon}</div>
                     <div className="flex-1">
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="font-medium text-stone-900 dark:text-white">
                         {alert.card_name}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-sm text-stone-500 dark:text-stone-400">
                         Alert triggered {alert.triggered_at ? new Date(alert.triggered_at).toLocaleDateString() : 'Not yet'}
                       </div>
                     </div>
@@ -407,20 +407,20 @@ function CreateAlertForm({
 
   return (
     <div className="p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
         Create Price Alert
       </h3>
 
       {!selectedCard ? (
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
             Search for a card
           </label>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
             placeholder="Charizard, Pikachu..."
           />
 
@@ -430,7 +430,7 @@ function CreateAlertForm({
                 <div
                   key={card.id}
                   onClick={() => setSelectedCard(card)}
-                  className="flex items-center gap-3 p-2 border border-gray-200 dark:border-gray-700 rounded cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                  className="flex items-center gap-3 p-2 border border-stone-200 dark:border-stone-700 rounded cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700"
                 >
                   {card.images?.small && (
                     <img
@@ -440,10 +440,10 @@ function CreateAlertForm({
                     />
                   )}
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="font-medium text-stone-900 dark:text-white">
                       {card.name}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm text-stone-500 dark:text-stone-400">
                       {card.set?.name} • Current: ${card.currentPrice?.toFixed(2)}
                     </div>
                   </div>
@@ -454,7 +454,7 @@ function CreateAlertForm({
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded">
+          <div className="flex items-center gap-3 p-3 bg-stone-50 dark:bg-stone-700 rounded">
             {selectedCard.images?.small && (
               <img
                 src={selectedCard.images.small}
@@ -463,10 +463,10 @@ function CreateAlertForm({
               />
             )}
             <div>
-              <div className="font-medium text-gray-900 dark:text-white">
+              <div className="font-medium text-stone-900 dark:text-white">
                 {selectedCard.name}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-stone-500 dark:text-stone-400">
                 {selectedCard.set?.name}
               </div>
               <div className="text-sm font-medium text-green-600">
@@ -476,20 +476,20 @@ function CreateAlertForm({
             <button
               type="button"
               onClick={() => setSelectedCard(null)}
-              className="ml-auto text-gray-500 hover:text-gray-700"
+              className="ml-auto text-stone-500 hover:text-stone-700"
             >
               ✕
             </button>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               Alert Type
             </label>
             <select
               value={alertType}
               onChange={(e) => setAlertType(e.target.value as AlertType)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+              className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
             >
               {alertTypes.map(type => (
                 <option key={type.value} value={type.value}>{type.label}</option>
@@ -499,14 +499,14 @@ function CreateAlertForm({
 
           {(alertType === 'price_drop' || alertType === 'price_rise') && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Target Price ($)
               </label>
               <input
                 type="number"
                 value={targetPrice}
                 onChange={(e) => setTargetPrice(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
                 placeholder="100.00"
                 min="0"
                 step="0.01"
@@ -517,19 +517,19 @@ function CreateAlertForm({
 
           {alertType === 'percentage_change' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Percentage Change (%)
               </label>
               <input
                 type="number"
                 value={percentageChange}
                 onChange={(e) => setPercentageChange(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
                 placeholder="10"
                 step="0.1"
                 required
               />
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <div className="text-xs text-stone-500 dark:text-stone-400 mt-1">
                 Positive for price increases, negative for decreases
               </div>
             </div>
@@ -539,13 +539,13 @@ function CreateAlertForm({
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-700"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700"
             >
               Create Alert
             </button>

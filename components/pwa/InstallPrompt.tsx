@@ -29,10 +29,10 @@ const PWAFeatures: React.FC<PWAFeaturesProps> = ({ isVisible }) => {
   return (
     <div className={`transition-all duration-300 ${isVisible ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}>
       <div className="grid grid-cols-2 gap-3 mt-4">
-        <div className="bg-blue-50 p-3 rounded-lg">
+        <div className="bg-amber-50 p-3 rounded-lg">
           <div className="text-2xl mb-1">⚡</div>
-          <div className="text-sm font-medium text-blue-900">Instant Load</div>
-          <div className="text-xs text-blue-700">Lightning fast startup</div>
+          <div className="text-sm font-medium text-amber-900">Instant Load</div>
+          <div className="text-xs text-amber-700">Lightning fast startup</div>
         </div>
         
         <div className="bg-green-50 p-3 rounded-lg">
@@ -41,10 +41,10 @@ const PWAFeatures: React.FC<PWAFeaturesProps> = ({ isVisible }) => {
           <div className="text-xs text-green-700">Works like a real app</div>
         </div>
         
-        <div className="bg-purple-50 p-3 rounded-lg">
+        <div className="bg-amber-50 p-3 rounded-lg">
           <div className="text-2xl mb-1">📴</div>
-          <div className="text-sm font-medium text-purple-900">Offline Mode</div>
-          <div className="text-xs text-purple-700">Browse without internet</div>
+          <div className="text-sm font-medium text-amber-900">Offline Mode</div>
+          <div className="text-xs text-amber-700">Browse without internet</div>
         </div>
         
         <div className="bg-red-50 p-3 rounded-lg">
@@ -215,13 +215,13 @@ const InstallPrompt: React.FC = () => {
       <div className="glass-medium rounded-t-3xl w-full max-w-md mx-auto shadow-2xl border border-white/20 backdrop-blur-md animate-slide-up">
         {/* Header */}
         <div className="p-6 text-center border-b border-white/10">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
             <span className="text-2xl">📱</span>
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">
+          <h2 className="text-xl font-bold text-stone-900 mb-2">
             Install DexTrends
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-stone-600 text-sm">
             Add DexTrends to your home screen for quick access and offline features!
           </p>
         </div>
@@ -242,36 +242,36 @@ const InstallPrompt: React.FC = () => {
           ) : installStep === 1 ? (
             // Installing State
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center">
-                <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-blue-800 mb-2">Installing...</h3>
-                <p className="text-blue-600">Adding DexTrends to your device</p>
+                <h3 className="text-xl font-bold text-amber-800 mb-2">Installing...</h3>
+                <p className="text-amber-600">Adding DexTrends to your device</p>
               </div>
             </div>
           ) : isIOS ? (
             // iOS manual install instructions
             <div className="space-y-4">
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h3 className="font-semibold text-blue-900 mb-2">How to install:</h3>
-                <ol className="text-sm text-blue-800 space-y-2">
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="font-semibold text-amber-900 mb-2">How to install:</h3>
+                <ol className="text-sm text-amber-800 space-y-2">
                   <li className="flex items-start">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">1</span>
+                    <span className="flex-shrink-0 w-6 h-6 bg-amber-200 rounded-full flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">1</span>
                     <span>Tap the Share button <span className="inline-block">📤</span> in Safari</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">2</span>
+                    <span className="flex-shrink-0 w-6 h-6 bg-amber-200 rounded-full flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">2</span>
                     <span>Scroll down and tap "Add to Home Screen"</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">3</span>
+                    <span className="flex-shrink-0 w-6 h-6 bg-amber-200 rounded-full flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">3</span>
                     <span>Tap "Add" to confirm</span>
                   </li>
                 </ol>
               </div>
               <div className="text-center">
-                <div className="inline-flex items-center text-sm text-gray-600 bg-gray-100 rounded-full px-4 py-2">
+                <div className="inline-flex items-center text-sm text-stone-600 bg-stone-100 rounded-full px-4 py-2">
                   <span className="mr-2">💡</span>
                   Works just like a native app!
                 </div>
@@ -283,17 +283,17 @@ const InstallPrompt: React.FC = () => {
               <div className="space-y-4">
                 <div className="glass-light rounded-lg p-4 border border-white/20">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">Benefits of installing:</h3>
+                    <h3 className="font-semibold text-stone-900">Benefits of installing:</h3>
                     <button
                       onClick={() => setShowFeatures(!showFeatures)}
-                      className="text-blue-600 text-sm hover:text-blue-800 transition-colors"
+                      className="text-amber-600 text-sm hover:text-amber-800 transition-colors"
                     >
                       {showFeatures ? 'Hide' : 'Show'} Features
                     </button>
                   </div>
-                  
+
                   {!showFeatures && (
-                    <ul className="text-sm text-gray-700 space-y-1">
+                    <ul className="text-sm text-stone-700 space-y-1">
                       <li>• 🚀 Faster loading times</li>
                       <li>• 📱 Native app experience</li>
                       <li>• 🔔 Push notifications (optional)</li>
@@ -308,14 +308,14 @@ const InstallPrompt: React.FC = () => {
               {isInstallable && installStep === 0 && (
                 <button
                   onClick={handleInstallClick}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+                  className="w-full bg-gradient-to-r from-amber-600 to-amber-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
                 >
                   Install DexTrends
                 </button>
               )}
               {installStep === 1 && (
-                <div className="w-full bg-gray-200 text-gray-600 font-semibold py-4 px-6 rounded-xl flex items-center justify-center">
-                  <div className="w-5 h-5 border-2 border-gray-500 border-t-transparent rounded-full animate-spin mr-3"></div>
+                <div className="w-full bg-stone-200 text-stone-600 font-semibold py-4 px-6 rounded-xl flex items-center justify-center">
+                  <div className="w-5 h-5 border-2 border-stone-500 border-t-transparent rounded-full animate-spin mr-3"></div>
                   Installing...
                 </div>
               )}
@@ -333,21 +333,21 @@ const InstallPrompt: React.FC = () => {
         {installStep === 0 && (
           <div className="p-6 pt-0 space-y-3">
             {!isIOS && !isInstallable && (
-              <div className="text-center text-sm text-gray-500 mb-4">
+              <div className="text-center text-sm text-stone-500 mb-4">
                 Installation will be available when using Chrome or Edge
               </div>
             )}
-            
+
             <div className="flex space-x-3">
               <button
                 onClick={handleRemindLater}
-                className="flex-1 py-3 px-4 text-gray-600 font-medium border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+                className="flex-1 py-3 px-4 text-stone-600 font-medium border border-stone-300 rounded-xl hover:bg-stone-50 transition-colors"
               >
                 Remind me later
               </button>
               <button
                 onClick={handleDismiss}
-                className="flex-1 py-3 px-4 text-gray-600 font-medium border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+                className="flex-1 py-3 px-4 text-stone-600 font-medium border border-stone-300 rounded-xl hover:bg-stone-50 transition-colors"
               >
                 No thanks
               </button>

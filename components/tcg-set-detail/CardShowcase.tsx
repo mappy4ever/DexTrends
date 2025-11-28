@@ -55,7 +55,7 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
       <div className="relative">
         {/* Header - Compact */}
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+          <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200">
             {title}
           </h3>
           <div className="flex items-center gap-1">
@@ -66,8 +66,8 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                 className={cn(
                   'w-1.5 h-1.5 rounded-full transition-all duration-300',
                   index === activeIndex
-                    ? 'w-6 bg-gradient-to-r from-purple-500 to-pink-500'
-                    : 'bg-gray-400/50 hover:bg-gray-400'
+                    ? 'w-6 bg-gradient-to-r from-amber-500 to-pink-500'
+                    : 'bg-stone-400/50 hover:bg-stone-400'
                 )}
               />
             ))}
@@ -117,21 +117,21 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                 className="space-y-3"
               >
                 {/* Card Name */}
-                <h4 className="text-xl font-bold text-gray-800 dark:text-gray-200 truncate">
+                <h4 className="text-xl font-bold text-stone-800 dark:text-stone-200 truncate">
                   {activeCard.name}
                 </h4>
                 
                 {/* Compact Info */}
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-500 dark:text-gray-400">Set:</span>
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-stone-500 dark:text-stone-400">Set:</span>
+                    <span className="font-medium text-stone-700 dark:text-stone-300">
                       {activeCard.set?.name?.split(' ').slice(0, 2).join(' ')}
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-500 dark:text-gray-400">#</span>
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-stone-500 dark:text-stone-400">#</span>
+                    <span className="font-medium text-stone-700 dark:text-stone-300">
                       {activeCard.number}/{activeCard.set?.printedTotal}
                     </span>
                   </div>
@@ -159,7 +159,7 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                 
                 {/* Artist - Compact */}
                 {activeCard.artist && (
-                  <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  <div className="text-xs text-stone-500 dark:text-stone-400 truncate">
                     Artist: {activeCard.artist}
                   </div>
                 )}
@@ -176,8 +176,8 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                     'relative flex-shrink-0 rounded-lg overflow-hidden transition-all duration-200',
                     'border',
                     index === activeIndex
-                      ? 'border-purple-500 shadow-lg ring-2 ring-purple-500/30'
-                      : 'border-gray-200 dark:border-gray-700 opacity-60 hover:opacity-100'
+                      ? 'border-amber-500 shadow-lg ring-2 ring-amber-500/30'
+                      : 'border-stone-200 dark:border-stone-700 opacity-60 hover:opacity-100'
                   )}
                 >
                   <img
@@ -186,7 +186,7 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                     className="w-12 h-16 object-cover"
                   />
                   {index === activeIndex && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-purple-500/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-amber-500/30 to-transparent" />
                   )}
                 </button>
               ))}

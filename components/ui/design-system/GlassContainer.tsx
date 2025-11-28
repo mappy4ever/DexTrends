@@ -15,10 +15,10 @@ interface GlassContainerProps {
 }
 
 const variantClasses = {
-  light: 'bg-white/70 dark:bg-gray-800/70 border-white/30 dark:border-gray-700/30',
-  medium: 'bg-white/80 dark:bg-gray-800/80 border-white/40 dark:border-gray-700/40',
-  dark: 'bg-white/90 dark:bg-gray-800/90 border-white/50 dark:border-gray-700/50',
-  colored: 'bg-gradient-to-br from-blue-50/80 via-purple-50/80 to-pink-50/80 dark:from-gray-800/80 dark:via-gray-700/80 dark:to-gray-800/80 border-white/40'
+  light: 'bg-white/70 dark:bg-stone-800/70 border-white/30 dark:border-stone-700/30',
+  medium: 'bg-white/80 dark:bg-stone-800/80 border-white/40 dark:border-stone-700/40',
+  dark: 'bg-white/90 dark:bg-stone-800/90 border-white/50 dark:border-stone-700/50',
+  colored: 'bg-gradient-to-br from-amber-50/80 via-amber-50/80 to-pink-50/80 dark:from-stone-800/80 dark:via-stone-700/80 dark:to-stone-800/80 border-white/40'
 };
 
 const blurClasses = {

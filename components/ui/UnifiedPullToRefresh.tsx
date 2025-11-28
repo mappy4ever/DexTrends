@@ -157,7 +157,7 @@ export const UnifiedPullToRefresh: React.FC<UnifiedPullToRefreshProps> = ({
                 }}
                 className={cn(
                   "w-10 h-10 rounded-full",
-                  "bg-gradient-to-r from-purple-500 to-pink-500",
+                  "bg-gradient-to-r from-amber-500 to-pink-500",
                   "flex items-center justify-center",
                   "shadow-lg"
                 )}
@@ -192,7 +192,7 @@ export const UnifiedPullToRefresh: React.FC<UnifiedPullToRefreshProps> = ({
             className={cn(
               "absolute top-4 right-4 z-10",
               "px-4 py-2 rounded-full",
-              "bg-gradient-to-r from-purple-500 to-pink-500",
+              "bg-gradient-to-r from-amber-500 to-pink-500",
               "text-white font-medium",
               "shadow-lg hover:shadow-xl",
               "transition-all duration-200",
@@ -217,9 +217,9 @@ export const UnifiedPullToRefresh: React.FC<UnifiedPullToRefreshProps> = ({
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"
+                className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-2"
               />
-              <p className="text-sm text-gray-600 dark:text-gray-400">Refreshing...</p>
+              <p className="text-sm text-stone-600 dark:text-stone-400">Refreshing...</p>
             </div>
           </motion.div>
         )}

@@ -137,14 +137,14 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
 
   if (loading) {
     return (
-      <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 ${className}`}>
+      <div className={`bg-white dark:bg-stone-800 rounded-lg shadow-lg p-6 ${className}`}>
         <div className="animate-pulse">
-          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded mb-4 w-48"></div>
+          <div className="h-6 bg-stone-300 dark:bg-stone-600 rounded mb-4 w-48"></div>
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
               <div key={i} className="flex justify-between">
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-32"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+                <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-32"></div>
+                <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-20"></div>
               </div>
             ))}
           </div>
@@ -157,13 +157,13 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
     <div className={`space-y-6 ${className}`}>
       {/* Header with Timeframe Selector */}
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
           Market Analytics
         </h2>
         <select
           value={timeframe}
           onChange={(e) => setTimeframe(e.target.value as Timeframe)}
-          className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+          className="px-3 py-1 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-800 text-stone-900 dark:text-white"
         >
           <option value="24h">24 Hours</option>
           <option value="7d">7 Days</option>
@@ -173,44 +173,44 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
       {/* Market Statistics Cards */}
       {analytics.marketStats && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Cards Tracked</div>
-            <div className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+            <div className="text-sm text-stone-500 dark:text-stone-400">Cards Tracked</div>
+            <div className="text-xl font-bold text-stone-900 dark:text-white">
               {analytics.marketStats.totalCardsTracked.toLocaleString()}
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Avg Change</div>
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+            <div className="text-sm text-stone-500 dark:text-stone-400">Avg Change</div>
             <div className={`text-xl font-bold ${parseFloat(analytics.marketStats.avgPriceChange) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {formatPercent(analytics.marketStats.avgPriceChange)}
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Top Gainers</div>
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+            <div className="text-sm text-stone-500 dark:text-stone-400">Top Gainers</div>
             <div className="text-xl font-bold text-green-600">
               {analytics.marketStats.topGainers}
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Top Losers</div>
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+            <div className="text-sm text-stone-500 dark:text-stone-400">Top Losers</div>
             <div className="text-xl font-bold text-red-600">
               {analytics.marketStats.topLosers}
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Market Cap</div>
-            <div className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+            <div className="text-sm text-stone-500 dark:text-stone-400">Market Cap</div>
+            <div className="text-xl font-bold text-stone-900 dark:text-white">
               {formatCurrency(analytics.marketStats.marketCap)}
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-            <div className="text-sm text-gray-500 dark:text-gray-400">24h Volume</div>
-            <div className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+            <div className="text-sm text-stone-500 dark:text-stone-400">24h Volume</div>
+            <div className="text-xl font-bold text-stone-900 dark:text-white">
               {formatCurrency(analytics.marketStats.volume24h)}
             </div>
           </div>
@@ -218,34 +218,34 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
       )}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Movers */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg">
+          <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
               Top Price Movers ({timeframe})
             </h3>
           </div>
           <div className="p-4">
             <div className="space-y-3">
               {analytics.topMovers.slice(0, 8).map((card, index) => (
-                <div key={card.card_id} className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+                <div key={card.card_id} className="flex items-center justify-between p-2 hover:bg-stone-50 dark:hover:bg-stone-700 rounded">
                   <div className="flex items-center gap-3">
-                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400 w-6">
+                    <div className="text-sm font-medium text-stone-500 dark:text-stone-400 w-6">
                       #{index + 1}
                     </div>
                     <div>
                       <Link
                         href={`/cards/${card.card_id}`}
-                            className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                        
+                            className="text-sm font-medium text-stone-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400">
+
                         {card.card_name}
                       </Link>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs text-stone-500 dark:text-stone-400">
                         {card.set_name}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    <div className="text-sm font-medium text-stone-900 dark:text-white">
                       ${parseFloat(card.price_market?.toString() || '0').toFixed(2)}
                     </div>
                     <div className={`text-xs font-medium ${card.isPositive ? 'text-green-600' : 'text-red-600'}`}>
@@ -259,28 +259,28 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
         </div>
 
         {/* Trending Cards */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg">
+          <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
               Trending Cards
             </h3>
           </div>
           <div className="p-4">
             <div className="space-y-3">
               {analytics.trendingCards.slice(0, 8).map((card, index) => (
-                <div key={card.card_id} className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+                <div key={card.card_id} className="flex items-center justify-between p-2 hover:bg-stone-50 dark:hover:bg-stone-700 rounded">
                   <div className="flex items-center gap-3">
-                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400 w-6">
+                    <div className="text-sm font-medium text-stone-500 dark:text-stone-400 w-6">
                       #{index + 1}
                     </div>
                     <div>
                       <Link
                         href={`/cards/${card.card_id}`}
-                            className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                        
+                            className="text-sm font-medium text-stone-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400">
+
                         {card.card_name}
                       </Link>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs text-stone-500 dark:text-stone-400">
                         {card.set_name} • {card.variant_type}
                       </div>
                     </div>
@@ -299,21 +299,21 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
         </div>
       </div>
       {/* Recent Market Activity */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg">
+        <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
             Recent Price Updates
           </h3>
         </div>
         <div className="p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {analytics.recentActivity.slice(0, 9).map((card) => (
-              <div key={`${card.card_id}-${card.collected_at}`} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+              <div key={`${card.card_id}-${card.collected_at}`} className="border border-stone-200 dark:border-stone-700 rounded-lg p-3">
                 <Link href={`/cards/${card.card_id}`} className="block">
-                  <div className="font-medium text-gray-900 dark:text-white text-sm mb-1 truncate">
+                  <div className="font-medium text-stone-900 dark:text-white text-sm mb-1 truncate">
                     {card.card_name}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  <div className="text-xs text-stone-500 dark:text-stone-400 mb-2">
                     {card.set_name}
                   </div>
                   <div className="flex justify-between items-center">
@@ -322,7 +322,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
                       currentPrice={`$${parseFloat(card.price_market?.toString() || '0').toFixed(2)}`}
                       variantType={card.variant_type}
                     />
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-stone-400">
                       {new Date(card.collected_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',

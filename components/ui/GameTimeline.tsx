@@ -54,7 +54,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
       releaseDate: '1999-04-30',
       platform: 'Nintendo 64',
       type: 'spinoff',
-      color: 'from-purple-500 to-indigo-500'
+      color: 'from-amber-500 to-amber-500'
     },
     {
       id: 'colosseum',
@@ -62,7 +62,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
       releaseDate: '2003-11-21',
       platform: 'GameCube',
       type: 'spinoff',
-      color: 'from-gray-700 to-purple-700'
+      color: 'from-stone-700 to-stone-700'
     },
     {
       id: 'go',
@@ -70,7 +70,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
       releaseDate: '2016-07-06',
       platform: 'Mobile',
       type: 'spinoff',
-      color: 'from-blue-400 to-yellow-400'
+      color: 'from-amber-400 to-yellow-400'
     },
     {
       id: 'unite',
@@ -78,7 +78,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
       releaseDate: '2021-07-21',
       platform: 'Switch/Mobile',
       type: 'spinoff',
-      color: 'from-purple-600 to-orange-500'
+      color: 'from-amber-600 to-orange-500'
     }
   ];
 
@@ -106,10 +106,10 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
   const getYearColor = (year: number): string => {
     const progress = (year - startYear) / totalYears;
     if (progress < 0.2) return 'from-red-500 to-red-600';
-    if (progress < 0.4) return 'from-blue-500 to-blue-600';
+    if (progress < 0.4) return 'from-amber-500 to-amber-600';
     if (progress < 0.6) return 'from-yellow-500 to-yellow-600';
     if (progress < 0.8) return 'from-green-500 to-green-600';
-    return 'from-purple-500 to-purple-600';
+    return 'from-amber-500 to-amber-600';
   };
 
   return (
@@ -126,7 +126,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
               className={`px-4 py-2 rounded-full font-semibold transition-all ${
                 selectedYear === year
                   ? 'bg-gradient-to-r from-pokemon-red to-pokemon-blue text-white'
-                  : theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+                  : theme === 'dark' ? 'bg-stone-700 hover:bg-stone-600' : 'bg-stone-200 hover:bg-stone-300'
               }`}
             >
               {year}
@@ -164,7 +164,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                     {year.slice(-2)}
                   </div>
                   <h3 className="text-2xl font-bold">{year}</h3>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-stone-500">
                     {yearGames.length} release{yearGames.length > 1 ? 's' : ''}
                   </span>
                 </div>
@@ -186,7 +186,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                         onMouseEnter={() => setHoveredGame(game.id)}
                         onMouseLeave={() => setHoveredGame(null)}
                         className={`relative rounded-xl overflow-hidden transition-all duration-300 ${
-                          theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                          theme === 'dark' ? 'bg-stone-700' : 'bg-white'
                         } shadow-lg ${hoveredGame === game.id ? 'scale-105 shadow-2xl' : ''}`}
                       >
                         <div className={`absolute inset-0 bg-gradient-to-r ${game.color} opacity-10`}></div>
@@ -198,7 +198,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                                 {game.names.join(' & ')}
                               </h4>
                               
-                              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                              <div className="flex flex-wrap items-center gap-4 text-sm text-stone-600 dark:text-stone-400">
                                 <div className="flex items-center gap-1">
                                   <BsController />
                                   <span>{game.platform}</span>
@@ -219,7 +219,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                                 <motion.p
                                   initial={{ opacity: 0, height: 0 }}
                                   animate={{ opacity: 1, height: 'auto' }}
-                                  className="mt-3 text-sm text-gray-600 dark:text-gray-400"
+                                  className="mt-3 text-sm text-stone-600 dark:text-stone-400"
                                 >
                                   {game.description}
                                 </motion.p>
@@ -230,7 +230,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                             <div className={`ml-4 px-3 py-1 rounded-full text-xs font-semibold ${
                               game.type === 'main'
                                 ? 'bg-pokemon-red text-white'
-                                : 'bg-pokemon-purple text-white'
+                                : 'bg-pokemon-amber text-white'
                             }`}>
                               {game.type === 'main' ? `Gen ${game.generation}` : 'Spin-off'}
                             </div>
@@ -241,13 +241,13 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                             <motion.div
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
-                              className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600"
+                              className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-600"
                             >
                               <div className="flex flex-wrap gap-2">
                                 {game.features.slice(0, 3).map((feature, idx) => (
                                   <span
                                     key={idx}
-                                    className="px-2 py-1 bg-gray-100 dark:bg-gray-600 rounded-full text-xs"
+                                    className="px-2 py-1 bg-stone-100 dark:bg-stone-600 rounded-full text-xs"
                                   >
                                     {feature}
                                   </span>
@@ -272,26 +272,26 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
         className={`mt-12 p-6 rounded-2xl ${
-          theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+          theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
         }`}
       >
         <h3 className="text-xl font-bold mb-4 text-center">Timeline Overview</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
             <div className="text-3xl font-bold text-pokemon-red">{totalYears}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Years of Pokémon</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Years of Pokémon</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-pokemon-blue">{allGames.filter(g => g.type === 'main').length}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Main Games</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Main Games</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-pokemon-yellow">{allGames.filter(g => g.type === 'spinoff').length}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Major Spin-offs</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Major Spin-offs</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-pokemon-green">{Object.keys(gamesByYear).length}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Release Years</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Release Years</div>
           </div>
         </div>
       </motion.div>

@@ -53,22 +53,22 @@ export function TypeEffectivenessBadge({ type, multiplier }: TypeEffectivenessBa
 
   return (
     <div className="inline-block relative">
-      <div 
+      <div
         className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium pr-8"
-        style={{ 
+        style={{
           backgroundColor: colors.bg,
           minWidth: '100px'
         }}
       >
-        <span 
+        <span
           className={`capitalize ${colors.text === 'white' ? 'text-white' : 'text-black'}`}
         >
           {type}
         </span>
       </div>
       {/* Multiplier circle */}
-      <div 
-        className="absolute -right-1 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-7 h-7 flex items-center justify-center border-2 border-gray-200 shadow-sm"
+      <div
+        className="absolute -right-1 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-7 h-7 flex items-center justify-center border-2 border-stone-200 shadow-sm"
       >
         <span 
           className="font-bold text-black"

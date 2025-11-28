@@ -67,16 +67,16 @@ const MarketPage: NextPage = () => {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-full mb-6 shadow-2xl"
+                className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 to-amber-600 rounded-full mb-6 shadow-2xl"
               >
                 <span className="text-4xl">📊</span>
               </motion.div>
-              
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 bg-gradient-to-r from-green-600 via-amber-600 to-amber-600 bg-clip-text text-transparent">
                 Market Analytics
               </h1>
               
-              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+              <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto mb-8">
                 Comprehensive Pokemon TCG market insights, trending cards, and price movement analysis to help you make informed trading decisions.
               </p>
               
@@ -89,7 +89,7 @@ const MarketPage: NextPage = () => {
                 >
                   <GlassContainer variant="medium" hover className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">2.4K+</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Cards Tracked</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Cards Tracked</div>
                   </GlassContainer>
                 </motion.div>
                 <motion.div
@@ -98,8 +98,8 @@ const MarketPage: NextPage = () => {
                   transition={{ delay: 0.2 }}
                 >
                   <GlassContainer variant="medium" hover className="text-center">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">$45K</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Daily Volume</div>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-cyan-600 bg-clip-text text-transparent">$45K</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Daily Volume</div>
                   </GlassContainer>
                 </motion.div>
                 <motion.div
@@ -108,8 +108,8 @@ const MarketPage: NextPage = () => {
                   transition={{ delay: 0.3 }}
                 >
                   <GlassContainer variant="medium" hover className="text-center">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">+12.5%</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Weekly Growth</div>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">+12.5%</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Weekly Growth</div>
                   </GlassContainer>
                 </motion.div>
                 <motion.div
@@ -119,7 +119,7 @@ const MarketPage: NextPage = () => {
                 >
                   <GlassContainer variant="medium" hover className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">156</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Active Traders</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Active Traders</div>
                   </GlassContainer>
                 </motion.div>
               </div>
@@ -139,8 +139,8 @@ const MarketPage: NextPage = () => {
                       size="lg"
                       className={`relative p-4 !rounded-xl text-left w-full ${
                         activeTab === tab.id
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg scale-105'
-                          : 'bg-transparent text-gray-600 dark:text-gray-400'
+                          ? 'bg-gradient-to-r from-amber-500 to-amber-500 text-white shadow-lg scale-105'
+                          : 'bg-transparent text-stone-600 dark:text-stone-400'
                       }`}
                     >
                       <div className="flex items-center gap-3 mb-2">
@@ -149,7 +149,7 @@ const MarketPage: NextPage = () => {
                         </span>
                         <span className="font-semibold text-sm">{tab.label}</span>
                       </div>
-                      <p className={`text-xs opacity-80 ${activeTab === tab.id ? 'text-blue-100' : ''}`}>
+                      <p className={`text-xs opacity-80 ${activeTab === tab.id ? 'text-amber-100' : ''}`}>
                         {tab.description}
                       </p>
                       
@@ -169,14 +169,14 @@ const MarketPage: NextPage = () => {
               <FadeIn>
                 <div className="space-y-8">
                   {/* Main Market Analytics Component */}
-                  <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                  <div className="bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-amber-500 rounded-full flex items-center justify-center">
                         <span className="text-white font-bold">📊</span>
                       </div>
                       <div>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Overview</h2>
-                        <p className="text-gray-600 dark:text-gray-400">Real-time market analysis and trends</p>
+                        <h2 className="text-2xl font-bold text-stone-900 dark:text-white">Market Overview</h2>
+                        <p className="text-stone-600 dark:text-stone-400">Real-time market analysis and trends</p>
                       </div>
                     </div>
                     
@@ -188,14 +188,14 @@ const MarketPage: NextPage = () => {
 
             {activeTab === 'trending' && (
               <FadeIn>
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                <div className="bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold">📈</span>
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Trending Cards</h2>
-                      <p className="text-gray-600 dark:text-gray-400">Most popular and searched cards</p>
+                      <h2 className="text-2xl font-bold text-stone-900 dark:text-white">Trending Cards</h2>
+                      <p className="text-stone-600 dark:text-stone-400">Most popular and searched cards</p>
                     </div>
                   </div>
                   
@@ -208,8 +208,8 @@ const MarketPage: NextPage = () => {
                             +{(Math.random() * 50 + 10).toFixed(1)}%
                           </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 dark:text-white mb-2">Card Name {index}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Base Set • Rare</p>
+                        <h3 className="font-bold text-stone-900 dark:text-white mb-2">Card Name {index}</h3>
+                        <p className="text-sm text-stone-600 dark:text-stone-400 mb-3">Base Set • Rare</p>
                         <div className="text-lg font-bold text-green-600 dark:text-green-400">
                           ${(Math.random() * 200 + 50).toFixed(2)}
                         </div>
@@ -222,14 +222,14 @@ const MarketPage: NextPage = () => {
 
             {activeTab === 'movers' && (
               <FadeIn>
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                <div className="bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-pink-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold">💹</span>
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Price Movers</h2>
-                      <p className="text-gray-600 dark:text-gray-400">Biggest price changes in the last 24 hours</p>
+                      <h2 className="text-2xl font-bold text-stone-900 dark:text-white">Price Movers</h2>
+                      <p className="text-stone-600 dark:text-stone-400">Biggest price changes in the last 24 hours</p>
                     </div>
                   </div>
                   
@@ -244,14 +244,14 @@ const MarketPage: NextPage = () => {
                           <div key={index} className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200/50 dark:border-green-700/50">
                             <div className="flex justify-between items-center">
                               <div>
-                                <div className="font-semibold text-gray-900 dark:text-white">Gainer Card {index}</div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400">Set Name • Rarity</div>
+                                <div className="font-semibold text-stone-900 dark:text-white">Gainer Card {index}</div>
+                                <div className="text-sm text-stone-600 dark:text-stone-400">Set Name • Rarity</div>
                               </div>
                               <div className="text-right">
                                 <div className="font-bold text-green-600 dark:text-green-400">
                                   +{(Math.random() * 30 + 5).toFixed(1)}%
                                 </div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400">
+                                <div className="text-sm text-stone-600 dark:text-stone-400">
                                   ${(Math.random() * 100 + 20).toFixed(2)}
                                 </div>
                               </div>
@@ -271,14 +271,14 @@ const MarketPage: NextPage = () => {
                           <div key={index} className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border border-red-200/50 dark:border-red-700/50">
                             <div className="flex justify-between items-center">
                               <div>
-                                <div className="font-semibold text-gray-900 dark:text-white">Loser Card {index}</div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400">Set Name • Rarity</div>
+                                <div className="font-semibold text-stone-900 dark:text-white">Loser Card {index}</div>
+                                <div className="text-sm text-stone-600 dark:text-stone-400">Set Name • Rarity</div>
                               </div>
                               <div className="text-right">
                                 <div className="font-bold text-red-600 dark:text-red-400">
                                   -{(Math.random() * 20 + 2).toFixed(1)}%
                                 </div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400">
+                                <div className="text-sm text-stone-600 dark:text-stone-400">
                                   ${(Math.random() * 80 + 15).toFixed(2)}
                                 </div>
                               </div>
@@ -296,30 +296,30 @@ const MarketPage: NextPage = () => {
               <FadeIn>
                 <div className="space-y-8">
                   {/* Market Insights */}
-                  <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                  <div className="bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-amber-500 rounded-full flex items-center justify-center">
                         <span className="text-white font-bold">🔍</span>
                       </div>
                       <div>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Insights</h2>
-                        <p className="text-gray-600 dark:text-gray-400">AI-powered analysis and predictions</p>
+                        <h2 className="text-2xl font-bold text-stone-900 dark:text-white">Market Insights</h2>
+                        <p className="text-stone-600 dark:text-stone-400">AI-powered analysis and predictions</p>
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                       {/* Key Insights */}
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Key Market Insights</h3>
+                        <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Key Market Insights</h3>
                         <div className="space-y-4">
-                          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200/50 dark:border-blue-700/50">
+                          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200/50 dark:border-amber-700/50">
                             <div className="flex items-start gap-3">
-                              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <span className="text-white text-xs font-bold">💡</span>
                               </div>
                               <div>
-                                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Vintage Cards Surge</h4>
-                                <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                                <h4 className="font-semibold text-amber-900 dark:text-amber-100">Vintage Cards Surge</h4>
+                                <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
                                   Base Set cards are showing unprecedented growth with 25% average increase this month.
                                 </p>
                               </div>
@@ -340,14 +340,14 @@ const MarketPage: NextPage = () => {
                             </div>
                           </div>
                           
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200/50 dark:border-purple-700/50">
+                          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200/50 dark:border-amber-700/50">
                             <div className="flex items-start gap-3">
-                              <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <span className="text-white text-xs font-bold">🎯</span>
                               </div>
                               <div>
-                                <h4 className="font-semibold text-purple-900 dark:text-purple-100">Seasonal Trends</h4>
-                                <p className="text-sm text-purple-700 dark:text-purple-300 mt-1">
+                                <h4 className="font-semibold text-amber-900 dark:text-amber-100">Seasonal Trends</h4>
+                                <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
                                   Holiday season typically brings 15-20% increase in high-value card trading activity.
                                 </p>
                               </div>
@@ -358,43 +358,43 @@ const MarketPage: NextPage = () => {
                       
                       {/* Predictions */}
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Price Predictions</h3>
+                        <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Price Predictions</h3>
                         <div className="space-y-4">
-                          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                          <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4">
                             <div className="flex justify-between items-center mb-2">
-                              <span className="font-semibold text-gray-900 dark:text-white">Charizard Base Set</span>
+                              <span className="font-semibold text-stone-900 dark:text-white">Charizard Base Set</span>
                               <span className="text-green-600 dark:text-green-400 font-bold">↑ Bullish</span>
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            <div className="text-sm text-stone-600 dark:text-stone-400 mb-2">
                               Predicted to reach $500-550 by end of quarter
                             </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                            <div className="w-full bg-stone-200 dark:bg-stone-600 rounded-full h-2">
                               <div className="bg-green-500 h-2 rounded-full" style={{width: '75%'}}></div>
                             </div>
                           </div>
                           
-                          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                          <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4">
                             <div className="flex justify-between items-center mb-2">
-                              <span className="font-semibold text-gray-900 dark:text-white">Pikachu VMAX</span>
+                              <span className="font-semibold text-stone-900 dark:text-white">Pikachu VMAX</span>
                               <span className="text-yellow-600 dark:text-yellow-400 font-bold">→ Stable</span>
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            <div className="text-sm text-stone-600 dark:text-stone-400 mb-2">
                               Expected to maintain current price range
                             </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                            <div className="w-full bg-stone-200 dark:bg-stone-600 rounded-full h-2">
                               <div className="bg-yellow-500 h-2 rounded-full" style={{width: '60%'}}></div>
                             </div>
                           </div>
                           
-                          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                          <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4">
                             <div className="flex justify-between items-center mb-2">
-                              <span className="font-semibold text-gray-900 dark:text-white">Modern Holos</span>
+                              <span className="font-semibold text-stone-900 dark:text-white">Modern Holos</span>
                               <span className="text-red-600 dark:text-red-400 font-bold">↓ Bearish</span>
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            <div className="text-sm text-stone-600 dark:text-stone-400 mb-2">
                               May see 10-15% decline as supply increases
                             </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                            <div className="w-full bg-stone-200 dark:bg-stone-600 rounded-full h-2">
                               <div className="bg-red-500 h-2 rounded-full" style={{width: '40%'}}></div>
                             </div>
                           </div>

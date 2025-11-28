@@ -419,7 +419,7 @@ export function PokemonLearnset({
 
   if (moves.length === 0) {
     return (
-      <div className={cn('text-center py-8 text-gray-500 dark:text-gray-400', className)}>
+      <div className={cn('text-center py-8 text-stone-500 dark:text-stone-400', className)}>
         No moves found for this Pokémon
       </div>
     );
@@ -447,12 +447,12 @@ export function PokemonLearnset({
               placeholder="Search moves..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-stone-300 dark:border-stone-600 rounded-lg text-sm bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
           <button
             onClick={resetFilters}
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="px-4 py-2 bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-200 rounded-lg text-sm font-medium hover:bg-stone-300 dark:hover:bg-stone-600 transition-colors"
           >
             Reset Filters
           </button>
@@ -461,12 +461,12 @@ export function PokemonLearnset({
         {/* Generation selector with cumulative toggle */}
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Generation:</label>
+            <label className="text-sm font-medium text-stone-700 dark:text-stone-300">Generation:</label>
             <select
               data-testid="generation-select"
               value={selectedGeneration}
               onChange={(e) => setSelectedGeneration(Number(e.target.value))}
-              className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1 border border-stone-300 dark:border-stone-600 rounded-md text-sm bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
             >
               {generations.map(gen => (
                 <option key={gen} value={gen}>Gen {gen}</option>
@@ -481,9 +481,9 @@ export function PokemonLearnset({
               id="cumulative-toggle"
               checked={showCumulative}
               onChange={(e) => setShowCumulative(e.target.checked)}
-              className="rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-500"
+              className="rounded border-stone-300 dark:border-stone-600 text-amber-500 focus:ring-amber-500"
             />
-            <label htmlFor="cumulative-toggle" className="text-sm text-gray-700 dark:text-gray-300">
+            <label htmlFor="cumulative-toggle" className="text-sm text-stone-700 dark:text-stone-300">
               Show all moves up to Gen {selectedGeneration}
             </label>
           </div>
@@ -491,7 +491,7 @@ export function PokemonLearnset({
 
         {/* Method filter */}
         <div>
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Learn Method:</label>
+          <label className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2 block">Learn Method:</label>
           <PillBadgeGroup
             options={methodFilterOptions}
             value={selectedMethod}
@@ -505,7 +505,7 @@ export function PokemonLearnset({
         {/* Type filter */}
         {availableTypes.length > 0 && (
           <div>
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Filter by Type:</label>
+            <label className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2 block">Filter by Type:</label>
             <PillBadgeGroup
               options={typeFilterOptions}
               value={selectedTypes}
@@ -522,7 +522,7 @@ export function PokemonLearnset({
         {/* Category filter */}
         {availableCategories.length > 0 && (
           <div>
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Filter by Category:</label>
+            <label className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2 block">Filter by Category:</label>
             <PillBadgeGroup
               options={categoryFilterOptions}
               value={selectedCategories}
@@ -537,17 +537,17 @@ export function PokemonLearnset({
       </div>
 
       {/* Move count summary */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
+      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+          <span className="text-sm font-medium text-amber-800 dark:text-amber-200">
             Total Moves: {filteredMoves.length}
             {loadingMoveData && (
-              <span className="ml-2 text-xs text-blue-600 dark:text-blue-400">
+              <span className="ml-2 text-xs text-amber-600 dark:text-amber-400">
                 (Loading move details...)
               </span>
             )}
           </span>
-          <span className="text-xs text-blue-600 dark:text-blue-300">
+          <span className="text-xs text-amber-600 dark:text-amber-300">
             {showCumulative 
               ? `Showing all moves available up to Generation ${selectedGeneration}`
               : `Showing only moves introduced in Generation ${selectedGeneration}`
@@ -568,16 +568,16 @@ export function PokemonLearnset({
             })
             .map(([method, methodMoves]) => (
             <div key={method} className="relative">
-              <div className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900 pb-2">
-                <div className="flex items-center justify-between border-b-2 border-gray-200 dark:border-gray-700 pb-2">
+              <div className="sticky top-0 z-10 bg-stone-50 dark:bg-stone-900 pb-2">
+                <div className="flex items-center justify-between border-b-2 border-stone-200 dark:border-stone-700 pb-2">
                   <h3 className="text-lg font-bold flex items-center gap-3">
                     {method === 'level-up' && <span className="text-green-500 text-sm">LV</span>}
-                    {method === 'machine' && <span className="text-blue-500 text-sm">TM</span>}
+                    {method === 'machine' && <span className="text-amber-500 text-sm">TM</span>}
                     {method === 'egg' && <span className="text-pink-500 text-sm">EGG</span>}
                     {method === 'tutor' && <span className="text-purple-500 text-sm">TUT</span>}
                     {learnMethodLabels[method] || method}
                   </h3>
-                  <span className="text-sm bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full">
+                  <span className="text-sm bg-stone-200 dark:bg-stone-700 px-3 py-1 rounded-full">
                     {methodMoves.length} moves
                   </span>
                 </div>
@@ -597,7 +597,7 @@ export function PokemonLearnset({
       ) : (
         // Single method view with count
         <div>
-          <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="mb-4 text-sm text-stone-600 dark:text-stone-400">
             Showing {filteredMoves.length} {learnMethodLabels[selectedMethod]?.toLowerCase() || selectedMethod} moves
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 overflow-visible">
@@ -641,13 +641,13 @@ function MoveItem({ move, moveData }: MoveItemProps) {
   return (
     <div className="space-y-2 overflow-visible">
       <div 
-        className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer overflow-visible" 
+        className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-800 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors cursor-pointer overflow-visible" 
         data-testid="move-item"
         onClick={() => setShowDetails(!showDetails)}
       >
         <div className="flex-1">
           <div 
-            className="font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer inline-block"
+            className="font-medium text-stone-900 dark:text-stone-100 hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer inline-block"
             onClick={handleMoveClick}
           >
             {displayName}
@@ -658,7 +658,7 @@ function MoveItem({ move, moveData }: MoveItemProps) {
             <TypeBadge type={moveType} size="sm" />
             {moveData && (
               <>
-                <span className="text-xs text-gray-600 dark:text-gray-400">
+                <span className="text-xs text-stone-600 dark:text-stone-400">
                   {moveData.power ? `Power: ${moveData.power}` : 'Power: —'} / 
                   {moveData.accuracy ? `Acc: ${moveData.accuracy}%` : 'Acc: —'}
                 </span>
@@ -670,25 +670,25 @@ function MoveItem({ move, moveData }: MoveItemProps) {
           {/* Learn method info with generation indicators */}
           <div className="flex items-center gap-2 mt-1">
             {move.learn_method === 'level-up' && move.level && (
-              <div className="text-sm text-gray-500 dark:text-gray-400">Level {move.level}</div>
+              <div className="text-sm text-stone-500 dark:text-stone-400">Level {move.level}</div>
             )}
             {move.learn_method === 'machine' && (
-              <div className="text-sm text-gray-500 dark:text-gray-400">TM/HM</div>
+              <div className="text-sm text-stone-500 dark:text-stone-400">TM/HM</div>
             )}
             {/* Show all generations this move is available in */}
             {(move as any).generations && (move as any).generations.length > 1 && (
-              <div className="text-xs text-gray-400 dark:text-gray-500">
+              <div className="text-xs text-stone-400 dark:text-stone-500">
                 Gens: {(move as any).generations.sort((a: number, b: number) => a - b).join(', ')}
               </div>
             )}
             {!((move as any).generations && (move as any).generations.length > 1) && (
-              <div className="text-xs text-gray-400 dark:text-gray-500">Gen {move.generation}</div>
+              <div className="text-xs text-stone-400 dark:text-stone-500">Gen {move.generation}</div>
             )}
           </div>
         </div>
         <div className="ml-2">
           <svg 
-            className={cn("w-5 h-5 text-gray-400 dark:text-gray-500 transition-transform", showDetails && "rotate-180")} 
+            className={cn("w-5 h-5 text-stone-400 dark:text-stone-500 transition-transform", showDetails && "rotate-180")} 
             fill="none" 
             viewBox="0 0 24 24" 
             stroke="currentColor"

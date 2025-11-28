@@ -283,13 +283,13 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
   }
 
   return (
-    <div className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`py-16 ${theme === 'dark' ? 'bg-stone-900' : 'bg-stone-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Special Pokémon</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-stone-600 dark:text-stone-400">
               Unique and legendary Pokémon of {region.name}
             </p>
           </div>
@@ -298,13 +298,13 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
         {/* Tabs */}
         {hasVariants && regionVariants && regionLegendaries && (
           <div className="flex justify-center mb-12">
-            <div className={`flex rounded-full p-1 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
+            <div className={`flex rounded-full p-1 ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-200'}`}>
               <button
                 onClick={() => setActiveTab('variants')}
                 className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 ${
                   activeTab === 'variants'
-                    ? `${theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} shadow-lg`
-                    : `${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`
+                    ? `${theme === 'dark' ? 'bg-amber-600 text-white' : 'bg-white text-amber-600'} shadow-lg`
+                    : `${theme === 'dark' ? 'text-stone-300 hover:text-white' : 'text-stone-600 hover:text-stone-900'}`
                 }`}
               >
                 <BsArrowRepeat />
@@ -314,8 +314,8 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                 onClick={() => setActiveTab('legendaries')}
                 className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 ${
                   activeTab === 'legendaries'
-                    ? `${theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} shadow-lg`
-                    : `${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`
+                    ? `${theme === 'dark' ? 'bg-amber-600 text-white' : 'bg-white text-amber-600'} shadow-lg`
+                    : `${theme === 'dark' ? 'text-stone-300 hover:text-white' : 'text-stone-600 hover:text-stone-900'}`
                 }`}
               >
                 <GiCrown />
@@ -337,10 +337,10 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
             {/* Section Title */}
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold mb-2 flex items-center justify-center gap-3">
-                {activeTab === 'variants' ? <BsArrowRepeat className="text-blue-500" /> : <GiCrown className="text-yellow-500" />}
+                {activeTab === 'variants' ? <BsArrowRepeat className="text-amber-500" /> : <GiCrown className="text-yellow-500" />}
                 {activeData?.title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-stone-600 dark:text-stone-400">
                 {activeData?.description}
               </p>
             </div>
@@ -358,16 +358,16 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                     <CardHover>
                     <motion.div
                       className={`relative rounded-xl overflow-hidden cursor-pointer group ${
-                        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                        theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                       } shadow-md hover:shadow-xl transition-all duration-300 border ${
-                        theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                        theme === 'dark' ? 'border-stone-700' : 'border-stone-200'
                       }`}
                       onClick={() => handlePokemonClick(pokemon.id)}
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       {/* Pokemon Image */}
-                      <div className="relative h-32 sm:h-40 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                      <div className="relative h-32 sm:h-40 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-800">
                         <Image
                           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
                           alt={pokemon.name}
@@ -380,7 +380,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                         {((activeTab === 'variants' && pokemon.isLegendary) || (activeTab === 'legendaries' && (pokemon as any).isVariant)) && (
                           <div className="absolute top-2 left-2">
                             <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                              theme === 'dark' ? 'bg-purple-900/90 text-purple-200' : 'bg-purple-100 text-purple-800'
+                              theme === 'dark' ? 'bg-amber-900/90 text-amber-200' : 'bg-amber-100 text-amber-800'
                             } backdrop-blur-sm flex items-center gap-1`}>
                               {activeTab === 'variants' ? (
                                 <>
@@ -403,7 +403,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                         <div className="text-center mb-2">
                           <h3 className="font-bold text-sm mb-1">{pokemon.name}</h3>
                           {activeTab === 'legendaries' && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-xs text-stone-500 dark:text-stone-400">
                               {(pokemon as Legendary).title}
                             </p>
                           )}
@@ -419,7 +419,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                         {/* Location for legendaries */}
                         {activeTab === 'legendaries' && (
                           <div className="text-center">
-                            <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                            <p className="text-xs text-stone-600 dark:text-stone-400 truncate">
                               {(pokemon as Legendary).location}
                             </p>
                           </div>

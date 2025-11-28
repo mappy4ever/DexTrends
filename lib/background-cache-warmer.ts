@@ -1,4 +1,5 @@
 import { tcgCache, POPULAR_SETS } from './tcg-cache';
+import { REDIS_ENABLED } from './redis';
 import { fetchJSON } from '../utils/unifiedFetch';
 import logger from '../utils/logger';
 import type { TCGCard, CardSet } from '../types/api/cards';
@@ -45,6 +46,12 @@ class BackgroundCacheWarmer {
    * This should be called once when the server starts
    */
   async initialize(): Promise<void> {
+    // Skip initialization if Redis is disabled
+    if (!REDIS_ENABLED) {
+      logger.info('[Cache Warmer] Redis is disabled, skipping cache warming initialization');
+      return;
+    }
+
     if (this.isRunning) {
       logger.warn('[Cache Warmer] Already initialized');
       return;

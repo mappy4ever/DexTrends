@@ -37,39 +37,39 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
   // Type-based gradients for legendary Pokémon
   const getLegendaryGradient = (name: string) => {
     const lowerName = name.toLowerCase();
-    if (lowerName.includes('articuno')) return 'from-cyan-400 to-blue-600';
+    if (lowerName.includes('articuno')) return 'from-cyan-400 to-amber-600';
     if (lowerName.includes('zapdos')) return 'from-yellow-400 to-orange-600';
     if (lowerName.includes('moltres')) return 'from-orange-500 to-red-600';
-    if (lowerName.includes('mewtwo')) return 'from-purple-500 to-pink-600';
-    if (lowerName.includes('mew')) return 'from-pink-400 to-purple-500';
-    if (lowerName.includes('lugia')) return 'from-blue-400 to-indigo-600';
+    if (lowerName.includes('mewtwo')) return 'from-amber-500 to-pink-600';
+    if (lowerName.includes('mew')) return 'from-pink-400 to-amber-500';
+    if (lowerName.includes('lugia')) return 'from-amber-400 to-amber-600';
     if (lowerName.includes('ho-oh')) return 'from-red-500 to-yellow-500';
     if (lowerName.includes('celebi')) return 'from-green-400 to-emerald-600';
-    if (lowerName.includes('kyogre')) return 'from-blue-600 to-cyan-700';
+    if (lowerName.includes('kyogre')) return 'from-amber-600 to-cyan-700';
     if (lowerName.includes('groudon')) return 'from-red-600 to-orange-700';
     if (lowerName.includes('rayquaza')) return 'from-emerald-500 to-green-700';
-    if (lowerName.includes('dialga')) return 'from-blue-500 to-indigo-700';
-    if (lowerName.includes('palkia')) return 'from-purple-500 to-pink-700';
-    if (lowerName.includes('giratina')) return 'from-gray-600 to-purple-800';
-    if (lowerName.includes('reshiram')) return 'from-gray-100 to-blue-300';
-    if (lowerName.includes('zekrom')) return 'from-gray-800 to-blue-900';
-    if (lowerName.includes('kyurem')) return 'from-gray-400 to-cyan-600';
-    if (lowerName.includes('xerneas')) return 'from-blue-400 to-purple-600';
-    if (lowerName.includes('yveltal')) return 'from-red-700 to-gray-900';
-    if (lowerName.includes('zygarde')) return 'from-green-500 to-gray-700';
+    if (lowerName.includes('dialga')) return 'from-amber-500 to-amber-700';
+    if (lowerName.includes('palkia')) return 'from-amber-500 to-pink-700';
+    if (lowerName.includes('giratina')) return 'from-stone-600 to-amber-800';
+    if (lowerName.includes('reshiram')) return 'from-stone-100 to-amber-300';
+    if (lowerName.includes('zekrom')) return 'from-stone-800 to-amber-900';
+    if (lowerName.includes('kyurem')) return 'from-stone-400 to-cyan-600';
+    if (lowerName.includes('xerneas')) return 'from-amber-400 to-amber-600';
+    if (lowerName.includes('yveltal')) return 'from-red-700 to-stone-900';
+    if (lowerName.includes('zygarde')) return 'from-green-500 to-stone-700';
     if (lowerName.includes('solgaleo')) return 'from-yellow-400 to-orange-600';
-    if (lowerName.includes('lunala')) return 'from-purple-600 to-blue-800';
-    if (lowerName.includes('necrozma')) return 'from-black to-purple-900';
-    if (lowerName.includes('zacian')) return 'from-cyan-400 to-blue-600';
+    if (lowerName.includes('lunala')) return 'from-amber-600 to-amber-800';
+    if (lowerName.includes('necrozma')) return 'from-black to-amber-900';
+    if (lowerName.includes('zacian')) return 'from-cyan-400 to-amber-600';
     if (lowerName.includes('zamazenta')) return 'from-red-500 to-pink-600';
-    if (lowerName.includes('eternatus')) return 'from-purple-700 to-red-900';
+    if (lowerName.includes('eternatus')) return 'from-amber-700 to-red-900';
     if (lowerName.includes('koraidon')) return 'from-red-600 to-orange-700';
-    if (lowerName.includes('miraidon')) return 'from-purple-600 to-blue-700';
+    if (lowerName.includes('miraidon')) return 'from-amber-600 to-amber-700';
     // Legendary birds/beasts/etc
-    if (lowerName.includes('raikou')) return 'from-yellow-500 to-purple-600';
+    if (lowerName.includes('raikou')) return 'from-yellow-500 to-amber-600';
     if (lowerName.includes('entei')) return 'from-orange-600 to-red-700';
-    if (lowerName.includes('suicune')) return 'from-cyan-500 to-blue-700';
-    return 'from-purple-500 to-indigo-600'; // Default legendary gradient
+    if (lowerName.includes('suicune')) return 'from-cyan-500 to-amber-700';
+    return 'from-amber-500 to-amber-600'; // Default legendary gradient
   };
 
   const getLegendaryIcon = (name: string) => {
@@ -106,13 +106,13 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
         <FadeIn>
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <BsShieldFill className="text-3xl text-purple-500" />
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <BsShieldFill className="text-3xl text-amber-500" />
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                 Legendary Pokémon
               </h2>
               <BsShieldFill className="text-3xl text-pink-500" />
             </div>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-stone-600 dark:text-stone-400">
               The mythical guardians and legendary beings of {region.name}
             </p>
           </div>
@@ -136,7 +136,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
                     {/* Legendary Card */}
-                    <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-white/70 to-white/80 dark:from-gray-800/90 dark:via-gray-800/70 dark:to-gray-900/80 shadow-2xl border border-white/30 dark:border-gray-700/30">
+                    <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-white/70 to-white/80 dark:from-stone-800/90 dark:via-stone-800/70 dark:to-stone-900/80 shadow-2xl border border-white/30 dark:border-stone-700/30">
                       {/* Animated Gradient Background */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500`} />
                       
@@ -154,7 +154,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
 
                       {/* Pokédex Number Badge */}
                       <div className="absolute top-4 right-4 z-10">
-                        <div className="px-3 py-1 rounded-full backdrop-blur-md bg-black/20 dark:bg-white/20 text-white dark:text-gray-200 text-sm font-bold shadow-lg">
+                        <div className="px-3 py-1 rounded-full backdrop-blur-md bg-black/20 dark:bg-white/20 text-white dark:text-stone-200 text-sm font-bold shadow-lg">
                           #{pokemonId}
                         </div>
                       </div>
@@ -183,8 +183,8 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                       </div>
 
                       {/* Info Panel */}
-                      <div className="relative p-2 sm:p-4 bg-gradient-to-t from-white/80 to-transparent dark:from-gray-900/80">
-                        <h3 className="text-sm sm:text-base md:text-xl font-bold text-center text-gray-800 dark:text-white mb-1 sm:mb-2 truncate">
+                      <div className="relative p-2 sm:p-4 bg-gradient-to-t from-white/80 to-transparent dark:from-stone-900/80">
+                        <h3 className="text-sm sm:text-base md:text-xl font-bold text-center text-stone-800 dark:text-white mb-1 sm:mb-2 truncate">
                           {legendary}
                         </h3>
                         
@@ -192,20 +192,20 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                         <div className="hidden sm:flex items-center justify-center gap-2 sm:gap-4 mb-2 sm:mb-3">
                           <div className="flex items-center gap-1">
                             <BsLightningFill className="text-yellow-500 text-xs sm:text-sm" />
-                            <span className="text-xs text-gray-600 dark:text-gray-400">Legendary</span>
+                            <span className="text-xs text-stone-600 dark:text-stone-400">Legendary</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <BsGem className="text-purple-500 text-xs sm:text-sm" />
-                            <span className="text-xs text-gray-600 dark:text-gray-400">Rare</span>
+                            <BsGem className="text-amber-500 text-xs sm:text-sm" />
+                            <span className="text-xs text-stone-600 dark:text-stone-400">Rare</span>
                           </div>
                         </div>
 
                         {/* View Details Button */}
                         <div className="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                          <span className="text-sm font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          <span className="text-sm font-semibold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                             View Details
                           </span>
-                          <BsChevronRight className="text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
+                          <BsChevronRight className="text-amber-600 dark:text-amber-400 group-hover:transtone-x-1 transition-transform" />
                         </div>
                       </div>
 
@@ -223,20 +223,20 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
 
         {/* Legendary Trio/Duo Groups (if applicable) */}
         {region.name === 'Kanto' && (
-          <div className="mt-12 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-purple-100/50 to-pink-100/50 dark:from-purple-900/30 dark:to-pink-900/30 border border-purple-200/30 dark:border-purple-700/30">
-            <h3 className="text-lg font-bold mb-4 text-center text-purple-700 dark:text-purple-300">
+          <div className="mt-12 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-amber-100/50 to-pink-100/50 dark:from-amber-900/30 dark:to-pink-900/30 border border-amber-200/30 dark:border-amber-700/30">
+            <h3 className="text-lg font-bold mb-4 text-center text-amber-700 dark:text-amber-300">
               Legendary Groups
             </h3>
             <div className="grid grid-cols-1 min-420:grid-cols-2 md:grid-cols-2 gap-4 text-sm">
               <div className="flex items-center gap-3">
                 <BsStarFill className="text-yellow-500" />
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-stone-700 dark:text-stone-300">
                   <strong>Legendary Birds:</strong> Articuno, Zapdos, Moltres
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <BsStarFill className="text-purple-500" />
-                <span className="text-gray-700 dark:text-gray-300">
+                <BsStarFill className="text-amber-500" />
+                <span className="text-stone-700 dark:text-stone-300">
                   <strong>Genetic Duo:</strong> Mewtwo & Mew
                 </span>
               </div>
@@ -253,7 +253,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
         >
           <Link 
             href={`/pokemon/legendary`}
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-600 to-pink-600 text-white font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
           >
             <BsShieldFill className="text-xl" />
             <span>Explore All Legendary Pokémon</span>

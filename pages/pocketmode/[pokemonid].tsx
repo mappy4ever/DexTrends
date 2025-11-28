@@ -472,7 +472,7 @@ export default function PocketPokemonDetail() {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
+          className="absolute bottom-20 right-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"
           animate={{
             x: [0, -30, 0],
             y: [0, 50, 0],
@@ -631,7 +631,7 @@ export default function PocketPokemonDetail() {
             </motion.div>
             
             {/* Card Info */}
-            <motion.div 
+            <motion.div
               className="mt-6 text-center space-y-2"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -639,12 +639,12 @@ export default function PocketPokemonDetail() {
             >
               <div className="flex items-center justify-center space-x-3">
                 <TypeGradientBadge type={pokemonDetails.type} size="lg" />
-                <div className="h-6 w-px bg-gray-300 dark:bg-gray-600" />
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <div className="h-6 w-px bg-stone-300 dark:bg-stone-600" />
+                <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
                   {pokemonDetails.rarity}
                 </span>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-500">
+              <p className="text-xs text-stone-500 dark:text-stone-500">
                 Card #{pokemonDetails.number} • {pokemonDetails.pack}
               </p>
             </motion.div>
@@ -654,11 +654,11 @@ export default function PocketPokemonDetail() {
           <div className="space-y-6">
             <div>
               <h1 className="text-4xl font-bold mb-2">{pokemonDetails.name}</h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-stone-600 dark:text-stone-400">
                 {pokemonDetails.pack} • Card #{pokemonDetails.number}
               </p>
               {pokemonDetails.expansion && (
-                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
+                <p className="text-sm text-stone-500 dark:text-stone-500 mt-1">
                   Expansion: {pokemonDetails.expansion} ({pokemonDetails.expansion_code})
                 </p>
               )}
@@ -673,7 +673,7 @@ export default function PocketPokemonDetail() {
             >
               {/* Hexagonal Stats Radar */}
               <GlassContainer variant="dark" blur="lg" hover gradient className="p-8">
-                <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-purple-600 to-amber-600 bg-clip-text text-transparent">
                   Battle Statistics
                 </h2>
                 <div className="flex justify-center">
@@ -699,7 +699,7 @@ export default function PocketPokemonDetail() {
 
               {/* Card Details in Premium Containers */}
               <GlassContainer variant="dark" blur="lg" hover gradient>
-                <h2 className="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                <h2 className="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-amber-600 bg-clip-text text-transparent">
                   Card Information
                 </h2>
                 
@@ -711,9 +711,9 @@ export default function PocketPokemonDetail() {
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
-                      <h3 className="text-sm font-medium text-gray-400 mb-2">Health Points</h3>
+                      <h3 className="text-sm font-medium text-stone-400 mb-2">Health Points</h3>
                       <p className="text-3xl font-bold text-green-400">{pokemonDetails.hp}</p>
-                      <div className="mt-2 h-1 bg-gray-700 rounded-full overflow-hidden">
+                      <div className="mt-2 h-1 bg-stone-700 rounded-full overflow-hidden">
                         <motion.div 
                           className="h-full bg-gradient-to-r from-green-400 to-emerald-400"
                           initial={{ width: 0 }}
@@ -731,7 +731,7 @@ export default function PocketPokemonDetail() {
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent" />
-                      <h3 className="text-sm font-medium text-gray-400 mb-2">Evolution Stage</h3>
+                      <h3 className="text-sm font-medium text-stone-400 mb-2">Evolution Stage</h3>
                       <p className="text-2xl font-bold text-blue-400">{pokemonDetails.stage}</p>
                     </motion.div>
                   )}
@@ -743,20 +743,20 @@ export default function PocketPokemonDetail() {
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent" />
-                      <h3 className="text-sm font-medium text-gray-400 mb-2">Weakness</h3>
+                      <h3 className="text-sm font-medium text-stone-400 mb-2">Weakness</h3>
                       <p className="text-2xl font-bold text-red-400">{pokemonDetails.weakness}</p>
                     </motion.div>
                   )}
                   
                   {pokemonDetails.retreat && (
                     <motion.div 
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 to-slate-500/10 p-6 border border-gray-500/20"
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 to-stone-500/10 p-6 border border-stone-500/20"
                       whileHover={{ scale: 1.02, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent" />
-                      <h3 className="text-sm font-medium text-gray-400 mb-2">Retreat Cost</h3>
-                      <p className="text-2xl font-bold text-gray-300">{pokemonDetails.retreat}</p>
+                      <h3 className="text-sm font-medium text-stone-400 mb-2">Retreat Cost</h3>
+                      <p className="text-2xl font-bold text-stone-300">{pokemonDetails.retreat}</p>
                     </motion.div>
                   )}
                 </div>
@@ -768,19 +768,19 @@ export default function PocketPokemonDetail() {
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent" />
-                    <h3 className="text-sm font-medium text-gray-400 mb-3">Special Ability</h3>
-                    <p className="text-gray-200 leading-relaxed">{pokemonDetails.ability}</p>
+                    <h3 className="text-sm font-medium text-stone-400 mb-3">Special Ability</h3>
+                    <p className="text-stone-200 leading-relaxed">{pokemonDetails.ability}</p>
                   </motion.div>
                 )}
 
                 {pokemonDetails.artist && (
                   <motion.div 
-                    className="relative mt-6 pt-6 border-t border-gray-700/50"
+                    className="relative mt-6 pt-6 border-t border-stone-700/50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 }}
                   >
-                    <p className="text-center text-gray-400">
+                    <p className="text-center text-stone-400">
                       Illustrated by <span className="font-medium text-purple-400">{pokemonDetails.artist}</span>
                     </p>
                   </motion.div>
@@ -814,7 +814,7 @@ export default function PocketPokemonDetail() {
           transition={{ delay: 0.3 }}
         >
           <GlassContainer variant="dark" blur="lg" hover gradient>
-            <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Similar Cards</h2>
+            <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-orange-600 bg-clip-text text-transparent">Similar Cards</h2>
             
             {/* Same Pokémon Cards Section */}
             {relatedCards?.samePokemon && relatedCards.samePokemon.length > 0 && (
@@ -875,11 +875,11 @@ export default function PocketPokemonDetail() {
                   transition={{ delay: 0.6 }}
                   className="mt-6"
                 >
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Related Cards</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  <h3 className="text-lg font-semibold mb-4 text-stone-800 dark:text-stone-200">Related Cards</h3>
+                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
                     Other {pokemonDetails.type} type cards from the {pokemonDetails.pack} pack
                   </p>
-                  <div className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
+                  <div className="glass-light rounded-2xl p-4 border border-stone-200 dark:border-stone-700">
                     <PocketCardList 
                       cards={relatedCards.related}
                       loading={false}
@@ -898,10 +898,10 @@ export default function PocketPokemonDetail() {
             {/* Fallback Similar Cards Section */}
             {relatedCards?.fallback && relatedCards.fallback.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-2">
+                <h3 className="text-lg font-semibold mb-4 text-stone-600 dark:text-stone-400 border-b border-stone-200 dark:border-stone-700 pb-2">
                   Other Similar Cards
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
                   Cards from the same pack or with similar type
                 </p>
                 <PocketCardList 
@@ -924,11 +924,11 @@ export default function PocketPokemonDetail() {
              (!relatedCards?.related || relatedCards.related.length === 0) &&
              (!relatedCards?.fallback || relatedCards.fallback.length === 0) && (
               <div className="text-center py-8">
-                <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-16 h-16 mx-auto mb-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-400 mb-2">No Related Cards Found</h3>
-                <p className="text-gray-500 dark:text-gray-500">
+                <h3 className="text-lg font-semibold text-stone-600 dark:text-stone-400 mb-2">No Related Cards Found</h3>
+                <p className="text-stone-500 dark:text-stone-500">
                   We couldn't find any other cards related to {pokemonDetails.name}.
                 </p>
               </div>
@@ -957,7 +957,7 @@ export default function PocketPokemonDetail() {
             />
             <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
             {zoomedCard.set && (
-              <p className="text-gray-600 dark:text-gray-400 mt-2">{zoomedCard.set}</p>
+              <p className="text-stone-600 dark:text-stone-400 mt-2">{zoomedCard.set}</p>
             )}
           </div>
         </Modal>

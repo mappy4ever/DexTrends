@@ -38,9 +38,9 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   if (!pokemon || !species) {
     return (
       <div className="w-full">
-        <div className="relative overflow-hidden p-6 md:p-8 bg-gray-100/80 dark:bg-gray-900/40 rounded-lg">
+        <div className="relative overflow-hidden p-6 md:p-8 bg-stone-100/80 dark:bg-stone-900/40 rounded-lg">
           <div className="text-center py-8">
-            <p className="text-gray-500 dark:text-gray-400">Loading Pokémon data...</p>
+            <p className="text-stone-500 dark:text-stone-400">Loading Pokémon data...</p>
           </div>
         </div>
       </div>
@@ -246,7 +246,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   
   return (
     <div className="w-full">
-      <GlassContainer variant="dark" className="relative overflow-hidden p-3 xs:p-4 sm:p-6 md:p-8 bg-gray-100/80 dark:bg-gray-900/40">
+      <GlassContainer variant="dark" className="relative overflow-hidden p-3 xs:p-4 sm:p-6 md:p-8 bg-stone-100/80 dark:bg-stone-900/40">
         {/* Subtle type gradient background */}
         <div 
           className="absolute inset-0 opacity-10"
@@ -315,7 +315,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   "p-2 sm:p-3 rounded-full backdrop-blur-md transition-all border cursor-pointer",
                   isFavorited 
                     ? "bg-red-500/20 text-red-400 border-red-400/30 hover:bg-red-500/30" 
-                    : "bg-white/10 text-gray-400 border-white/20 hover:bg-red-500/20 hover:text-red-400 hover:border-red-400/30"
+                    : "bg-white/10 text-stone-400 border-white/20 hover:bg-red-500/20 hover:text-red-400 hover:border-red-400/30"
                 )}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -348,7 +348,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   "p-2 sm:p-3 rounded-full backdrop-blur-md transition-all",
                   showShiny 
                     ? "bg-yellow-500/20 text-yellow-400 border border-yellow-400/30" 
-                    : "bg-white/10 text-gray-400 border border-white/20 hover:bg-white/20"
+                    : "bg-white/10 text-stone-400 border border-white/20 hover:bg-white/20"
                 )}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -382,7 +382,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             <div className="text-center space-y-3">
               <div>
                 <motion.h1 
-                  className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent drop-shadow-sm"
+                  className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm"
                   whileHover={{ scale: 1.02 }}
                   animate={{ 
                     y: [0, -2, 0],
@@ -395,7 +395,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 >
                   {formatPokemonDisplayName(pokemon.name, species?.name)}
                 </motion.h1>
-                <p className="text-gray-500 dark:text-gray-400 mt-2">
+                <p className="text-stone-500 dark:text-stone-400 mt-2">
                   {species.genera?.find(g => g.language.name === 'en')?.genus || 'Pokemon'}
                 </p>
               </div>
@@ -425,7 +425,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             
             {/* Base Stats - Compact Bars */}
             <div className="space-y-3">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Base Stats</h3>
+              <h3 className="text-sm font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wider">Base Stats</h3>
               <div className="space-y-2">
                 {stats.map((stat, index) => {
                   const percentage = (stat.base_stat / 255) * 100;
@@ -440,11 +440,11 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                       transition={{ delay: index * 0.05 }}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-xs font-medium text-gray-600 dark:text-gray-300 w-20 capitalize drop-shadow-sm">
+                        <span className="text-xs font-medium text-stone-600 dark:text-stone-300 w-20 capitalize drop-shadow-sm">
                           {statName}
                         </span>
                         <div className="flex-1 relative">
-                          <div className="h-3 bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-full overflow-hidden shadow-sm">
+                          <div className="h-3 bg-gradient-to-b from-stone-200 to-stone-300 dark:from-stone-700 dark:to-stone-800 rounded-full overflow-hidden shadow-sm">
                             <motion.div
                               className={cn("h-full rounded-full bg-gradient-to-r relative overflow-hidden", statGradient)}
                               initial={{ width: 0 }}
@@ -461,15 +461,15 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                             </motion.div>
                           </div>
                         </div>
-                        <span className="text-sm font-bold w-10 text-right text-gray-700 dark:text-gray-200 drop-shadow-sm">{stat.base_stat}</span>
+                        <span className="text-sm font-bold w-10 text-right text-stone-700 dark:text-stone-200 drop-shadow-sm">{stat.base_stat}</span>
                       </div>
                     </motion.div>
                   );
                 })}
                 
                 {/* Total */}
-                <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Total</span>
+                <div className="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-700">
+                  <span className="text-sm font-medium text-gray-600 dark:text-stone-400">Total</span>
                   <span className="text-lg font-bold" style={{ color: typeColors.accent }}>{totalStats}</span>
                 </div>
               </div>
@@ -479,27 +479,27 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             <div className="flex items-center justify-center mt-6">
               {/* Unified Stats Container */}
               <motion.div 
-                className="relative rounded-2xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300"
+                className="relative rounded-2xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
                 {/* Pokédex Number */}
                 <div className="flex flex-col items-center justify-between min-w-[60px] sm:min-w-[80px]">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">Pokédex #</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Pokédex #</span>
                   <div className="flex-1 flex items-center justify-center">
-                    <span className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent drop-shadow-sm">
+                    <span className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
                       {String(pokemon.id).padStart(3, '0')}
                     </span>
                   </div>
                 </div>
                 
                 {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-gray-300 dark:bg-gray-600 self-stretch"></div>
+                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
                 
                 {/* Height and Weight - Stacked with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[50px] sm:min-w-[60px]">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">Size</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Size</span>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="flex flex-col items-center">
                       <div className="flex items-center gap-1">
@@ -515,11 +515,11 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 </div>
                 
                 {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-gray-300 dark:bg-gray-600 self-stretch"></div>
+                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
                 
                 {/* Capture Rate with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[60px] sm:min-w-[80px]">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">Capture</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Capture</span>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="flex items-center gap-1 sm:gap-2">
                       <div className="relative w-8 h-8 sm:w-10 sm:h-10">
@@ -544,11 +544,11 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 </div>
                 
                 {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-gray-300 dark:bg-gray-600 self-stretch"></div>
+                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
                 
                 {/* Gender Ratio with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[70px] sm:min-w-[100px]">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">Gender</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Gender</span>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="flex items-center gap-1">
                       {genderRatio.genderless ? (
@@ -557,7 +557,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                         <>
                           <FaMars className="text-blue-500 w-3 h-3 sm:w-4 sm:h-4 drop-shadow-sm" />
                           <span className="font-bold text-xs sm:text-sm">{genderRatio.male}%</span>
-                          <span className="text-gray-400 text-xs sm:text-sm">/</span>
+                          <span className="text-stone-400 text-xs sm:text-sm">/</span>
                           <FaVenus className="text-pink-500 w-3 h-3 sm:w-4 sm:h-4 drop-shadow-sm" />
                           <span className="font-bold text-xs sm:text-sm">{genderRatio.female}%</span>
                         </>
@@ -567,13 +567,13 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 </div>
                 
                 {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-gray-300 dark:bg-gray-600 self-stretch"></div>
+                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
                 
                 {/* Generation Badge with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[80px] sm:min-w-[120px]">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">Region</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Region</span>
                   <div className="flex-1 flex items-center justify-center">
-                    <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs sm:text-sm font-bold shadow-sm">
+                    <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-xs sm:text-sm font-bold shadow-sm">
                       {regionName} (Gen {generation})
                     </div>
                   </div>

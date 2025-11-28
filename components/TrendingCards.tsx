@@ -103,14 +103,14 @@ const TrendingCards = memo<TrendingCardsProps>(({ cards }) => {
   if (trendingCards.length === 0) return null;
   
   return (
-    <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+    <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Trending Cards</h2>
-        <Link href="/trending" className="text-blue-600 hover:underline text-sm">
+        <Link href="/trending" className="text-amber-600 hover:underline text-sm">
           View All Trends
         </Link>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Rising Prices */}
         <div>
@@ -119,9 +119,9 @@ const TrendingCards = memo<TrendingCardsProps>(({ cards }) => {
           </h3>
           <div className="space-y-3">
             {risingCards.map(card => (
-              <div 
-                key={card.id} 
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all" 
+              <div
+                key={card.id}
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer transition-all"
                 onClick={() => navigateToCardDetails(card)}
               >
                 {card.images?.small && (
@@ -133,7 +133,7 @@ const TrendingCards = memo<TrendingCardsProps>(({ cards }) => {
                 )}
                 <div className="flex-1">
                   <p className="font-medium">{card.name}</p>
-                  <p className="text-sm text-gray-500">{card.rarity || 'N/A'} · #{card.number}</p>
+                  <p className="text-sm text-stone-500">{card.rarity || 'N/A'} · #{card.number}</p>
                 </div>
                 <div className="flex flex-col items-end">
                   <span className="text-green-600 font-bold">${card.currentPrice.toFixed(2)}</span>
@@ -151,9 +151,9 @@ const TrendingCards = memo<TrendingCardsProps>(({ cards }) => {
           </h3>
           <div className="space-y-3">
             {fallingCards.map(card => (
-              <div 
-                key={card.id} 
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all" 
+              <div
+                key={card.id}
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer transition-all"
                 onClick={() => navigateToCardDetails(card)}
               >
                 {card.images?.small && (
@@ -165,7 +165,7 @@ const TrendingCards = memo<TrendingCardsProps>(({ cards }) => {
                 )}
                 <div className="flex-1">
                   <p className="font-medium">{card.name}</p>
-                  <p className="text-sm text-gray-500">{card.rarity || 'N/A'} · #{card.number}</p>
+                  <p className="text-sm text-stone-500">{card.rarity || 'N/A'} · #{card.number}</p>
                 </div>
                 <div className="flex flex-col items-end">
                   <span className="text-red-600 font-bold">${card.currentPrice.toFixed(2)}</span>
@@ -177,7 +177,7 @@ const TrendingCards = memo<TrendingCardsProps>(({ cards }) => {
         </div>
       </div>
       
-      <div className="text-xs text-gray-500 text-center mt-4">
+      <div className="text-xs text-stone-500 text-center mt-4">
         Note: Trend data is simulated for demonstration purposes.
       </div>
     </div>

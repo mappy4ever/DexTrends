@@ -41,13 +41,13 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
   // Default configurations based on type
   const defaultConfigs = {
     search: {
-      icon: <FiSearch className="w-16 h-16 text-purple-400" />,
+      icon: <FiSearch className="w-16 h-16 text-amber-400" />,
       iconText: '🔍',
       title: 'No results found',
       message: 'Try adjusting your search or filters to find what you\'re looking for.',
     },
     'no-data': {
-      icon: <FiPackage className="w-16 h-16 text-blue-400" />,
+      icon: <FiPackage className="w-16 h-16 text-amber-400" />,
       iconText: '📦',
       title: 'No data yet',
       message: 'Start by adding your first item to see it here.',
@@ -59,7 +59,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
       message: 'We encountered an error loading this content. Please try again.',
     },
     loading: {
-      icon: <FiRefreshCw className="w-16 h-16 text-gray-400 animate-spin" />,
+      icon: <FiRefreshCw className="w-16 h-16 text-stone-400 animate-spin" />,
       iconText: '⏳',
       title: 'Loading...',
       message: 'Please wait while we fetch your data.',
@@ -149,7 +149,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
         {displayTitle && (
           <motion.h3
             variants={animate ? itemVariants : undefined}
-            className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+            className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-600 to-amber-600 bg-clip-text text-transparent"
           >
             {displayTitle}
           </motion.h3>
@@ -159,7 +159,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
         {displayMessage && (
           <motion.p
             variants={animate ? itemVariants : undefined}
-            className="text-gray-600 dark:text-gray-400 max-w-md mx-auto"
+            className="text-stone-600 dark:text-stone-400 max-w-md mx-auto"
           >
             {displayMessage}
           </motion.p>
@@ -192,9 +192,9 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
                 onClick={secondaryButton.onClick}
                 className={`
                   px-6 py-3 rounded-full font-medium
-                  backdrop-blur-md bg-white/70 dark:bg-gray-800/70
-                  border border-white/30 dark:border-gray-700/30
-                  hover:bg-white/90 dark:hover:bg-gray-800/90
+                  backdrop-blur-md bg-white/70 dark:bg-stone-800/70
+                  border border-white/30 dark:border-stone-700/30
+                  hover:bg-white/90 dark:hover:bg-stone-800/90
                   transition-all duration-300
                 `}
               >

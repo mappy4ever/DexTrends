@@ -201,7 +201,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
       />
       
       {/* Modal content */}
-      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'max-w-6xl max-h-[90vh] w-full mx-4'} bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-2xl`}>
+      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'max-w-6xl max-h-[90vh] w-full mx-4'} bg-white dark:bg-stone-900 rounded-lg overflow-hidden shadow-2xl`}>
         {/* Header with controls */}
         <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/50 to-transparent p-4">
           <div className="flex justify-between items-center text-white">
@@ -353,9 +353,9 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
                 {card.hp && (
                   <div className="text-lg font-bold">{card.hp} HP</div>
                 )}
-                <Link 
+                <Link
                   href={`/cards/${card.id}`}
-                  className="text-sm text-blue-300 hover:text-blue-100 underline"
+                  className="text-sm text-amber-300 hover:text-amber-100 underline"
                   onClick={onClose}
                 >
                   View Details →

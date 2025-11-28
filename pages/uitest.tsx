@@ -94,7 +94,7 @@ const Card3DTilt: React.FC<{ rarity?: string }> = ({ rarity = 'Common' }) => {
       >
         <div className={cn(
           "relative w-full h-full rounded-xl overflow-hidden",
-          "bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900",
+          "bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-800 dark:to-stone-900",
           "shadow-2xl transition-shadow duration-300",
           isHovered && "shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
         )}>
@@ -179,15 +179,15 @@ const HolographicCard: React.FC<{ rarity: string }> = ({ rarity }) => {
   const getHolographicGradient = () => {
     switch (rarity) {
       case 'Secret Rare':
-        return 'from-pink-500 via-purple-500 to-indigo-500';
+        return 'from-pink-500 via-amber-500 to-amber-500';
       case 'Ultra Rare':
-        return 'from-yellow-500 via-red-500 to-purple-500';
+        return 'from-yellow-500 via-red-500 to-amber-500';
       case 'Rare Holo':
-        return 'from-blue-500 via-cyan-500 to-teal-500';
+        return 'from-amber-500 via-cyan-500 to-teal-500';
       case 'Illustration Rare':
         return 'from-amber-500 via-orange-500 to-red-500';
       default:
-        return 'from-gray-400 via-gray-500 to-gray-600';
+        return 'from-stone-400 via-stone-500 to-stone-600';
     }
   };
 
@@ -379,7 +379,7 @@ const TypeEffectCard: React.FC<{ type: keyof typeof TYPE_GRADIENTS }> = ({ type 
             } : {}}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <div className="absolute inset-0 bg-gradient-radial from-blue-400/30 via-cyan-400/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-radial from-amber-400/30 via-cyan-400/20 to-transparent" />
             {/* Ripple effect */}
             {isActive && (
               <motion.div
@@ -515,12 +515,12 @@ const GlassVariations: React.FC = () => {
         >
           <div className="p-6">
             <h3 className="text-lg font-semibold mb-2">{variant.name}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <p className="text-sm text-stone-600 dark:text-stone-300">
               Blur: {variant.blur}, Opacity: {variant.opacity}
             </p>
             <div className="mt-4 space-y-2">
               <div className="h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" />
-              <div className="h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full w-3/4" />
+              <div className="h-2 bg-gradient-to-r from-amber-400 to-cyan-400 rounded-full w-3/4" />
               <div className="h-2 bg-gradient-to-r from-green-400 to-teal-400 rounded-full w-1/2" />
             </div>
           </div>
@@ -541,9 +541,9 @@ const LoadingStates: React.FC = () => {
           onClick={() => setLoadingType('skeleton')}
           className={cn(
             "px-4 py-2 rounded-lg transition-colors",
-            loadingType === 'skeleton' 
-              ? "bg-blue-500 text-white" 
-              : "bg-gray-200 dark:bg-gray-700"
+            loadingType === 'skeleton'
+              ? "bg-amber-500 text-white"
+              : "bg-stone-200 dark:bg-stone-700"
           )}
         >
           Skeleton
@@ -552,9 +552,9 @@ const LoadingStates: React.FC = () => {
           onClick={() => setLoadingType('blur')}
           className={cn(
             "px-4 py-2 rounded-lg transition-colors",
-            loadingType === 'blur' 
-              ? "bg-blue-500 text-white" 
-              : "bg-gray-200 dark:bg-gray-700"
+            loadingType === 'blur'
+              ? "bg-amber-500 text-white"
+              : "bg-stone-200 dark:bg-stone-700"
           )}
         >
           Blur-up
@@ -563,9 +563,9 @@ const LoadingStates: React.FC = () => {
           onClick={() => setLoadingType('stagger')}
           className={cn(
             "px-4 py-2 rounded-lg transition-colors",
-            loadingType === 'stagger' 
-              ? "bg-blue-500 text-white" 
-              : "bg-gray-200 dark:bg-gray-700"
+            loadingType === 'stagger'
+              ? "bg-amber-500 text-white"
+              : "bg-stone-200 dark:bg-stone-700"
           )}
         >
           Stagger
@@ -576,7 +576,7 @@ const LoadingStates: React.FC = () => {
         {Array.from({ length: 6 }).map((_, i) => (
           <motion.div
             key={i}
-            className="relative w-full h-64 rounded-xl overflow-hidden bg-gray-200 dark:bg-gray-700"
+            className="relative w-full h-64 rounded-xl overflow-hidden bg-stone-200 dark:bg-stone-700"
             initial={{ opacity: 0, y: 20 }}
             animate={{ 
               opacity: 1, 
@@ -593,7 +593,7 @@ const LoadingStates: React.FC = () => {
             
             {loadingType === 'blur' && (
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700"
+                className="absolute inset-0 bg-gradient-to-br from-stone-300 to-stone-400 dark:from-stone-600 dark:to-stone-700"
                 initial={{ filter: 'blur(20px)', scale: 1.1 }}
                 animate={{ filter: 'blur(0px)', scale: 1 }}
                 transition={{ duration: 0.8, delay: i * 0.05 }}
@@ -634,7 +634,7 @@ export default function UITestPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-amber-50 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8 text-center">UI Enhancement Test Page</h1>
         
@@ -647,8 +647,8 @@ export default function UITestPage() {
               className={cn(
                 "px-6 py-3 rounded-full transition-all duration-300",
                 activeSection === section.id
-                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg scale-105"
-                  : "bg-white/80 dark:bg-gray-800/80 backdrop-blur hover:scale-102"
+                  ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg scale-105"
+                  : "bg-white/80 dark:bg-stone-800/80 backdrop-blur hover:scale-102"
               )}
             >
               {section.name}
@@ -664,12 +664,12 @@ export default function UITestPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-3xl p-8 shadow-2xl"
+            className="bg-white/60 dark:bg-stone-800/60 backdrop-blur-xl rounded-3xl p-8 shadow-2xl"
           >
             {activeSection === '3d-tilt' && (
               <div className="space-y-8">
                 <h2 className="text-2xl font-bold mb-4">3D Tilt Card Effects</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-stone-600 dark:text-stone-300 mb-6">
                   Mouse-tracking 3D tilt with spring physics. Move your cursor over the cards to see the effect.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
@@ -692,7 +692,7 @@ export default function UITestPage() {
             {activeSection === 'holographic' && (
               <div className="space-y-8">
                 <h2 className="text-2xl font-bold mb-4">Holographic & Rarity Effects</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-stone-600 dark:text-stone-300 mb-6">
                   Different holographic effects based on card rarity. Move your mouse over the cards to see the shimmer.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
@@ -709,7 +709,7 @@ export default function UITestPage() {
             {activeSection === 'type-effects' && (
               <div className="space-y-8">
                 <h2 className="text-2xl font-bold mb-4">Type-Based Visual Effects</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-stone-600 dark:text-stone-300 mb-6">
                   Unique visual effects for each Pokemon type. Hover over the cards to activate the effects.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
@@ -726,7 +726,7 @@ export default function UITestPage() {
             {activeSection === 'glass' && (
               <div className="space-y-8">
                 <h2 className="text-2xl font-bold mb-4">Glass Morphism Variations</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-stone-600 dark:text-stone-300 mb-6">
                   Different levels of glass morphism effects with varying blur and opacity.
                 </p>
                 <GlassVariations />
@@ -736,7 +736,7 @@ export default function UITestPage() {
             {activeSection === 'loading' && (
               <div className="space-y-8">
                 <h2 className="text-2xl font-bold mb-4">Loading States & Animations</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-stone-600 dark:text-stone-300 mb-6">
                   Different loading animations for smooth user experience.
                 </p>
                 <LoadingStates />

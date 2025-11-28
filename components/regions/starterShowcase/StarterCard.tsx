@@ -35,8 +35,8 @@ export const StarterCard: React.FC<StarterCardProps> = ({
       <CardHover>
         <div 
           className={`relative overflow-hidden rounded-2xl cursor-pointer transition-all duration-300 ${
-            isSelected ? 'ring-4 ring-blue-500 scale-105' : ''
-          } ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}
+            isSelected ? 'ring-4 ring-amber-500 scale-105' : ''
+          } ${theme === 'dark' ? 'bg-stone-900' : 'bg-stone-50'}`}
           onClick={() => onSelect(starterName)}
         >
           {/* Type-based gradient background */}
@@ -62,7 +62,7 @@ export const StarterCard: React.FC<StarterCardProps> = ({
             {/* Pokemon Info */}
             <div className="text-center space-y-3">
               <h3 className="text-2xl font-bold">{starterName}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{starter.species}</p>
+              <p className="text-sm text-stone-600 dark:text-stone-400">{starter.species}</p>
               
               {/* Types */}
               <div className="flex justify-center gap-2">
@@ -73,12 +73,12 @@ export const StarterCard: React.FC<StarterCardProps> = ({
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 gap-2 pt-4">
-                <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                  <p className="text-xs text-gray-500">Height</p>
+                <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
+                  <p className="text-xs text-stone-500">Height</p>
                   <p className="font-semibold">{starter.height}</p>
                 </div>
-                <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                  <p className="text-xs text-gray-500">Weight</p>
+                <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
+                  <p className="text-xs text-stone-500">Weight</p>
                   <p className="font-semibold">{starter.weight}</p>
                 </div>
               </div>
@@ -88,7 +88,7 @@ export const StarterCard: React.FC<StarterCardProps> = ({
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="flex flex-col items-center justify-center gap-1 text-blue-500 cursor-pointer"
+                  className="flex flex-col items-center justify-center gap-1 text-amber-500 cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();

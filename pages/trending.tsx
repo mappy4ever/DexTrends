@@ -251,11 +251,11 @@ const TrendingPage: NextPage = () => {
       <div className="mb-8">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold">Trending Cards</h1>
-          <Link href="/" className="text-blue-600 hover:underline">
+          <Link href="/" className="text-amber-600 hover:underline">
             Back to Home
           </Link>
         </div>
-        <p className="text-gray-600 mt-2">Track cards with significant price changes in the market</p>
+        <p className="text-stone-600 mt-2">Track cards with significant price changes in the market</p>
       </div>
       {loading ? (
         <PageLoader text={isRetrying ? `Retrying... (Attempt ${retryCount + 1})` : "Analyzing market trends..."} />
@@ -269,7 +269,7 @@ const TrendingPage: NextPage = () => {
             <p className="text-sm">{error}</p>
           </div>
           {retryCount > 0 && (
-            <div className="text-xs text-gray-500 mb-4">
+            <div className="text-xs text-stone-500 mb-4">
               Attempted {retryCount} time{retryCount !== 1 ? 's' : ''}
             </div>
           )}
@@ -286,7 +286,7 @@ const TrendingPage: NextPage = () => {
             <h2 className="text-3xl font-semibold mb-4 flex items-center text-green-600">
               <span className="mr-2">▲</span> Rising Prices
             </h2>
-            <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
               {trendingData.rising.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {trendingData.rising.map(card => (
@@ -294,7 +294,7 @@ const TrendingPage: NextPage = () => {
                       href={`/cards/${card.id}`}
                       key={card.id}
                       className={`block p-4 rounded-lg border ${
-                        theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'
+                        theme === 'dark' ? 'border-stone-700 hover:bg-stone-700' : 'border-stone-200 hover:bg-stone-50'
                       } transition-all`}
                     >
                       <div className="flex flex-col items-center">
@@ -306,7 +306,7 @@ const TrendingPage: NextPage = () => {
                           />
                         )}
                         <p className="font-semibold mt-2 text-center">{card.name}</p>
-                        <p className="text-sm text-gray-500">{card.rarity || 'N/A'} · #{card.number}</p>
+                        <p className="text-sm text-stone-500">{card.rarity || 'N/A'} · #{card.number}</p>
                         <div className="mt-2 flex items-center gap-2">
                           <span className="text-green-600 font-bold">${card.currentPrice.toFixed(2)}</span>
                           <span className="text-xs text-green-500 bg-green-100 px-2 py-0.5 rounded-full">
@@ -318,7 +318,7 @@ const TrendingPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500">No rising price trends available</p>
+                <p className="text-center text-stone-500">No rising price trends available</p>
               )}
             </div>
           </div>
@@ -327,7 +327,7 @@ const TrendingPage: NextPage = () => {
             <h2 className="text-3xl font-semibold mb-4 flex items-center text-red-600">
               <span className="mr-2">▼</span> Falling Prices
             </h2>
-            <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
               {trendingData.falling.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {trendingData.falling.map(card => (
@@ -335,7 +335,7 @@ const TrendingPage: NextPage = () => {
                       href={`/cards/${card.id}`}
                       key={card.id}
                       className={`block p-4 rounded-lg border ${
-                        theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'
+                        theme === 'dark' ? 'border-stone-700 hover:bg-stone-700' : 'border-stone-200 hover:bg-stone-50'
                       } transition-all`}
                     >
                       <div className="flex flex-col items-center">
@@ -347,7 +347,7 @@ const TrendingPage: NextPage = () => {
                           />
                         )}
                         <p className="font-semibold mt-2 text-center">{card.name}</p>
-                        <p className="text-sm text-gray-500">{card.rarity || 'N/A'} · #{card.number}</p>
+                        <p className="text-sm text-stone-500">{card.rarity || 'N/A'} · #{card.number}</p>
                         <div className="mt-2 flex items-center gap-2">
                           <span className="text-red-600 font-bold">${card.currentPrice.toFixed(2)}</span>
                           <span className="text-xs text-red-500 bg-red-100 px-2 py-0.5 rounded-full">
@@ -359,12 +359,12 @@ const TrendingPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500">No falling price trends available</p>
+                <p className="text-center text-stone-500">No falling price trends available</p>
               )}
             </div>
           </div>
           
-          <div className="text-xs text-gray-500 text-center mt-4 mb-8">
+          <div className="text-xs text-stone-500 text-center mt-4 mb-8">
             Note: Trend data is simulated for demonstration purposes. In a production environment, this would use real historical price data.
           </div>
         </>

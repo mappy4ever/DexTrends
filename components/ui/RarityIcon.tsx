@@ -39,28 +39,28 @@ const CrownIcon = ({ className }: { className?: string }) => (
 // Map rarity strings to visual icons matching official Pokemon TCG specification
 const rarityIcons: Record<string, { icon: React.FC<{className?: string; hollow?: boolean | 'mixed'}>; color: string; label: string; hollow?: boolean | 'mixed'; count?: number }> = {
   // Basic Rarities (Black symbols)
-  'Common': { icon: CircleIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Common', count: 1 },
-  'Uncommon': { icon: DiamondIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Uncommon', count: 1 },
-  
+  'Common': { icon: CircleIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Common', count: 1 },
+  'Uncommon': { icon: DiamondIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Uncommon', count: 1 },
+
   // Black star rarities
-  'Rare': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Rare', count: 1 },
-  'Rare Holo': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Rare Holo', count: 1 },
-  
+  'Rare': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Rare', count: 1 },
+  'Rare Holo': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Rare Holo', count: 1 },
+
   // Black & White era special rarity (1 filled black star + 1 hollow grey star)
-  'Black & White Rare': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'B&W Rare', count: 2, hollow: 'mixed' as const },
-  'Black White Rare': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'B&W Rare', count: 2, hollow: 'mixed' as const }, // API returns without &
-  
+  'Black & White Rare': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'B&W Rare', count: 2, hollow: 'mixed' as const },
+  'Black White Rare': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'B&W Rare', count: 2, hollow: 'mixed' as const }, // API returns without &
+
   // Double black star
-  'Double Rare': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Double Rare', count: 2 },
-  
+  'Double Rare': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Double Rare', count: 2 },
+
   // White/Silver star rarities (Ultra Rare)
-  'Ultra Rare': { icon: StarIcon, color: 'text-gray-300 dark:text-gray-400', label: 'Ultra Rare', count: 2 },
-  'Rare Ultra': { icon: StarIcon, color: 'text-gray-300 dark:text-gray-400', label: 'Ultra Rare', count: 2 },
-  'Rare Holo EX': { icon: StarIcon, color: 'text-gray-300 dark:text-gray-400', label: 'EX', count: 2 },
-  'Rare Holo GX': { icon: StarIcon, color: 'text-gray-300 dark:text-gray-400', label: 'GX', count: 2 },
-  'Rare Holo V': { icon: StarIcon, color: 'text-gray-300 dark:text-gray-400', label: 'V', count: 2 },
-  'Rare Holo VMAX': { icon: StarIcon, color: 'text-gray-300 dark:text-gray-400', label: 'VMAX', count: 2 },
-  'Rare Holo VSTAR': { icon: StarIcon, color: 'text-gray-300 dark:text-gray-400', label: 'VSTAR', count: 2 },
+  'Ultra Rare': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'Ultra Rare', count: 2 },
+  'Rare Ultra': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'Ultra Rare', count: 2 },
+  'Rare Holo EX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'EX', count: 2 },
+  'Rare Holo GX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'GX', count: 2 },
+  'Rare Holo V': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'V', count: 2 },
+  'Rare Holo VMAX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'VMAX', count: 2 },
+  'Rare Holo VSTAR': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'VSTAR', count: 2 },
   
   // Gold star rarities
   'Illustration Rare': { icon: StarIcon, color: 'text-yellow-500', label: 'Illustration Rare', count: 1 },
@@ -84,16 +84,16 @@ const rarityIcons: Record<string, { icon: React.FC<{className?: string; hollow?:
   'Shiny Ultra Rare': { icon: StarIcon, color: 'text-yellow-500', label: 'Shiny Ultra', hollow: true, count: 2 },
   
   // Black & White era rarities
-  'Rare Holo Lv.X': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Lv.X', count: 1 },
-  'Rare Prime': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Prime', count: 1 },
+  'Rare Holo Lv.X': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Lv.X', count: 1 },
+  'Rare Prime': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Prime', count: 1 },
   'Rare BREAK': { icon: StarIcon, color: 'text-yellow-500', label: 'BREAK', count: 1 },
-  'LEGEND': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'LEGEND', count: 2 },
+  'LEGEND': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'LEGEND', count: 2 },
   
   // Other special rarities
   'Amazing Rare': { icon: StarIcon, color: 'text-yellow-500', label: 'Amazing', count: 1 },
   'Radiant Rare': { icon: StarIcon, color: 'text-yellow-500', label: 'Radiant', count: 1 },
-  'Trainer Gallery Rare Holo': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'TG Holo', count: 1 },
-  'Promo': { icon: StarIcon, color: 'text-gray-900 dark:text-gray-100', label: 'Promo', count: 1 },
+  'Trainer Gallery Rare Holo': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'TG Holo', count: 1 },
+  'Promo': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Promo', count: 1 },
   'Crown Rare': { icon: CrownIcon, color: 'text-amber-500', label: 'Crown', count: 1 },
 };
 
@@ -196,9 +196,9 @@ export const RarityIcon: React.FC<RarityIconProps> = ({
           return (
             <div className="relative inline-block" style={{ width: '26px', height: '22px' }}>
               {/* Top left star - filled black */}
-              <StarIcon className={cn('text-gray-900 dark:text-gray-100', starSize, 'absolute left-0 top-0')} hollow={false} />
+              <StarIcon className={cn('text-stone-900 dark:text-stone-100', starSize, 'absolute left-0 top-0')} hollow={false} />
               {/* Bottom right star - hollow grey */}
-              <StarIcon className={cn('text-gray-500 dark:text-gray-600', starSize, 'absolute right-0 bottom-0')} hollow={true} />
+              <StarIcon className={cn('text-stone-500 dark:text-stone-600', starSize, 'absolute right-0 bottom-0')} hollow={true} />
             </div>
           );
         } else {
@@ -248,7 +248,7 @@ export const RarityIcon: React.FC<RarityIconProps> = ({
       {showLabel && (
         <span className={cn(
           'text-xs font-medium ml-1',
-          isActive ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'
+          isActive ? 'text-stone-900 dark:text-white' : 'text-stone-600 dark:text-stone-400'
         )}>
           {finalRarityData.label}
         </span>
@@ -267,8 +267,8 @@ export const RarityFilterBar: React.FC<{
   return (
     <div className={cn(
       'flex flex-wrap gap-2 p-3',
-      'backdrop-blur-xl bg-white/80 dark:bg-gray-800/80',
-      'rounded-2xl border border-white/50 dark:border-gray-700/50',
+      'backdrop-blur-xl bg-white/80 dark:bg-stone-800/80',
+      'rounded-2xl border border-white/50 dark:border-stone-700/50',
       'shadow-lg',
       className
     )}>
@@ -279,8 +279,8 @@ export const RarityFilterBar: React.FC<{
           'px-3 py-1.5 rounded-full text-xs font-medium',
           'backdrop-blur-md transition-all duration-200',
           selectedRarity === null
-            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
-            : 'bg-white/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-white/70'
+            ? 'bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-md'
+            : 'bg-white/50 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300 hover:bg-white/70'
         )}
       >
         All Cards

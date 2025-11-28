@@ -142,8 +142,8 @@ export const PokemonSoundButton: React.FC = () => {
       onClick={toggleSound}
       className={`fixed top-20 right-4 z-30 p-2 rounded-full transition-all duration-300 ${
         soundEnabled 
-          ? 'bg-green-500 hover:bg-green-600 text-white' 
-          : 'bg-gray-400 hover:bg-gray-500 text-white'
+          ? 'bg-green-500 hover:bg-green-600 text-white'
+          : 'bg-stone-400 hover:bg-stone-500 text-white'
       }`}
       title={`Sound effects: ${soundEnabled ? 'ON' : 'OFF'}`}
     >

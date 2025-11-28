@@ -85,7 +85,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
         <div
           className={cn(
             'absolute inset-0',
-            'bg-gray-200 dark:bg-gray-700',
+            'bg-stone-200 dark:bg-stone-700',
             variantStyles[variant],
             animationStyles[animation],
             className
@@ -99,7 +99,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   return (
     <div
       className={cn(
-        'bg-gray-200 dark:bg-gray-700',
+        'bg-stone-200 dark:bg-stone-700',
         variantStyles[variant],
         animationStyles[animation],
         variant === 'text' && !height && 'h-4',
@@ -167,8 +167,8 @@ export const SkeletonCard: React.FC<{
   return (
     <div
       className={cn(
-        'bg-white dark:bg-gray-800',
-        'border border-gray-200 dark:border-gray-700',
+        'bg-white dark:bg-stone-800',
+        'border border-stone-200 dark:border-stone-700',
         'rounded-xl p-4 sm:p-6',
         'space-y-4',
         className
@@ -292,7 +292,7 @@ export const SkeletonTable: React.FC<{
   return (
     <div className={cn('w-full', className)}>
       {showHeader && (
-        <div className="flex gap-4 p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex gap-4 p-3 sm:p-4 border-b border-stone-200 dark:border-stone-700">
           {Array.from({ length: cols }).map((_, index) => (
             <Skeleton
               key={index}
@@ -305,7 +305,7 @@ export const SkeletonTable: React.FC<{
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <div
           key={rowIndex}
-          className="flex gap-4 p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700"
+          className="flex gap-4 p-3 sm:p-4 border-b border-stone-200 dark:border-stone-700"
         >
           {Array.from({ length: cols }).map((_, colIndex) => (
             <Skeleton
@@ -330,8 +330,8 @@ export const SkeletonPokemonCard: React.FC<{
   return (
     <div
       className={cn(
-        'bg-white dark:bg-gray-800',
-        'border border-gray-200 dark:border-gray-700',
+        'bg-white dark:bg-stone-800',
+        'border border-stone-200 dark:border-stone-700',
         'rounded-xl p-3 sm:p-4',
         'space-y-3',
         className

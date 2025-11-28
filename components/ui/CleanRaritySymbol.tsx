@@ -40,24 +40,24 @@ const rarityConfig: Record<string, {
   'Common': {
     symbol: <CircleSymbol className="w-full h-full" />,
     label: 'Common',
-    color: 'text-gray-500 dark:text-gray-400'
+    color: 'text-stone-500 dark:text-stone-400'
   },
   'Uncommon': {
     symbol: <DiamondSymbol className="w-full h-full" />,
     label: 'Uncommon',
-    color: 'text-gray-600 dark:text-gray-300'
+    color: 'text-stone-600 dark:text-stone-300'
   },
   'Rare': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Rare',
-    color: 'text-gray-700 dark:text-gray-200'
+    color: 'text-stone-700 dark:text-stone-200'
   },
   
   // Holo Variations (star with different colors)
   'Rare Holo': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Holo',
-    color: 'text-blue-500 dark:text-blue-400'
+    color: 'text-amber-500 dark:text-amber-400'
   },
   'Rare Holo EX': {
     symbol: <StarSymbol className="w-full h-full" />,
@@ -67,17 +67,17 @@ const rarityConfig: Record<string, {
   'Rare Holo GX': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'GX',
-    color: 'text-blue-600 dark:text-blue-400'
+    color: 'text-amber-600 dark:text-amber-400'
   },
   'Rare Holo V': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'V',
-    color: 'text-purple-500 dark:text-purple-400'
+    color: 'text-amber-500 dark:text-amber-400'
   },
   'Rare Holo VMAX': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'VMAX',
-    color: 'text-purple-600 dark:text-purple-400'
+    color: 'text-amber-600 dark:text-amber-400'
   },
   'Rare Holo VSTAR': {
     symbol: <StarSymbol className="w-full h-full" />,
@@ -94,7 +94,7 @@ const rarityConfig: Record<string, {
       </div>
     ),
     label: 'Double Rare',
-    color: 'text-gray-700 dark:text-gray-200'
+    color: 'text-stone-700 dark:text-stone-200'
   },
   'Rare Ultra': {
     symbol: (
@@ -104,7 +104,7 @@ const rarityConfig: Record<string, {
       </div>
     ),
     label: 'Ultra Rare',
-    color: 'text-purple-500 dark:text-purple-400'
+    color: 'text-amber-500 dark:text-amber-400'
   },
   'Illustration Rare': {
     symbol: <StarSymbol className="w-full h-full" />,
@@ -141,12 +141,12 @@ const rarityConfig: Record<string, {
       </div>
     ),
     label: 'Secret',
-    color: 'text-purple-600 dark:text-purple-400'
+    color: 'text-amber-600 dark:text-amber-400'
   },
   'Rare Rainbow': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Rainbow',
-    color: 'bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 bg-clip-text text-transparent'
+    color: 'bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-amber-500 to-amber-500 bg-clip-text text-transparent'
   },
   'Rare Shining': {
     symbol: <StarSymbol className="w-full h-full" />,
@@ -166,7 +166,7 @@ const rarityConfig: Record<string, {
   'Trainer Gallery Rare Holo': {
     symbol: <span className="font-bold">TG</span>,
     label: 'TG',
-    color: 'text-blue-500 dark:text-blue-400'
+    color: 'text-amber-500 dark:text-amber-400'
   },
   'ACE SPEC Rare': {
     symbol: <span className="font-bold text-[70%]">ACE</span>,
@@ -176,7 +176,7 @@ const rarityConfig: Record<string, {
   'Promo': {
     symbol: <StarSymbol className="w-full h-full" />,
     label: 'Promo',
-    color: 'text-blue-500 dark:text-blue-400'
+    color: 'text-amber-500 dark:text-amber-400'
   },
   
   // Crown Rare (Pocket TCG)
@@ -251,7 +251,7 @@ export const CleanRaritySymbol: React.FC<RaritySymbolProps> = ({
         <span className={cn(
           'font-medium',
           size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : 'text-sm',
-          isActive ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'
+          isActive ? 'text-stone-900 dark:text-white' : 'text-stone-600 dark:text-stone-400'
         )}>
           {config.label}
         </span>
@@ -289,8 +289,8 @@ export const CleanRarityFilterBar: React.FC<{
         className={cn(
           'px-3 py-1.5 rounded-lg text-sm font-medium transition-all',
           selectedRarity === null
-            ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
+            : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
         )}
       >
         All Cards
@@ -301,7 +301,7 @@ export const CleanRarityFilterBar: React.FC<{
         {/* Basic */}
         {basic.filter((r: string) => availableRarities.includes(r)).length > 0 && (
           <div className="flex items-center gap-4">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider w-12">Basic</span>
+            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider w-12">Basic</span>
             <div className="flex items-center gap-3">
               {basic.filter((r: string) => availableRarities.includes(r)).map((rarity: string) => (
                 <CleanRaritySymbol
@@ -319,7 +319,7 @@ export const CleanRarityFilterBar: React.FC<{
         {/* Holo */}
         {holo.length > 0 && (
           <div className="flex items-center gap-4">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider w-12">Holo</span>
+            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider w-12">Holo</span>
             <div className="flex items-center gap-3 flex-wrap">
               {holo.map((rarity: string) => (
                 <CleanRaritySymbol
@@ -337,7 +337,7 @@ export const CleanRarityFilterBar: React.FC<{
         {/* Special */}
         {special.length > 0 && (
           <div className="flex items-center gap-4">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider w-12">Special</span>
+            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider w-12">Special</span>
             <div className="flex items-center gap-3 flex-wrap">
               {special.map((rarity: string) => (
                 <CleanRaritySymbol
@@ -355,7 +355,7 @@ export const CleanRarityFilterBar: React.FC<{
         {/* Other */}
         {other.length > 0 && (
           <div className="flex items-center gap-4">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider w-12">Other</span>
+            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider w-12">Other</span>
             <div className="flex items-center gap-3 flex-wrap">
               {other.map((rarity: string) => (
                 <CleanRaritySymbol

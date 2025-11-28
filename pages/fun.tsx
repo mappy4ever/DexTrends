@@ -184,27 +184,27 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
             <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pokemon-red to-pokemon-blue bg-clip-text text-transparent">
               🎉 Fun Zone 🎉
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-xl text-stone-600 dark:text-stone-300 mb-6">
               Discover amazing Pokémon facts, test your knowledge, and have fun!
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Random Pokemon */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700">
+            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700">
               <h2 className="text-2xl font-bold mb-4 text-center text-pokemon-blue">
                 🎲 Random Pokémon
               </h2>
               {loadingRandomPokemon ? (
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
-                  <div className="h-6 w-32 mx-auto mb-2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                  <div className="h-4 w-20 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="w-32 h-32 mx-auto mb-4 bg-stone-200 dark:bg-stone-700 rounded-lg animate-pulse"></div>
+                  <div className="h-6 w-32 mx-auto mb-2 bg-stone-200 dark:bg-stone-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-20 mx-auto mb-4 bg-stone-200 dark:bg-stone-700 rounded animate-pulse"></div>
                   <div className="flex justify-center gap-2 mb-4">
-                    <div className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-                    <div className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                    <div className="h-6 w-16 bg-stone-200 dark:bg-stone-700 rounded-full animate-pulse"></div>
+                    <div className="h-6 w-16 bg-stone-200 dark:bg-stone-700 rounded-full animate-pulse"></div>
                   </div>
-                  <p className="text-gray-500">Loading...</p>
+                  <p className="text-stone-500">Loading...</p>
                 </div>
               ) : randomPokemon ? (
                 <div className="text-center">
@@ -213,10 +213,10 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                     alt={randomPokemon.name}
                     className="w-32 h-32 mx-auto mb-4"
                   />
-                  <h3 className="text-xl font-bold capitalize mb-2 text-gray-800 dark:text-white">
+                  <h3 className="text-xl font-bold capitalize mb-2 text-stone-800 dark:text-white">
                     {randomPokemon.name}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-stone-600 dark:text-stone-400 mb-4">
                     #{randomPokemon.id.toString().padStart(3, '0')}
                   </p>
                   <div className="flex flex-wrap justify-center gap-2 mb-4">
@@ -232,8 +232,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 </div>
               ) : (
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-                  <p className="text-gray-500">No Pokémon loaded</p>
+                  <div className="w-32 h-32 mx-auto mb-4 bg-stone-200 dark:bg-stone-700 rounded-lg"></div>
+                  <p className="text-stone-500">No Pokémon loaded</p>
                 </div>
               )}
               <CircularButton
@@ -242,8 +242,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 variant="primary"
                 size="lg"
                 className={`w-full font-bold ${
-                  loadingRandomPokemon 
-                    ? 'bg-gray-400 cursor-not-allowed' 
+                  loadingRandomPokemon
+                    ? 'bg-stone-400 cursor-not-allowed'
                     : 'bg-pokemon-yellow hover:bg-yellow-600'
                 } text-white`}>
                 {loadingRandomPokemon ? 'Loading...' : 'Get New Random Pokémon!'}
@@ -251,11 +251,11 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
             </div>
 
             {/* Pokemon Facts */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700">
+            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700">
               <h2 className="text-2xl font-bold mb-4 text-center text-pokemon-red">
                 💡 Pokémon Facts
               </h2>
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-xl">
+              <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-xl">
                 <div className="text-center">
                   <div className="text-4xl mb-3">{pokemonFacts[currentFact].emoji}</div>
                   <h3 className="font-bold text-lg mb-2">{pokemonFacts[currentFact].title}</h3>
@@ -266,18 +266,18 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 onClick={getRandomFact}
                 variant="primary"
                 size="lg"
-                className="w-full mt-4 bg-pokemon-blue hover:bg-blue-700 text-white font-bold">
+                className="w-full mt-4 bg-amber-600 hover:bg-amber-700 text-white font-bold">
                 Show Random Fact!
               </CircularButton>
             </div>
 
             {/* Pokemon Quiz */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700">
+            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700">
               <h2 className="text-2xl font-bold mb-4 text-center text-pokemon-red">
                 🧠 Pokémon Quiz
               </h2>
               <div className="mb-4">
-                <h3 className="font-bold text-lg mb-4 text-gray-800 dark:text-white">
+                <h3 className="font-bold text-lg mb-4 text-stone-800 dark:text-white">
                   {pokemonQuizzes[currentQuiz].question}
                 </h3>
                 <div className="space-y-2">
@@ -294,8 +294,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                             ? 'bg-green-500 text-white'
                             : index === selectedAnswer && index !== pokemonQuizzes[currentQuiz].correct
                             ? 'bg-red-500 text-white'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+                            : 'bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-400'
+                          : 'bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 text-stone-800 dark:text-white'
                       }`}
                     >
                       {option}
@@ -303,8 +303,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                   ))}
                 </div>
                 {showAnswer && (
-                  <div className="mt-4 p-4 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
-                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <div className="mt-4 p-4 bg-amber-100 dark:bg-amber-900/50 rounded-lg">
+                    <p className="text-sm text-amber-800 dark:text-amber-200">
                       {pokemonQuizzes[currentQuiz].explanation}
                     </p>
                   </div>
@@ -321,7 +321,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
           </div>
 
           {/* Pokemon Joke Section */}
-          <div className="mt-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700">
+          <div className="mt-12 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-stone-200 dark:border-stone-700">
             <h2 className="text-3xl font-bold mb-6 text-center text-pokemon-yellow">
               😂 Pokémon Jokes
             </h2>
@@ -330,11 +330,11 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 <h3 className="font-bold mb-2">Why don&apos;t you ever see Pikachu in a restaurant?</h3>
                 <p className="text-sm">Because it&apos;s always shocking to get the bill! ⚡</p>
               </div>
-              <div className="bg-gradient-to-br from-green-400 to-blue-500 text-white p-6 rounded-xl">
+              <div className="bg-gradient-to-br from-green-400 to-green-600 text-white p-6 rounded-xl">
                 <h3 className="font-bold mb-2">What do you call a Pokémon that can&apos;t move very fast?</h3>
                 <p className="text-sm">A Slowpoke! 🐌</p>
               </div>
-              <div className="bg-gradient-to-br from-purple-400 to-pink-500 text-white p-6 rounded-xl">
+              <div className="bg-gradient-to-br from-amber-400 to-orange-500 text-white p-6 rounded-xl">
                 <h3 className="font-bold mb-2">Why did Team Rocket blast off again?</h3>
                 <p className="text-sm">Because they&apos;re always reaching for the stars! 🚀</p>
               </div>

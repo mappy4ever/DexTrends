@@ -33,9 +33,9 @@ const POKEMON_TYPES = [
 ];
 
 const EFFECTIVENESS_COLORS: { [key: number]: { bg: string; text: string; symbol: string } } = {
-  0: { bg: 'bg-gray-200 dark:bg-gray-700', text: 'text-gray-500', symbol: '0' },
+  0: { bg: 'bg-stone-200 dark:bg-stone-700', text: 'text-stone-500', symbol: '0' },
   0.5: { bg: 'bg-red-200 dark:bg-red-900/50', text: 'text-red-700 dark:text-red-400', symbol: '½' },
-  1: { bg: 'bg-gray-100 dark:bg-gray-800', text: 'text-gray-600 dark:text-gray-400', symbol: '1' },
+  1: { bg: 'bg-stone-100 dark:bg-stone-800', text: 'text-stone-600 dark:text-stone-400', symbol: '1' },
   2: { bg: 'bg-green-200 dark:bg-green-900/50', text: 'text-green-700 dark:text-green-400', symbol: '2' }
 };
 
@@ -86,7 +86,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
             className={`px-6 py-3 rounded-full transition-all ${
               viewMode === 'attacking'
                 ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200'
             }`}
           >
             Attacking
@@ -95,8 +95,8 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
             onClick={() => setViewMode('defending')}
             className={`px-6 py-3 rounded-full transition-all ${
               viewMode === 'defending'
-                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-500 text-white'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200'
             }`}
           >
             Defending
@@ -145,7 +145,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                   circular={true}
                   gradient={true}
                 />
-                <h3 className="text-2xl font-bold mt-4 capitalize text-gray-800 dark:text-gray-200">
+                <h3 className="text-2xl font-bold mt-4 capitalize text-stone-800 dark:text-stone-200">
                   {selectedType} Type
                 </h3>
               </div>
@@ -153,7 +153,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Offensive Matchups */}
                 <div>
-                  <h4 className="text-lg font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">
+                  <h4 className="text-lg font-semibold mb-4 text-center text-stone-700 dark:text-stone-300">
                     When Attacking
                   </h4>
                   <div className="space-y-4">
@@ -199,7 +199,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                           
                           {relations.noEffect.length > 0 && (
                             <div>
-                              <p className="text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
+                              <p className="text-sm font-medium text-stone-700 dark:text-stone-400 mb-2">
                                 No Effect (0×)
                               </p>
                               <div className="flex flex-wrap gap-2">
@@ -222,7 +222,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
 
                 {/* Defensive Matchups */}
                 <div>
-                  <h4 className="text-lg font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">
+                  <h4 className="text-lg font-semibold mb-4 text-center text-stone-700 dark:text-stone-300">
                     When Defending
                   </h4>
                   <div className="space-y-4">
@@ -268,7 +268,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                           
                           {relations.immuneTo.length > 0 && (
                             <div>
-                              <p className="text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
+                              <p className="text-sm font-medium text-stone-700 dark:text-stone-400 mb-2">
                                 Immune To (0× damage)
                               </p>
                               <div className="flex flex-wrap gap-2">
@@ -293,7 +293,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
               {/* Effectiveness Matrix */}
               {viewMode === 'attacking' && (
                 <div className="mt-8">
-                  <h4 className="text-lg font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">
+                  <h4 className="text-lg font-semibold mb-4 text-center text-stone-700 dark:text-stone-300">
                     Attack Effectiveness Against All Types
                   </h4>
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -342,7 +342,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                 circular={true}
                 gradient={true}
               />
-              <p className="text-sm mt-2 text-gray-600 dark:text-gray-400">
+              <p className="text-sm mt-2 text-stone-600 dark:text-stone-400">
                 Click to view details
               </p>
             </GlassContainer>

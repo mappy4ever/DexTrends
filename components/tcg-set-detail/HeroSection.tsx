@@ -58,7 +58,7 @@ const CircularMetric: React.FC<{
           fill="none"
           stroke="currentColor"
           strokeWidth={12}
-          className="text-gray-200/30 dark:text-gray-700/30"
+          className="text-stone-200/30 dark:text-stone-700/30"
         />
         {/* Progress circle */}
         <motion.circle
@@ -85,7 +85,7 @@ const CircularMetric: React.FC<{
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <motion.span
-          className="text-2xl font-bold text-gray-800 dark:text-gray-200"
+          className="text-2xl font-bold text-stone-800 dark:text-stone-200"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -93,7 +93,7 @@ const CircularMetric: React.FC<{
           {formatValue()}
         </motion.span>
         <motion.span
-          className="text-xs text-gray-500 dark:text-gray-400 mt-1"
+          className="text-xs text-stone-500 dark:text-stone-400 mt-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
@@ -180,8 +180,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     <div className="relative min-h-[600px] overflow-hidden">
       {/* Animated background gradient */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-600/10 to-blue-600/10 animate-gradient" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-100/20 via-transparent to-transparent dark:from-purple-900/20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-600/10 via-pink-600/10 to-amber-600/10 animate-gradient" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-100/20 via-transparent to-transparent dark:from-amber-900/20" />
       </div>
       
       {/* Main content */}
@@ -220,7 +220,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               
               <div className="flex-1">
                 <motion.h1
-                  className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-2"
+                  className="text-4xl font-bold text-stone-800 dark:text-stone-200 mb-2"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -228,7 +228,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   {setInfo.name}
                 </motion.h1>
                 <motion.p
-                  className="text-lg text-gray-600 dark:text-gray-400 mb-1"
+                  className="text-lg text-stone-600 dark:text-stone-400 mb-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
@@ -236,7 +236,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   {setInfo.series}
                 </motion.p>
                 <motion.p
-                  className="text-sm text-gray-500 dark:text-gray-500"
+                  className="text-sm text-stone-500 dark:text-stone-500"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
@@ -311,13 +311,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <StatPill
                 label="Set Code"
                 value={setInfo.id.toUpperCase()}
-                gradient="from-blue-500 to-cyan-500"
+                gradient="from-amber-500 to-cyan-500"
               />
               {setInfo.ptcgoCode && (
                 <StatPill
                   label="PTCGO"
                   value={setInfo.ptcgoCode}
-                  gradient="from-purple-500 to-pink-500"
+                  gradient="from-amber-500 to-pink-500"
                 />
               )}
               <StatPill
@@ -344,7 +344,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             className="h-full"
           >
             <motion.h2
-              className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 text-center"
+              className="text-2xl font-bold text-stone-800 dark:text-stone-200 mb-6 text-center"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
             >
@@ -374,7 +374,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             >
               <button className={cn(
                 "px-6 py-3 rounded-full",
-                "bg-gradient-to-r from-purple-500 to-pink-500",
+                "bg-gradient-to-r from-amber-500 to-pink-500",
                 "text-white font-semibold",
                 "hover:scale-105 transition-transform",
                 "shadow-lg hover:shadow-xl"
@@ -398,15 +398,15 @@ const StatPill: React.FC<{
   <motion.div
     className={cn(
       "px-4 py-2 rounded-full",
-      "backdrop-blur-md bg-white/60 dark:bg-gray-800/60",
-      "border border-white/50 dark:border-gray-700/50",
+      "backdrop-blur-md bg-white/60 dark:bg-stone-800/60",
+      "border border-white/50 dark:border-stone-700/50",
       "hover:scale-105 transition-transform duration-200"
     )}
     initial={{ scale: 0 }}
     animate={{ scale: 1 }}
     transition={{ type: "spring", stiffness: 200 }}
   >
-    <span className="text-xs text-gray-500 dark:text-gray-400 mr-2">{label}:</span>
+    <span className="text-xs text-stone-500 dark:text-stone-400 mr-2">{label}:</span>
     <span className={cn(
       "text-sm font-bold bg-gradient-to-r bg-clip-text text-transparent",
       gradient

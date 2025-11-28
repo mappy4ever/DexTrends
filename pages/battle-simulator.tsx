@@ -158,7 +158,7 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, po
     <button
       onClick={handleSelect}
       disabled={itemLoading}
-      className="w-full text-left min-h-0 p-4 justify-start bg-white/80 hover:bg-white/90 transition-all duration-200 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md backdrop-blur-sm"
+      className="w-full text-left min-h-0 p-4 justify-start bg-white/80 hover:bg-white/90 transition-all duration-200 border border-stone-200 hover:border-stone-300 shadow-sm hover:shadow-md backdrop-blur-sm"
       data-testid="pokemon-option"
     >
       <div className="flex items-center justify-between">
@@ -193,10 +193,10 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, po
           
           {/* Pokemon Info */}
           <div className="text-left">
-            <div className="font-bold text-lg capitalize text-gray-800">
+            <div className="font-bold text-lg capitalize text-stone-800">
               {pokemon.name}
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-stone-500">
               #{pokemonId ? pokemonId.toString().padStart(3, '0') : '???'}
             </div>
           </div>
@@ -209,7 +209,7 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, po
               <TypeBadge key={t.type.name} type={t.type.name} size="xs" />
             ))
           ) : (
-            <span className="text-sm text-gray-400">Select to load</span>
+            <span className="text-sm text-stone-400">Select to load</span>
           )}
         </div>
       </div>
@@ -1317,12 +1317,12 @@ const BattleSimulator: NextPage = () => {
         )}
 
         {/* Sticky Header */}
-        <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border-b border-white/20">
+        <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-stone-900/70 border-b border-white/20">
           <div className="container mx-auto px-4 py-3 sm:py-4">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-red-600 mb-2 sm:mb-4 md:mb-6">
               Pokemon Battle Simulator
             </h1>
-            <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden sm:block">
+            <p className="text-stone-700 dark:text-stone-300 text-xs sm:text-sm hidden sm:block">
               Experience epic battles with real damage calculations and type effectiveness
             </p>
           </div>
@@ -1345,7 +1345,7 @@ const BattleSimulator: NextPage = () => {
               </Link>
               <Link href="/battle-simulator/damage-calc">
                 <button
-                  className="w-full sm:w-auto min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm sm:text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 touch-target"
+                  className="w-full sm:w-auto min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 bg-stone-200 hover:bg-stone-300 text-stone-800 text-sm sm:text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 touch-target"
                 >
                   Damage Calculator
                 </button>
@@ -1356,7 +1356,7 @@ const BattleSimulator: NextPage = () => {
           {/* Battle Format & Weather Selection */}
           <GlassContainer variant="medium" className="mb-4 sm:mb-6 md:mb-8">
             <div className="space-y-4 sm:space-y-6">
-              <h3 className="text-base sm:text-lg font-semibold text-slate-700 dark:text-slate-300 text-center">Battle Configuration</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-stone-700 dark:text-stone-300 text-center">Battle Configuration</h3>
               
               {/* Format Selection */}
               <div className="flex justify-center gap-2">
@@ -1364,8 +1364,8 @@ const BattleSimulator: NextPage = () => {
                   onClick={() => setBattleFormat('singles')}
                   className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
                     battleFormat === 'singles'
-                      ? 'bg-red-100 text-slate-700 shadow-lg border-[4px] border-red-400'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1.5px] border-gray-300'
+                      ? 'bg-red-100 text-stone-700 shadow-lg border-[4px] border-red-400'
+                      : 'bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-800 border-[1.5px] border-stone-300'
                   }`}
                                     whileTap={{ scale: 0.98 }}
                 >
@@ -1375,8 +1375,8 @@ const BattleSimulator: NextPage = () => {
                   onClick={() => setBattleFormat('doubles')}
                   className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
                     battleFormat === 'doubles'
-                      ? 'bg-red-100 text-slate-700 shadow-lg border-[4px] border-red-400'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1.5px] border-gray-300'
+                      ? 'bg-red-100 text-stone-700 shadow-lg border-[4px] border-red-400'
+                      : 'bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-800 border-[1.5px] border-stone-300'
                   }`}
                                     whileTap={{ scale: 0.98 }}
                 >
@@ -1392,8 +1392,8 @@ const BattleSimulator: NextPage = () => {
                     onClick={() => setWeather(weatherType)}
                     className={`min-h-[44px] px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
                       weather === weatherType
-                        ? 'bg-orange-100 text-slate-700 shadow-lg border-[3px] border-orange-400'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1px] border-gray-300'
+                        ? 'bg-orange-100 text-stone-700 shadow-lg border-[3px] border-orange-400'
+                        : 'bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-800 border-[1px] border-stone-300'
                     }`}
                                         whileTap={{ scale: 0.98 }}
                   >
@@ -1438,12 +1438,12 @@ const BattleSimulator: NextPage = () => {
                       onChange={(e) => setPlayer1Name(e.target.value)}
                       onBlur={() => setEditingPlayer1(false)}
                       onKeyPress={(e) => e.key === 'Enter' && setEditingPlayer1(false)}
-                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-red-400 text-slate-700 dark:text-slate-300 outline-none px-2"
+                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-red-400 text-stone-700 dark:text-stone-300 outline-none px-2"
                       autoFocus
                     />
                   ) : (
                     <h2 
-                      className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors inline-flex items-center gap-2 touch-target"
+                      className="text-xl sm:text-2xl md:text-3xl font-semibold text-stone-700 dark:text-stone-300 cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors inline-flex items-center gap-2 touch-target"
                       onClick={() => setEditingPlayer1(true)}
                     >
                       {player1Name}
@@ -1459,13 +1459,13 @@ const BattleSimulator: NextPage = () => {
                     <div className="flex flex-col sm:flex-row justify-center gap-2 mb-3">
                       <button
                         onClick={() => setShowIVsEVs1(!showIVsEVs1)}
-                        className="min-h-[44px] px-3 sm:px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 touch-target"
+                        className="min-h-[44px] px-3 sm:px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 touch-target"
                       >
                         {showIVsEVs1 ? 'Hide' : 'Show'} IVs/EVs
                       </button>
                       <button
                         onClick={() => setShowMoveSelector(1)}
-                        className="min-h-[44px] px-3 sm:px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 touch-target"
+                        className="min-h-[44px] px-3 sm:px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 touch-target"
                                               >
                         Select Moves ({pokemon1Config.selectedMoves.length}/4)
                       </button>
@@ -1494,7 +1494,7 @@ const BattleSimulator: NextPage = () => {
                         </div>
                       </HitFlash>
                     </PokemonEntry>
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon1.name}</h3>
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold capitalize text-stone-700 dark:text-stone-300">{selectedPokemon1.name}</h3>
                     <div className="flex justify-center gap-2">
                       {selectedPokemon1.types?.map((t: PokemonType) => (
                         <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" />
@@ -1516,18 +1516,18 @@ const BattleSimulator: NextPage = () => {
                       </div>
                     )}
                     
-                    <div className="text-sm text-gray-600 mt-2">
+                    <div className="text-sm text-stone-600 mt-2">
                       Level: {pokemon1Config.level}
                     </div>
                     
                     {/* IVs/EVs Configuration */}
                     {showIVsEVs1 && (
-                      <div className="mt-4 bg-blue-50 rounded-lg p-4 text-left">
-                        <h4 className="text-xl font-medium text-gray-700 mb-3">Stats Configuration</h4>
+                      <div className="mt-4 bg-amber-50 rounded-lg p-4 text-left">
+                        <h4 className="text-xl font-medium text-stone-700 mb-3">Stats Configuration</h4>
                         
                         {/* Nature Selection */}
                         <div className="mb-4">
-                          <label className="text-sm font-medium text-gray-600 mb-2 block">Nature</label>
+                          <label className="text-sm font-medium text-stone-600 mb-2 block">Nature</label>
                           <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto">
                             {allNatures.map(nature => (
                               <button
@@ -1535,15 +1535,15 @@ const BattleSimulator: NextPage = () => {
                                 onClick={() => setPokemon1Config(prev => ({ ...prev, nature: nature.name }))}
                                 className={`p-2 rounded-lg border-2 transition-all duration-200 text-xs ${
                                   pokemon1Config.nature === nature.name
-                                    ? 'border-blue-500 bg-blue-50'
-                                    : 'border-gray-200 hover:border-gray-300'
+                                    ? 'border-amber-500 bg-amber-50'
+                                    : 'border-stone-200 hover:border-stone-300'
                                 }`}
                               >
                                 <div className="font-medium capitalize">{nature.name}</div>
                                 {nature.increased_stat && nature.decreased_stat && (
                                   <div className="mt-1">
                                     <span className="text-green-600">↑{nature.increased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
-                                    <span className="mx-1 text-gray-400">/</span>
+                                    <span className="mx-1 text-stone-400">/</span>
                                     <span className="text-red-600">↓{nature.decreased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
                                   </div>
                                 )}
@@ -1569,12 +1569,12 @@ const BattleSimulator: NextPage = () => {
                             return (
                               <div key={stat} className="space-y-1">
                                 <div className="flex justify-between items-center text-xs">
-                                  <span className="capitalize font-medium text-gray-700">
+                                  <span className="capitalize font-medium text-stone-700">
                                     {stat.replace('special', 'Sp.').replace('Attack', ' Atk').replace('Defense', ' Def')}
                                   </span>
                                   <span className="font-semibold">{value}</span>
                                 </div>
-                                <div className="h-4 bg-gray-200 rounded-lg overflow-hidden">
+                                <div className="h-4 bg-stone-200 rounded-lg overflow-hidden">
                                   <div
                                     className="h-full transition-all duration-500 ease-out rounded-lg"
                                     style={{
@@ -1598,7 +1598,7 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 252, attack: 252, defense: 0, specialAttack: 0, specialDefense: 4, speed: 0 }
                               }));
                             }}
-                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
+                            className="px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded transition-all duration-200 text-xs"
                           >
                             Physical Sweeper
                           </button>
@@ -1610,7 +1610,7 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 4, attack: 0, defense: 0, specialAttack: 252, specialDefense: 0, speed: 252 }
                               }));
                             }}
-                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
+                            className="px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded transition-all duration-200 text-xs"
                           >
                             Special Sweeper
                           </button>
@@ -1622,10 +1622,10 @@ const BattleSimulator: NextPage = () => {
                 ) : (
                   <button
                     onClick={() => setShowPokemonSelector(1)}
-                    className="w-full p-6 border-2 border-dashed border-gray-300 hover:border-gray-400 min-h-[100px] bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200"
+                    className="w-full p-6 border-2 border-dashed border-stone-300 hover:border-stone-400 min-h-[100px] bg-stone-100 hover:bg-stone-200 text-stone-600 rounded transition-all duration-200"
                     data-testid="pokemon-select"
                   >
-                    <span className="text-gray-500">Click to select Pokemon</span>
+                    <span className="text-stone-500">Click to select Pokemon</span>
                   </button>
                 )}
               </GlassContainer>
@@ -1634,7 +1634,7 @@ const BattleSimulator: NextPage = () => {
               <div className="lg:flex items-center justify-center lg:flex-col lg:justify-center lg:px-4">
                 <VSBadge animated={battleActive} />
                 <div className="mt-4 text-center">
-                  <div className="text-sm text-slate-700 dark:text-slate-300 font-medium">Battle Arena</div>
+                  <div className="text-sm text-stone-700 dark:text-stone-300 font-medium">Battle Arena</div>
                   {battleActive && currentTurn && (
                     <TurnIndicator
                       currentTurn={currentTurn}
@@ -1643,7 +1643,7 @@ const BattleSimulator: NextPage = () => {
                     />
                   )}
                   {!battleActive && (
-                    <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                    <div className="mt-2 text-xs text-stone-600 dark:text-stone-400">
                       Select Pokemon and moves to begin
                     </div>
                   )}
@@ -1661,12 +1661,12 @@ const BattleSimulator: NextPage = () => {
                       onChange={(e) => setPlayer2Name(e.target.value)}
                       onBlur={() => setEditingPlayer2(false)}
                       onKeyPress={(e) => e.key === 'Enter' && setEditingPlayer2(false)}
-                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-orange-400 text-slate-700 dark:text-slate-300 outline-none px-2"
+                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-orange-400 text-stone-700 dark:text-stone-300 outline-none px-2"
                       autoFocus
                     />
                   ) : (
                     <h2 
-                      className="text-3xl font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-orange-600 dark:hover:text-orange-400 transition-colors inline-flex items-center gap-2"
+                      className="text-3xl font-semibold text-stone-700 dark:text-stone-300 cursor-pointer hover:text-orange-600 dark:hover:text-orange-400 transition-colors inline-flex items-center gap-2"
                       onClick={() => setEditingPlayer2(true)}
                     >
                       {player2Name}
@@ -1682,13 +1682,13 @@ const BattleSimulator: NextPage = () => {
                     <div className="flex justify-center gap-2 mb-3">
                       <button
                         onClick={() => setShowIVsEVs2(!showIVsEVs2)}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                        className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 font-medium rounded-lg transition-all duration-200"
                                               >
                         {showIVsEVs2 ? 'Hide' : 'Show'} IVs/EVs
                       </button>
                       <button
                         onClick={() => setShowMoveSelector(2)}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                        className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 font-medium rounded-lg transition-all duration-200"
                                               >
                         Select Moves ({pokemon2Config.selectedMoves.length}/4)
                       </button>
@@ -1717,7 +1717,7 @@ const BattleSimulator: NextPage = () => {
                         </div>
                       </HitFlash>
                     </PokemonEntry>
-                    <h3 className="text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon2.name}</h3>
+                    <h3 className="text-2xl font-semibold capitalize text-stone-700 dark:text-stone-300">{selectedPokemon2.name}</h3>
                     <div className="flex justify-center gap-2">
                       {selectedPokemon2.types?.map((t: PokemonType) => (
                         <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" />
@@ -1739,18 +1739,18 @@ const BattleSimulator: NextPage = () => {
                       </div>
                     )}
                     
-                    <div className="text-sm text-gray-600 mt-2">
+                    <div className="text-sm text-stone-600 mt-2">
                       Level: {pokemon2Config.level}
                     </div>
                     
                     {/* IVs/EVs Configuration */}
                     {showIVsEVs2 && (
                       <div className="mt-4 bg-red-50 rounded-lg p-4 text-left">
-                        <h4 className="text-xl font-medium text-gray-700 mb-3">Stats Configuration</h4>
+                        <h4 className="text-xl font-medium text-stone-700 mb-3">Stats Configuration</h4>
                         
                         {/* Nature Selection */}
                         <div className="mb-4">
-                          <label className="text-sm font-medium text-gray-600 mb-2 block">Nature</label>
+                          <label className="text-sm font-medium text-stone-600 mb-2 block">Nature</label>
                           <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto">
                             {allNatures.map(nature => (
                               <button
@@ -1759,14 +1759,14 @@ const BattleSimulator: NextPage = () => {
                                 className={`p-2 rounded-lg border-2 transition-all duration-200 text-xs ${
                                   pokemon2Config.nature === nature.name
                                     ? 'border-red-500 bg-red-50'
-                                    : 'border-gray-200 hover:border-gray-300'
+                                    : 'border-stone-200 hover:border-stone-300'
                                 }`}
                               >
                                 <div className="font-medium capitalize">{nature.name}</div>
                                 {nature.increased_stat && nature.decreased_stat && (
                                   <div className="mt-1">
                                     <span className="text-green-600">↑{nature.increased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
-                                    <span className="mx-1 text-gray-400">/</span>
+                                    <span className="mx-1 text-stone-400">/</span>
                                     <span className="text-red-600">↓{nature.decreased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
                                   </div>
                                 )}
@@ -1792,12 +1792,12 @@ const BattleSimulator: NextPage = () => {
                             return (
                               <div key={stat} className="space-y-1">
                                 <div className="flex justify-between items-center text-xs">
-                                  <span className="capitalize font-medium text-gray-700">
+                                  <span className="capitalize font-medium text-stone-700">
                                     {stat.replace('special', 'Sp.').replace('Attack', ' Atk').replace('Defense', ' Def')}
                                   </span>
                                   <span className="font-semibold">{value}</span>
                                 </div>
-                                <div className="h-4 bg-gray-200 rounded-lg overflow-hidden">
+                                <div className="h-4 bg-stone-200 rounded-lg overflow-hidden">
                                   <div
                                     className="h-full transition-all duration-500 ease-out rounded-lg"
                                     style={{
@@ -1821,7 +1821,7 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 252, attack: 252, defense: 0, specialAttack: 0, specialDefense: 4, speed: 0 }
                               }));
                             }}
-                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
+                            className="px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded transition-all duration-200 text-xs"
                           >
                             Physical Sweeper
                           </button>
@@ -1833,7 +1833,7 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 4, attack: 0, defense: 0, specialAttack: 252, specialDefense: 0, speed: 252 }
                               }));
                             }}
-                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
+                            className="px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded transition-all duration-200 text-xs"
                           >
                             Special Sweeper
                           </button>
@@ -1845,10 +1845,10 @@ const BattleSimulator: NextPage = () => {
                 ) : (
                   <button
                     onClick={() => setShowPokemonSelector(2)}
-                    className="w-full p-6 border-2 border-dashed border-gray-300 hover:border-gray-400 min-h-[100px] bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200"
+                    className="w-full p-6 border-2 border-dashed border-stone-300 hover:border-stone-400 min-h-[100px] bg-stone-100 hover:bg-stone-200 text-stone-600 rounded transition-all duration-200"
                     data-testid="pokemon-select"
                   >
-                    <span className="text-gray-500">Click to select Pokemon</span>
+                    <span className="text-stone-500">Click to select Pokemon</span>
                   </button>
                 )}
               </GlassContainer>
@@ -1875,7 +1875,7 @@ const BattleSimulator: NextPage = () => {
                   <div className="space-y-4">
                     {/* Turn Indicator */}
                     <div className="text-center mb-4">
-                      <div className="text-lg font-semibold text-slate-700 dark:text-slate-300">
+                      <div className="text-lg font-semibold text-stone-700 dark:text-stone-300">
                         {currentTurn === 1 ? `${player1Name}'s Turn` : `${player2Name}'s Turn`}
                       </div>
                     </div>
@@ -1906,21 +1906,21 @@ const BattleSimulator: NextPage = () => {
                               
                               {/* Move Content */}
                               <div className="relative z-10">
-                                <div className="font-semibold capitalize text-slate-700 dark:text-slate-300">{move.move.name.replace(/-/g, ' ')}</div>
+                                <div className="font-semibold capitalize text-stone-700 dark:text-stone-300">{move.move.name.replace(/-/g, ' ')}</div>
                                 
                                 {moveData && (
                                   <div className="mt-2 space-y-1">
                                     <div className="flex justify-between items-center text-xs">
-                                      <span className="text-gray-600">PP: {moveData.pp}/{moveData.pp}</span>
+                                      <span className="text-stone-600">PP: {moveData.pp}/{moveData.pp}</span>
                                       {effectiveness > 1 && (
                                         <span className="text-red-600 font-bold">Super Effective!</span>
                                       )}
                                       {effectiveness < 1 && effectiveness > 0 && (
-                                        <span className="text-gray-500">Not very effective</span>
+                                        <span className="text-stone-500">Not very effective</span>
                                       )}
                                     </div>
                                     
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-stone-500">
                                       <span>Power: {moveData.power || '-'}</span>
                                       <span>Acc: {moveData.accuracy || '-'}%</span>
                                     </div>
@@ -1958,21 +1958,21 @@ const BattleSimulator: NextPage = () => {
                               
                               {/* Move Content */}
                               <div className="relative z-10">
-                                <div className="font-semibold capitalize text-slate-700 dark:text-slate-300">{move.move.name.replace(/-/g, ' ')}</div>
+                                <div className="font-semibold capitalize text-stone-700 dark:text-stone-300">{move.move.name.replace(/-/g, ' ')}</div>
                                 
                                 {moveData && (
                                   <div className="mt-2 space-y-1">
                                     <div className="flex justify-between items-center text-xs">
-                                      <span className="text-gray-600">PP: {moveData.pp}/{moveData.pp}</span>
+                                      <span className="text-stone-600">PP: {moveData.pp}/{moveData.pp}</span>
                                       {effectiveness > 1 && (
                                         <span className="text-red-600 font-bold">Super Effective!</span>
                                       )}
                                       {effectiveness < 1 && effectiveness > 0 && (
-                                        <span className="text-gray-500">Not very effective</span>
+                                        <span className="text-stone-500">Not very effective</span>
                                       )}
                                     </div>
                                     
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-stone-500">
                                       <span>Power: {moveData.power || '-'}</span>
                                       <span>Acc: {moveData.accuracy || '-'}%</span>
                                     </div>
@@ -1999,20 +1999,20 @@ const BattleSimulator: NextPage = () => {
                 )}
                 
                 {/* Quick Battle Option */}
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h4 className="text-xl font-medium mb-3 text-center text-gray-700">Alternative Battle Mode</h4>
+                <div className="mt-6 pt-6 border-t border-stone-200">
+                  <h4 className="text-xl font-medium mb-3 text-center text-stone-700">Alternative Battle Mode</h4>
                   <div className="flex gap-3 justify-center">
                     <button
                       onClick={runQuickBattle}
                       disabled={battleActive}
-                      className="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50"
+                      className="px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-500 hover:from-amber-600 hover:to-amber-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50"
                     >
                       {battleActive ? 'Battle in Progress...' : 'Quick Battle (Auto)'}
                     </button>
                     {(selectedPokemon1 || selectedPokemon2 || battleLog.length > 0) && (
                       <button
                         onClick={resetBattle}
-                        className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg transition-all duration-200"
+                        className="px-4 py-2 bg-stone-700 hover:bg-stone-800 text-white font-medium rounded-lg transition-all duration-200"
                       >
                         Reset All
                       </button>
@@ -2025,17 +2025,17 @@ const BattleSimulator: NextPage = () => {
           {/* Battle Log */}
           {battleLog.length > 0 && (
             <GlassContainer variant="dark" className="mb-8">
-              <h3 className="text-2xl font-semibold mb-4 text-slate-700 dark:text-slate-300">Battle Log</h3>
-              <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2 backdrop-blur-sm border border-white/20">
+              <h3 className="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">Battle Log</h3>
+              <div className="bg-white/50 dark:bg-stone-800/50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2 backdrop-blur-sm border border-white/20">
                 {battleLog.map((log, index) => {
                   // Handle string logs from Quick Battle
                   if (typeof log === 'string') {
                     return (
                       <div 
                         key={index}
-                        className="p-3 rounded-lg text-sm bg-white/80 dark:bg-gray-700/80 border border-gray-200/50"
+                        className="p-3 rounded-lg text-sm bg-white/80 dark:bg-stone-700/80 border border-stone-200/50"
                       >
-                        <span className="text-gray-600 dark:text-gray-300">{log}</span>
+                        <span className="text-stone-600 dark:text-stone-300">{log}</span>
                       </div>
                     );
                   }
@@ -2049,21 +2049,21 @@ const BattleSimulator: NextPage = () => {
                         battleLogEntry.critical ? 'bg-yellow-100 border border-yellow-300' :
                         battleLogEntry.effectiveness && battleLogEntry.effectiveness > 1 ? 'bg-green-100 border border-green-300' :
                         battleLogEntry.effectiveness && battleLogEntry.effectiveness < 1 ? 'bg-red-100 border border-red-300' :
-                        'bg-white border border-gray-200'
+                        'bg-white border border-stone-200'
                       } animate-fadeIn`}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="font-semibold text-gray-700">{battleLogEntry.player}</span>
-                          <span className="text-gray-500 mx-2">•</span>
+                          <span className="font-semibold text-stone-700">{battleLogEntry.player}</span>
+                          <span className="text-stone-500 mx-2">•</span>
                           <span className="font-medium capitalize">{battleLogEntry.pokemon}</span>
                         </div>
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-stone-400">
                           {new Date(battleLogEntry.timestamp).toLocaleTimeString()}
                         </span>
                       </div>
                       <div className="mt-1">
-                        <span className="text-gray-600">{battleLogEntry.action}</span>
+                        <span className="text-stone-600">{battleLogEntry.action}</span>
                         {battleLogEntry.damage && (
                           <span className="ml-2 font-bold text-red-600">
                             -{battleLogEntry.damage} HP
@@ -2092,16 +2092,16 @@ const BattleSimulator: NextPage = () => {
           {/* Battle History */}
           {battleHistory.length > 0 && (
             <GlassContainer variant="medium" className="mb-8">
-              <h3 className="text-2xl font-semibold mb-4 text-slate-700 dark:text-slate-300">Battle History</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">Battle History</h3>
               <div className="space-y-3">
                 {battleHistory.slice(-5).reverse().map((battle, index) => (
-                  <div key={index} className="bg-white/50 dark:bg-gray-700/50 rounded-lg p-4 hover:bg-white/70 dark:hover:bg-gray-600/50 transition-colors border border-white/20">
+                  <div key={index} className="bg-white/50 dark:bg-stone-700/50 rounded-lg p-4 hover:bg-white/70 dark:hover:bg-stone-600/50 transition-colors border border-white/20">
                     <div className="flex justify-between items-start">
                       <div>
-                        <div className="font-semibold text-slate-700 dark:text-slate-300">
+                        <div className="font-semibold text-stone-700 dark:text-stone-300">
                           {battle.winner}'s {battle.winnerPokemon} defeated {battle.loser}'s {battle.loserPokemon}
                         </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <div className="text-sm text-stone-600 dark:text-stone-400 mt-1">
                           {battle.moves?.length || 0} moves • {new Date(battle.date || new Date()).toLocaleDateString()}
                         </div>
                       </div>
@@ -2148,8 +2148,8 @@ const BattleSimulator: NextPage = () => {
           >
             <div className="p-4">
               <div className="mb-4">
-                <p className="font-semibold text-gray-700">Select up to 4 moves:</p>
-                <p className="text-sm text-gray-500">Selected: {showMoveSelector === 1 ? pokemon1Config.selectedMoves.length : pokemon2Config.selectedMoves.length}/4</p>
+                <p className="font-semibold text-stone-700">Select up to 4 moves:</p>
+                <p className="text-sm text-stone-500">Selected: {showMoveSelector === 1 ? pokemon1Config.selectedMoves.length : pokemon2Config.selectedMoves.length}/4</p>
               </div>
               
               {/* Move Filters */}
@@ -2159,12 +2159,12 @@ const BattleSimulator: NextPage = () => {
                   placeholder="Search moves..."
                   value={moveSearchTerm}
                   onChange={(e) => setMoveSearchTerm(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
                 <div className="flex gap-2">
                   <button
                     onClick={() => setMoveFilter('all')}
-                    className={moveFilter === 'all' ? 'bg-blue-500' : ''}
+                    className={moveFilter === 'all' ? 'bg-amber-500' : ''}
                   >
                     All
                   </button>
@@ -2176,13 +2176,13 @@ const BattleSimulator: NextPage = () => {
                   </button>
                   <button
                     onClick={() => setMoveFilter('special')}
-                    className={moveFilter === 'special' ? 'bg-purple-500' : ''}
+                    className={moveFilter === 'special' ? 'bg-amber-500' : ''}
                   >
                     Special
                   </button>
                   <button
                     onClick={() => setMoveFilter('status')}
-                    className={moveFilter === 'status' ? 'bg-gray-500' : ''}
+                    className={moveFilter === 'status' ? 'bg-stone-500' : ''}
                   >
                     Status
                   </button>
@@ -2243,7 +2243,7 @@ const BattleSimulator: NextPage = () => {
                             }
                           }}
                           className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                            isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                            isSelected ? 'border-amber-500 bg-amber-50' : 'border-stone-200 hover:border-stone-300'
                           }`}
                         >
                           <div className="flex justify-between items-start">
@@ -2253,7 +2253,7 @@ const BattleSimulator: NextPage = () => {
                                 {isSTAB && <span className="ml-2 text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded-lg">STAB</span>}
                               </div>
                               {moveData && (
-                                <div className="text-sm text-gray-600 mt-1">
+                                <div className="text-sm text-stone-600 mt-1">
                                   <span className="mr-3">Power: {moveData.power || '-'}</span>
                                   <span className="mr-3">Accuracy: {moveData.accuracy || '-'}%</span>
                                   <span className="mr-3">PP: {moveData.pp || '-'}</span>
@@ -2262,7 +2262,7 @@ const BattleSimulator: NextPage = () => {
                               )}
                             </div>
                             {isSelected && (
-                              <svg className="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-6 h-6 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
                             )}
@@ -2289,7 +2289,7 @@ const BattleSimulator: NextPage = () => {
                 </button>
                 <button
                   onClick={() => setShowMoveSelector(null)}
-                  className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                  className="flex-1 px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 font-medium rounded-lg transition-all duration-200"
                 >
                   Done
                 </button>
@@ -2310,47 +2310,47 @@ const BattleSimulator: NextPage = () => {
                   alt="Winner"
                   className="mx-auto w-32 h-32 mb-4"
                 />
-                <h2 className="text-2xl font-bold text-gray-800 mb-2 capitalize">
+                <h2 className="text-2xl font-bold text-stone-800 mb-2 capitalize">
                   {battleResults?.winner === 1 ? selectedPokemon1?.name : selectedPokemon2?.name} Won!
                 </h2>
-                <p className="text-lg text-gray-600">
+                <p className="text-lg text-stone-600">
                   Trainer: {battleResults?.winner === 1 ? player1Name : player2Name}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-stone-500">
                   Battle completed in {battleResults?.turns} turns
                 </p>
               </div>
               
               {/* Battle Statistics */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <h3 className="font-semibold text-gray-700 mb-3">Battle Statistics</h3>
+              <div className="bg-stone-50 rounded-lg p-4 mb-6">
+                <h3 className="font-semibold text-stone-700 mb-3">Battle Statistics</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <div className="font-medium text-gray-700">{player1Name}'s {selectedPokemon1?.name}</div>
-                    <div className="text-gray-600">Final HP: {battleResults?.finalHP[0]} / {battleState?.pokemon1.maxHp}</div>
-                    <div className="text-gray-600">Damage Dealt: {battleResults?.totalDamageDealt[0]}</div>
+                    <div className="font-medium text-stone-700">{player1Name}'s {selectedPokemon1?.name}</div>
+                    <div className="text-stone-600">Final HP: {battleResults?.finalHP[0]} / {battleState?.pokemon1.maxHp}</div>
+                    <div className="text-stone-600">Damage Dealt: {battleResults?.totalDamageDealt[0]}</div>
                   </div>
                   <div>
-                    <div className="font-medium text-gray-700">{player2Name}'s {selectedPokemon2?.name}</div>
-                    <div className="text-gray-600">Final HP: {battleResults?.finalHP[1]} / {battleState?.pokemon2.maxHp}</div>
-                    <div className="text-gray-600">Damage Dealt: {battleResults?.totalDamageDealt[1]}</div>
+                    <div className="font-medium text-stone-700">{player2Name}'s {selectedPokemon2?.name}</div>
+                    <div className="text-stone-600">Final HP: {battleResults?.finalHP[1]} / {battleState?.pokemon2.maxHp}</div>
+                    <div className="text-stone-600">Damage Dealt: {battleResults?.totalDamageDealt[1]}</div>
                   </div>
                 </div>
               </div>
               
               {/* Key Moments */}
               {battleResults?.keyMoments && battleResults.keyMoments.length > 0 && (
-                <div className="bg-blue-50 rounded-lg p-4 mb-6">
-                  <h3 className="font-semibold text-gray-700 mb-2">Key Moments</h3>
-                  <div className="space-y-1 text-sm text-gray-600">
+                <div className="bg-amber-50 rounded-lg p-4 mb-6">
+                  <h3 className="font-semibold text-stone-700 mb-2">Key Moments</h3>
+                  <div className="space-y-1 text-sm text-stone-600">
                     {battleResults.keyMoments.slice(0, 5).map((moment, index) => (
                       <div key={index} className="flex items-center gap-2">
-                        <span className="text-gray-400">Turn {moment.turn}:</span>
+                        <span className="text-stone-400">Turn {moment.turn}:</span>
                         <span className={
                           moment.type === 'critical' ? 'text-yellow-600' :
                           moment.type === 'super_effective' ? 'text-red-600' :
-                          moment.type === 'ko' ? 'text-purple-600' :
-                          'text-gray-600'
+                          moment.type === 'ko' ? 'text-amber-600' :
+                          'text-stone-600'
                         }>
                           {moment.description}
                         </span>
@@ -2372,7 +2372,7 @@ const BattleSimulator: NextPage = () => {
                 </button>
                 <button
                   onClick={() => setShowBattleResults(false)}
-                  className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                  className="flex-1 px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 font-medium rounded-lg transition-all duration-200"
                 >
                   Close
                 </button>
@@ -2393,18 +2393,18 @@ const BattleSimulator: NextPage = () => {
                   alt="Winner"
                   className="mx-auto w-32 h-32 mb-4"
                 />
-                <h2 className="text-3xl font-bold text-gray-800 mb-2 capitalize">
+                <h2 className="text-3xl font-bold text-stone-800 mb-2 capitalize">
                   {winner === 1 ? selectedPokemon1?.name : selectedPokemon2?.name} Won!
                 </h2>
-                <p className="text-lg text-gray-600">
+                <p className="text-lg text-stone-600">
                   Trainer: {winner === 1 ? player1Name : player2Name}
                 </p>
               </div>
               
               {/* Battle Summary */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <h3 className="font-semibold text-gray-700 mb-2">Battle Summary</h3>
-                <div className="text-sm text-gray-600 space-y-1">
+              <div className="bg-stone-50 rounded-lg p-4 mb-6">
+                <h3 className="font-semibold text-stone-700 mb-2">Battle Summary</h3>
+                <div className="text-sm text-stone-600 space-y-1">
                   <div>Total Turns: {battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage).length}</div>
                   <div>Total Damage Dealt: {battleLog.reduce((sum, log) => sum + (typeof log === 'object' && 'damage' in log ? log.damage || 0 : 0), 0)}</div>
                   <div>Critical Hits: {battleLog.filter(log => typeof log === 'object' && 'critical' in log && log.critical).length}</div>
@@ -2435,7 +2435,7 @@ const BattleSimulator: NextPage = () => {
                     setPokemon2Config(tempConfig1);
                     endBattle();
                   }}
-                  className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                  className="flex-1 px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 font-medium rounded-lg transition-all duration-200"
                 >
                   Rematch (Swap)
                 </button>

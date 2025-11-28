@@ -184,11 +184,11 @@ const CollectionDashboard = () => {
     
     return (
       <div className="space-y-3">
-        <div className="flex justify-between items-end h-48 bg-gradient-to-t from-blue-50 to-transparent dark:from-blue-900/20 rounded-lg p-4">
+        <div className="flex justify-between items-end h-48 bg-gradient-to-t from-amber-50 to-transparent dark:from-amber-900/20 rounded-lg p-4">
           {priceHistory.map((item, index: number) => (
             <div key={item.date} className="flex flex-col items-center flex-1">
               <div 
-                className="w-8 bg-gradient-to-t from-blue-500 to-blue-400 rounded-t-lg transition-all duration-1000 ease-out"
+                className="w-8 bg-gradient-to-t from-amber-500 to-amber-400 rounded-t-lg transition-all duration-1000 ease-out"
                 style={{ 
                   height: `${(item.value / maxValue) * 100}%`,
                   minHeight: '4px',
@@ -196,11 +196,11 @@ const CollectionDashboard = () => {
                 }}
                 title={`${item.date}: $${item.value}`}
               ></div>
-              <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">{item.date}</span>
+              <span className="text-xs text-stone-600 dark:text-stone-400 mt-2">{item.date}</span>
             </div>
           ))}
         </div>
-        <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <div className="text-center text-sm text-stone-600 dark:text-stone-400">
           Collection Value Over Time
         </div>
       </div>
@@ -255,8 +255,8 @@ const CollectionDashboard = () => {
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">{total}</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Cards</div>
+              <div className="text-2xl font-bold text-stone-900 dark:text-white">{total}</div>
+              <div className="text-xs text-stone-600 dark:text-stone-400">Cards</div>
             </div>
           </div>
         </div>
@@ -267,7 +267,7 @@ const CollectionDashboard = () => {
                 className="w-3 h-3 rounded-full mr-2"
                 style={{ backgroundColor: colors[index % colors.length] }}
               ></div>
-              <span className="text-gray-700 dark:text-gray-300 truncate">
+              <span className="text-stone-700 dark:text-stone-300 truncate">
                 {rarity} ({count})
               </span>
             </div>
@@ -287,12 +287,12 @@ const CollectionDashboard = () => {
       <div className="space-y-4">
         {data.map(([type, count], index: number) => (
           <div key={type} className="flex items-center space-x-3">
-            <div className="w-20 text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
+            <div className="w-20 text-sm font-medium text-stone-700 dark:text-stone-300 capitalize">
               {type}
             </div>
-            <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-6 relative overflow-hidden">
+            <div className="flex-1 bg-stone-200 dark:bg-stone-700 rounded-full h-6 relative overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2"
+                className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2"
                 style={{ 
                   width: `${(count / maxValue) * 100}%`,
                   animationDelay: `${index * 100}ms`
@@ -309,15 +309,15 @@ const CollectionDashboard = () => {
 
   if (loadingStats) {
     return (
-      <div className="collection-dashboard p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className="collection-dashboard p-6 bg-white dark:bg-stone-800 rounded-xl shadow-lg">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="h-8 bg-stone-200 dark:bg-stone-700 rounded w-1/3"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-24 bg-stone-200 dark:bg-stone-700 rounded"></div>
             ))}
           </div>
-          <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          <div className="h-64 bg-stone-200 dark:bg-stone-700 rounded"></div>
         </div>
       </div>
     );
@@ -325,14 +325,14 @@ const CollectionDashboard = () => {
 
   if (!collectionStats || collectionStats.totalCards === 0) {
     return (
-      <div className="collection-dashboard p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg text-center">
-        <div className="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-          <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="collection-dashboard p-8 bg-white dark:bg-stone-800 rounded-xl shadow-lg text-center">
+        <div className="w-20 h-20 mx-auto mb-4 bg-stone-100 dark:bg-stone-700 rounded-full flex items-center justify-center">
+          <svg className="w-10 h-10 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
         </div>
-        <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">Start Your Collection</h3>
-        <p className="text-gray-500 dark:text-gray-400">Add cards and Pokémon to your favorites to see detailed analytics and insights!</p>
+        <h3 className="text-xl font-semibold text-stone-600 dark:text-stone-300 mb-2">Start Your Collection</h3>
+        <p className="text-stone-500 dark:text-stone-400">Add cards and Pokémon to your favorites to see detailed analytics and insights!</p>
       </div>
     );
   }
@@ -340,28 +340,28 @@ const CollectionDashboard = () => {
   return (
     <div className="collection-dashboard space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-xl shadow-lg">
+      <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-2">Collection Dashboard</h2>
         <p className="opacity-90">Track your Pokémon cards and collection value</p>
       </div>
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
           <div className="flex items-center">
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
+              <svg className="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Cards</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{collectionStats.totalCards}</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Total Cards</p>
+              <p className="text-2xl font-semibold text-stone-900 dark:text-white">{collectionStats.totalCards}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
               <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -369,27 +369,27 @@ const CollectionDashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Value</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">${Math.round(collectionStats.totalValue)}</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Total Value</p>
+              <p className="text-2xl font-semibold text-stone-900 dark:text-white">${Math.round(collectionStats.totalValue)}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
           <div className="flex items-center">
-            <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
+              <svg className="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Avg Value</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">${Math.round(collectionStats.averageValue)}</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Avg Value</p>
+              <p className="text-2xl font-semibold text-stone-900 dark:text-white">${Math.round(collectionStats.averageValue)}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
               <svg className="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -397,8 +397,8 @@ const CollectionDashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Completion</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{Math.round(collectionStats.completionPercentage)}%</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Completion</p>
+              <p className="text-2xl font-semibold text-stone-900 dark:text-white">{Math.round(collectionStats.completionPercentage)}%</p>
             </div>
           </div>
         </div>
@@ -407,16 +407,16 @@ const CollectionDashboard = () => {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Price History Chart */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Collection Value Over Time</h3>
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Collection Value Over Time</h3>
           <div className="h-64">
             <PriceHistoryChart />
           </div>
         </div>
 
         {/* Rarity Distribution */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Rarity Distribution</h3>
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Rarity Distribution</h3>
           <div className="h-64 flex items-center justify-center">
             <RarityDonutChart />
           </div>
@@ -425,8 +425,8 @@ const CollectionDashboard = () => {
 
       {/* Type Distribution */}
       {collectionStats?.typeDistribution && Object.keys(collectionStats.typeDistribution).length > 0 && (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Cards by Type</h3>
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Cards by Type</h3>
           <div className="h-auto">
             <TypeBarChart />
           </div>
@@ -435,8 +435,8 @@ const CollectionDashboard = () => {
 
       {/* Most Valuable Card */}
       {collectionStats.mostValuableCard && (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Crown Jewel</h3>
+        <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Crown Jewel</h3>
           <div className="flex items-center space-x-4">
             <div className="w-20 h-28 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg shadow-md flex items-center justify-center">
               <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -444,9 +444,9 @@ const CollectionDashboard = () => {
               </svg>
             </div>
             <div>
-              <h4 className="text-xl font-bold text-gray-900 dark:text-white">{collectionStats.mostValuableCard.name}</h4>
-              <p className="text-gray-600 dark:text-gray-400">${collectionStats.mostValuableCard.value}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-500">Rare Holo</p>
+              <h4 className="text-xl font-bold text-stone-900 dark:text-white">{collectionStats.mostValuableCard.name}</h4>
+              <p className="text-stone-600 dark:text-stone-400">${collectionStats.mostValuableCard.value}</p>
+              <p className="text-sm text-stone-500 dark:text-stone-500">Rare Holo</p>
             </div>
           </div>
         </div>

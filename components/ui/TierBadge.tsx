@@ -11,9 +11,9 @@ interface TierBadgeProps {
 // Tier color mappings based on competitive viability
 const tierColors: Record<string, string> = {
   // Standard tiers
-  'Uber': 'bg-purple-600',
-  'OU': 'bg-blue-600',
-  'UUBL': 'bg-blue-500',
+  'Uber': 'bg-amber-600',
+  'OU': 'bg-amber-600',
+  'UUBL': 'bg-amber-500',
   'UU': 'bg-green-600',
   'RUBL': 'bg-green-500',
   'RU': 'bg-yellow-600',
@@ -23,19 +23,19 @@ const tierColors: Record<string, string> = {
   'PU': 'bg-red-600',
   '(PU)': 'bg-red-500',
   'ZU': 'bg-red-700',
-  'NFE': 'bg-gray-600',
+  'NFE': 'bg-stone-600',
   'LC': 'bg-pink-600',
   'LC Uber': 'bg-pink-700',
-  
+
   // Special tiers
   'AG': 'bg-black',
-  'Illegal': 'bg-gray-800',
-  'Unreleased': 'bg-gray-700',
-  
+  'Illegal': 'bg-stone-800',
+  'Unreleased': 'bg-stone-700',
+
   // VGC/Doubles tiers
-  'DOU': 'bg-indigo-600',
-  'DUU': 'bg-indigo-500',
-  'DNU': 'bg-indigo-400',
+  'DOU': 'bg-amber-600',
+  'DUU': 'bg-amber-500',
+  'DNU': 'bg-amber-400',
   
   // National Dex tiers
   'ND': 'bg-teal-600',
@@ -88,23 +88,23 @@ export function TierBadge({
   // Clean tier name (remove parentheses for color lookup but keep for display)
   const cleanTier = tier.replace(/[()]/g, '');
   const isParenthetical = tier.startsWith('(') && tier.endsWith(')');
-  const color = tierColors[cleanTier] || 'bg-gray-400';
+  const color = tierColors[cleanTier] || 'bg-stone-400';
   
   // Remove D prefix for doubles tiers when shown in doubles format context
-  const displayTier = (format === 'doubles' && tier.startsWith('D')) 
-    ? tier.substring(1) 
+  const displayTier = (format === 'doubles' && tier.startsWith('D'))
+    ? tier.substring(1)
     : tier;
-  
+
   // Size classes
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',
     md: 'px-2.5 py-1 text-sm',
     lg: 'px-3 py-1.5 text-base'
   };
-  
+
   const description = tierDescriptions[cleanTier];
   const formatLabel = formatLabels[format];
-  
+
   return (
     <div className="inline-flex items-center gap-1">
       <span
@@ -128,7 +128,7 @@ export function TierBadge({
       </span>
       {format !== 'singles' && (
         <span className={cn(
-          'text-gray-500',
+          'text-stone-500',
           size === 'sm' && 'text-xs',
           size === 'md' && 'text-sm',
           size === 'lg' && 'text-base'

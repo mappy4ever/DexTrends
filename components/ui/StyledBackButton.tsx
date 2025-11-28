@@ -34,11 +34,11 @@ const StyledBackButton: React.FC<StyledBackButtonProps> = ({
       case "pokemon":
         return "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg hover:shadow-red-500/25";
       case "pocket":
-        return "bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-purple-500/25";
+        return "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-amber-500/25";
       case "tcg":
-        return "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/25";
+        return "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-amber-500/25";
       default:
-        return "bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md";
+        return "bg-white dark:bg-stone-800 hover:bg-stone-50 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-600 shadow-sm hover:shadow-md";
     }
   };
 
@@ -71,7 +71,7 @@ const StyledBackButton: React.FC<StyledBackButtonProps> = ({
         inline-flex items-center gap-2 font-medium rounded-lg
         transition-all duration-200 ease-in-out
         transform hover:scale-105 active:scale-95
-        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500
         ${getVariantStyles()}
         ${getSizeStyles()}
         ${className}

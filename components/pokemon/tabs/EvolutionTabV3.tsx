@@ -60,7 +60,7 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
         "transform transition-all duration-300",
         "hover:scale-105 hover:shadow-evolution",
         "active:scale-[0.98]",
-        isCurrent && "ring-2 ring-blue-500/50"
+        isCurrent && "ring-2 ring-amber-500/50"
       )}
       style={{ 
         transform: 'translate3d(0,0,0)',
@@ -74,14 +74,14 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
         animate={false}
         className={cn(
           "p-4 text-center border transition-all duration-200 hover:border-white/30",
-          isCurrent ? "border-blue-500/50 bg-blue-500/10" : "border-gray-700/50",
+          isCurrent ? "border-amber-500/50 bg-amber-500/10" : "border-stone-700/50",
           "hover:shadow-xl"
         )}
       >
         {/* Current Pokemon Badge */}
         {isCurrent && (
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-            <span className="px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+            <span className="px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-amber-600 to-amber-600 text-white">
               CURRENT
             </span>
           </div>
@@ -102,7 +102,7 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
         <h3 className="font-bold capitalize text-base sm:text-lg mb-2">{node.name}</h3>
         
         {/* Pokemon Number */}
-        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">#{String(node.id).padStart(3, '0')}</p>
+        <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400">#{String(node.id).padStart(3, '0')}</p>
       </GlassContainer>
     </motion.div>
   </Link>
@@ -300,11 +300,11 @@ const EvolutionArrow = ({
       transition={{ delay: 0.2 }}
     >
       {evolutionText && (
-        <div className="text-xs text-gray-600 dark:text-gray-400 font-medium text-center max-w-[120px]">
+        <div className="text-xs text-stone-600 dark:text-stone-400 font-medium text-center max-w-[120px]">
           {evolutionText}
         </div>
       )}
-      <div className="text-gray-500 dark:text-gray-400">
+      <div className="text-stone-500 dark:text-stone-400">
         {horizontal ? (
           <FaArrowRight className="w-6 h-6" />
         ) : (
@@ -565,14 +565,14 @@ interface EvolutionChainNode {
       >
         <GlassContainer 
           variant="dark" 
-          className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+          className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
           <div className="p-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-500/20 to-gray-600/10 flex items-center justify-center mx-auto">
-              <FaDna className="w-8 h-8 text-gray-400" />
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center mx-auto">
+              <FaDna className="w-8 h-8 text-stone-400" />
             </div>
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="text-stone-500 dark:text-stone-400">
               No evolution data available for this Pokémon.
             </p>
           </div>
@@ -591,20 +591,20 @@ interface EvolutionChainNode {
       >
         <GlassContainer 
           variant="dark" 
-          className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+          className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
           <div className="p-6 md:p-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center flex-shrink-0">
-                  <FaDna className="w-5 h-5 text-purple-400" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center flex-shrink-0">
+                  <FaDna className="w-5 h-5 text-amber-400" />
                 </div>
                 <div>
-                  <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+                  <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                     Evolution Chain
                   </h2>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-stone-500 dark:text-stone-400">
                     This Pokémon's evolutionary line
                   </p>
                 </div>
@@ -618,7 +618,7 @@ interface EvolutionChainNode {
               "transform hover:scale-[1.02] active:scale-[0.98]",
               showShiny 
                 ? "bg-yellow-500/20 text-yellow-400 border border-yellow-400/30" 
-                : "bg-white/10 text-gray-400 border border-white/20 hover:bg-white/20"
+                : "bg-white/10 text-stone-400 border border-white/20 hover:bg-white/20"
             )}
             style={{ 
               transform: 'translate3d(0,0,0)',
@@ -641,7 +641,7 @@ interface EvolutionChainNode {
       >
         <GlassContainer 
           variant="dark" 
-          className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+          className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
           <div className="p-6 md:p-8">
@@ -733,15 +733,15 @@ interface EvolutionChainNode {
         >
           <GlassContainer 
             variant="dark" 
-            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
-                  <FaLevelUpAlt className="w-5 h-5 text-blue-400" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
+                  <FaLevelUpAlt className="w-5 h-5 text-amber-400" />
                 </div>
-                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                   Evolution Methods
                 </h3>
               </div>
@@ -751,12 +751,12 @@ interface EvolutionChainNode {
                   whileHover={{ scale: 1.03, y: -2 }}
                   transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 >
-                  <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300">
+                  <div className="bg-white dark:bg-stone-900/50 rounded-2xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                     <div className="flex items-center gap-2 mb-2">
-                      <FaExchangeAlt className="w-4 h-4 text-purple-400" />
+                      <FaExchangeAlt className="w-4 h-4 text-amber-400" />
                       <span className="font-semibold text-sm">Evolution Requirements</span>
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-stone-600 dark:text-stone-400">
                       {(() => {
                         const allMethods = evolutionStages.flatMap(stage => 
                           stage.flatMap(node => node.evolutionDetails || [])
@@ -783,12 +783,12 @@ interface EvolutionChainNode {
                   whileHover={{ scale: 1.03, y: -2 }}
                   transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 >
-                  <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300">
+                  <div className="bg-white dark:bg-stone-900/50 rounded-2xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                     <div className="flex items-center gap-2 mb-2">
                       <GiStoneSphere className="w-4 h-4 text-green-400" />
                       <span className="font-semibold text-sm">Special Items</span>
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-stone-600 dark:text-stone-400">
                       {(() => {
                         const allItems = evolutionStages.flatMap(stage => 
                           stage.flatMap(node => 
@@ -823,15 +823,15 @@ interface EvolutionChainNode {
         >
           <GlassContainer 
             variant="dark" 
-            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center">
-                  <HiSparkles className="w-5 h-5 text-purple-400" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
+                  <HiSparkles className="w-5 h-5 text-amber-400" />
                 </div>
-                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                   Mega Evolution
                 </h3>
               </div>
@@ -859,7 +859,7 @@ interface EvolutionChainNode {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full p-3 shadow-lg">
+                  <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full p-3 shadow-lg">
                     <FaGem className="w-5 h-5" />
                   </div>
                 </motion.div>
@@ -878,20 +878,20 @@ interface EvolutionChainNode {
                             transition={{ type: "spring", stiffness: 400, damping: 20 }}
                             className={cn(
                               "relative cursor-pointer rounded-xl",
-                              pokemon.name === variety.pokemon.name && "ring-2 ring-purple-500/50"
+                              pokemon.name === variety.pokemon.name && "ring-2 ring-amber-500/50"
                             )}
                           >
                             <GlassContainer 
                               variant="dark" 
                               animate={false}
                               className={cn(
-                                "p-4 text-center border transition-all duration-200 hover:border-purple-500/30",
-                                pokemon.name === variety.pokemon.name ? "border-purple-500/50 bg-purple-500/10" : "border-gray-700/50"
+                                "p-4 text-center border transition-all duration-200 hover:border-amber-500/30",
+                                pokemon.name === variety.pokemon.name ? "border-amber-500/50 bg-amber-500/10" : "border-stone-700/50"
                               )}
                             >
                               {pokemon.name === variety.pokemon.name && (
                                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                                  <span className="px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                                  <span className="px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-amber-600 to-pink-600 text-white">
                                     CURRENT
                                   </span>
                                 </div>
@@ -908,7 +908,7 @@ interface EvolutionChainNode {
                                   />
                                 ) : (
                                   <div className="flex items-center justify-center h-full">
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
                                   </div>
                                 )}
                               </div>
@@ -918,7 +918,7 @@ interface EvolutionChainNode {
                                  variety.pokemon.name.includes('mega-y') ? 'Mega Y' : 'Mega'}
                               </h3>
                               
-                              <p className="text-xs sm:text-sm text-purple-400">Mega Stone Required</p>
+                              <p className="text-xs sm:text-sm text-amber-400">Mega Stone Required</p>
                             </GlassContainer>
                           </motion.div>
                         </Link>
@@ -927,7 +927,7 @@ interface EvolutionChainNode {
                 </div>
               </div>
               
-              <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-400">
                 <p>Mega Evolution is a temporary transformation that requires a Mega Stone and a strong bond with the trainer.</p>
               </div>
             </div>
@@ -944,7 +944,7 @@ interface EvolutionChainNode {
         >
           <GlassContainer 
             variant="dark" 
-            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
             <div className="p-6 md:p-8">
@@ -952,7 +952,7 @@ interface EvolutionChainNode {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center">
                   <HiSparkles className="w-5 h-5 text-red-400" />
                 </div>
-                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                   Gigantamax Form
                 </h3>
               </div>
@@ -1005,7 +1005,7 @@ interface EvolutionChainNode {
                             animate={false}
                             className={cn(
                               "p-4 text-center border transition-all duration-200 hover:border-red-500/30",
-                              pokemon.name === variety.pokemon.name ? "border-red-500/50 bg-red-500/10" : "border-gray-700/50"
+                              pokemon.name === variety.pokemon.name ? "border-red-500/50 bg-red-500/10" : "border-stone-700/50"
                             )}
                           >
                             {pokemon.name === variety.pokemon.name && (
@@ -1044,7 +1044,7 @@ interface EvolutionChainNode {
                 </div>
               </div>
               
-              <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-400">
                 <p>Gigantamax is a phenomenon that makes Pokemon giant with a special appearance. It requires a Pokemon with the Gigantamax Factor.</p>
               </div>
             </div>

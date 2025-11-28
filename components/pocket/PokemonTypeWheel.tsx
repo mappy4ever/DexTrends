@@ -66,10 +66,10 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
   
   // Get color based on effectiveness
   const getEffectivenessColor = (effectiveness: number) => {
-    if (effectiveness === 0) return '#1f2937'; // Immune (gray-800)
+    if (effectiveness === 0) return '#1f2937'; // Immune (stone-800)
     if (effectiveness === 0.25) return '#dc2626'; // 4x weak (red-600)
     if (effectiveness === 0.5) return '#f87171'; // 2x weak (red-400)
-    if (effectiveness === 1) return '#9ca3af'; // Neutral (gray-400)
+    if (effectiveness === 1) return '#9ca3af'; // Neutral (stone-400)
     if (effectiveness === 2) return '#4ade80'; // 2x resist (green-400)
     if (effectiveness === 4) return '#22c55e'; // 4x resist (green-600)
     return '#9ca3af';
@@ -130,8 +130,8 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
           className={cn(
             "px-3 py-1 rounded-lg text-sm font-medium transition-colors",
             selectedView === 'defensive'
-              ? "bg-purple-600 text-white"
-              : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+              ? "bg-amber-600 text-white"
+              : "bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300"
           )}
         >
           Defense
@@ -141,8 +141,8 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
           className={cn(
             "px-3 py-1 rounded-lg text-sm font-medium transition-colors",
             selectedView === 'offensive'
-              ? "bg-purple-600 text-white"
-              : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+              ? "bg-amber-600 text-white"
+              : "bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300"
           )}
           disabled
         >
@@ -159,7 +159,7 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="text-gray-300 dark:text-gray-600"
+          className="text-stone-300 dark:text-stone-600"
         />
         
         {/* Type segments */}
@@ -194,8 +194,8 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
               className={cn(
                 "text-xs font-bold pointer-events-none transition-all",
                 hoveredType === segment.type 
-                  ? "fill-current text-gray-900 scale-110" 
-                  : "fill-current text-gray-700 dark:text-gray-300"
+                  ? "fill-current text-stone-900 scale-110" 
+                  : "fill-current text-stone-700 dark:text-stone-300"
               )}
               style={{
                 transform: hoveredType === segment.type ? 'scale(1.1)' : 'scale(1)',
@@ -279,7 +279,7 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
           <span>Resistant</span>
         </div>
         <div className="flex items-center gap-1 text-xs">
-          <div className="w-3 h-3 rounded bg-gray-400" />
+          <div className="w-3 h-3 rounded bg-stone-400" />
           <span>Neutral</span>
         </div>
         <div className="flex items-center gap-1 text-xs">
@@ -287,7 +287,7 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
           <span>Weak</span>
         </div>
         <div className="flex items-center gap-1 text-xs">
-          <div className="w-3 h-3 rounded bg-gray-800" />
+          <div className="w-3 h-3 rounded bg-stone-800" />
           <span>Immune</span>
         </div>
       </div>

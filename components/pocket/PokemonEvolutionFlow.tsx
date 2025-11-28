@@ -56,8 +56,8 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
               <div className={cn(
                 "relative rounded-2xl p-4 transition-all",
                 stage.isCurrent 
-                  ? "bg-gradient-to-br from-purple-500/20 to-blue-500/20 border-2 border-purple-500/50" 
-                  : "bg-gradient-to-br from-gray-500/10 to-gray-600/10 border border-gray-500/20"
+                  ? "bg-gradient-to-br from-amber-500/20 to-amber-500/20 border-2 border-amber-500/50" 
+                  : "bg-gradient-to-br from-stone-500/10 to-stone-600/10 border border-stone-500/20"
               )}>
                 {/* Current Pokemon Indicator */}
                 {stage.isCurrent && (
@@ -67,7 +67,7 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.5 }}
                   >
-                    <span className="px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs font-bold rounded-full">
+                    <span className="px-3 py-1 bg-gradient-to-r from-amber-600 to-amber-600 text-white text-xs font-bold rounded-full">
                       CURRENT
                     </span>
                   </motion.div>
@@ -92,15 +92,15 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
                         <div className={cn(
                           "absolute -inset-1 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl",
                           stage.isCurrent 
-                            ? "bg-gradient-to-r from-purple-600 to-blue-600" 
-                            : "bg-gradient-to-r from-gray-400 to-gray-600"
+                            ? "bg-gradient-to-r from-amber-600 to-amber-600" 
+                            : "bg-gradient-to-r from-stone-400 to-stone-600"
                         )} />
                         
                         {/* Card */}
-                        <div className="relative bg-gray-800/80 rounded-xl p-2 backdrop-blur-sm border border-gray-700/50">
+                        <div className="relative bg-stone-800/80 rounded-xl p-2 backdrop-blur-sm border border-stone-700/50">
                           <div className="flex items-center gap-3">
                             {/* Card Image */}
-                            <div className="relative w-16 h-20 rounded-lg overflow-hidden bg-gray-900">
+                            <div className="relative w-16 h-20 rounded-lg overflow-hidden bg-stone-900">
                               <Image
                                 src={node.card.image || "/back-card.png"}
                                 alt={node.card.name}
@@ -112,14 +112,14 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
                             
                             {/* Card Info */}
                             <div className="flex-1">
-                              <h4 className="font-bold text-sm text-gray-200">
+                              <h4 className="font-bold text-sm text-stone-200">
                                 {node.card.name}
                               </h4>
-                              <p className="text-xs text-gray-400">
+                              <p className="text-xs text-stone-400">
                                 {node.card.rarity}
                               </p>
                               {node.level && (
-                                <p className="text-xs text-purple-400 mt-1">
+                                <p className="text-xs text-amber-400 mt-1">
                                   Lv. {node.level}
                                 </p>
                               )}
@@ -135,7 +135,7 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
                 <div className="mt-3 text-center">
                   <h3 className={cn(
                     "text-sm font-bold capitalize",
-                    stage.isCurrent ? "text-purple-400" : "text-gray-400"
+                    stage.isCurrent ? "text-amber-400" : "text-stone-400"
                   )}>
                     {stage.name}
                   </h3>
@@ -155,7 +155,7 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
                   width="60"
                   height="40"
                   viewBox="0 0 60 40"
-                  className="text-gray-600"
+                  className="text-stone-600"
                 >
                   {/* Arrow Line */}
                   <motion.line
@@ -187,7 +187,7 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
                       x="20"
                       y="35"
                       textAnchor="middle"
-                      className="text-xs fill-current text-gray-500"
+                      className="text-xs fill-current text-stone-500"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: stageIndex * 0.2 + 0.9 }}
@@ -205,7 +205,7 @@ export const PokemonEvolutionFlow: React.FC<PokemonEvolutionFlowProps> = ({
       {/* Mobile Scroll Indicator */}
       <div className="md:hidden flex justify-center mt-2">
         <motion.div
-          className="flex items-center gap-1 text-xs text-gray-500"
+          className="flex items-center gap-1 text-xs text-stone-500"
           animate={{ x: [-5, 5, -5] }}
           transition={{ repeat: Infinity, duration: 2 }}
         >

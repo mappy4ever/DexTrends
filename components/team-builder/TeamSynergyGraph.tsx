@@ -314,35 +314,35 @@ const TeamSynergyGraph: React.FC<TeamSynergyGraphProps> = ({
   */
 
   return (
-    <div className="relative w-full h-[500px] bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-      <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+    <div className="relative w-full h-[500px] bg-stone-50 dark:bg-stone-900 rounded-lg p-4">
+      <h3 className="text-xl font-bold mb-4 text-stone-900 dark:text-white">
         Team Synergy Network
       </h3>
-      
+
       {team.length === 0 ? (
         <div className="flex items-center justify-center h-full">
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-stone-500 dark:text-stone-400">
             Add Pokemon to your team to see synergy analysis
           </p>
         </div>
       ) : (
         <>
-          <ScatterChart 
+          <ScatterChart
             id="synergy-graph"
-            data={chartData} 
+            data={chartData}
             options={options}
           />
-          
+
           {/* Legend */}
-          <div className="absolute bottom-4 left-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg">
+          <div className="absolute bottom-4 left-4 bg-white dark:bg-stone-800 p-3 rounded-lg shadow-lg">
             <h4 className="font-semibold text-sm mb-2">Legend</h4>
             <div className="space-y-1 text-xs">
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+                <div className="w-4 h-4 rounded-full bg-amber-500"></div>
                 <span>Pokemon</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-gray-500"></div>
+                <div className="w-3 h-3 bg-stone-500"></div>
                 <span>Type</span>
               </div>
               <div className="flex items-center gap-2">
@@ -350,7 +350,7 @@ const TeamSynergyGraph: React.FC<TeamSynergyGraphProps> = ({
                 <span>Strong Synergy</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-0.5 bg-blue-500"></div>
+                <div className="w-8 h-0.5 bg-amber-500"></div>
                 <span>Good Synergy</span>
               </div>
               {highlightWeaknesses && (
@@ -361,9 +361,9 @@ const TeamSynergyGraph: React.FC<TeamSynergyGraphProps> = ({
               )}
             </div>
           </div>
-          
+
           {/* Synergy Score */}
-          <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg">
+          <div className="absolute top-4 right-4 bg-white dark:bg-stone-800 p-3 rounded-lg shadow-lg">
             <TeamSynergyScore team={team} />
           </div>
         </>

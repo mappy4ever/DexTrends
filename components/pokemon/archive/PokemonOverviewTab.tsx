@@ -69,19 +69,19 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
           <h3 className="font-bold text-xl mt-6 mb-3">Taxonomy</h3>
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-base">
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Species</p>
+              <p className="text-stone-500 dark:text-stone-400">Species</p>
               <p className="font-medium">{pokemonSpecies?.genera?.find(g => g.language.name === 'en')?.genus || 'Unknown'}</p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Habitat</p>
+              <p className="text-stone-500 dark:text-stone-400">Habitat</p>
               <p className="font-medium capitalize">{pokemonSpecies?.habitat?.name || 'Unknown'}</p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Shape</p>
+              <p className="text-stone-500 dark:text-stone-400">Shape</p>
               <p className="font-medium capitalize">{pokemonSpecies?.shape?.name || 'Unknown'}</p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Growth Rate</p>
+              <p className="text-stone-500 dark:text-stone-400">Growth Rate</p>
               <p className="font-medium capitalize">{pokemonSpecies?.growth_rate?.name.replace('-', ' ') || 'Unknown'}</p>
             </div>
           </div>
@@ -89,19 +89,19 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
           <h3 className="font-bold text-lg mt-6 mb-3">Training</h3>
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Base Happiness</p>
+              <p className="text-stone-500 dark:text-stone-400">Base Happiness</p>
               <p className="font-medium">{pokemonSpecies?.base_happiness ?? 'N/A'}</p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Capture Rate</p>
+              <p className="text-stone-500 dark:text-stone-400">Capture Rate</p>
               <p className="font-medium">{pokemonSpecies?.capture_rate ?? 'N/A'}</p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Base Exp</p>
+              <p className="text-stone-500 dark:text-stone-400">Base Exp</p>
               <p className="font-medium">{pokemonDetails?.base_experience ?? 'N/A'}</p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">EV Yield</p>
+              <p className="text-stone-500 dark:text-stone-400">EV Yield</p>
               <p className="font-medium">
                 {pokemonDetails?.stats?.filter(s => s.effort > 0).map(s => `${s.effort} ${s.stat.name.replace('-', ' ')}`).join(', ') || 'None'}
               </p>
@@ -114,12 +114,12 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
             <div className="space-y-3 text-sm">
               {typeEffectivenessInfo.weakTo.length > 0 && (
                 <div>
-                  <h4 className="font-medium text-gray-500 dark:text-gray-400 mb-1">Weak to</h4>
+                  <h4 className="font-medium text-stone-500 dark:text-stone-400 mb-1">Weak to</h4>
                   <div className="flex flex-wrap gap-1.5">
                     {typeEffectivenessInfo.weakTo.map(item => (
                       <div key={item.type} className="relative inline-block">
                         <TypeBadge type={item.type} size="sm" />
-                        <span className="absolute -top-1 -right-1.5 text-xs font-bold text-red-500 bg-white/70 dark:bg-gray-800/70 px-1 rounded-full scale-75">x{item.multiplier}</span>
+                        <span className="absolute -top-1 -right-1.5 text-xs font-bold text-red-500 bg-white/70 dark:bg-stone-800/70 px-1 rounded-full scale-75">x{item.multiplier}</span>
                       </div>
                     ))}
                   </div>
@@ -127,12 +127,12 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
               )}
               {typeEffectivenessInfo.resistantTo.length > 0 && (
                 <div>
-                  <h4 className="font-medium text-gray-500 dark:text-gray-400 mb-1">Resistant to</h4>
+                  <h4 className="font-medium text-stone-500 dark:text-stone-400 mb-1">Resistant to</h4>
                   <div className="flex flex-wrap gap-1.5">
                     {typeEffectivenessInfo.resistantTo.map(item => (
                       <div key={item.type} className="relative inline-block">
                         <TypeBadge type={item.type} size="sm" />
-                        <span className="absolute -top-1 -right-1.5 text-xs font-bold text-green-500 bg-white/70 dark:bg-gray-800/70 px-1 rounded-full scale-75">x{item.multiplier}</span>
+                        <span className="absolute -top-1 -right-1.5 text-xs font-bold text-green-500 bg-white/70 dark:bg-stone-800/70 px-1 rounded-full scale-75">x{item.multiplier}</span>
                       </div>
                     ))}
                   </div>
@@ -140,12 +140,12 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
               )}
               {typeEffectivenessInfo.immuneTo.length > 0 && (
                 <div>
-                  <h4 className="font-medium text-gray-500 dark:text-gray-400 mb-1">Immune to</h4>
+                  <h4 className="font-medium text-stone-500 dark:text-stone-400 mb-1">Immune to</h4>
                   <div className="flex flex-wrap gap-1.5">
                     {typeEffectivenessInfo.immuneTo.map(item => (
                       <div key={item.type} className="relative inline-block">
                         <TypeBadge type={item.type} size="sm" />
-                        <span className="absolute -top-1 -right-1.5 text-xs font-bold text-gray-500 bg-white/70 dark:bg-gray-800/70 px-1 rounded-full scale-75">x0</span>
+                        <span className="absolute -top-1 -right-1.5 text-xs font-bold text-stone-500 bg-white/70 dark:bg-stone-800/70 px-1 rounded-full scale-75">x0</span>
                       </div>
                     ))}
                   </div>
@@ -153,7 +153,7 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
               )}
             </div>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400 text-sm">Calculating type effectiveness...</p>
+            <p className="text-stone-500 dark:text-stone-400 text-sm">Calculating type effectiveness...</p>
           )}
         </div>
 
@@ -162,7 +162,7 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
           <h3 className="font-bold text-lg mb-4">
             Related Pokémon 
             {generationInfo && (
-              <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2">
+              <span className="text-sm font-normal text-stone-500 dark:text-stone-400 ml-2">
                 (Generation {generationInfo.name?.match(/generation-(\w+)/i)?.[1]?.toUpperCase()})
               </span>
             )}
@@ -172,10 +172,10 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
             <div className="space-y-3">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="animate-pulse flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-lg"></div>
+                  <div className="w-12 h-12 bg-stone-300 dark:bg-stone-600 rounded-lg"></div>
                   <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-                    <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+                    <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-3/4"></div>
+                    <div className="h-3 bg-stone-300 dark:bg-stone-600 rounded w-1/2"></div>
                   </div>
                 </div>
               ))}
@@ -190,7 +190,7 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
                   <a
                     key={index}
                     href={`/pokedex/${pokemonId}`}
-                    className="group bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm hover:shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+                    className="group bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm hover:shadow-lg border border-stone-200 dark:border-stone-700 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
                   >
                     <div className="aspect-square flex items-center justify-center mb-2">
                       <img
@@ -201,10 +201,10 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
                       />
                     </div>
                     <div className="text-center">
-                      <p className="font-semibold text-base text-gray-900 dark:text-white capitalize truncate">
+                      <p className="font-semibold text-base text-stone-900 dark:text-white capitalize truncate">
                         {pokemon.name.replace('-', ' ')}
                       </p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
                         #{String(pokemonId).padStart(3, '0')}
                       </p>
                     </div>
@@ -213,7 +213,7 @@ const PokemonOverviewTab: React.FC<PokemonOverviewTabProps> = ({
               })}
             </div>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400 text-sm">No related Pokémon data available.</p>
+            <p className="text-stone-500 dark:text-stone-400 text-sm">No related Pokémon data available.</p>
           )}
         </div>
       </div>

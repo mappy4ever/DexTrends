@@ -129,7 +129,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
           fill="none"
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className="text-gray-200/50 dark:text-gray-700/50"
+          className="text-stone-200/50 dark:text-stone-700/50"
         />
         {/* Progress circle */}
         <motion.circle
@@ -168,10 +168,10 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+          <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
             Collection Tracker
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
             Track your set completion progress
           </p>
         </div>
@@ -194,7 +194,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
                 "px-3 py-1.5 rounded text-sm font-medium transition-all capitalize",
                 viewMode === mode
                   ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white"
-                  : "text-gray-600 dark:text-gray-400"
+                  : "text-stone-600 dark:text-stone-400"
               )}
             >
               {mode}
@@ -211,14 +211,14 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
             <CircularProgress percentage={stats.completionPercentage} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <motion.span
-                className="text-3xl font-bold text-gray-800 dark:text-gray-200"
+                className="text-3xl font-bold text-stone-800 dark:text-stone-200"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
               >
                 {stats.completionPercentage.toFixed(1)}%
               </motion.span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">Complete</span>
+              <span className="text-xs text-stone-500 dark:text-stone-400">Complete</span>
             </div>
           </div>
           
@@ -226,22 +226,22 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
           <div className="mt-4 flex gap-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-green-500">{stats.ownedCount}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Owned</p>
+              <p className="text-xs text-stone-500 dark:text-stone-400">Owned</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-red-500">{stats.missingCount}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Missing</p>
+              <p className="text-xs text-stone-500 dark:text-stone-400">Missing</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-purple-500">{stats.wishlistCount}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Wishlist</p>
+              <p className="text-2xl font-bold text-amber-500">{stats.wishlistCount}</p>
+              <p className="text-xs text-stone-500 dark:text-stone-400">Wishlist</p>
             </div>
           </div>
         </div>
         
         {/* Rarity Breakdown */}
         <div className="lg:col-span-2 space-y-3">
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+          <h4 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-3">
             Completion by Rarity
           </h4>
           {Array.from(stats.rarityStats.entries()).map(([rarity, data], index) => {
@@ -258,22 +258,22 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
                   "p-3 rounded-lg cursor-pointer transition-all",
                   "backdrop-blur-md border",
                   isSelected
-                    ? "bg-white/80 dark:bg-gray-800/80 border-green-500/50 scale-[1.02]"
-                    : "bg-white/50 dark:bg-gray-800/50 border-white/30 dark:border-gray-700/30 hover:bg-white/70 dark:hover:bg-gray-800/70"
+                    ? "bg-white/80 dark:bg-stone-800/80 border-green-500/50 scale-[1.02]"
+                    : "bg-white/50 dark:bg-stone-800/50 border-white/30 dark:border-stone-700/30 hover:bg-white/70 dark:hover:bg-stone-800/70"
                 )}
                 onClick={() => setSelectedRarity(isSelected ? null : rarity)}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
                     {rarity}
                   </span>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-stone-600 dark:text-stone-400">
                     {data.owned}/{data.total}
                   </span>
                 </div>
                 
                 {/* Progress bar */}
-                <div className="relative h-2 bg-gray-200/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
+                <div className="relative h-2 bg-stone-200/50 dark:bg-stone-700/50 rounded-full overflow-hidden">
                   <motion.div
                     className="absolute inset-y-0 left-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"
                     initial={{ width: 0 }}
@@ -283,7 +283,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
                 </div>
                 
                 <div className="mt-1 flex justify-between text-xs">
-                  <span className="text-gray-500 dark:text-gray-400">
+                  <span className="text-stone-500 dark:text-stone-400">
                     {percentage.toFixed(0)}% complete
                   </span>
                   {data.owned < data.total && (
@@ -313,7 +313,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
             {stats.missingRanges.map((range, index) => (
               <span
                 key={index}
-                className="px-3 py-1 rounded-full bg-white/60 dark:bg-gray-800/60 text-xs font-medium text-gray-700 dark:text-gray-300"
+                className="px-3 py-1 rounded-full bg-white/60 dark:bg-stone-800/60 text-xs font-medium text-stone-700 dark:text-stone-300"
               >
                 #{range.start === range.end ? range.start : `${range.start}-${range.end}`}
               </span>
@@ -345,8 +345,8 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
                 "aspect-square rounded cursor-pointer relative group",
                 isOwned
                   ? "bg-gradient-to-br from-green-400 to-emerald-500"
-                  : "bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700",
-                isWishlisted && "ring-2 ring-purple-500"
+                  : "bg-gradient-to-br from-stone-300 to-stone-400 dark:from-stone-600 dark:to-stone-700",
+                isWishlisted && "ring-2 ring-amber-500"
               )}
               whileHover={{ scale: 1.5, zIndex: 10 }}
               onClick={() => onToggleOwned?.(card.id)}
@@ -361,20 +361,20 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
       </div>
       
       {/* Summary */}
-      <div className="mt-6 pt-6 border-t border-gray-200/50 dark:border-gray-700/50">
+      <div className="mt-6 pt-6 border-t border-stone-200/50 dark:border-stone-700/50">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
             label="Next Milestone"
             value={`${Math.ceil(stats.completionPercentage / 25) * 25}%`}
             subValue={`${Math.ceil((stats.completionPercentage / 25) * 25 / 100 * stats.totalCards) - stats.ownedCount} cards away`}
-            gradient="from-blue-500 to-cyan-500"
+            gradient="from-amber-500 to-amber-600"
           />
           <StatCard
             label="Most Complete"
             value={Array.from(stats.rarityStats.entries())
               .sort((a, b) => (b[1].owned / b[1].total) - (a[1].owned / a[1].total))[0]?.[0] || 'N/A'}
             subValue="rarity tier"
-            gradient="from-purple-500 to-pink-500"
+            gradient="from-amber-500 to-amber-600"
           />
           <StatCard
             label="Est. Completion Cost"
@@ -402,14 +402,14 @@ const StatCard: React.FC<{
   gradient: string;
 }> = ({ label, value, subValue, gradient }) => (
   <div className="text-center">
-    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">{label}</p>
     <p className={cn(
       "text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent",
       gradient
     )}>
       {value}
     </p>
-    <p className="text-xs text-gray-500 dark:text-gray-400">{subValue}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-400">{subValue}</p>
   </div>
 );
 

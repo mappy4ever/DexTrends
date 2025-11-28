@@ -94,7 +94,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
         className={cn('search-container', isFocused && 'focused')}
         animate={{
           boxShadow: isFocused
-            ? '0 0 0 3px rgba(59, 130, 246, 0.1), 0 8px 32px rgba(59, 130, 246, 0.15)'
+            ? '0 0 0 3px rgba(217, 119, 6, 0.1), 0 8px 32px rgba(217, 119, 6, 0.15)'
             : '0 2px 8px rgba(0, 0, 0, 0.05)'
         }}
       >
@@ -103,7 +103,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
           className="search-icon"
           animate={{
             scale: isFocused ? [1, 1.2, 1] : 1,
-            color: isFocused ? '#3b82f6' : '#9ca3af'
+            color: isFocused ? '#d97706' : '#9ca3af'
           }}
           transition={{
             scale: { duration: 0.3 },
@@ -343,14 +343,14 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
           padding: 12px 20px;
           background: rgba(255, 255, 255, 0.9);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(209, 213, 219, 0.3);
+          border: 1px solid rgba(214, 211, 209, 0.3);
           border-radius: 28px;
           transition: all 0.3s ease;
         }
 
         .search-container.focused {
           background: rgba(255, 255, 255, 0.95);
-          border-color: #3b82f6;
+          border-color: #d97706;
         }
 
         .search-icon {
@@ -388,7 +388,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
 
         .animated-cursor {
           position: absolute;
-          color: #3b82f6;
+          color: #d97706;
           font-weight: 300;
           animation: blink 1s infinite;
         }
@@ -434,7 +434,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
           right: -4px;
           width: 16px;
           height: 16px;
-          background: #3b82f6;
+          background: #d97706;
           color: white;
           font-size: 10px;
           font-weight: 600;
@@ -450,7 +450,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
           left: 0;
           right: 0;
           height: 2px;
-          background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+          background: linear-gradient(90deg, #d97706, #d97706);
           transform-origin: left;
         }
 
@@ -461,7 +461,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
           right: 0;
           background: rgba(255, 255, 255, 0.98);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(209, 213, 219, 0.3);
+          border: 1px solid rgba(214, 211, 209, 0.3);
           border-radius: 16px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           padding: 8px;
@@ -510,7 +510,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
         @media (prefers-color-scheme: dark) {
           .search-container {
             background: rgba(31, 41, 55, 0.9);
-            border-color: rgba(75, 85, 99, 0.3);
+            border-color: rgba(68, 64, 60, 0.3);
           }
 
           .search-input {
@@ -519,7 +519,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
 
           .suggestions-container {
             background: rgba(31, 41, 55, 0.98);
-            border-color: rgba(75, 85, 99, 0.3);
+            border-color: rgba(68, 64, 60, 0.3);
           }
 
           .suggestion-item {

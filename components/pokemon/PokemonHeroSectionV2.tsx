@@ -145,7 +145,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
                 
                 {imageLoading && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 border-4 border-gray-200 border-t-gray-600 rounded-full animate-spin" />
+                    <div className="w-16 h-16 border-4 border-stone-200 border-t-stone-600 rounded-full animate-spin" />
                   </div>
                 )}
               </div>
@@ -157,7 +157,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
                 onClick={onShinyToggle}
                 className={cn(
                   "absolute top-2 right-2 lg:top-4 lg:right-4 p-2 lg:p-3 rounded-full z-20",
-                  "bg-white dark:bg-gray-800 shadow-lg",
+                  "bg-white dark:bg-stone-800 shadow-lg",
                   "hover:shadow-xl transition-all duration-200"
                 )}
                 whileHover={{ scale: 1.1 }}
@@ -165,7 +165,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
               >
                 <FaStar className={cn(
                   "w-4 h-4 lg:w-5 lg:h-5",
-                  showShiny ? "text-yellow-400" : "text-gray-400"
+                  showShiny ? "text-yellow-400" : "text-stone-400"
                 )} />
               </motion.button>
             )}
@@ -192,7 +192,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
                 
                 {imageLoading && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 border-4 border-gray-200 border-t-gray-600 rounded-full animate-spin" />
+                    <div className="w-16 h-16 border-4 border-stone-200 border-t-stone-600 rounded-full animate-spin" />
                   </div>
                 )}
               </div>
@@ -233,8 +233,8 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
           
           {/* Total stats indicator */}
           <div className="text-center mt-4">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Total Base Stats</div>
-            <div className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">
+            <div className="text-sm text-stone-600 dark:text-stone-400">Total Base Stats</div>
+            <div className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-amber-500 to-pink-500 text-transparent bg-clip-text">
               {totalStats}
             </div>
           </div>
@@ -245,10 +245,10 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
           {/* Pokemon name and number */}
           <div>
             <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
-              <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
+              <span className="text-sm font-mono text-stone-600 dark:text-stone-400">
                 #{String(pokemon.id).padStart(4, '0')}
               </span>
-              <span className="text-sm px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">
+              <span className="text-sm px-2 py-1 bg-stone-200 dark:bg-stone-700 rounded">
                 Gen {getGenerationText()}
               </span>
               {(species.is_legendary || species.is_mythical) && (
@@ -260,7 +260,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
             <h1 className="text-4xl lg:text-5xl font-bold capitalize mb-2" data-testid="pokemon-name">
               {pokemon.name.replace(/-/g, ' ')}
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300" data-testid="pokemon-genus">
+            <p className="text-lg text-gray-600 dark:text-stone-300" data-testid="pokemon-genus">
               {species.genera?.find(g => g.language.name === 'en')?.genus || 'Unknown Pokémon'}
             </p>
           </div>
@@ -274,19 +274,19 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
           
           {/* Physical characteristics */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
-              <div className="text-sm text-gray-600 dark:text-gray-400">Height</div>
+            <div className="bg-gray-100 dark:bg-stone-800 rounded-lg p-4">
+              <div className="text-sm text-stone-600 dark:text-stone-400">Height</div>
               <div className="text-2xl font-bold">{((pokemon.height || 0) / 10).toFixed(1)}m</div>
             </div>
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
-              <div className="text-sm text-gray-600 dark:text-gray-400">Weight</div>
+            <div className="bg-gray-100 dark:bg-stone-800 rounded-lg p-4">
+              <div className="text-sm text-stone-600 dark:text-stone-400">Weight</div>
               <div className="text-2xl font-bold">{((pokemon.weight || 0) / 10).toFixed(1)}kg</div>
             </div>
           </div>
           
           {/* Abilities preview */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">Abilities</h3>
+            <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-2">Abilities</h3>
             <div className="flex flex-wrap gap-2">
               {pokemon.abilities?.map(ability => (
                 <span
@@ -294,8 +294,8 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
                   className={cn(
                     "px-3 py-1 rounded-full text-sm",
                     ability.is_hidden
-                      ? "bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200"
-                      : "bg-gray-200 dark:bg-gray-700"
+                      ? "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200"
+                      : "bg-stone-200 dark:bg-stone-700"
                   )}
                 >
                   {ability.ability.name.replace(/-/g, ' ')}
@@ -309,14 +309,14 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
         {/* Right: Quick Stats & Info */}
         <div className="space-y-4">
           {/* Catch rate visual */}
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+          <div className="bg-gray-100 dark:bg-stone-800 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Catch Rate</span>
+              <span className="text-sm text-stone-600 dark:text-stone-400">Catch Rate</span>
               <span className={cn("font-bold", catchRate.color)}>
                 {catchRate.percentage.toFixed(0)}%
               </span>
             </div>
-            <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
               <motion.div
                 className={cn("h-full bg-gradient-to-r", catchRate.color)}
                 initial={{ width: 0 }}
@@ -328,8 +328,8 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
           
           {/* Gender ratio */}
           {!genderRatio.genderless && (
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">Gender Ratio</div>
+            <div className="bg-gray-100 dark:bg-stone-800 rounded-lg p-4">
+              <div className="text-sm text-stone-600 dark:text-stone-400 mb-2">Gender Ratio</div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-blue-600 dark:text-blue-400 font-bold">
                   ♂ {genderRatio.male.toFixed(0)}%
@@ -338,7 +338,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
                   {genderRatio.female.toFixed(0)}% ♀
                 </span>
               </div>
-              <div className="relative h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div className="relative h-4 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                 <div 
                   className="absolute inset-y-0 left-0 bg-blue-500"
                   style={{ width: `${genderRatio.male}%` }}
@@ -352,21 +352,21 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
           )}
           
           {/* Training info */}
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 space-y-3">
+          <div className="bg-gray-100 dark:bg-stone-800 rounded-lg p-4 space-y-3">
             <h3 className="font-semibold text-sm">Training</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Base EXP</span>
+                <span className="text-stone-600 dark:text-stone-400">Base EXP</span>
                 <span className="font-mono font-semibold">{pokemon.base_experience || '—'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Growth</span>
+                <span className="text-stone-600 dark:text-stone-400">Growth</span>
                 <span className="font-semibold capitalize">
                   {species.growth_rate?.name.replace(/-/g, ' ') || '—'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Egg Groups</span>
+                <span className="text-stone-600 dark:text-stone-400">Egg Groups</span>
                 <span className="font-semibold capitalize">
                   {species.egg_groups?.map(g => g.name).join(', ').replace(/-/g, ' ') || '—'}
                 </span>
@@ -376,10 +376,10 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
           
           {/* Forms selector if available */}
           {species.varieties && species.varieties.length > 1 && (
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+            <div className="bg-gray-100 dark:bg-stone-800 rounded-lg p-4">
               <h3 className="font-semibold text-sm mb-2">Forms</h3>
               <select 
-                className="w-full p-2 bg-white dark:bg-gray-700 rounded"
+                className="w-full p-2 bg-white dark:bg-stone-700 rounded"
                 onChange={(e) => onFormChange?.(e.target.value)}
                 value={pokemon.name}
               >

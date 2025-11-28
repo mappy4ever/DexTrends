@@ -55,11 +55,11 @@ export default function Tooltip({ children, text, position = 'top', className = 
       {isVisible && text && (
         <div
           role="tooltip"
-          className={`absolute z-30 w-max max-w-xs px-2 py-2 text-sm text-white bg-gray-800 dark:bg-slate-700 rounded-lg shadow-lg whitespace-normal break-words transition-opacity ${getPositionClasses()}`}
+          className={`absolute z-30 w-max max-w-xs px-2 py-2 text-sm text-white bg-stone-800 dark:bg-stone-700 rounded-lg shadow-lg whitespace-normal break-words transition-opacity ${getPositionClasses()}`}
         >
           {text}
           {/* Tooltip Arrow - adjust border color to match tooltip bg */}
-          <div className={`${getArrowClasses()} border-gray-800 dark:border-slate-700`}></div>
+          <div className={`${getArrowClasses()} border-stone-800 dark:border-stone-700`}></div>
         </div>
       )}
     </div>

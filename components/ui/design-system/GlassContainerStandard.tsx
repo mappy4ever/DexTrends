@@ -23,7 +23,7 @@ export const StandardGlassContainer: React.FC<StandardGlassContainerProps> = ({
     <GlassContainer 
       variant="dark" 
       className={cn(
-        "backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl",
+        "backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl",
         className
       )}
       animate={animate}
@@ -59,7 +59,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   icon,
   title,
   subtitle,
-  iconColorClass = "from-blue-500/20 to-blue-600/10",
+  iconColorClass = "from-amber-500/20 to-amber-600/10",
 }) => {
   return (
     <div className="flex items-center gap-3 mb-6">
@@ -70,11 +70,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         {icon}
       </div>
       <div>
-        <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+        <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
           {title}
         </h3>
         {subtitle && (
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-stone-500 dark:text-stone-400">
             {subtitle}
           </p>
         )}
@@ -103,8 +103,8 @@ export const HoverCard: React.FC<HoverCardProps> = ({
       onClick={onClick}
     >
       <div className={cn(
-        "h-full bg-white dark:bg-gray-900/50 rounded-2xl p-5 backdrop-blur-md",
-        "border border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300",
+        "h-full bg-white dark:bg-stone-900/50 rounded-2xl p-5 backdrop-blur-md",
+        "border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300",
         onClick && "cursor-pointer",
         className
       )}>

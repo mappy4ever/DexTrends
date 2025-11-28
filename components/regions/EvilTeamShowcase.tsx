@@ -76,7 +76,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
       name: 'Team Rocket',
       logo: '/images/evil-teams/team-rocket-logo.png',
       motto: "Steal Pokémon for profit. Exploit Pokémon for profit. All Pokémon exist for the glory of Team Rocket.",
-      color: 'from-gray-800 to-red-600',
+      color: 'from-stone-800 to-red-600',
       leader: {
         name: 'Giovanni',
         title: 'Boss',
@@ -110,7 +110,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
       name: 'Team Rocket (Neo)',
       logo: '/images/evil-teams/team-rocket-logo.png',
       motto: "Revive Team Rocket and bring back Giovanni!",
-      color: 'from-gray-800 to-red-600',
+      color: 'from-stone-800 to-red-600',
       leader: {
         name: 'Archer & Executives',
         title: 'Interim Leaders',
@@ -145,7 +145,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
         name: 'Team Aqua',
         logo: '/images/evil-teams/team-aqua-logo.png',
         motto: "Expand the sea for the benefit of Water Pokémon!",
-        color: 'from-blue-600 to-blue-800',
+        color: 'from-amber-600 to-amber-800',
         leader: {
           name: 'Archie',
           title: 'Leader',
@@ -208,7 +208,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
       name: 'Team Galactic',
       logo: '/images/evil-teams/team-galactic-logo.png',
       motto: "Create a new world without spirit!",
-      color: 'from-blue-700 to-purple-700',
+      color: 'from-amber-700 to-amber-700',
       leader: {
         name: 'Cyrus',
         title: 'Boss',
@@ -243,7 +243,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
         name: 'Team Plasma',
         logo: '/images/evil-teams/team-plasma-logo.png',
         motto: "Free Pokémon from human oppression!",
-        color: 'from-blue-500 to-gray-600',
+        color: 'from-amber-500 to-stone-600',
         leader: {
           name: 'N (King) / Ghetsis (True Leader)',
           title: 'King / Sage',
@@ -276,7 +276,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
         name: 'Neo Team Plasma',
         logo: '/images/evil-teams/neo-plasma-logo.png',
         motto: "Rule Unova through force!",
-        color: 'from-black to-blue-800',
+        color: 'from-black to-amber-800',
         leader: {
           name: 'Ghetsis',
           title: 'True Leader',
@@ -345,7 +345,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
         name: 'Team Skull',
         logo: '/images/evil-teams/team-skull-logo.png',
         motto: "We're just a bunch of misfits making trouble, yo!",
-        color: 'from-gray-800 to-purple-600',
+        color: 'from-stone-800 to-amber-600',
         leader: {
           name: 'Guzma',
           title: 'Boss',
@@ -407,7 +407,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
       name: 'Macro Cosmos',
       logo: '/images/evil-teams/macro-cosmos-logo.png',
       motto: "Ensure Galar's prosperity for a thousand years!",
-      color: 'from-purple-600 to-pink-600',
+      color: 'from-amber-600 to-pink-600',
       leader: {
         name: 'Chairman Rose',
         title: 'Chairman',
@@ -439,7 +439,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
       name: 'Team Star',
       logo: '/images/evil-teams/team-star-logo.png',
       motto: "We're the bad guys, but we stick together!",
-      color: 'from-red-500 to-purple-600',
+      color: 'from-red-500 to-amber-600',
       leader: {
         name: 'Penny (Cassiopeia)',
         title: 'Big Boss',
@@ -483,7 +483,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
   if (!teams || teams.length === 0) return null;
 
   return (
-    <div className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`py-16 ${theme === 'dark' ? 'bg-stone-900' : 'bg-stone-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn>
           <div className="text-center mb-12">
@@ -491,7 +491,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
               <BsExclamationTriangle className="text-red-500" />
               Villainous Organizations
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-stone-600 dark:text-stone-400">
               The evil teams threatening {region.name}'s peace
             </p>
           </div>
@@ -503,7 +503,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
             <SlideUp key={team.name} delay={index * 0.1}>
               <motion.div
                 className={`relative overflow-hidden rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                 } shadow-xl cursor-pointer`}
                 onClick={() => setExpandedTeam(expandedTeam === team.name ? null : team.name)}
                 whileHover={{ scale: 1.02 }}
@@ -575,8 +575,8 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                               <GiCrown className="text-yellow-500" />
                               Leadership
                             </h4>
-                            <div className={`p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                              <p className="text-gray-600 dark:text-gray-300 mb-3">
+                            <div className={`p-6 rounded-xl ${theme === 'dark' ? 'bg-stone-700' : 'bg-stone-50'}`}>
+                              <p className="text-stone-600 dark:text-stone-300 mb-3">
                                 {team.leader.description}
                               </p>
                               <p className="text-sm">
@@ -593,9 +593,9 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                                 </h5>
                                 <div className="space-y-2">
                                   {(team.executives || team.admins || team.commanders || team.scientists || team.sages || team.squadBosses || team.members || []).map((member, idx) => (
-                                    <div key={idx} className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
+                                    <div key={idx} className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-stone-100'}`}>
                                       <p className="font-semibold">{member.name}</p>
-                                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                                      <p className="text-sm text-stone-600 dark:text-stone-400">
                                         {member.role} - {member.description}
                                       </p>
                                     </div>
@@ -617,7 +617,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                                 {team.goals.map((goal, idx) => (
                                   <li key={idx} className="flex items-start gap-2">
                                     <BsLightning className="text-yellow-500 mt-1 flex-shrink-0" />
-                                    <span className="text-gray-600 dark:text-gray-300">{goal}</span>
+                                    <span className="text-stone-600 dark:text-stone-300">{goal}</span>
                                   </li>
                                 ))}
                               </ul>
@@ -626,14 +626,14 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                             {/* Major Plots */}
                             <div>
                               <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                <BsShieldX className="text-purple-500" />
+                                <BsShieldX className="text-amber-500" />
                                 Criminal Activities
                               </h4>
                               <ul className="space-y-2">
                                 {team.majorPlots.map((plot, idx) => (
                                   <li key={idx} className="flex items-start gap-2">
                                     <BsExclamationTriangle className="text-red-500 mt-1 flex-shrink-0" />
-                                    <span className="text-gray-600 dark:text-gray-300">{plot}</span>
+                                    <span className="text-stone-600 dark:text-stone-300">{plot}</span>
                                   </li>
                                 ))}
                               </ul>
@@ -642,26 +642,26 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                         </div>
 
                         {/* Bottom Info */}
-                        <div className="grid md:grid-cols-2 gap-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <div className="grid md:grid-cols-2 gap-6 pt-6 border-t border-stone-200 dark:border-stone-700">
                           <div>
                             <h5 className="font-semibold mb-2 flex items-center gap-2">
                               <BsXCircle className="text-red-500" />
                               Defeat
                             </h5>
-                            <p className="text-gray-600 dark:text-gray-300">{team.defeat}</p>
+                            <p className="text-stone-600 dark:text-stone-300">{team.defeat}</p>
                           </div>
                           <div>
                             <h5 className="font-semibold mb-2 flex items-center gap-2">
-                              <BsEye className="text-blue-500" />
+                              <BsEye className="text-amber-500" />
                               Legacy
                             </h5>
-                            <p className="text-gray-600 dark:text-gray-300">{team.legacy}</p>
+                            <p className="text-stone-600 dark:text-stone-300">{team.legacy}</p>
                           </div>
                         </div>
 
                         {/* Notable Members */}
                         {team.notableMembers && team.notableMembers.length > 0 && (
-                          <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                          <div className="pt-6 border-t border-stone-200 dark:border-stone-700">
                             <h5 className="font-semibold mb-3">Notable Members</h5>
                             <div className="flex flex-wrap gap-2">
                               {team.notableMembers.map((member, idx) => (
@@ -669,8 +669,8 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                                   key={idx}
                                   className={`px-4 py-2 rounded-full text-sm ${
                                     theme === 'dark' 
-                                      ? 'bg-gray-700 text-gray-300' 
-                                      : 'bg-gray-100 text-gray-700'
+                                      ? 'bg-stone-700 text-stone-300' 
+                                      : 'bg-stone-100 text-stone-700'
                                   }`}
                                 >
                                   {member}

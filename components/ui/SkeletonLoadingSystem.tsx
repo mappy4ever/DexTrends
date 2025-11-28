@@ -140,8 +140,8 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     <div
       className={`
         skeleton
-        bg-gray-200
-        dark:bg-gray-700
+        bg-stone-200
+        dark:bg-stone-700
         ${getVariantClasses()}
         ${getAnimationClasses()}
         ${className}
@@ -176,7 +176,7 @@ export const CardSkeleton: React.FC<CardSkeletonProps> = ({
   ...props
 }) => {
   return (
-    <div className={`card-skeleton bg-white rounded-lg p-4 border border-gray-200 ${className}`} {...props}>
+    <div className={`card-skeleton bg-white rounded-lg p-4 border border-stone-200 ${className}`} {...props}>
       {/* Image Skeleton */}
       {showImage && (
         <Skeleton
@@ -253,7 +253,7 @@ export const PokemonCardSkeleton: React.FC<PokemonCardSkeletonProps> = ({
 }) => {
   if (variant === 'grid') {
     return (
-      <div className={`pokemon-card-skeleton bg-white rounded-lg p-3 border border-gray-200 ${className}`} {...props}>
+      <div className={`pokemon-card-skeleton bg-white rounded-lg p-3 border border-stone-200 ${className}`} {...props}>
         {/* Card Image */}
         <Skeleton
           height="200px"
@@ -303,7 +303,7 @@ export const PokemonCardSkeleton: React.FC<PokemonCardSkeletonProps> = ({
   }
   
   return (
-    <div className={`pokemon-card-skeleton bg-white rounded-lg p-4 border border-gray-200 ${className}`} {...props}>
+    <div className={`pokemon-card-skeleton bg-white rounded-lg p-4 border border-stone-200 ${className}`} {...props}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <Skeleton
@@ -376,7 +376,7 @@ export const ListSkeleton: React.FC<ListSkeletonProps> = ({
   return (
     <div className={`list-skeleton ${className}`} {...props}>
       {Array.from({ length: items }).map((_, index) => (
-        <div key={index} className="flex items-center p-4 border-b border-gray-200 last:border-b-0">
+        <div key={index} className="flex items-center p-4 border-b border-stone-200 last:border-b-0">
           {/* Avatar */}
           {showAvatar && (
             <Skeleton
@@ -435,7 +435,7 @@ export const TableSkeleton: React.FC<TableSkeletonProps> = ({
     <div className={`table-skeleton w-full ${className}`} {...props}>
       {/* Header */}
       {showHeader && (
-        <div className="flex border-b border-gray-200 pb-2 mb-4">
+        <div className="flex border-b border-stone-200 pb-2 mb-4">
           {Array.from({ length: columns }).map((_, index) => (
             <div key={index} className="flex-1 px-2">
               <Skeleton
@@ -488,7 +488,7 @@ export const ChartSkeleton: React.FC<ChartSkeletonProps> = ({
   return (
     <div className={`chart-skeleton ${className}`} style={{ height }} {...props}>
       {/* Chart Area */}
-      <div className="relative w-full h-full bg-gray-50 rounded-lg p-4">
+      <div className="relative w-full h-full bg-stone-50 rounded-lg p-4">
         {/* Y-Axis */}
         {showAxes && (
           <div className="absolute left-0 top-4 bottom-8 w-8 flex flex-col justify-between">
@@ -662,10 +662,10 @@ export const DetailPageSkeleton: React.FC<DetailPageSkeletonProps> = ({
   ...props
 }) => {
   return (
-    <div className={`detail-page-skeleton min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 ${className}`} {...props}>
+    <div className={`detail-page-skeleton min-h-screen bg-gradient-to-br from-stone-50 to-white dark:from-stone-900 dark:to-stone-800 ${className}`} {...props}>
       {/* Header Section */}
       {showHeader && (
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="p-6 border-b border-stone-200 dark:border-stone-700">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-4">
               {/* Back button */}
@@ -736,7 +736,7 @@ export const DetailPageSkeleton: React.FC<DetailPageSkeletonProps> = ({
           <div className="lg:col-span-2 space-y-6">
             {/* Stats Section */}
             {showStats && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+              <div className="bg-white dark:bg-stone-800 rounded-lg p-6 shadow-sm">
                 <Skeleton
                   height="1.5rem"
                   width="30%"
@@ -811,9 +811,9 @@ export const DetailPageSkeleton: React.FC<DetailPageSkeletonProps> = ({
 
             {/* Tabs Section */}
             {showTabs && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm">
                 {/* Tab headers */}
-                <div className="flex border-b border-gray-200 dark:border-gray-700">
+                <div className="flex border-b border-stone-200 dark:border-stone-700">
                   {Array.from({ length: 4 }).map((_, i) => (
                     <Skeleton
                       key={i}
@@ -859,7 +859,7 @@ export const DetailPageSkeleton: React.FC<DetailPageSkeletonProps> = ({
             />
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3">
+                <div key={i} className="bg-white dark:bg-stone-800 rounded-lg p-3">
                   <Skeleton
                     height="120px"
                     variant="rounded"
@@ -900,7 +900,7 @@ export const NavigationSkeleton: React.FC<NavigationSkeletonProps> = ({
 }) => {
   if (variant === 'sidebar') {
     return (
-      <div className={`navigation-skeleton w-64 h-full bg-white border-r border-gray-200 p-4 ${className}`} {...props}>
+      <div className={`navigation-skeleton w-64 h-full bg-white border-r border-stone-200 p-4 ${className}`} {...props}>
         {/* Logo */}
         {showLogo && (
           <Skeleton
@@ -957,7 +957,7 @@ export const NavigationSkeleton: React.FC<NavigationSkeletonProps> = ({
   }
   
   return (
-    <div className={`navigation-skeleton flex items-center justify-between p-4 bg-white border-b border-gray-200 ${className}`} {...props}>
+    <div className={`navigation-skeleton flex items-center justify-between p-4 bg-white border-b border-stone-200 ${className}`} {...props}>
       {/* Logo */}
       {showLogo && (
         <Skeleton
@@ -1107,15 +1107,15 @@ export const SkeletonStyles = `
   
   /* Dark mode skeleton styles */
   .dark .skeleton {
-    background: #374151;
+    background: #68576b;
   }
-  
+
   .dark .animate-shimmer {
     background: linear-gradient(
       90deg,
-      #374151 25%,
-      #4b5563 50%,
-      #374151 75%
+      #68576b 25%,
+      #7a6a7d 50%,
+      #68576b 75%
     );
   }
 `;
@@ -1143,7 +1143,7 @@ export function UnifiedLoader({
   
   if (fullScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-amber-50 flex items-center justify-center">
         <PokeballLoader size={size} text={text} randomBall={true} />
       </div>
     );
@@ -1153,7 +1153,7 @@ export function UnifiedLoader({
     return (
       <div className={`inline-flex items-center justify-center ${className}`}>
         <PokeballLoader size={actualSize} text="" randomBall={false} />
-        {text && <span className="ml-2 text-gray-600">{text}</span>}
+        {text && <span className="ml-2 text-stone-600">{text}</span>}
       </div>
     );
   }

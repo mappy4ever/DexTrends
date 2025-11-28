@@ -357,10 +357,10 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
   const getTierColor = (tier: string) => {
     switch (tier) {
       case 'bronze': return 'bg-amber-100 border-amber-300 text-amber-800';
-      case 'silver': return 'bg-gray-100 border-gray-300 text-gray-800';
+      case 'silver': return 'bg-stone-100 border-stone-300 text-stone-800';
       case 'gold': return 'bg-yellow-100 border-yellow-300 text-yellow-800';
-      case 'legendary': return 'bg-purple-100 border-purple-300 text-purple-800';
-      default: return 'bg-gray-100 border-gray-300 text-gray-800';
+      case 'legendary': return 'bg-amber-100 border-amber-300 text-amber-800';
+      default: return 'bg-stone-100 border-stone-300 text-stone-800';
     }
   };
 
@@ -391,23 +391,23 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
   return (
     <div className="achievement-system space-y-6">
       {/* Header with Progress */}
-      <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-xl shadow-lg">
+      <div className="bg-gradient-to-r from-amber-500 to-amber-500 text-white p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-3">Trainer Achievements</h2>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-lg">
               {unlockedAchievements.length} / {achievements.length} Unlocked
             </p>
-            <p className="text-purple-100 text-sm">Keep collecting to unlock more badges!</p>
+            <p className="text-amber-100 text-sm">Keep collecting to unlock more badges!</p>
           </div>
           <div className="text-right">
             <div className="text-3xl font-bold">{getProgressPercentage()}%</div>
-            <div className="text-sm text-purple-100">Complete</div>
+            <div className="text-sm text-amber-100">Complete</div>
           </div>
         </div>
         
         {/* Progress Bar */}
-        <div className="mt-4 bg-purple-600 rounded-full h-3 overflow-hidden">
+        <div className="mt-4 bg-amber-600 rounded-full h-3 overflow-hidden">
           <div 
             className="bg-white h-full transition-all duration-1000 ease-out rounded-full"
             style={{ width: `${getProgressPercentage()}%` }}
@@ -420,10 +420,10 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
         <div key={category} className="space-y-4">
           <div className="flex items-center space-x-2">
             <span className="text-2xl">{getCategoryIcon(category)}</span>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white capitalize">
+            <h3 className="text-xl font-semibold text-stone-900 dark:text-white capitalize">
               {category} Achievements
             </h3>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-stone-500 dark:text-stone-400">
               ({(categoryAchievements as Achievement[]).filter((a: Achievement) => unlockedAchievements.includes(a.id)).length}/{(categoryAchievements as Achievement[]).length})
             </span>
           </div>
@@ -439,7 +439,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
                   className={`relative p-4 rounded-xl border-2 transition-all duration-300 ${
                     isUnlocked
                       ? `${getTierColor(achievement.tier)} shadow-lg transform hover:scale-105`
-                      : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 opacity-60'
+                      : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 opacity-60'
                   } ${isNewlyUnlocked ? 'animate-pulse ring-4 ring-yellow-400' : ''}`}
                 >
                   {/* Achievement Icon */}
@@ -449,10 +449,10 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
                     </div>
                     
                     <div className="flex-1">
-                      <h4 className={`font-bold text-lg ${isUnlocked ? '' : 'text-gray-500 dark:text-gray-400'}`}>
+                      <h4 className={`font-bold text-lg ${isUnlocked ? '' : 'text-stone-500 dark:text-stone-400'}`}>
                         {achievement.title}
                       </h4>
-                      <p className={`text-sm ${isUnlocked ? '' : 'text-gray-400 dark:text-gray-500'}`}>
+                      <p className={`text-sm ${isUnlocked ? '' : 'text-stone-400 dark:text-stone-500'}`}>
                         {achievement.description}
                       </p>
                       
@@ -471,8 +471,8 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
 
                   {/* Locked Overlay */}
                   {!isUnlocked && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 rounded-xl">
-                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="absolute inset-0 flex items-center justify-center bg-stone-900 bg-opacity-50 rounded-xl">
+                      <svg className="w-8 h-8 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
                     </div>
@@ -494,8 +494,8 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
       ))}
 
       {/* Achievement Statistics */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Achievement Stats</h3>
+      <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg border border-stone-200 dark:border-stone-700">
+        <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Achievement Stats</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Object.entries(groupedAchievements).map(([category, categoryAchievements]) => {
             const unlockedCount = categoryAchievements.filter((a: Achievement) => unlockedAchievements.includes(a.id)).length;
@@ -504,11 +504,11 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
             return (
               <div key={category} className="text-center">
                 <div className="text-2xl mb-1">{getCategoryIcon(category)}</div>
-                <div className="text-lg font-bold text-gray-900 dark:text-white">
+                <div className="text-lg font-bold text-stone-900 dark:text-white">
                   {unlockedCount}/{categoryAchievements.length}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 capitalize">{category}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-500">{percentage}%</div>
+                <div className="text-sm text-stone-600 dark:text-stone-400 capitalize">{category}</div>
+                <div className="text-xs text-stone-500 dark:text-stone-500">{percentage}%</div>
               </div>
             );
           })}

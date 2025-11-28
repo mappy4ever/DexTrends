@@ -24,20 +24,20 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
     >
       <GlassContainer 
         variant="dark" 
-        className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+        className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
         animate={false}
       >
         <div className="p-6 md:p-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center">
-                <FaChessBishop className="w-5 h-5 text-purple-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
+                <FaChessBishop className="w-5 h-5 text-amber-400" />
               </div>
-              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                 Popular Movesets
               </h3>
             </div>
-            {loading && <span className="text-xs text-gray-500 dark:text-gray-400 italic">Loading...</span>}
+            {loading && <span className="text-xs text-stone-500 dark:text-stone-400 italic">Loading...</span>}
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -54,28 +54,28 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                   whileHover={{ scale: 1.02 }}
                   className={cn(
                     "border rounded-xl overflow-hidden transition-all cursor-pointer",
-                    "bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30",
-                    "border-gray-200/50 dark:border-gray-700/50",
+                    "bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30",
+                    "border-stone-200/50 dark:border-stone-700/50",
                     "hover:shadow-lg",
-                    expandedMoveset === index && "ring-2 ring-purple-500/50"
+                    expandedMoveset === index && "ring-2 ring-amber-500/50"
                   )}
                   onClick={() => setExpandedMoveset(expandedMoveset === index ? null : index)}
                 >
                   {/* Header */}
-                  <div className="p-4 border-b border-gray-200/50 dark:border-gray-700/50">
+                  <div className="p-4 border-b border-stone-200/50 dark:border-stone-700/50">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <Icon className={cn("w-5 h-5", roleInfo?.color || 'text-purple-400')} />
-                        <h5 className="font-semibold text-gray-900 dark:text-white">
+                        <Icon className={cn("w-5 h-5", roleInfo?.color || 'text-amber-400')} />
+                        <h5 className="font-semibold text-stone-900 dark:text-white">
                           {moveset.name}
                         </h5>
                       </div>
                       <div className={cn(
                         "px-3 py-1 rounded-full text-xs font-bold text-white shadow-md bg-gradient-to-r",
-                        moveset.usage >= 40 ? "from-purple-500 to-pink-500" :
-                        moveset.usage >= 25 ? "from-blue-500 to-purple-500" :
-                        moveset.usage >= 10 ? "from-green-500 to-blue-500" :
-                        "from-gray-500 to-gray-600"
+                        moveset.usage >= 40 ? "from-amber-500 to-pink-500" :
+                        moveset.usage >= 25 ? "from-amber-500 to-amber-500" :
+                        moveset.usage >= 10 ? "from-green-500 to-amber-500" :
+                        "from-stone-500 to-stone-600"
                       )}>
                         {moveset.usage}% usage
                       </div>
@@ -83,16 +83,16 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                     
                     {/* Quick Info */}
                     <div className="grid grid-cols-3 gap-2 text-xs">
-                      <div className="text-center p-2 bg-white/5 dark:bg-gray-800/50 rounded">
-                        <p className="text-gray-500 dark:text-gray-400">Item</p>
+                      <div className="text-center p-2 bg-white/5 dark:bg-stone-800/50 rounded">
+                        <p className="text-stone-500 dark:text-stone-400">Item</p>
                         <p className="font-medium">{moveset.item}</p>
                       </div>
-                      <div className="text-center p-2 bg-white/5 dark:bg-gray-800/50 rounded">
-                        <p className="text-gray-500 dark:text-gray-400">Ability</p>
+                      <div className="text-center p-2 bg-white/5 dark:bg-stone-800/50 rounded">
+                        <p className="text-stone-500 dark:text-stone-400">Ability</p>
                         <p className="font-medium">{moveset.ability}</p>
                       </div>
-                      <div className="text-center p-2 bg-white/5 dark:bg-gray-800/50 rounded">
-                        <p className="text-gray-500 dark:text-gray-400">Nature</p>
+                      <div className="text-center p-2 bg-white/5 dark:bg-stone-800/50 rounded">
+                        <p className="text-stone-500 dark:text-stone-400">Nature</p>
                         <p className="font-medium">{moveset.nature}</p>
                       </div>
                     </div>
@@ -107,11 +107,11 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        <div className="p-4 space-y-3 border-t border-gray-200/50 dark:border-gray-700/50">
+                        <div className="p-4 space-y-3 border-t border-stone-200/50 dark:border-stone-700/50">
                           {/* EVs */}
                           <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex items-center gap-2">
-                              <HiSparkles className="w-4 h-4 text-purple-400" />
+                            <p className="text-sm text-stone-600 dark:text-stone-400 mb-2 flex items-center gap-2">
+                              <HiSparkles className="w-4 h-4 text-amber-400" />
                               EV Spread
                             </p>
                             <div className="grid grid-cols-2 gap-2">
@@ -120,10 +120,10 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                                 return (
                                   <div
                                     key={stat}
-                                    className="flex items-center justify-between px-3 py-1 bg-purple-100 dark:bg-purple-900/30 rounded text-sm"
+                                    className="flex items-center justify-between px-3 py-1 bg-amber-100 dark:bg-amber-900/30 rounded text-sm"
                                   >
-                                    <span className="text-purple-700 dark:text-purple-300">{STAT_NAMES[stat]}</span>
-                                    <span className="font-bold text-purple-800 dark:text-purple-200">{value}</span>
+                                    <span className="text-amber-700 dark:text-amber-300">{STAT_NAMES[stat]}</span>
+                                    <span className="font-bold text-amber-800 dark:text-amber-200">{value}</span>
                                   </div>
                                 );
                               })}
@@ -132,7 +132,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                           
                           {/* Moves */}
                           <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex items-center gap-2">
+                            <p className="text-sm text-stone-600 dark:text-stone-400 mb-2 flex items-center gap-2">
                               <FaFistRaised className="w-4 h-4 text-red-400" />
                               Moveset
                             </p>
@@ -140,7 +140,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                               {moveset.moves.map(move => (
                                 <div
                                   key={move}
-                                  className="px-3 py-2 rounded text-sm text-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 font-medium"
+                                  className="px-3 py-2 rounded text-sm text-center bg-gradient-to-r from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-800 text-stone-900 dark:text-white border border-stone-300 dark:border-stone-600 font-medium"
                                 >
                                   {move}
                                 </div>
@@ -159,7 +159,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
           {/* Data Notice */}
           {!loading && (
             <div className="mt-4 text-center">
-              <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+              <p className="text-xs text-stone-500 dark:text-stone-400 italic">
                 * Data calculated based on tier placement, stats, and type matchups
               </p>
             </div>

@@ -100,7 +100,7 @@ export const ReadingProgressIndicator: React.FC = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 z-40">
+    <div className="fixed top-0 left-0 w-full h-1 bg-stone-200 dark:bg-stone-700 z-40">
       <div 
         className="h-full bg-gradient-to-r from-pokemon-red via-pokemon-yellow to-pokemon-blue transition-all duration-150 ease-out"
         style={{ width: `${progress}%` }}
@@ -145,12 +145,12 @@ export const SmartSearchSuggestions = ({ searchTerm, onSelect }: SmartSearchSugg
   if (!showSuggestions || suggestions.length === 0) return null;
 
   return (
-    <div className="absolute top-full left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 mt-1">
+    <div className="absolute top-full left-0 right-0 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg shadow-lg z-50 mt-1">
       {suggestions.map((suggestion: SearchSuggestion, index: number) => (
         <button
           key={index}
           onClick={() => onSelect?.(suggestion)}
-          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors"
+          className="w-full px-4 py-2 text-left hover:bg-stone-100 dark:hover:bg-stone-700 flex items-center space-x-2 transition-colors"
         >
           <span>{suggestion.icon}</span>
           <span>{suggestion.text}</span>
@@ -220,12 +220,12 @@ export const PageRecommendations: React.FC = () => {
   if (!showRecommendations || recommendations.length === 0) return null;
 
   return (
-    <div className="fixed bottom-20 right-20 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-4 max-w-sm z-30 animate-slideIn">
+    <div className="fixed bottom-20 right-20 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl shadow-xl p-4 max-w-sm z-30 animate-slideIn">
       <div className="flex justify-between items-center mb-3">
         <h4 className="font-semibold text-sm">💡 You might like</h4>
         <button
           onClick={() => setShowRecommendations(false)}
-          className="text-gray-400 hover:text-gray-600"
+          className="text-stone-400 hover:text-stone-600"
         >
           ×
         </button>
@@ -240,13 +240,13 @@ export const PageRecommendations: React.FC = () => {
                 setShowRecommendations(false);
               }
             }}
-            className="w-full p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="w-full p-2 text-left hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors"
           >
             <div className="flex items-center space-x-2">
               <span className="text-lg">{rec.icon}</span>
               <div>
                 <div className="font-medium text-sm">{rec.title}</div>
-                <div className="text-xs text-gray-500">{rec.description}</div>
+                <div className="text-xs text-stone-500">{rec.description}</div>
               </div>
             </div>
           </button>

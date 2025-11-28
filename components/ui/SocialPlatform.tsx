@@ -294,36 +294,36 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
   };
 
   const PostCard: React.FC<{ post: Post }> = ({ post }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 mb-6">
+    <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6 mb-6">
       {/* Post Header */}
       <div className="flex items-center space-x-3 mb-4">
-        <img 
-          src={post.user.avatar} 
+        <img
+          src={post.user.avatar}
           alt={post.user.username}
           className="w-10 h-10 rounded-full object-cover"  />
         <div className="flex-1">
           <div className="flex items-center space-x-2">
-            <span className="font-semibold text-gray-900 dark:text-white">
+            <span className="font-semibold text-stone-900 dark:text-white">
               {post.user.username}
             </span>
             {post.user.verified && (
-              <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs">✓</span>
               </div>
             )}
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-stone-500 dark:text-stone-400">
               {post.user.title}
             </span>
           </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-sm text-stone-500 dark:text-stone-400">
             {formatTimeAgo(post.timestamp)}
           </div>
         </div>
-        
+
         <div className={`px-2 py-1 rounded-full text-xs ${
-          post.type === 'card_pull' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' :
+          post.type === 'card_pull' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200' :
           post.type === 'collection_milestone' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-          'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+          'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
         }`}>
           {post.type.replace('_', ' ')}
         </div>
@@ -331,7 +331,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
 
       {/* Post Content */}
       <div className="mb-4">
-        <p className="text-gray-900 dark:text-white">{post.content}</p>
+        <p className="text-stone-900 dark:text-white">{post.content}</p>
       </div>
 
       {/* Post Images/Media */}
@@ -351,16 +351,16 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
 
       {/* Card Data */}
       {post.cardData && (
-        <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border">
+        <div className="mb-4 p-3 bg-stone-50 dark:bg-stone-700 rounded-lg border">
           <div className="flex items-center space-x-2">
-            <BsCardList className="text-blue-500" />
-            <span className="font-medium text-gray-900 dark:text-white">
+            <BsCardList className="text-amber-500" />
+            <span className="font-medium text-stone-900 dark:text-white">
               {post.cardData.name}
             </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-stone-500 dark:text-stone-400">
               • {post.cardData.set}
             </span>
-            <span className="text-sm text-purple-600 dark:text-purple-400">
+            <span className="text-sm text-amber-600 dark:text-amber-400">
               {post.cardData.rarity}
             </span>
           </div>
@@ -368,32 +368,32 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
       )}
 
       {/* Post Actions */}
-      <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-600">
+      <div className="flex items-center justify-between pt-4 border-t border-stone-200 dark:border-stone-600">
         <div className="flex items-center space-x-6">
-          <button 
+          <button
             onClick={() => handleLike(post.id)}
             className={`flex items-center space-x-2 transition-colors ${
-              post.isLiked 
-                ? 'text-red-500 hover:text-red-600' 
-                : 'text-gray-500 dark:text-gray-400 hover:text-red-500'
+              post.isLiked
+                ? 'text-red-500 hover:text-red-600'
+                : 'text-stone-500 dark:text-stone-400 hover:text-red-500'
             }`}
           >
             <FaHeart className={post.isLiked ? 'fill-current' : ''} />
             <span>{post.likes}</span>
           </button>
-          
-          <button className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
+
+          <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-400 hover:text-amber-500 transition-colors">
             <FaComment />
             <span>{post.comments}</span>
           </button>
-          
-          <button className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-green-500 transition-colors">
+
+          <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-400 hover:text-green-500 transition-colors">
             <FaShare />
             <span>{post.shares}</span>
           </button>
         </div>
 
-        <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+        <button className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors">
           <FaEye />
         </button>
       </div>
@@ -401,42 +401,42 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
   );
 
   const UserCard: React.FC<{ user: User }> = ({ user }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
       <div className="flex items-start space-x-4">
-        <img 
-          src={user.avatar} 
+        <img
+          src={user.avatar}
           alt={user.username}
           className="w-16 h-16 rounded-full object-cover"  />
         <div className="flex-1">
           <div className="flex items-center space-x-2 mb-1">
-            <h3 className="font-semibold text-gray-900 dark:text-white">
+            <h3 className="font-semibold text-stone-900 dark:text-white">
               {user.displayName}
             </h3>
             {user.verified && (
-              <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs">✓</span>
               </div>
             )}
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+          <p className="text-sm text-stone-500 dark:text-stone-400 mb-1">
             @{user.username} • {user.title}
           </p>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+          <p className="text-sm text-stone-600 dark:text-stone-300 mb-3">
             {user.bio}
           </p>
-          
-          <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
+
+          <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-400 mb-3">
             <span><strong>{user.followers}</strong> followers</span>
             <span><strong>{user.following}</strong> following</span>
             <span><strong>{user.totalCards}</strong> cards</span>
           </div>
 
-          <button 
+          <button
             onClick={() => handleFollow(user.id)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               following.includes(user.id)
-                ? 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-stone-200 text-stone-800 hover:bg-stone-300 dark:bg-stone-700 dark:text-stone-200 dark:hover:bg-stone-600'
+                : 'bg-amber-600 text-white hover:bg-amber-700'
             }`}
           >
             {following.includes(user.id) ? (
@@ -460,12 +460,12 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
     return (
       <div className="space-y-6">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse">
+          <div key={i} className="bg-white dark:bg-stone-800 rounded-lg shadow-md p-6 animate-pulse">
             <div className="flex space-x-4">
-              <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+              <div className="w-10 h-10 bg-stone-300 dark:bg-stone-600 rounded-full"></div>
               <div className="flex-1 space-y-2">
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/4"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+                <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-1/4"></div>
+                <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-1/2"></div>
               </div>
             </div>
           </div>
@@ -477,13 +477,13 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
   return (
     <div className="social-platform max-w-4xl mx-auto">
       {/* Navigation Tabs */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg mb-6">
+      <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg mb-6">
         <button
           onClick={() => setActiveTab('feed')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'feed'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <BsFire className="inline mr-2" />
@@ -493,8 +493,8 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
           onClick={() => setActiveTab('discover')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'discover'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <FaUsers className="inline mr-2" />
@@ -504,8 +504,8 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
           onClick={() => setActiveTab('leaderboard')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'leaderboard'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <FaTrophy className="inline mr-2" />
@@ -518,26 +518,26 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
         <div>
           {/* Create Post */}
           {currentUserId && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-4 mb-6">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-4 mb-6">
               <div className="flex space-x-3">
-                <img 
-                  src={userProfile?.avatar || '/api/placeholder/40/40'} 
+                <img
+                  src={userProfile?.avatar || '/api/placeholder/40/40'}
                   alt="Your avatar"
                   className="w-10 h-10 rounded-full object-cover"  />
                 <div className="flex-1">
-                  <textarea 
+                  <textarea
                     placeholder="Share your latest card pull, collection update, or deck tech..."
-                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" />
+                    className="w-full p-3 border border-stone-300 dark:border-stone-600 rounded-lg resize-none focus:ring-2 focus:ring-amber-500 dark:bg-stone-700 dark:text-white" />
                   <div className="flex justify-between items-center mt-3">
                     <div className="flex space-x-2">
-                      <button className="p-2 text-gray-500 hover:text-blue-500 transition-colors">
+                      <button className="p-2 text-stone-500 hover:text-amber-500 transition-colors">
                         <BsCardList title="Add card" />
                       </button>
-                      <button className="p-2 text-gray-500 hover:text-green-500 transition-colors">
+                      <button className="p-2 text-stone-500 hover:text-green-500 transition-colors">
                         <BsGrid3X3Gap title="Add image" />
                       </button>
                     </div>
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <button className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
                       Post
                     </button>
                   </div>
@@ -557,14 +557,14 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
       {activeTab === 'discover' && (
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-bold text-stone-900 dark:text-white">
               Discover Trainers
             </h2>
             <div className="flex space-x-2">
-              <button className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm">
+              <button className="px-3 py-1 bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200 rounded-full text-sm">
                 Suggested
               </button>
-              <button className="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-sm">
+              <button className="px-3 py-1 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full text-sm">
                 All Users
               </button>
             </div>
@@ -581,13 +581,13 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
       {/* Leaderboard Tab */}
       {activeTab === 'leaderboard' && (
         <div className="space-y-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-bold text-stone-900 dark:text-white">
             Community Leaderboards
           </h2>
 
           <div className="grid gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4 flex items-center">
                 <FaTrophy className="text-yellow-500 mr-2" />
                 Top Collectors This Month
               </h3>
@@ -599,22 +599,22 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
                     <div key={user.id} className="flex items-center space-x-3">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                         index === 0 ? 'bg-yellow-500 text-white' :
-                        index === 1 ? 'bg-gray-400 text-white' :
+                        index === 1 ? 'bg-stone-400 text-white' :
                         index === 2 ? 'bg-orange-600 text-white' :
-                        'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                        'bg-stone-200 text-stone-700 dark:bg-stone-700 dark:text-stone-300'
                       }`}>
                         {index + 1}
                       </div>
-                      <img 
-                        src={user.avatar} 
+                      <img
+                        src={user.avatar}
                         alt={user.username}
                         className="w-8 h-8 rounded-full object-cover"  />
                       <div className="flex-1">
-                        <div className="font-medium text-gray-900 dark:text-white">
+                        <div className="font-medium text-stone-900 dark:text-white">
                           {user.username}
                         </div>
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-sm text-stone-500 dark:text-stone-400">
                         {user.totalCards} cards
                       </div>
                     </div>
@@ -622,9 +622,9 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <BsStar className="text-purple-500 mr-2" />
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4 flex items-center">
+                <BsStar className="text-amber-500 mr-2" />
                 Most Popular Posts
               </h3>
               <div className="space-y-3">
@@ -633,14 +633,14 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
                   .slice(0, 3)
                   .map((post, index) => (
                     <div key={post.id} className="flex items-start space-x-3">
-                      <div className="text-lg font-bold text-purple-500">
+                      <div className="text-lg font-bold text-amber-500">
                         #{index + 1}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm text-gray-900 dark:text-white line-clamp-2">
+                        <p className="text-sm text-stone-900 dark:text-white line-clamp-2">
                           {post.content}
                         </p>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <div className="text-xs text-stone-500 dark:text-stone-400 mt-1">
                           by @{post.user.username} • {post.likes} likes
                         </div>
                       </div>

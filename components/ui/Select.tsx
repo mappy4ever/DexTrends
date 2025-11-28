@@ -105,24 +105,24 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     // Variant styles
     const variantStyles = {
       default: cn(
-        'bg-white dark:bg-gray-800',
-        'border border-gray-300 dark:border-gray-600',
-        'hover:border-gray-400 dark:hover:border-gray-500'
+        'bg-white dark:bg-stone-800',
+        'border border-stone-300 dark:border-stone-600',
+        'hover:border-stone-400 dark:hover:border-stone-500'
       ),
       filled: cn(
-        'bg-gray-100 dark:bg-gray-700',
+        'bg-stone-100 dark:bg-stone-700',
         'border border-transparent',
-        'hover:bg-gray-200 dark:hover:bg-gray-600'
+        'hover:bg-stone-200 dark:hover:bg-stone-600'
       ),
       outline: cn(
         'bg-transparent',
-        'border-2 border-gray-300 dark:border-gray-600',
-        'hover:border-gray-400 dark:hover:border-gray-500'
+        'border-2 border-stone-300 dark:border-stone-600',
+        'hover:border-stone-400 dark:hover:border-stone-500'
       ),
       ghost: cn(
         'bg-transparent',
         'border border-transparent',
-        'hover:bg-gray-100 dark:hover:bg-gray-800'
+        'hover:bg-stone-100 dark:hover:bg-stone-800'
       )
     };
 
@@ -170,7 +170,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       return (
         <div className={cn('relative', fullWidth && 'w-full', className)}>
           {label && (
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               {label}
             </label>
           )}
@@ -187,7 +187,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               disabled={disabled || loading}
               className={cn(
                 'w-full rounded-lg appearance-none pr-10',
-                'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                'focus:outline-none focus:ring-2 focus:ring-amber-500',
                 'transition-all duration-200',
                 sizeStyles[size].button,
                 variantStyles[variant],
@@ -208,11 +208,11 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 </option>
               ))}
             </select>
-            <IoChevronDown 
+            <IoChevronDown
               className={cn(
                 'absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none',
                 sizeStyles[size].icon,
-                'text-gray-500 dark:text-gray-400'
+                'text-stone-500 dark:text-stone-400'
               )}
             />
           </div>
@@ -220,7 +220,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             <p className="mt-1 text-sm text-red-500 dark:text-red-400">{error}</p>
           )}
           {helperText && !error && (
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{helperText}</p>
+            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{helperText}</p>
           )}
         </div>
       );
@@ -228,16 +228,16 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
     // Custom dropdown for desktop and advanced features
     return (
-      <div 
+      <div
         ref={containerRef}
         className={cn('relative', fullWidth && 'w-full', className)}
       >
         {label && (
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
             {label}
           </label>
         )}
-        
+
         <button
           type="button"
           onClick={() => {
@@ -251,7 +251,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           disabled={disabled || loading}
           className={cn(
             'w-full rounded-lg flex items-center justify-between',
-            'focus:outline-none focus:ring-2 focus:ring-blue-500',
+            'focus:outline-none focus:ring-2 focus:ring-amber-500',
             'transition-all duration-200',
             sizeStyles[size].button,
             variantStyles[variant],
@@ -262,7 +262,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         >
           <span className={cn(
             'flex-1 text-left truncate',
-            !selectedOption && !multiple && 'text-gray-500 dark:text-gray-400'
+            !selectedOption && !multiple && 'text-stone-500 dark:text-stone-400'
           )}>
             {loading ? (
               <span className="flex items-center gap-2">
@@ -279,15 +279,15 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               <button
                 type="button"
                 onClick={handleClear}
-                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded"
               >
                 <IoClose className={sizeStyles[size].icon} />
               </button>
             )}
-            <IoChevronDown 
+            <IoChevronDown
               className={cn(
                 sizeStyles[size].icon,
-                'text-gray-500 dark:text-gray-400 transition-transform',
+                'text-stone-500 dark:text-stone-400 transition-transform',
                 isOpen && 'rotate-180'
               )}
             />
@@ -303,15 +303,15 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               transition={{ duration: 0.15 }}
               className={cn(
                 'absolute z-50 w-full mt-1',
-                'bg-white dark:bg-gray-800',
-                'border border-gray-200 dark:border-gray-700',
+                'bg-white dark:bg-stone-800',
+                'border border-stone-200 dark:border-stone-700',
                 'rounded-lg shadow-lg',
                 'overflow-hidden'
               )}
               style={{ maxHeight }}
             >
               {searchable && (
-                <div className="p-2 border-b border-gray-200 dark:border-gray-700">
+                <div className="p-2 border-b border-stone-200 dark:border-stone-700">
                   <input
                     type="text"
                     placeholder="Search..."
@@ -319,9 +319,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className={cn(
                       'w-full px-3 py-2 rounded',
-                      'bg-gray-50 dark:bg-gray-700',
-                      'border border-gray-200 dark:border-gray-600',
-                      'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                      'bg-stone-50 dark:bg-stone-700',
+                      'border border-stone-200 dark:border-stone-600',
+                      'focus:outline-none focus:ring-2 focus:ring-amber-500',
                       'text-sm'
                     )}
                     onClick={(e) => e.stopPropagation()}
@@ -331,7 +331,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
               <div className="overflow-y-auto" style={{ maxHeight: maxHeight - (searchable ? 60 : 0) }}>
                 {filteredOptions.length === 0 ? (
-                  <div className="py-8 text-center text-gray-500 dark:text-gray-400">
+                  <div className="py-8 text-center text-stone-500 dark:text-stone-400">
                     No options found
                   </div>
                 ) : (
@@ -348,11 +348,11 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         disabled={option.disabled}
                         className={cn(
                           'w-full text-left',
-                          'hover:bg-gray-100 dark:hover:bg-gray-700',
+                          'hover:bg-stone-100 dark:hover:bg-stone-700',
                           'transition-colors duration-150',
                           'flex items-center justify-between gap-2',
                           sizeStyles[size].option,
-                          isSelected && 'bg-blue-50 dark:bg-blue-900/20',
+                          isSelected && 'bg-amber-50 dark:bg-amber-900/20',
                           option.disabled && 'opacity-50 cursor-not-allowed'
                         )}
                       >
@@ -363,12 +363,12 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                           <div className="flex-1">
                             <div className={cn(
                               'font-medium',
-                              isSelected && 'text-blue-600 dark:text-blue-400'
+                              isSelected && 'text-amber-600 dark:text-amber-400'
                             )}>
                               {option.label}
                             </div>
                             {option.description && (
-                              <div className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                              <div className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
                                 {option.description}
                               </div>
                             )}
@@ -377,7 +377,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         {showCheckmarks && isSelected && (
                           <IoCheckmark className={cn(
                             sizeStyles[size].icon,
-                            'text-blue-600 dark:text-blue-400 flex-shrink-0'
+                            'text-amber-600 dark:text-amber-400 flex-shrink-0'
                           )} />
                         )}
                       </button>
@@ -393,7 +393,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <p className="mt-1 text-sm text-red-500 dark:text-red-400">{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{helperText}</p>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{helperText}</p>
         )}
       </div>
     );

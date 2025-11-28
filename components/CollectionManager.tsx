@@ -511,10 +511,10 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-48"></div>
-          <div className="h-32 bg-gray-300 dark:bg-gray-600 rounded"></div>
+          <div className="h-6 bg-stone-300 dark:bg-stone-600 rounded w-48"></div>
+          <div className="h-32 bg-stone-300 dark:bg-stone-600 rounded"></div>
         </div>
       </div>
     );
@@ -526,12 +526,12 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
           My Collections
         </h2>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
+          className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 flex items-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -548,8 +548,8 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
               onClick={() => setSelectedCollection(collection)}
               className={`px-4 py-2 rounded-md border ${
                 selectedCollection?.id === collection.id
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  ? 'bg-amber-600 text-white border-amber-600'
+                  : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-600 hover:bg-stone-50 dark:hover:bg-stone-700'
               }`}
             >
               {collection.name}
@@ -561,28 +561,28 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
         <>
           {/* Collection Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <div className="text-sm text-gray-500 dark:text-gray-400">Total Cards</div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+              <div className="text-sm text-stone-500 dark:text-stone-400">Total Cards</div>
+              <div className="text-2xl font-bold text-stone-900 dark:text-white">
                 {stats.totalCards}
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <div className="text-sm text-gray-500 dark:text-gray-400">Unique Cards</div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+              <div className="text-sm text-stone-500 dark:text-stone-400">Unique Cards</div>
+              <div className="text-2xl font-bold text-stone-900 dark:text-white">
                 {stats.uniqueCards}
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <div className="text-sm text-gray-500 dark:text-gray-400">Estimated Value</div>
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
+              <div className="text-sm text-stone-500 dark:text-stone-400">Estimated Value</div>
               <div className="text-2xl font-bold text-green-600">
                 ${stats.totalValue.toFixed(2)}
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex items-center justify-center">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4 flex items-center justify-center">
               <button
                 onClick={() => setShowAddCardModal(true)}
-                className="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md hover:border-blue-500 text-gray-500 dark:text-gray-400 hover:text-blue-500"
+                className="w-full h-full flex items-center justify-center border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md hover:border-amber-500 text-stone-500 dark:text-stone-400 hover:text-amber-500"
               >
                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -592,15 +592,15 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
           </div>
 
           {/* Collection Cards */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg">
+            <div className="p-4 border-b border-stone-200 dark:border-stone-700">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
                     {selectedCollection.name}
                   </h3>
                   {selectedCollection.description && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
                       {selectedCollection.description}
                     </p>
                   )}
@@ -608,7 +608,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setShowImportModal(true)}
-                    className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center gap-1"
+                    className="px-3 py-1 text-sm bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-200 dark:hover:bg-stone-600 flex items-center gap-1"
                     title="Import cards"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -618,7 +618,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                   </button>
                   <div className="relative group">
                     <button
-                      className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center gap-1"
+                      className="px-3 py-1 text-sm bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-200 dark:hover:bg-stone-600 flex items-center gap-1"
                       title="Export collection"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -626,16 +626,16 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                       </svg>
                       Export
                     </button>
-                    <div className="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                    <div className="absolute right-0 mt-1 w-32 bg-white dark:bg-stone-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                       <button
                         onClick={() => exportCollection('json')}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="block w-full text-left px-4 py-2 text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700"
                       >
                         As JSON
                       </button>
                       <button
                         onClick={() => exportCollection('csv')}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="block w-full text-left px-4 py-2 text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700"
                       >
                         As CSV
                       </button>
@@ -648,7 +648,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
               {selectedCollection.cards && selectedCollection.cards.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {selectedCollection.cards.map((card, index) => (
-                    <div key={`${card.card_id}-${index}`} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <div key={`${card.card_id}-${index}`} className="border border-stone-200 dark:border-stone-700 rounded-lg p-4">
                       <div className="flex items-start gap-3">
                         {card.image_url && (
                           <img
@@ -660,16 +660,16 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                         <div className="flex-1 min-w-0">
                           <Link
                             href={`/cards/${card.card_id}`}
-                            className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 block truncate"
+                            className="text-sm font-medium text-stone-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400 block truncate"
                           >
                             {card.card_name}
                           </Link>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          <div className="text-xs text-stone-500 dark:text-stone-400 truncate">
                             {card.set_name}
                           </div>
                           <div className="flex items-center justify-between mt-2">
                             <div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">
+                              <div className="text-xs text-stone-500 dark:text-stone-400">
                                 Qty: {card.quantity} • {card.condition}
                               </div>
                               <CompactPriceIndicator
@@ -689,7 +689,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                             </button>
                           </div>
                           {card.notes && (
-                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 italic">
+                            <div className="text-xs text-stone-500 dark:text-stone-400 mt-1 italic">
                               {card.notes}
                             </div>
                           )}
@@ -700,12 +700,12 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <div className="text-gray-500 dark:text-gray-400 mb-4">
+                  <div className="text-stone-500 dark:text-stone-400 mb-4">
                     No cards in this collection yet
                   </div>
                   <button
                     onClick={() => setShowAddCardModal(true)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700"
                   >
                     Add Your First Card
                   </button>
@@ -716,12 +716,12 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
         </>
       ) : (
         <div className="text-center py-12">
-          <div className="text-gray-500 dark:text-gray-400 mb-4">
+          <div className="text-stone-500 dark:text-stone-400 mb-4">
             No collections found. Create your first collection to start tracking your cards!
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-6 py-3 bg-amber-600 text-white rounded-md hover:bg-amber-700"
           >
             Create Collection
           </button>
@@ -756,17 +756,17 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
         title="Import Collection"
       >
         <div className="space-y-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-stone-600 dark:text-stone-400">
             Import your collection from a JSON or CSV file. CSV files should include columns for Card ID, Card Name, Set Name, and Quantity.
           </p>
-          
+
           {importError && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3">
               <p className="text-sm text-red-600 dark:text-red-400">{importError}</p>
             </div>
           )}
 
-          <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+          <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-lg p-8 text-center">
             <input
               type="file"
               accept=".json,.csv"
@@ -783,21 +783,21 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
               htmlFor="import-file-input"
               className="cursor-pointer"
             >
-              <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-12 h-12 text-stone-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
                 Click to select a file or drag and drop
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-500">
+              <p className="text-xs text-stone-500 dark:text-stone-500">
                 Supported formats: JSON, CSV
               </p>
             </label>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-md p-3">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">CSV Format Example:</h4>
-            <pre className="text-xs text-gray-600 dark:text-gray-400 overflow-x-auto">
+          <div className="bg-stone-50 dark:bg-stone-800 rounded-md p-3">
+            <h4 className="text-sm font-medium text-stone-900 dark:text-white mb-2">CSV Format Example:</h4>
+            <pre className="text-xs text-stone-600 dark:text-stone-400 overflow-x-auto">
 Card ID,Card Name,Set Name,Quantity
 sm1-1,Bulbasaur,Sun & Moon,2
 xy1-54,Charizard,XY Base,1
@@ -834,31 +834,31 @@ const CreateCollectionForm = memo<CreateCollectionFormProps>(({ onSubmit, onCanc
 
   return (
     <div className="p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
         Create New Collection
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
             Collection Name *
           </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
             placeholder="My Pokemon Collection"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
             Description
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
             placeholder="Describe your collection..."
             rows={3}
           />
@@ -867,13 +867,13 @@ const CreateCollectionForm = memo<CreateCollectionFormProps>(({ onSubmit, onCanc
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-700"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700"
           >
             Create Collection
           </button>
@@ -924,20 +924,20 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
 
   return (
     <div className="p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
         Add Card to Collection
       </h3>
 
       {!selectedCard ? (
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
             Search for a card
           </label>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
             placeholder="Charizard, Pikachu..."
           />
 
@@ -947,7 +947,7 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
                 <div
                   key={card.id}
                   onClick={() => setSelectedCard(card)}
-                  className="flex items-center gap-3 p-2 border border-gray-200 dark:border-gray-700 rounded cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                  className="flex items-center gap-3 p-2 border border-stone-200 dark:border-stone-700 rounded cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700"
                 >
                   {card.images?.small && (
                     <img
@@ -957,10 +957,10 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
                     />
                   )}
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="font-medium text-stone-900 dark:text-white">
                       {card.name}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm text-stone-500 dark:text-stone-400">
                       {card.set?.name}
                     </div>
                   </div>
@@ -971,7 +971,7 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
         </div>
       ) : (
         <form onSubmit={handleAddCard} className="space-y-4">
-          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded">
+          <div className="flex items-center gap-3 p-3 bg-stone-50 dark:bg-stone-700 rounded">
             {selectedCard.images?.small && (
               <img
                 src={selectedCard.images.small}
@@ -980,17 +980,17 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
               />
             )}
             <div>
-              <div className="font-medium text-gray-900 dark:text-white">
+              <div className="font-medium text-stone-900 dark:text-white">
                 {selectedCard.name}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-stone-500 dark:text-stone-400">
                 {selectedCard.set?.name}
               </div>
             </div>
             <button
               type="button"
               onClick={() => setSelectedCard(null)}
-              className="ml-auto text-gray-500 hover:text-gray-700"
+              className="ml-auto text-stone-500 hover:text-stone-700"
             >
               ✕
             </button>
@@ -998,25 +998,25 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Quantity
               </label>
               <input
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
                 min="1"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Condition
               </label>
               <select
                 value={condition}
                 onChange={(e) => setCondition(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
               >
                 {conditions.map(cond => (
                   <option key={cond} value={cond}>{cond}</option>
@@ -1026,13 +1026,13 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               Notes (optional)
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+              className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
               placeholder="First edition, signed, etc..."
               rows={2}
             />
@@ -1042,13 +1042,13 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-700"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700"
             >
               Add to Collection
             </button>

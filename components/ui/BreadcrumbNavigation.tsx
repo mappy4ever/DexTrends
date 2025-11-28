@@ -155,22 +155,22 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
         {breadcrumbs.map((crumb, index) => (
           <React.Fragment key={index}>
             {index > 0 && (
-              <FaChevronRight className="h-4 w-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+              <FaChevronRight className="h-4 w-4 text-stone-400 dark:text-stone-500 flex-shrink-0" />
             )}
             
             {crumb.isEllipsis ? (
-              <span className="text-gray-400 dark:text-gray-500 px-2">
+              <span className="text-stone-400 dark:text-stone-500 px-2">
                 {crumb.icon}
               </span>
             ) : crumb.isActive ? (
-              <span className="flex items-center space-x-1 text-gray-900 dark:text-gray-100 font-medium">
+              <span className="flex items-center space-x-1 text-stone-900 dark:text-stone-100 font-medium">
                 <span role="img" aria-hidden="true">{crumb.icon}</span>
                 <span>{crumb.title}</span>
               </span>
             ) : (
               <Link 
                 href={crumb.href!}
-                className="flex items-center space-x-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
+                className="flex items-center space-x-1 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-200"
               >
                 <span role="img" aria-hidden="true">{crumb.icon}</span>
                 <span className="hover:underline">{crumb.title}</span>
@@ -182,7 +182,7 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
       {/* Page Title Section */}
       {showPageTitle && breadcrumbs.length > 0 && (
         <div className="mt-2">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center space-x-2">
+          <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100 flex items-center space-x-2">
             <span role="img" aria-hidden="true" className="text-3xl">
               {breadcrumbs[breadcrumbs.length - 1].icon}
             </span>
@@ -253,11 +253,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1 min-w-0">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 sm:text-3xl">
+          <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100 sm:text-3xl">
             {title}
           </h1>
           {description && (
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 sm:text-base">
+            <p className="mt-1 text-sm text-stone-600 dark:text-stone-400 sm:text-base">
               {description}
             </p>
           )}
@@ -272,8 +272,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
                   onClick={action.onClick}
                   className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200 ${
                     action.variant === 'primary'
-                      ? 'text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
-                      : 'text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-blue-500'
+                      ? 'text-white bg-amber-600 hover:bg-amber-700 focus:ring-amber-500'
+                      : 'text-stone-700 dark:text-stone-200 bg-white dark:bg-stone-800 border-stone-300 dark:border-stone-600 hover:bg-stone-50 dark:hover:bg-stone-700 focus:ring-amber-500'
                   }`}
                   disabled={action.disabled}
                 >
@@ -332,7 +332,7 @@ const QuickNavigation: React.FC<QuickNavigationProps> = ({
 
   return (
     <div className={`quick-navigation ${className}`}>
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+      <h3 className="text-sm font-medium text-stone-500 dark:text-stone-400 mb-3">
         Related Pages
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -340,17 +340,17 @@ const QuickNavigation: React.FC<QuickNavigationProps> = ({
           <Link 
             key={index}
             href={page.href}
-            className="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group"
+            className="flex items-center p-3 bg-stone-50 dark:bg-stone-800 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors duration-200 group"
           >
             <span className="text-2xl mr-3 group-hover:scale-110 transition-transform duration-200" role="img" aria-hidden="true">
               {page.icon}
             </span>
             <div>
-              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              <div className="text-sm font-medium text-stone-900 dark:text-stone-100">
                 {page.title}
               </div>
               {page.description && (
-                <div className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="text-xs text-stone-500 dark:text-stone-400">
                   {page.description}
                 </div>
               )}

@@ -122,17 +122,17 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 rounded-t-2xl">
+        <div className="bg-gradient-to-r from-amber-600 to-amber-600 text-white p-6 rounded-t-2xl">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div>
                 <h2 className="text-3xl font-bold capitalize">{type} Type</h2>
-                <p className="text-purple-100">Detailed analysis and battle guide</p>
+                <p className="text-amber-100">Detailed analysis and battle guide</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="text-white hover:text-gray-300 text-2xl font-bold"
+              className="text-white hover:text-stone-300 text-2xl font-bold"
             >
               ×
             </button>
@@ -140,7 +140,7 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-gray-200">
+        <div className="flex border-b border-stone-200">
           {[
             { key: 'overview' as const, label: 'Overview' },
             { key: 'strategy' as const, label: 'Strategy' },
@@ -151,8 +151,8 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
               onClick={() => setActiveTab(tab.key)}
               className={`flex-1 px-6 py-4 font-medium transition-colors ${
                 activeTab === tab.key
-                  ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-                  : 'text-gray-600 hover:text-gray-800'
+                  ? 'text-amber-600 border-b-2 border-amber-600 bg-amber-50'
+                  : 'text-stone-600 hover:text-stone-800'
               }`}
             >
               {tab.label}
@@ -165,17 +165,17 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Description</h3>
-                <p className="text-gray-600 leading-relaxed">{typeInfo.description}</p>
+                <h3 className="text-xl font-bold text-stone-800 mb-3">Description</h3>
+                <p className="text-stone-600 leading-relaxed">{typeInfo.description}</p>
               </div>
-              
+
               <div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Key Characteristics</h3>
+                <h3 className="text-xl font-bold text-stone-800 mb-3">Key Characteristics</h3>
                 <ul className="space-y-2">
                   {typeInfo.characteristics.map((char, index) => (
                     <li key={index} className="flex items-center gap-2">
-                      <span className="text-blue-600">•</span>
-                      <span className="text-gray-700">{char}</span>
+                      <span className="text-amber-600">•</span>
+                      <span className="text-stone-700">{char}</span>
                     </li>
                   ))}
                 </ul>
@@ -186,13 +186,13 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
           {activeTab === 'strategy' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Battle Strategy</h3>
-                <p className="text-gray-600 leading-relaxed">{typeInfo.strategies}</p>
+                <h3 className="text-xl font-bold text-stone-800 mb-3">Battle Strategy</h3>
+                <p className="text-stone-600 leading-relaxed">{typeInfo.strategies}</p>
               </div>
-              
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">Pro Tips</h4>
-                <ul className="text-blue-700 text-sm space-y-1">
+
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h4 className="font-semibold text-amber-800 mb-2">Pro Tips</h4>
+                <ul className="text-amber-700 text-sm space-y-1">
                   <li>• Consider team composition when using {type} types</li>
                   <li>• Take advantage of STAB (Same Type Attack Bonus) for 1.5× damage</li>
                   <li>• Watch out for type disadvantages and plan accordingly</li>
@@ -205,16 +205,16 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
           {activeTab === 'matchups' && (
             <div className="space-y-6">
               <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Type Matchup Summary</h3>
+                <h3 className="text-xl font-bold text-stone-800 mb-3">Type Matchup Summary</h3>
                 <TypeBadge type={type} size="lg" />
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-green-50 rounded-lg p-4">
                   <h4 className="font-semibold text-green-800 mb-2">Strong Against</h4>
                   <p className="text-green-700 text-sm">Types that {type} attacks are super effective against</p>
                 </div>
-                
+
                 <div className="bg-red-50 rounded-lg p-4">
                   <h4 className="font-semibold text-red-800 mb-2">Weak Against</h4>
                   <p className="text-red-700 text-sm">Types that {type} struggles against</p>
@@ -241,17 +241,17 @@ export const DualTypeCalculator: React.FC = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
-      <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
+      <h3 className="text-xl font-bold text-stone-800 mb-4 text-center">
         Dual Type Calculator
       </h3>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Primary Type</label>
+          <label className="block text-sm font-medium text-stone-700 mb-2">Primary Type</label>
           <select
             value={type1}
             onChange={(e) => setType1(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500"
           >
             <option value="">Select type...</option>
             {types.map(type => (
@@ -259,13 +259,13 @@ export const DualTypeCalculator: React.FC = () => {
             ))}
           </select>
         </div>
-        
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Secondary Type</label>
+          <label className="block text-sm font-medium text-stone-700 mb-2">Secondary Type</label>
           <select
             value={type2}
             onChange={(e) => setType2(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500"
           >
             <option value="">Select type...</option>
             {types.map(type => (
@@ -274,7 +274,7 @@ export const DualTypeCalculator: React.FC = () => {
           </select>
         </div>
       </div>
-      
+
       {type1 && type2 && (
         <div className="text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -284,17 +284,17 @@ export const DualTypeCalculator: React.FC = () => {
           </div>
           <button
             onClick={() => setShowResults(!showResults)}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
           >
             {showResults ? 'Hide Results' : 'Calculate Effectiveness'}
           </button>
         </div>
       )}
-      
+
       {showResults && type1 && type2 && (
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <h4 className="font-semibold text-gray-800 mb-2">Dual Type Analysis</h4>
-          <p className="text-gray-600 text-sm">
+        <div className="mt-6 p-4 bg-stone-50 rounded-lg">
+          <h4 className="font-semibold text-stone-800 mb-2">Dual Type Analysis</h4>
+          <p className="text-stone-600 text-sm">
             This {type1}/{type2} combination creates unique defensive and offensive properties.
             Dual types multiply effectiveness values, creating interesting strategic opportunities.
           </p>

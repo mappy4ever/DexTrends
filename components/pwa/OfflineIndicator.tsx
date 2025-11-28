@@ -103,9 +103,9 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({
           <button
             onClick={handleToggleMinimize}
             className={`w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-200 hover:scale-105 ${
-              isOnline 
-                ? 'text-green-600 hover:bg-green-50/50' 
-                : 'text-orange-600 hover:bg-orange-50/50'
+              isOnline
+                ? 'text-green-600 hover:bg-green-50/50'
+                : 'text-amber-600 hover:bg-amber-50/50'
             }`}
             title={isOnline ? 'Online' : 'Offline'}
           >
@@ -131,8 +131,8 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({
                     </svg>
                   </div>
                 ) : (
-                  <div className="w-10 h-10 bg-orange-100/80 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-10 h-10 bg-amber-100/80 rounded-lg flex items-center justify-center">
+                    <svg className="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 2.83L3 21m9-13a4.978 4.978 0 00-2.83 1.414M21 3l-6 6m0 0V4m0 5h5M9 9l3 3m0 0V9m0 3H9" />
                     </svg>
                   </div>
@@ -140,12 +140,12 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({
                 
                 <div>
                   <h4 className={`font-semibold ${
-                    isOnline ? 'text-green-800' : 'text-orange-800'
+                    isOnline ? 'text-green-800' : 'text-amber-800'
                   }`}>
                     {isOnline ? 'Back Online!' : 'Offline Mode'}
                   </h4>
                   <p className={`text-sm ${
-                    isOnline ? 'text-green-600' : 'text-orange-600'
+                    isOnline ? 'text-green-600' : 'text-amber-600'
                   }`}>
                     {isOnline 
                       ? 'Connection restored'
@@ -160,18 +160,18 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({
               <div className="flex space-x-1">
                 <button
                   onClick={handleToggleMinimize}
-                  className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded transition-all"
+                  className="p-1 text-stone-400 hover:text-stone-600 hover:bg-stone-100/50 rounded transition-all"
                   title="Minimize"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
                   </svg>
                 </button>
-                
+
                 {(isOnline || autoHide) && (
                   <button
                     onClick={handleDismiss}
-                    className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded transition-all"
+                    className="p-1 text-stone-400 hover:text-stone-600 hover:bg-stone-100/50 rounded transition-all"
                     title="Dismiss"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -183,9 +183,9 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({
             </div>
 
             {!isOnline && (
-              <div className="mt-3 p-3 bg-orange-50/50 rounded-lg border border-orange-200/50">
-                <h5 className="text-sm font-medium text-orange-800 mb-2">Available offline:</h5>
-                <ul className="text-xs text-orange-700 space-y-1">
+              <div className="mt-3 p-3 bg-amber-50/50 rounded-lg border border-amber-200/50">
+                <h5 className="text-sm font-medium text-amber-800 mb-2">Available offline:</h5>
+                <ul className="text-xs text-amber-700 space-y-1">
                   <li>• Previously viewed cards</li>
                   <li>• Cached Pokedex data</li>
                   <li>• Basic navigation</li>
@@ -215,8 +215,8 @@ export const CompactOfflineIndicator: React.FC = () => {
   if (isOnline) return null;
 
   return (
-    <div className="flex items-center space-x-2 px-3 py-1 bg-orange-100/80 text-orange-800 rounded-full text-xs font-medium">
-      <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+    <div className="flex items-center space-x-2 px-3 py-1 bg-amber-100/80 text-amber-800 rounded-full text-xs font-medium">
+      <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
       <span>Offline</span>
     </div>
   );

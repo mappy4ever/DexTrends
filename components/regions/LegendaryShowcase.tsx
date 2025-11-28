@@ -674,7 +674,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
   };
 
   return (
-    <div className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`py-16 ${theme === 'dark' ? 'bg-stone-900' : 'bg-stone-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <FadeIn>
@@ -683,7 +683,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
               <FaCrown className="text-yellow-500" />
               {regionLegendaries.title}
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-stone-600 dark:text-stone-400">
               {regionLegendaries.description}
             </p>
           </div>
@@ -701,16 +701,16 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
               <CardHover>
                 <motion.div
                   className={`relative rounded-xl overflow-hidden cursor-pointer group ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                    theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                   } shadow-md hover:shadow-xl transition-all duration-300 border ${
-                    theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                    theme === 'dark' ? 'border-stone-700' : 'border-stone-200'
                   }`}
                   onClick={() => handlePokemonClick(legendary.id)}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   {/* Pokemon Image */}
-                  <div className="relative h-32 sm:h-40 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                  <div className="relative h-32 sm:h-40 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-800">
                     <Image
                       src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${legendary.id}.png`}
                       alt={legendary.name}
@@ -724,7 +724,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
                   <div className="p-3">
                     <div className="text-center mb-2">
                       <h3 className="font-bold text-sm mb-1">{legendary.name}</h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-stone-500 dark:text-stone-400">
                         {legendary.title}
                       </p>
                     </div>
@@ -738,7 +738,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
 
                     {/* Location */}
                     <div className="text-center">
-                      <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                      <p className="text-xs text-stone-600 dark:text-stone-400 truncate">
                         {legendary.location}
                       </p>
                     </div>

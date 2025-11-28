@@ -39,8 +39,8 @@ export const CircularCard: React.FC<CircularCardProps> = ({
   title,
   subtitle,
   badge,
-  gradientFrom = 'blue-400',
-  gradientTo = 'purple-400',
+  gradientFrom = 'amber-400',
+  gradientTo = 'amber-400',
   onClick,
   className = '',
   children,
@@ -88,7 +88,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
           info('Share feature coming soon!');
         }
       },
-      color: 'text-blue-500'
+      color: 'text-amber-500'
     },
     {
       id: 'info',
@@ -101,7 +101,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
           info('More information coming soon!');
         }
       },
-      color: 'text-gray-500'
+      color: 'text-stone-500'
     }
   ], [onFavorite, onShare, onInfo, success, info]);
 
@@ -172,9 +172,9 @@ export const CircularCard: React.FC<CircularCardProps> = ({
         {/* Outer gradient ring */}
         <div className={`absolute inset-0 rounded-full bg-gradient-to-br from-${gradientFrom} to-${gradientTo} p-[5px] shadow-lg ${glow ? 'animate-pulse' : ''}`}>
           {/* White spacing ring */}
-          <div className="w-full h-full rounded-full bg-white/80 dark:bg-gray-800/80 p-[5px]">
+          <div className="w-full h-full rounded-full bg-white/80 dark:bg-stone-800/80 p-[5px]">
             {/* Inner content circle */}
-            <div className="relative w-full h-full rounded-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 shadow-inner overflow-hidden">
+            <div className="relative w-full h-full rounded-full bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-700 dark:to-stone-600 shadow-inner overflow-hidden">
               {/* Shine effect */}
               <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-30 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -213,12 +213,12 @@ export const CircularCard: React.FC<CircularCardProps> = ({
       {(title || subtitle) && (
         <div className="text-center mt-3">
           {title && (
-            <h3 className="font-bold text-sm sm:text-base capitalize text-gray-800 dark:text-gray-200">
+            <h3 className="font-bold text-sm sm:text-base capitalize text-stone-800 dark:text-stone-200">
               {title}
             </h3>
           )}
           {subtitle && (
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-xs text-stone-600 dark:text-stone-400 mt-1">
               {subtitle}
             </p>
           )}
@@ -254,7 +254,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
             </motion.button>
             
             <motion.button
-              className="p-2 bg-blue-500 text-white rounded-full shadow-lg"
+              className="p-2 bg-amber-500 text-white rounded-full shadow-lg"
               whileTap={{ scale: 0.9 }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -286,7 +286,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
           transition={{ duration: 0.2 }}
         >
           <div className={`px-2 py-1 rounded-full text-xs ${
-            swipeX < -50 ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-600'
+            swipeX < -50 ? 'bg-amber-500 text-white' : 'bg-stone-300 text-stone-600'
           }`}>
             <motion.span
               animate={{ x: [-1, 1, -1] }}

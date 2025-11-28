@@ -73,24 +73,24 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
     const gradients: Record<string, string> = {
       grass: 'from-green-400 to-green-600',
       fire: 'from-red-400 to-orange-600',
-      water: 'from-blue-400 to-blue-600',
-      flying: 'from-blue-300 to-indigo-400',
-      poison: 'from-purple-400 to-purple-600',
+      water: 'from-amber-400 to-amber-600',
+      flying: 'from-amber-300 to-amber-400',
+      poison: 'from-amber-400 to-amber-600',
     };
-    return gradients[type] || 'from-gray-400 to-gray-600';
+    return gradients[type] || 'from-stone-400 to-stone-600';
   };
 
   const currentEvolutionLine = starterEvolutions[region.starterIds[selectedStarter]] || [];
 
   return (
-    <div className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`py-20 ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto px-8">
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-5xl font-bold mb-4">
               Choose Your Partner
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-stone-600 dark:text-stone-400">
               Begin your journey with one of these starter Pokémon
             </p>
           </div>
@@ -107,7 +107,7 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
                     setShowEvolutions(false);
                   }}
                   className={`relative cursor-pointer rounded-3xl overflow-hidden ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                    theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                   } ${selectedStarter === index ? 'ring-4 ring-pokemon-blue scale-105' : ''} 
                   transition-all duration-300`}
                 >
@@ -138,7 +138,7 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
                     
                     {/* Pokedex Number */}
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                      <span className="text-sm text-stone-500 dark:text-stone-400">
                         #{String(id).padStart(3, '0')}
                       </span>
                       {selectedStarter === index && (
@@ -178,7 +178,7 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
         {showEvolutions && (
           <SlideUp>
             <div className={`rounded-3xl overflow-hidden ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+              theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
             } p-8`}>
               <h3 className="text-2xl font-bold mb-6 text-center">
                 {region.starters[selectedStarter]} Evolution Line
@@ -191,7 +191,7 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
                       <Link href={`/pokedex/${evoId}`}>
                         <a className="group">
                           <div className={`relative rounded-2xl overflow-hidden ${
-                            theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                            theme === 'dark' ? 'bg-stone-700' : 'bg-white'
                           } p-4 hover:shadow-xl transition-all duration-300`}>
                             <div className="relative w-32 h-32 md:w-40 md:h-40">
                               <Image
@@ -205,7 +205,7 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
                             <p className="text-center mt-2 font-semibold">
                               {evolutionNames[evoId] || `Stage ${index + 1}`}
                             </p>
-                            <p className="text-center text-sm text-gray-500">
+                            <p className="text-center text-sm text-stone-500">
                               #{String(evoId).padStart(3, '0')}
                             </p>
                           </div>
@@ -214,7 +214,7 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
                     </Scale>
                     
                     {index < currentEvolutionLine.length - 1 && (
-                      <BsArrowRight className="text-3xl text-gray-400 hidden md:block" />
+                      <BsArrowRight className="text-3xl text-stone-400 hidden md:block" />
                     )}
                   </React.Fragment>
                 ))}
@@ -227,12 +227,12 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
         <div className="mt-12 grid md:grid-cols-2 gap-6">
           <FadeIn>
             <div className={`p-6 rounded-2xl ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+              theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
             } flex items-center gap-4`}>
               <BsController className="text-4xl text-pokemon-blue" />
               <div>
                 <h4 className="font-bold mb-1">Available in Games</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-stone-600 dark:text-stone-400">
                   {region.games.join(', ')}
                 </p>
               </div>
@@ -241,12 +241,12 @@ const StarterShowcase: React.FC<StarterShowcaseProps> = ({ region, theme }) => {
 
           <FadeIn delay={0.1}>
             <div className={`p-6 rounded-2xl ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+              theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
             } flex items-center gap-4`}>
               <BsCardList className="text-4xl text-pokemon-red" />
               <div>
                 <h4 className="font-bold mb-1">TCG Appearances</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-stone-600 dark:text-stone-400">
                   Featured in multiple card sets across generations
                 </p>
               </div>

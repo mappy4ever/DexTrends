@@ -42,7 +42,7 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
           title={`Filter by ${type === 'all' ? 'all types' : type + ' type'}`}
         >
           {type === "all" ? (
-            <div className={`px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-medium flex items-center justify-center ${
+            <div className={`px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-xs font-medium flex items-center justify-center ${
               compact ? 'h-6' : 'h-7'
             }`}>
               All Types

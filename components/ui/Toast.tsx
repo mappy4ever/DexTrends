@@ -25,14 +25,14 @@ const toastIcons = {
 const toastColors = {
   success: 'bg-green-500',
   error: 'bg-red-500',
-  info: 'bg-blue-500',
+  info: 'bg-amber-500',
   warning: 'bg-yellow-500'
 };
 
 const toastTextColors = {
   success: 'text-green-500',
   error: 'text-red-500',
-  info: 'text-blue-500',
+  info: 'text-amber-500',
   warning: 'text-yellow-500'
 };
 
@@ -144,28 +144,28 @@ export const Toast: React.FC<ToastProps> = ({
       onDragEnd={handleDragEnd}
       style={{ x: dragX }}
     >
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden min-w-[300px] max-w-md">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl overflow-hidden min-w-[300px] max-w-md">
         <div className="p-4">
           <div className="flex items-start gap-3">
             <div className={`flex-shrink-0 ${toastTextColors[type]}`}>
               {toastIcons[type]}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              <p className="text-sm font-medium text-stone-900 dark:text-stone-100">
                 {message}
               </p>
             </div>
             <button
               onClick={() => onClose(id)}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="flex-shrink-0 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors"
             >
               <FaTimes className="w-4 h-4" />
             </button>
           </div>
         </div>
-        
+
         {showProgress && duration > 0 && (
-          <div className="h-1 bg-gray-200 dark:bg-gray-700">
+          <div className="h-1 bg-stone-200 dark:bg-stone-700">
             <motion.div
               className={`h-full ${toastColors[type]}`}
               initial={{ width: '100%' }}

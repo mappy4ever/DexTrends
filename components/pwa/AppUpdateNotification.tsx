@@ -200,9 +200,9 @@ const AppUpdateNotification: React.FC = () => {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md">
-      <div className="bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden animate-slide-up">
+      <div className="bg-white rounded-lg shadow-xl border border-stone-200 overflow-hidden animate-slide-up">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4">
+        <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-4">
           <div className="flex items-center">
             <span className="text-2xl mr-3">🚀</span>
             <div>
@@ -214,7 +214,7 @@ const AppUpdateNotification: React.FC = () => {
 
         {/* Content */}
         <div className="p-4">
-          <div className="text-sm text-gray-600 mb-4">
+          <div className="text-sm text-stone-600 mb-4">
             Get the latest features, improvements, and bug fixes by updating now.
           </div>
 
@@ -222,13 +222,13 @@ const AppUpdateNotification: React.FC = () => {
           <div className="mb-4">
             <button
               onClick={() => setShowChangeLog(!showChangeLog)}
-              className="text-blue-600 text-sm font-medium hover:text-blue-700 transition-colors">
+              className="text-amber-600 text-sm font-medium hover:text-amber-700 transition-colors">
               {showChangeLog ? '📖 Hide' : '📋 View'} What's New
             </button>
-            
+
             {showChangeLog && (
-              <div className="mt-2 p-3 bg-gray-50 rounded-lg text-sm">
-                <ul className="space-y-1 text-gray-700">
+              <div className="mt-2 p-3 bg-stone-50 rounded-lg text-sm">
+                <ul className="space-y-1 text-stone-700">
                   <li>• 🎨 Enhanced mobile UI and animations</li>
                   <li>• 📱 Improved PWA functionality</li>
                   <li>• 🔔 Better push notifications</li>
@@ -246,30 +246,30 @@ const AppUpdateNotification: React.FC = () => {
               disabled={isInstalling}
               className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
                 isInstalling
-                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 active:scale-95'
+                  ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transform hover:scale-105 active:scale-95'
               }`}
             >
               {isInstalling ? (
                 <div className="flex items-center justify-center">
-                  <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin mr-2"></div>
+                  <div className="w-4 h-4 border-2 border-stone-400 border-t-transparent rounded-full animate-spin mr-2"></div>
                   Installing...
                 </div>
               ) : (
                 'Update Now'
               )}
             </button>
-            
+
             <button
               onClick={handleDismissUpdate}
               disabled={isInstalling}
-              className="px-4 py-3 text-gray-600 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50">
+              className="px-4 py-3 text-stone-600 font-medium border border-stone-300 rounded-lg hover:bg-stone-50 transition-colors disabled:opacity-50">
               Later
             </button>
           </div>
 
           {/* Additional Info */}
-          <div className="mt-3 text-xs text-gray-500 text-center">
+          <div className="mt-3 text-xs text-stone-500 text-center">
             Update will take just a few seconds
           </div>
         </div>

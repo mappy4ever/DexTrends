@@ -179,7 +179,7 @@ const EVOptimizer: NextPage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">
                 Team Builder
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
+              <p className="text-stone-600 dark:text-stone-400 text-lg">
                 Visualize and optimize your Pokemon's effort values with advanced heat mapping
               </p>
             </div>
@@ -189,19 +189,19 @@ const EVOptimizer: NextPage = () => {
             {/* Pokemon Selection */}
             <div className="lg:col-span-1">
               <GlassContainer variant="medium">
-                <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">Select Pokemon</h2>
+                <h2 className="text-xl font-bold mb-4 text-stone-800 dark:text-stone-200">Select Pokemon</h2>
                 
                 <input
                   type="text"
                   placeholder="Search Pokemon..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 rounded-full glass-light border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
+                  className="w-full px-4 py-3 rounded-full glass-light border border-stone-200 dark:border-stone-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
                 />
 
                 {loading && (
                   <div className="mt-4 text-center">
-                    <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
+                    <div className="animate-spin h-8 w-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto"></div>
                   </div>
                 )}
 
@@ -224,7 +224,7 @@ const EVOptimizer: NextPage = () => {
                           height={48}
                         />
                         <div className="text-left">
-                          <div className="font-medium capitalize">{pokemon.name}</div>
+                          <div className="font-medium capitalize text-amber-800 dark:text-amber-200">{pokemon.name}</div>
                           <div className="flex gap-1">
                             {pokemon.types?.map((t) => (
                               <TypeGradientBadge key={t.type.name} type={t.type.name} size="xs" />
@@ -267,7 +267,7 @@ const EVOptimizer: NextPage = () => {
                           max="100"
                           value={level}
                           onChange={(e) => setLevel(parseInt(e.target.value) || 50)}
-                          className="w-full px-3 py-2 rounded-full glass-light border border-gray-200 dark:border-gray-700"
+                          className="w-full px-3 py-2 rounded-full glass-light border border-stone-200 dark:border-stone-700"
                         />
                       </div>
 
@@ -276,7 +276,7 @@ const EVOptimizer: NextPage = () => {
                         <select
                           value={nature}
                           onChange={(e) => setNature(e.target.value)}
-                          className="w-full px-3 py-2 rounded-full glass-light border border-gray-200 dark:border-gray-700"
+                          className="w-full px-3 py-2 rounded-full glass-light border border-stone-200 dark:border-stone-700"
                         >
                           {Object.entries(NATURE_MODIFIERS).map(([name, mods]) => (
                             <option key={name} value={name}>
@@ -295,7 +295,7 @@ const EVOptimizer: NextPage = () => {
 
               {/* Speed Calculator */}
               {selectedPokemon && (
-                <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                <div className="mt-6 bg-white dark:bg-stone-800 rounded-lg shadow-lg p-6">
                   <h3 className="text-lg font-bold mb-4">Speed Calculator</h3>
                   
                   <div className="space-y-3">
@@ -340,13 +340,13 @@ const EVOptimizer: NextPage = () => {
                           type="number"
                           value={targetSpeed || ''}
                           onChange={(e) => setTargetSpeed(parseInt(e.target.value) || null)}
-                          className="flex-1 px-3 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
+                          className="flex-1 px-3 py-1 rounded border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800"
                           placeholder="Enter target"
                         />
                         <button
                           onClick={optimizeForSpeed}
                           disabled={!targetSpeed}
-                          className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                          className="px-3 py-1 bg-amber-600 text-white rounded hover:bg-amber-700 disabled:bg-stone-400 disabled:cursor-not-allowed"
                         >
                           Optimize
                         </button>
@@ -361,10 +361,10 @@ const EVOptimizer: NextPage = () => {
                           <button
                             key={benchmark.name}
                             onClick={() => setTargetSpeed(benchmark.speed)}
-                            className="w-full text-left px-2 py-1 text-xs rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex justify-between items-center"
+                            className="w-full text-left px-2 py-1 text-xs rounded hover:bg-stone-100 dark:hover:bg-stone-700 flex justify-between items-center"
                           >
                             <span>{benchmark.name}</span>
-                            <span className="text-gray-500">{benchmark.speed}</span>
+                            <span className="text-stone-600">{benchmark.speed}</span>
                           </button>
                         ))}
                       </div>
@@ -384,12 +384,12 @@ const EVOptimizer: NextPage = () => {
                   nature={nature}
                 />
               ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-12 text-center">
+                <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-12 text-center">
                   <div className="text-6xl mb-4">📊</div>
-                  <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                  <h3 className="text-2xl font-bold text-stone-800 dark:text-white mb-2">
                     Select a Pokemon
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-stone-600 dark:text-stone-400">
                     Choose a Pokemon to start optimizing its EVs
                   </p>
                 </div>
@@ -397,15 +397,15 @@ const EVOptimizer: NextPage = () => {
 
               {/* Current Stats Display */}
               {selectedPokemon && currentStats && (
-                <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                <div className="mt-6 bg-white dark:bg-stone-800 rounded-lg shadow-lg p-6">
                   <h3 className="text-lg font-bold mb-4">Final Stats</h3>
                   <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                     {Object.entries(currentStats).map(([stat, value]) => (
                       <div key={stat} className="text-center">
-                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                        <div className="text-2xl font-bold text-stone-900 dark:text-white">
                           {value}
                         </div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400">
+                        <div className="text-xs text-stone-600 dark:text-stone-400">
                           {STAT_NAMES[stat]}
                         </div>
                       </div>

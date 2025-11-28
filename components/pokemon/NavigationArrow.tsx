@@ -31,14 +31,14 @@ const NavigationArrow: React.FC<NavigationArrowProps> = ({ direction, pokemon, o
     >
       {/* Main arrow button */}
       <div className={cn(
-        "relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-full p-3",
-        "shadow-lg border border-gray-200/50 dark:border-gray-700/50",
+        "relative bg-white/90 dark:bg-stone-800/90 backdrop-blur-md rounded-full p-3",
+        "shadow-lg border border-stone-200/50 dark:border-stone-700/50",
         "hover:scale-110 transition-all duration-200"
       )}>
         {isPrev ? (
-          <FaChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+          <FaChevronLeft className="w-6 h-6 text-stone-700 dark:text-stone-300" />
         ) : (
-          <FaChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+          <FaChevronRight className="w-6 h-6 text-stone-700 dark:text-stone-300" />
         )}
       </div>
       
@@ -54,8 +54,8 @@ const NavigationArrow: React.FC<NavigationArrowProps> = ({ direction, pokemon, o
         transition={{ duration: 0.2 }}
       >
         <div className={cn(
-          "bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-4 min-w-[200px]",
-          "border border-gray-200 dark:border-gray-700",
+          "bg-white dark:bg-stone-800 rounded-xl shadow-2xl p-4 min-w-[200px]",
+          "border border-stone-200 dark:border-stone-700",
           "opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         )}>
           {/* Pokemon preview */}
@@ -67,7 +67,7 @@ const NavigationArrow: React.FC<NavigationArrowProps> = ({ direction, pokemon, o
                 {pokemon.types?.map((typeInfo, index) => (
                   <span
                     key={index}
-                    className="text-xs px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    className="text-xs px-2 py-0.5 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300"
                   >
                     {typeInfo.type.name}
                   </span>
@@ -77,7 +77,7 @@ const NavigationArrow: React.FC<NavigationArrowProps> = ({ direction, pokemon, o
           </div>
           
           {/* Direction hint */}
-          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+          <div className="mt-2 text-xs text-stone-500 dark:text-stone-400 text-center">
             {isPrev ? '← Previous' : 'Next →'}
           </div>
         </div>
@@ -86,7 +86,7 @@ const NavigationArrow: React.FC<NavigationArrowProps> = ({ direction, pokemon, o
       {/* Keyboard hint */}
       <div className={cn(
         "absolute -bottom-8 left-1/2 -translate-x-1/2",
-        "text-xs text-gray-400 dark:text-gray-600 whitespace-nowrap",
+        "text-xs text-stone-400 dark:text-stone-600 whitespace-nowrap",
         "opacity-0 group-hover:opacity-100 transition-opacity duration-200"
       )}>
         Press {isPrev ? '←' : '→'}

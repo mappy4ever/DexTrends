@@ -653,36 +653,36 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
               }`}>
                 {/* Front of card - Enhanced Elite Four Design */}
                 <div className="absolute inset-0 backface-hidden will-change-transform">
-                  <div className={`relative h-full rounded-3xl overflow-hidden border border-gray-200/50 bg-gradient-to-br ${
+                  <div className={`relative h-full rounded-3xl overflow-hidden border border-stone-200/50 bg-gradient-to-br ${
                   member.type === 'ice' ? 'from-white to-cyan-50/70' :
                   member.type === 'fighting' ? 'from-white to-red-50/70' :
-                  member.type === 'poison' ? 'from-white to-purple-50/70' :
+                  member.type === 'poison' ? 'from-white to-amber-50/70' :
                   member.type === 'ground' ? 'from-white to-amber-50/70' :
-                  member.type === 'flying' ? 'from-white to-purple-100/70' :
+                  member.type === 'flying' ? 'from-white to-amber-100/70' :
                   member.type === 'psychic' ? 'from-white to-pink-50/70' :
                   member.type === 'bug' ? 'from-white to-lime-50/70' :
                   member.type === 'rock' ? 'from-white to-stone-50/70' :
-                  member.type === 'ghost' ? 'from-white to-indigo-50/70' :
-                  member.type === 'dragon' ? 'from-white to-purple-50/70' :
-                  member.type === 'dark' ? 'from-white to-gray-100/70' :
-                  member.type === 'steel' ? 'from-white to-slate-50/70' :
+                  member.type === 'ghost' ? 'from-white to-amber-50/70' :
+                  member.type === 'dragon' ? 'from-white to-amber-50/70' :
+                  member.type === 'dark' ? 'from-white to-stone-100/70' :
+                  member.type === 'steel' ? 'from-white to-stone-50/70' :
                   member.type === 'fire' ? 'from-white to-orange-50/70' :
-                  member.type === 'water' ? 'from-white to-blue-50/70' :
+                  member.type === 'water' ? 'from-white to-amber-50/70' :
                   member.type === 'grass' ? 'from-white to-green-50/70' :
                   member.type === 'electric' ? 'from-white to-yellow-50/70' :
                   member.type === 'fairy' ? 'from-white to-pink-50/70' :
-                  member.type === 'normal' ? 'from-white to-gray-50/70' :
-                  'from-white to-gray-50/70'
+                  member.type === 'normal' ? 'from-white to-stone-50/70' :
+                  'from-white to-stone-50/70'
                 }`} style={{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.15)' }}>
                     {/* Subtle type-colored shimmer */}
                     <div className={`absolute inset-0 opacity-20 ${
-                      member.type === 'ice' ? 'bg-gradient-to-br from-cyan-500/20 via-transparent to-blue-500/20' :
+                      member.type === 'ice' ? 'bg-gradient-to-br from-cyan-500/20 via-transparent to-amber-500/20' :
                       member.type === 'fighting' ? 'bg-gradient-to-br from-red-500/20 via-transparent to-orange-500/20' :
-                      member.type === 'poison' ? 'bg-gradient-to-br from-purple-500/20 via-transparent to-pink-500/20' :
-                      member.type === 'dragon' ? 'bg-gradient-to-br from-indigo-500/20 via-transparent to-purple-500/20' :
-                      member.type === 'ghost' ? 'bg-gradient-to-br from-purple-600/20 via-transparent to-indigo-600/20' :
-                      member.type === 'psychic' ? 'bg-gradient-to-br from-pink-500/20 via-transparent to-purple-500/20' :
-                      'bg-gradient-to-br from-gray-500/20 via-transparent to-gray-600/20'
+                      member.type === 'poison' ? 'bg-gradient-to-br from-amber-500/20 via-transparent to-pink-500/20' :
+                      member.type === 'dragon' ? 'bg-gradient-to-br from-amber-500/20 via-transparent to-amber-500/20' :
+                      member.type === 'ghost' ? 'bg-gradient-to-br from-amber-600/20 via-transparent to-amber-600/20' :
+                      member.type === 'psychic' ? 'bg-gradient-to-br from-pink-500/20 via-transparent to-amber-500/20' :
+                      'bg-gradient-to-br from-stone-500/20 via-transparent to-stone-600/20'
                     }`} />
                     {/* Elite Four Name at top - with gold gradient */}
                     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 text-center">
@@ -692,10 +692,10 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                         </h2>
                       </div>
                       <div className="mt-2">
-                        <p className="text-sm text-gray-800 font-semibold">
+                        <p className="text-sm text-stone-800 font-semibold">
                           {member.type.charAt(0).toUpperCase() + member.type.slice(1)} Master
                         </p>
-                        <p className="text-xs text-gray-700 font-medium">
+                        <p className="text-xs text-stone-700 font-medium">
                           Elite Four
                         </p>
                       </div>
@@ -752,12 +752,12 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                           <TypeGradientBadge type={member.type} size="xs" gradient={true} />
                         </div>
                         {/* Elite Rank Badge below */}
-                        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg px-3 py-2 shadow-lg border border-gray-700">
+                        <div className="bg-gradient-to-br from-stone-800 to-stone-900 rounded-lg px-3 py-2 shadow-lg border border-stone-700">
                           <div className="flex items-center gap-2">
                             <BsShieldFill className="text-yellow-400 text-base" />
                             <div>
                               <p className="text-white font-bold text-sm">Elite {index + 1}</p>
-                              <p className="text-gray-400 text-xs">Rank</p>
+                              <p className="text-stone-400 text-xs">Rank</p>
                             </div>
                           </div>
                         </div>
@@ -788,7 +788,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                     {/* Flip indicator - positioned below name to avoid overlap, matching gym leaders */}
                     <div className="absolute top-20 right-5 z-40">
                       <div className="w-10 h-10 bg-white/70 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform border border-white/50">
-                        <span className="text-gray-700 font-bold text-2xl flex items-center justify-center">›</span>
+                        <span className="text-stone-700 font-bold text-2xl flex items-center justify-center">›</span>
                       </div>
                     </div>
                   </div>
@@ -796,30 +796,30 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                 
                 {/* Back of card - All details */}
                 <div className="absolute inset-0 rotate-y-180 backface-hidden">
-                  <div className="relative h-full bg-gradient-to-br from-purple-900 to-indigo-900 rounded-3xl overflow-hidden border border-gray-200/50 p-6" style={{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.15)' }}>
+                  <div className="relative h-full bg-gradient-to-br from-amber-900 to-amber-900 rounded-3xl overflow-hidden border border-stone-200/50 p-6" style={{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.15)' }}>
                     {/* Glass morphism overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-purple-500/5 rounded-3xl" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-amber-500/5 rounded-3xl" />
                     
                     <div className="relative z-10 h-full flex flex-col">
                       {/* Header */}
                       <div className="text-center mb-3">
                         <h3 className="elite-four-name text-2xl font-bold text-white">{member.name}</h3>
-                        <p className="text-xs text-purple-200">Elite Four • {member.type.charAt(0).toUpperCase() + member.type.slice(1)} Master</p>
+                        <p className="text-xs text-amber-200">Elite Four • {member.type.charAt(0).toUpperCase() + member.type.slice(1)} Master</p>
                       </div>
-                      
+
                       {/* Quote */}
                       {memberData && (
                         <div className="mb-3 px-2">
-                          <p className="text-xs italic text-purple-100 text-center">
+                          <p className="text-xs italic text-amber-100 text-center">
                             "{memberData.quote}"
                           </p>
                         </div>
                       )}
-                      
+
                       {/* Full Team Display with Names */}
                       {memberData && (
                         <div className="flex-1">
-                          <p className="text-xs font-semibold text-purple-200 text-center mb-2">
+                          <p className="text-xs font-semibold text-amber-200 text-center mb-2">
                             Team
                           </p>
                           <div className="grid grid-cols-3 gap-1.5">
@@ -831,16 +831,16 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                               if (!pokemon) {
                                 // Empty slot with pokeball icon
                                 return (
-                                  <div key={`empty-${idx}`} className="bg-white/20 backdrop-blur-sm rounded-lg p-1.5 border border-purple-400/20">
+                                  <div key={`empty-${idx}`} className="bg-white/20 backdrop-blur-sm rounded-lg p-1.5 border border-amber-400/20">
                                     <div className="w-10 h-10 mx-auto flex items-center justify-center">
                                       <svg className="w-8 h-8 opacity-30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="50" cy="50" r="45" stroke="#C084FC" strokeWidth="4"/>
-                                        <path d="M5 50h90" stroke="#C084FC" strokeWidth="4"/>
-                                        <circle cx="50" cy="50" r="12" fill="#F3E8FF" stroke="#C084FC" strokeWidth="4"/>
-                                        <circle cx="50" cy="50" r="6" fill="#C084FC"/>
+                                        <circle cx="50" cy="50" r="45" stroke="#FBBF24" strokeWidth="4"/>
+                                        <path d="M5 50h90" stroke="#FBBF24" strokeWidth="4"/>
+                                        <circle cx="50" cy="50" r="12" fill="#FEFCE8" stroke="#FBBF24" strokeWidth="4"/>
+                                        <circle cx="50" cy="50" r="6" fill="#FBBF24"/>
                                       </svg>
                                     </div>
-                                    <p className="text-[10px] text-center text-purple-300/40">
+                                    <p className="text-[10px] text-center text-amber-300/40">
                                       Empty
                                     </p>
                                   </div>
@@ -848,19 +848,19 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                               }
                               return (
                                 <div key={idx} className={`rounded-lg p-1.5 ${
-                                  isAce 
-                                    ? 'bg-gradient-to-br from-yellow-600/30 to-purple-800/30 border border-yellow-500/40' 
-                                    : 'bg-purple-800/30 backdrop-blur-sm'
+                                  isAce
+                                    ? 'bg-gradient-to-br from-yellow-600/30 to-amber-800/30 border border-yellow-500/40'
+                                    : 'bg-amber-800/30 backdrop-blur-sm'
                                 }`}>
                                   <img
                                     src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
                                     alt={pokemon.name}
                                     className="w-10 h-10 mx-auto object-contain"
                                   />
-                                  <p className="text-[10px] text-center text-purple-100 font-medium truncate px-1">
+                                  <p className="text-[10px] text-center text-amber-100 font-medium truncate px-1">
                                     {pokemon.name}
                                   </p>
-                                  <p className="text-[9px] text-center text-purple-200">
+                                  <p className="text-[9px] text-center text-amber-200">
                                     Lv.{pokemon.level}
                                   </p>
                                 </div>
@@ -872,19 +872,19 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                       
                       {/* Strategy */}
                       {memberData && (
-                        <div className="mt-3 text-center py-2 px-3 rounded-lg bg-purple-800/30 backdrop-blur-sm border border-purple-400/30">
-                          <p className="text-[10px] font-semibold text-purple-200 mb-0.5">
+                        <div className="mt-3 text-center py-2 px-3 rounded-lg bg-amber-800/30 backdrop-blur-sm border border-amber-400/30">
+                          <p className="text-[10px] font-semibold text-amber-200 mb-0.5">
                             Battle Strategy
                           </p>
-                          <p className="text-xs text-purple-100">
+                          <p className="text-xs text-amber-100">
                             {memberData.strategy}
                           </p>
                         </div>
                       )}
-                      
+
                       {/* Weaknesses */}
                       <div className="text-center mt-3">
-                        <p className="text-[10px] font-semibold text-purple-200 mb-1">
+                        <p className="text-[10px] font-semibold text-amber-200 mb-1">
                           Weak Against
                         </p>
                         <div className="flex justify-center flex-wrap gap-1">
@@ -896,7 +896,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                       
                       {/* Flip back indicator */}
                       <div className="mt-2 text-center">
-                        <p className="text-[10px] text-purple-400 animate-pulse">
+                        <p className="text-[10px] text-amber-400 animate-pulse">
                           Click to flip back
                         </p>
                       </div>
@@ -920,7 +920,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
           >
             <div className="relative">
                 {/* Champion Card - Horizontal Layout for Maximum Impact */}
-                <div className="relative h-[550px] bg-gradient-to-br from-white via-yellow-50/40 to-white rounded-3xl overflow-hidden border border-gray-200/50" style={{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.15)' }}>
+                <div className="relative h-[550px] bg-gradient-to-br from-white via-yellow-50/40 to-white rounded-3xl overflow-hidden border border-stone-200/50" style={{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.15)' }}>
                   {/* Animated golden shimmer effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/10 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%', animation: 'shimmer 3s ease-in-out infinite' }} />
                   <div className="flex h-full">
@@ -950,11 +950,11 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                         {/* Champion Name and Title under portrait */}
                         <div className="mt-6 text-center">
                           <div className="bg-white/70 backdrop-blur-md rounded-full px-8 py-3 shadow-2xl border-2 border-white/50 inline-block">
-                            <h3 className="champion-name text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-600">
+                            <h3 className="champion-name text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-700 to-stone-600">
                               {champion.name}
                             </h3>
                           </div>
-                          <p className="text-base text-gray-700 font-medium mt-2">
+                          <p className="text-base text-stone-700 font-medium mt-2">
                             Pokémon League Champion
                           </p>
                         </div>
@@ -967,7 +967,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                       {championData[champion.name] && (
                         <div className="flex-1 flex items-center">
                           <div className="bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-white/50 shadow-lg w-full">
-                            <p className="text-sm font-bold text-gray-600 mb-4 text-center uppercase tracking-wider">
+                            <p className="text-sm font-bold text-stone-600 mb-4 text-center uppercase tracking-wider">
                               Champion's Elite Team
                             </p>
                             <div className="grid grid-cols-6 gap-4">
@@ -980,10 +980,10 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                                         alt={pokemon.name}
                                         className="w-24 h-24 mx-auto object-contain filter drop-shadow-lg group-hover:scale-110 transition-transform"
                                       />
-                                      <p className="text-xs text-gray-800 mt-2 font-bold group-hover:text-yellow-600">
+                                      <p className="text-xs text-stone-800 mt-2 font-bold group-hover:text-yellow-600">
                                         {pokemon.name}
                                       </p>
-                                      <p className="text-xs text-gray-600 font-semibold">
+                                      <p className="text-xs text-stone-600 font-semibold">
                                         Lv.{pokemon.level}
                                       </p>
                                     </div>
@@ -999,18 +999,18 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                       {championData[champion.name] && (
                         <div className="mt-6">
                           <div className="bg-white/60 backdrop-blur-md rounded-2xl p-4 border border-white/50 shadow-lg">
-                            <p className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider text-center">Battle Strategy</p>
-                            <p className="text-sm text-gray-700 text-center">
+                            <p className="text-xs font-bold text-stone-600 mb-1 uppercase tracking-wider text-center">Battle Strategy</p>
+                            <p className="text-sm text-stone-700 text-center">
                               {championData[champion.name].strategy}
                             </p>
                           </div>
                         </div>
                       )}
-                      
+
                       {/* Bottom - Quote */}
                       {championData[champion.name] && (
                         <div className="mt-6">
-                          <p className="text-lg italic text-gray-600 text-center">
+                          <p className="text-lg italic text-stone-600 text-center">
                             "{championData[champion.name].quote}"
                           </p>
                         </div>

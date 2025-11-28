@@ -69,14 +69,14 @@ const GAME_CONSOLE_MAP: Record<string, string> = {
 // Generation info with proper naming format
 const GENERATION_INFO = [
   { gen: '', region: '', colors: '' }, // 0 (unused)
-  { gen: 'Gen 1', region: 'Kanto Region', colors: 'from-red-500 to-blue-500' },
+  { gen: 'Gen 1', region: 'Kanto Region', colors: 'from-red-500 to-amber-500' },
   { gen: 'Gen 2', region: 'Johto Region', colors: 'from-yellow-500 to-silver-500' },
   { gen: 'Gen 3', region: 'Hoenn Region', colors: 'from-red-500 to-green-500' },
-  { gen: 'Gen 4', region: 'Sinnoh Region', colors: 'from-blue-600 to-pink-500' },
-  { gen: 'Gen 5', region: 'Unova Region', colors: 'from-gray-800 to-gray-600' },
-  { gen: 'Gen 6', region: 'Kalos Region', colors: 'from-blue-500 to-red-500' },
-  { gen: 'Gen 7', region: 'Alola Region', colors: 'from-orange-500 to-blue-500' },
-  { gen: 'Gen 8', region: 'Galar Region', colors: 'from-blue-600 to-purple-600' },
+  { gen: 'Gen 4', region: 'Sinnoh Region', colors: 'from-amber-600 to-pink-500' },
+  { gen: 'Gen 5', region: 'Unova Region', colors: 'from-stone-800 to-stone-600' },
+  { gen: 'Gen 6', region: 'Kalos Region', colors: 'from-amber-500 to-red-500' },
+  { gen: 'Gen 7', region: 'Alola Region', colors: 'from-orange-500 to-amber-500' },
+  { gen: 'Gen 8', region: 'Galar Region', colors: 'from-amber-600 to-amber-600' },
   { gen: 'Gen 9', region: 'Paldea Region', colors: 'from-red-600 to-violet-600' }
 ];
 
@@ -86,17 +86,17 @@ const getConsoleIcon = (console: string): React.ReactNode => {
     case 'gameboy':
       return <FaGamepad className="text-green-600" title="Game Boy" />;
     case 'gameboy-color':
-      return <FaGamepad className="text-purple-600" title="Game Boy Color" />;
+      return <FaGamepad className="text-amber-600" title="Game Boy Color" />;
     case 'gameboy-advance':
-      return <FaGamepad className="text-blue-600" title="Game Boy Advance" />;
+      return <FaGamepad className="text-amber-600" title="Game Boy Advance" />;
     case 'ds':
-      return <FaGamepad className="text-gray-700" title="Nintendo DS" />;
+      return <FaGamepad className="text-stone-700" title="Nintendo DS" />;
     case '3ds':
       return <FaGamepad className="text-red-600" title="Nintendo 3DS" />;
     case 'switch':
       return <FaGamepad className="text-red-500" title="Nintendo Switch" />;
     default:
-      return <FaGamepad className="text-gray-600" />;
+      return <FaGamepad className="text-stone-600" />;
   }
 };
 
@@ -193,10 +193,10 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
     return (
       <GlassContainer 
         variant="dark" 
-        className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl p-8 text-center"
+        className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl p-8 text-center"
         animate={false}
       >
-        <p className="text-gray-500 dark:text-gray-400">Loading location data...</p>
+        <p className="text-stone-500 dark:text-stone-400">Loading location data...</p>
       </GlassContainer>
     );
   }
@@ -212,7 +212,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
         >
           <GlassContainer 
             variant="dark" 
-            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
             <div className="p-4 md:p-6 space-y-4">
@@ -220,7 +220,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
               {habitat && (
                 <div className="flex items-center gap-3">
                   <FaTree className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Natural Habitat:</span>
+                  <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Natural Habitat:</span>
                   <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-500 to-green-600 text-white">
                     {habitat.charAt(0).toUpperCase() + habitat.slice(1)}
                   </span>
@@ -231,8 +231,8 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
               {gameLocations.length > 0 && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <FaFilter className="w-4 h-4 text-purple-400" />
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Filter by Era</span>
+                    <FaFilter className="w-4 h-4 text-amber-400" />
+                    <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Filter by Era</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     <button
@@ -241,8 +241,8 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                         "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300",
                         "transform hover:scale-[1.02] active:scale-[0.98]",
                         selectedGeneration === null && selectedConsole === null
-                          ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
-                          : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
+                          ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg"
+                          : "bg-white/10 text-stone-600 dark:text-stone-300 border border-stone-200/50 dark:border-stone-600/50 hover:bg-white/20"
                       )}
                     >
                       All
@@ -255,8 +255,8 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                           "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300",
                           "transform hover:scale-[1.02] active:scale-[0.98]",
                           selectedGeneration === Number(gen)
-                            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
-                            : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
+                            ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg"
+                            : "bg-white/10 text-stone-600 dark:text-stone-300 border border-stone-200/50 dark:border-stone-600/50 hover:bg-white/20"
                         )}
                       >
                         {GENERATION_INFO[Number(gen)]?.gen || `Gen ${gen}`}
@@ -270,8 +270,8 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
               {availableConsoles.length > 1 && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <FaGamepad className="w-4 h-4 text-blue-400" />
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Filter by Console</span>
+                    <FaGamepad className="w-4 h-4 text-amber-400" />
+                    <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Filter by Console</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {['3ds', 'ds', 'gameboy-advance', 'gameboy-color', 'gameboy'].map(console => {
@@ -284,8 +284,8 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                             "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1.5",
                             "transform hover:scale-[1.02] active:scale-[0.98]",
                             selectedConsole === console
-                              ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
-                              : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
+                              ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg"
+                              : "bg-white/10 text-stone-600 dark:text-stone-300 border border-stone-200/50 dark:border-stone-600/50 hover:bg-white/20"
                           )}
                         >
                           {getConsoleIcon(console)}
@@ -314,9 +314,9 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 flex items-start gap-2">
-            <FaGamepad className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <p className="text-xs text-blue-700 dark:text-blue-300">
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-start gap-2">
+            <FaGamepad className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+            <p className="text-xs text-amber-700 dark:text-amber-300">
               Location data available for generations 1-7. Gen 8-9 games (Sword/Shield, Scarlet/Violet) have limited wild encounter data in the Pokémon API due to different gameplay mechanics.
             </p>
           </div>
@@ -344,11 +344,11 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                     <h3 className="text-sm font-bold flex items-center gap-2 mb-2">
                       <span className={cn(
                         "px-3 py-1 rounded-full text-xs text-white bg-gradient-to-r",
-                        GENERATION_INFO[Number(generation)]?.colors || 'from-gray-500 to-gray-600'
+                        GENERATION_INFO[Number(generation)]?.colors || 'from-stone-500 to-stone-600'
                       )}>
                         {GENERATION_INFO[Number(generation)]?.gen || `Gen ${generation}`}
                       </span>
-                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
                         {GENERATION_INFO[Number(generation)]?.region || 'Unknown Region'}
                       </span>
                     </h3>
@@ -363,7 +363,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                         whileHover={{ scale: 1.02, y: -2 }}
                       >
                         <div 
-                          className="bg-white dark:bg-gray-900/50 rounded-lg p-3 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow transition-all duration-300 cursor-pointer hover:shadow-md"
+                          className="bg-white dark:bg-stone-900/50 rounded-lg p-3 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow transition-all duration-300 cursor-pointer hover:shadow-md"
                           onClick={() => setExpandedGame(expandedGame === game.game ? null : game.game)}
                         >
                         <div className="space-y-2">
@@ -379,11 +379,11 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                               </h4>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                              <span className="text-xs text-stone-500 dark:text-stone-400">
                                 {game.locations.length} loc{game.locations.length !== 1 ? 's' : ''}
                               </span>
                               <motion.svg
-                                className="w-4 h-4 text-gray-400"
+                                className="w-4 h-4 text-stone-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -411,13 +411,13 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                                       initial={{ opacity: 0, y: 5 }}
                                       animate={{ opacity: 1, y: 0 }}
                                       transition={{ delay: idx * 0.03 }}
-                                      className="p-2 rounded bg-gray-100 dark:bg-gray-800"
+                                      className="p-2 rounded bg-stone-100 dark:bg-stone-800"
                                     >
                                       <div className="space-y-1">
                                         <h5 className="text-xs font-medium capitalize">
                                           {loc.area}
                                         </h5>
-                                        <div className="flex flex-wrap gap-2 text-[11px] text-gray-600 dark:text-gray-400">
+                                        <div className="flex flex-wrap gap-2 text-[11px] text-stone-600 dark:text-stone-400">
                                           <span>Method: <span className="capitalize">{loc.method}</span></span>
                                           <span>Lv. {loc.minLevel}{loc.maxLevel !== loc.minLevel && `-${loc.maxLevel}`}</span>
                                           {loc.chance < 100 && (
@@ -429,7 +429,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                                             {loc.conditions.map(condition => (
                                               <span
                                                 key={condition}
-                                                className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px] capitalize"
+                                                className="px-1.5 py-0.5 bg-stone-200 dark:bg-stone-700 rounded text-[10px] capitalize"
                                               >
                                                 {condition}
                                               </span>
@@ -460,29 +460,29 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
         >
           <GlassContainer 
             variant="dark" 
-            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
             <div className="p-6 space-y-3">
               <div className="flex items-center gap-3">
-                <FaGamepad className="text-2xl text-gray-400" />
-                <h3 className="text-base font-semibold text-gray-700 dark:text-gray-300">
+                <FaGamepad className="text-2xl text-stone-400" />
+                <h3 className="text-base font-semibold text-stone-700 dark:text-stone-300">
                   No Location Data Available
                 </h3>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-stone-600 dark:text-stone-400">
                 This Pokémon doesn't have wild encounter location data in our database.
               </p>
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-                <p className="text-xs text-blue-700 dark:text-blue-300 font-medium mb-1">Common reasons:</p>
-                <ul className="text-[11px] text-blue-600 dark:text-blue-400 space-y-0.5 list-disc list-inside">
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                <p className="text-xs text-amber-700 dark:text-amber-300 font-medium mb-1">Common reasons:</p>
+                <ul className="text-[11px] text-amber-600 dark:text-amber-400 space-y-0.5 list-disc list-inside">
                   <li>Gen 8-9 games have limited location data in the API</li>
                   <li>Starter Pokémon are obtained as gifts</li>
                   <li>Legendary/Mythical found through special events</li>
                   <li>Evolution-only Pokémon</li>
                 </ul>
               </div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-500">
+              <p className="text-[11px] text-stone-500 dark:text-stone-500">
                 Check the Evolution or Breeding tabs for alternative methods to obtain this Pokémon.
               </p>
             </div>

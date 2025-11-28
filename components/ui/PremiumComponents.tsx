@@ -76,7 +76,7 @@ export const PremiumButton = forwardRef<HTMLButtonElement, PremiumButtonProps>((
     primary: 'gradient-primary text-white',
     accent: 'gradient-accent text-white',
     success: 'gradient-success text-white',
-    glass: 'glass text-gray-900 dark:text-white',
+    glass: 'glass text-stone-900 dark:text-white',
     outline: 'border-2 border-current bg-transparent hover:bg-current hover:text-white'
   };
 
@@ -278,7 +278,7 @@ export const PremiumBadge = ({ children, variant = 'primary', size = 'md', class
     success: 'gradient-success text-white',
     warning: 'gradient-warning text-white',
     error: 'gradient-error text-white',
-    glass: 'glass text-gray-900 dark:text-white'
+    glass: 'glass text-stone-900 dark:text-white'
   };
 
   const sizes: Record<'sm' | 'md' | 'lg', string> = {
@@ -325,13 +325,13 @@ export const PremiumInput = forwardRef<HTMLInputElement, PremiumInputProps>(({
   return (
     <div className="space-y-2">
       {(label as string) && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
           {label as React.ReactNode}
         </label>
       )}
       <div className="relative">
         {(icon as React.ReactNode) && (
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
             {icon as React.ReactNode}
           </div>
         )}
@@ -344,8 +344,8 @@ export const PremiumInput = forwardRef<HTMLInputElement, PremiumInputProps>(({
             rounded-lg
             px-4 py-3
             ${icon ? 'pl-10' : ''}
-            text-gray-900 dark:text-white
-            placeholder-gray-500 dark:placeholder-gray-400
+            text-stone-900 dark:text-white
+            placeholder-stone-500 dark:placeholder-stone-400
             focus:ring-2 focus:ring-primary focus:border-transparent
             transition-all duration-200 ease-premium
             ${error ? 'border-red-500 focus:ring-red-500' : ''}
@@ -395,7 +395,7 @@ export const PremiumProgress = ({ value = 0, max = 100, className = '', variant 
   return (
     <div className={`space-y-2 ${className}`} {...props}>
       {showLabel && (
-        <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex justify-between text-sm text-stone-600 dark:text-stone-400">
           <span>Progress</span>
           <span>{value}/{max}</span>
         </div>

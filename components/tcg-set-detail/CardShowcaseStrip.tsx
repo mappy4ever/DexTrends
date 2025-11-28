@@ -53,7 +53,7 @@ const ShowcaseCard: React.FC<{
             rounded: 'xl',
             shadow: isActive ? 'xl' : 'md'
           }),
-          isActive && 'ring-2 ring-purple-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900'
+          isActive && 'ring-2 ring-amber-500 ring-offset-2 ring-offset-white dark:ring-offset-stone-900'
         )}
       >
         <Image
@@ -124,15 +124,15 @@ const CardDetailPanel: React.FC<{
           rounded: 'xl',
           shadow: 'xl'
         }),
-        'bg-gradient-to-br from-white/80 to-gray-50/80 dark:from-gray-900/80 dark:to-gray-800/80'
+        'bg-gradient-to-br from-white/80 to-stone-50/80 dark:from-stone-900/80 dark:to-stone-800/80'
       )}
     >
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-2 right-2 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        className="absolute top-2 right-2 w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
       >
-        <svg className="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-4 h-4 text-stone-600 dark:text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -151,23 +151,23 @@ const CardDetailPanel: React.FC<{
       {/* Card details */}
       <div className="space-y-3">
         <div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">{card.name}</h3>
+          <h3 className="text-lg font-bold text-stone-900 dark:text-white">{card.name}</h3>
           <div className="flex items-center gap-2 mt-1">
             <RarityBadge rarity={card.rarity || 'Common'} size="sm" showLabel />
-            <span className="text-sm text-gray-500">#{card.number}/{card.set?.printedTotal}</span>
+            <span className="text-sm text-stone-500">#{card.number}/{card.set?.printedTotal}</span>
           </div>
         </div>
         
         {/* Price breakdown */}
         {card.tcgplayer?.prices && (
-          <div className="p-3 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">Market Prices</p>
+          <div className="p-3 bg-stone-100/50 dark:bg-stone-800/50 rounded-lg">
+            <p className="text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2">Market Prices</p>
             {Object.entries(card.tcgplayer.prices).map(([type, prices]: [string, any]) => (
               <div key={type} className="flex justify-between items-center py-1">
-                <span className="text-xs text-gray-600 dark:text-gray-400 capitalize">
+                <span className="text-xs text-stone-600 dark:text-stone-400 capitalize">
                   {type.replace(/([A-Z])/g, ' $1').trim()}
                 </span>
-                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                <span className="text-sm font-semibold text-stone-900 dark:text-white">
                   ${prices.market?.toFixed(2) || 'N/A'}
                 </span>
               </div>
@@ -179,14 +179,14 @@ const CardDetailPanel: React.FC<{
         <div className="space-y-2 text-xs">
           {card.artist && (
             <div className="flex justify-between">
-              <span className="text-gray-500">Artist</span>
-              <span className="text-gray-700 dark:text-gray-300">{card.artist}</span>
+              <span className="text-stone-500">Artist</span>
+              <span className="text-stone-700 dark:text-stone-300">{card.artist}</span>
             </div>
           )}
           {card.set && (
             <div className="flex justify-between">
-              <span className="text-gray-500">Set</span>
-              <span className="text-gray-700 dark:text-gray-300">{card.set.name}</span>
+              <span className="text-stone-500">Set</span>
+              <span className="text-stone-700 dark:text-stone-300">{card.set.name}</span>
             </div>
           )}
         </div>
@@ -243,12 +243,12 @@ export const CardShowcaseStrip: React.FC<CardShowcaseStripProps> = ({
       )}>
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200">
+          <h2 className="text-base font-semibold text-stone-800 dark:text-stone-200">
             {title}
           </h2>
           <div className="flex items-center gap-2">
             {/* Card count */}
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-stone-500 dark:text-stone-400">
               {activeIndex + 1} / {cards.length}
             </span>
             
@@ -261,13 +261,13 @@ export const CardShowcaseStrip: React.FC<CardShowcaseStripProps> = ({
                   className={cn(
                     'transition-all duration-300',
                     index === activeIndex
-                      ? 'w-4 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full'
-                      : 'w-1 h-1 bg-gray-400/50 rounded-full hover:bg-gray-400'
+                      ? 'w-4 h-1 bg-gradient-to-r from-amber-500 to-pink-500 rounded-full'
+                      : 'w-1 h-1 bg-stone-400/50 rounded-full hover:bg-stone-400'
                   )}
                 />
               ))}
               {cards.length > 8 && (
-                <span className="text-xs text-gray-400 ml-1">+{cards.length - 8}</span>
+                <span className="text-xs text-stone-400 ml-1">+{cards.length - 8}</span>
               )}
             </div>
           </div>
@@ -296,8 +296,8 @@ export const CardShowcaseStrip: React.FC<CardShowcaseStripProps> = ({
           </div>
           
           {/* Scroll indicators */}
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-gray-900 to-transparent pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-gray-900 to-transparent pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-stone-900 to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-stone-900 to-transparent pointer-events-none" />
         </div>
       </div>
       

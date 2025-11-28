@@ -84,7 +84,7 @@ const ProfessorShowcase: React.FC<ProfessorShowcaseProps> = ({ region, professor
   // Version mapping for dual professors
   const versionInfo: { [key: string]: VersionInfo } = {
     'Professor Sada': { version: 'Scarlet', color: 'from-red-500 to-orange-500' },
-    'Professor Turo': { version: 'Violet', color: 'from-purple-500 to-indigo-500' }
+    'Professor Turo': { version: 'Violet', color: 'from-amber-500 to-amber-600' }
   };
 
   // Comprehensive professor data
@@ -488,7 +488,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
               <button
                 onClick={() => setSelectedProfessor((prev) => prev === 0 ? 1 : 0)}
                 className={`p-4 rounded-full transition-all duration-300 ${
-                  theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'
+                  theme === 'dark' ? 'bg-stone-800 hover:bg-stone-700' : 'bg-white hover:bg-stone-50'
                 } shadow-lg hover:shadow-xl hover:scale-110`}
                 aria-label="Switch professor version"
               >
@@ -511,7 +511,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
               <button
                 onClick={() => setSelectedProfessor((prev) => prev === 0 ? 1 : 0)}
                 className={`p-4 rounded-full transition-all duration-300 ${
-                  theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'
+                  theme === 'dark' ? 'bg-stone-800 hover:bg-stone-700' : 'bg-white hover:bg-stone-50'
                 } shadow-lg hover:shadow-xl hover:scale-110`}
                 aria-label="Switch professor version"
               >
@@ -519,7 +519,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
               </button>
             )}
           </div>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
+          <p className="text-xl text-stone-600 dark:text-stone-400">
             {region.name}'s Leading Pokémon Researcher
           </p>
         </div>
@@ -550,39 +550,39 @@ His unwavering commitment to his research vision led to both remarkable scientif
                     priority
                   />
                   {/* Enhanced glow effect for larger image */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-blue-400/20 rounded-full blur-3xl -z-10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-amber-400/20 to-amber-400/20 rounded-full blur-3xl -z-10"></div>
                 </div>
               </div>
 
               {/* Professor Name and Specialization - Below Image */}
               <FadeIn delay={0.3}>
                 <div className="text-center">
-                  <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-3">
+                  <h3 className="text-4xl lg:text-5xl font-bold text-stone-900 dark:text-white mb-3">
                     {currentProfessor}
                   </h3>
-                  <p className="text-lg lg:text-xl text-blue-600 dark:text-blue-400 font-medium mb-6">
+                  <p className="text-lg lg:text-xl text-amber-600 dark:text-amber-400 font-medium mb-6">
                     {professorInfo.specialization}
                   </p>
                   
                   {/* Quick Info moved here */}
                   <div className={`mt-8 p-6 rounded-xl text-left ${
-                    theme === 'dark' ? 'bg-gray-800/80 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-                  } shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                    theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
+                  } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                     <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                      <BsPersonBadge className="text-purple-500" />
+                      <BsPersonBadge className="text-amber-500" />
                       Quick Info
                     </h4>
                     <div className="grid grid-cols-1 gap-4">
                       <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Laboratory</p>
+                        <p className="text-sm text-stone-500 dark:text-stone-400">Laboratory</p>
                         <p className="font-semibold">{professorInfo.labLocation}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Age</p>
+                        <p className="text-sm text-stone-500 dark:text-stone-400">Age</p>
                         <p className="font-semibold">{professorInfo.age || 'Unknown'}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Known For</p>
+                        <p className="text-sm text-stone-500 dark:text-stone-400">Known For</p>
                         <p className="font-semibold">{professorInfo.signature}</p>
                       </div>
                     </div>
@@ -599,7 +599,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
               <SlideUp delay={0.05}>
                 <GlassContainer variant="dark" blur="lg" rounded="2xl" padding="md" hover gradient>
                   <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                    <GiPokecog className="text-purple-500" />
+                    <GiPokecog className="text-amber-500" />
                     Starter Pokémon Given
                   </h4>
                   <div className="grid grid-cols-3 gap-4">
@@ -611,12 +611,12 @@ His unwavering commitment to his research vision led to both remarkable scientif
                       >
                         <div className="relative transform transition-all duration-300 hover:scale-110 hover:-translate-y-2">
                           {/* Glass Card for Each Starter */}
-                          <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 to-white/60 dark:from-gray-800/80 dark:to-gray-900/60 shadow-lg group-hover:shadow-2xl border border-white/30 dark:border-gray-700/30">
+                          <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 to-white/60 dark:from-stone-800/80 dark:to-stone-900/60 shadow-lg group-hover:shadow-2xl border border-white/30 dark:border-stone-700/30">
                             {/* Type-based Gradient Background */}
                             <div className={`absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity bg-gradient-to-br ${
                               type === 'grass' ? 'from-green-400 to-emerald-600' :
                               type === 'fire' ? 'from-orange-400 to-red-600' :
-                              'from-blue-400 to-cyan-600'
+                              'from-amber-400 to-amber-600'
                             }`} />
                             
                             {/* Pokémon Image */}
@@ -632,24 +632,24 @@ His unwavering commitment to his research vision led to both remarkable scientif
                             </div>
                             
                             {/* Info Panel */}
-                            <div className="p-3 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
-                              <p className="text-sm font-bold text-center text-gray-800 dark:text-white">
+                            <div className="p-3 bg-white/50 dark:bg-stone-900/50 backdrop-blur-sm">
+                              <p className="text-sm font-bold text-center text-stone-800 dark:text-white">
                                 {pokemon.name}
                               </p>
-                              <p className="text-xs text-center text-gray-600 dark:text-gray-400 capitalize">
+                              <p className="text-xs text-center text-stone-600 dark:text-stone-400 capitalize">
                                 {type} Type
                               </p>
                               
                               {/* Hover Indicator */}
                               <div className="flex items-center justify-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">View</span>
-                                <BsArrowRight className="text-xs text-purple-600 dark:text-purple-400" />
+                                <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">View</span>
+                                <BsArrowRight className="text-xs text-amber-600 dark:text-amber-400" />
                               </div>
                             </div>
                           </div>
                           
                           {/* Floating Pokédex Number */}
-                          <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold shadow-lg">
+                          <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold shadow-lg">
                             #{pokemon.id}
                           </div>
                         </div>
@@ -662,13 +662,13 @@ His unwavering commitment to his research vision led to both remarkable scientif
             {/* Biography */}
             <SlideUp delay={0.1}>
               <div className={`p-6 rounded-xl ${
-                theme === 'dark' ? 'bg-gray-800/80 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-              } shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
+              } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                 <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <BsBook className="text-blue-500" />
+                  <BsBook className="text-amber-500" />
                   Biography
                 </h4>
-                <div className="text-gray-600 dark:text-gray-300">
+                <div className="text-stone-600 dark:text-stone-300">
                   <p className="leading-relaxed text-sm">
                     {professorInfo.biography}
                   </p>
@@ -679,8 +679,8 @@ His unwavering commitment to his research vision led to both remarkable scientif
             {/* Achievements */}
             <SlideUp delay={0.3}>
               <div className={`p-6 rounded-xl ${
-                theme === 'dark' ? 'bg-gray-800/80 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-              } shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
+              } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                 <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
                   <BsTrophy className="text-yellow-500" />
                   Major Achievements
@@ -689,7 +689,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                   {professorInfo.achievements?.map((achievement, index) => (
                     <li key={index} className="flex items-start gap-2">
                       <BsStar className="text-yellow-500 mt-0.5 flex-shrink-0 text-sm" />
-                      <span className="text-gray-600 dark:text-gray-300 text-sm">{achievement}</span>
+                      <span className="text-stone-600 dark:text-stone-300 text-sm">{achievement}</span>
                     </li>
                   ))}
                 </ul>
@@ -699,8 +699,8 @@ His unwavering commitment to his research vision led to both remarkable scientif
             {/* Research Areas */}
             <SlideUp delay={0.4}>
               <div className={`p-6 rounded-xl ${
-                theme === 'dark' ? 'bg-gray-800/80 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-              } shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
+              } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                 <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
                   <BsJournalBookmark className="text-green-500" />
                   Research Focus
@@ -710,10 +710,10 @@ His unwavering commitment to his research vision led to both remarkable scientif
                     <div
                       key={index}
                       className={`p-3 rounded-lg flex items-center gap-3 ${
-                        theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'
+                        theme === 'dark' ? 'bg-stone-700/50' : 'bg-stone-50'
                       }`}
                     >
-                      <BsSearch className="text-blue-500 flex-shrink-0" />
+                      <BsSearch className="text-amber-500 flex-shrink-0" />
                       <p className="text-sm font-medium">{area}</p>
                     </div>
                   ))}
@@ -725,13 +725,13 @@ His unwavering commitment to his research vision led to both remarkable scientif
             {professorInfo.famousQuote && (
               <SlideUp delay={0.5}>
                 <div className={`p-6 rounded-xl ${
-                  theme === 'dark' ? 'bg-gray-800/80 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-                } shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                  theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
+                } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                   <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                    <BsChatQuote className="text-indigo-500" />
+                    <BsChatQuote className="text-amber-500" />
                     Famous Quote
                   </h4>
-                  <blockquote className="text-gray-600 dark:text-gray-300">
+                  <blockquote className="text-stone-600 dark:text-stone-300">
                     <p className="italic text-lg leading-relaxed">
                       "{professorInfo.famousQuote}"
                     </p>

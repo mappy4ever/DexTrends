@@ -13,21 +13,21 @@ interface TypeBadgeProps {
 const TYPE_GRADIENTS: Record<string, string> = {
   normal: 'from-stone-400 to-stone-600',
   fire: 'from-orange-400 to-orange-600',
-  water: 'from-blue-400 to-blue-600',
+  water: 'from-amber-400 to-amber-600',
   electric: 'from-yellow-300 to-yellow-500',
   grass: 'from-green-500 to-green-700',
-  ice: 'from-cyan-300 to-blue-400',
+  ice: 'from-cyan-300 to-amber-400',
   fighting: 'from-red-500 to-red-700',
   poison: 'from-fuchsia-500 to-fuchsia-700',
   ground: 'from-yellow-700 to-amber-800',
-  flying: 'from-indigo-300 to-indigo-500',
+  flying: 'from-amber-300 to-amber-500',
   psychic: 'from-pink-500 to-pink-700',
   bug: 'from-lime-500 to-lime-700',
   rock: 'from-yellow-600 to-amber-700',
-  ghost: 'from-purple-800 to-purple-950',  // Darker purple gradient
-  dragon: 'from-indigo-600 to-purple-700',  // Indigo to purple (opposite of ghost)
-  dark: 'from-gray-700 to-gray-900',
-  steel: 'from-gray-400 to-slate-500',
+  ghost: 'from-amber-800 to-amber-950',
+  dragon: 'from-amber-600 to-amber-700',
+  dark: 'from-stone-700 to-stone-900',
+  steel: 'from-stone-400 to-stone-500',
   fairy: 'from-pink-300 to-pink-400'
 };
 

@@ -353,7 +353,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         animate={{ scale: 1 }}
         transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
         className={cn(
-          'text-gray-300 dark:text-gray-600 mb-4',
+          'text-stone-300 dark:text-stone-600 mb-4',
           styles.icon
         )}
       >
@@ -366,7 +366,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
         className={cn(
-          'font-semibold text-gray-700 dark:text-gray-300 mb-2',
+          'font-semibold text-stone-700 dark:text-stone-300 mb-2',
           styles.title
         )}
       >
@@ -380,7 +380,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
           className={cn(
-            'text-gray-500 dark:text-gray-400 max-w-md mb-6',
+            'text-stone-500 dark:text-stone-400 max-w-md mb-6',
             styles.description
           )}
         >

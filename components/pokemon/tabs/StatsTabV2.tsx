@@ -111,11 +111,11 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
 
   // Get stat ranking (based on base stats for consistency)
   const getStatRanking = (total: number) => {
-    if (total >= 600) return { rank: 'Legendary', color: 'bg-purple-500' };
-    if (total >= 540) return { rank: 'Excellent', color: 'bg-indigo-500' };
+    if (total >= 600) return { rank: 'Legendary', color: 'bg-amber-500' };
+    if (total >= 540) return { rank: 'Excellent', color: 'bg-amber-500' };
     if (total >= 500) return { rank: 'Very Strong', color: 'bg-emerald-500' };
     if (total >= 450) return { rank: 'Strong', color: 'bg-green-500' };
-    if (total >= 400) return { rank: 'Good', color: 'bg-blue-500' };
+    if (total >= 400) return { rank: 'Good', color: 'bg-amber-500' };
     if (total >= 350) return { rank: 'Average', color: 'bg-yellow-500' };
     if (total >= 300) return { rank: 'Below Average', color: 'bg-orange-500' };
     return { rank: 'Weak', color: 'bg-red-500' };
@@ -133,13 +133,13 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
       >
         <GlassContainer
           variant="dark"
-          className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+          className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
           <div className="flex flex-col h-full">
             <div className="p-6 md:p-8 flex-1">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                   Stats Distribution
                 </h2>
 
@@ -149,9 +149,9 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
                     type="checkbox"
                     checked={usePerfectStats}
                     onChange={(e) => setUsePerfectStats(e.target.checked)}
-                    className="w-4 h-4 rounded text-blue-500 focus:ring-blue-500"
+                    className="w-4 h-4 rounded text-amber-500 focus:ring-amber-500"
                   />
-                  <span className="text-xs text-gray-600 dark:text-gray-400">
+                  <span className="text-xs text-stone-600 dark:text-stone-400">
                     Optimized EVs
                   </span>
                 </label>
@@ -171,13 +171,13 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
             </div>
 
             {/* Notes at bottom */}
-            <div className="px-6 pb-4 md:px-8 md:pb-6 space-y-1 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div className="px-6 pb-4 md:px-8 md:pb-6 space-y-1 text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 border-t border-stone-200 dark:border-stone-700 pt-4">
               <div className="flex items-start gap-2">
-                <span className="text-purple-500">•</span>
+                <span className="text-amber-500">•</span>
                 <span>Minimum stats are calculated with 0 EVs, IVs of 0, and (if applicable) a hindering nature.</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-purple-500">•</span>
+                <span className="text-amber-500">•</span>
                 <span>
                   {usePerfectStats
                     ? "Stats shown with optimal EV spread: 252 EVs in two highest base stats, 4 in HP (510 total, game-legal)."
@@ -198,17 +198,17 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
         {/* Nature Selector - Glass Morphism */}
-        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 shadow-xl">
+        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg">
               <FaFlask className="w-5 h-5 text-white" />
             </div>
-            <h3 className="font-bold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">Nature</h3>
+            <h3 className="font-bold text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300">Nature</h3>
           </div>
           <select
             value={selectedNature}
             onChange={(e) => onNatureChange?.(e.target.value)}
-            className="w-full p-3 text-sm bg-white/50 dark:bg-gray-800/50 rounded-2xl border border-white/50 dark:border-gray-600/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
+            className="w-full p-3 text-sm bg-white/50 dark:bg-stone-800/50 rounded-2xl border border-white/50 dark:border-stone-600/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
           >
             {allNatures.map(nature => (
               <option key={nature.name} value={nature.name}>
@@ -218,7 +218,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
           </select>
 
           {natureData && (
-            <div className="mt-3 text-xs text-gray-600 dark:text-gray-400">
+            <div className="mt-3 text-xs text-stone-600 dark:text-stone-400">
               {natureData.increased_stat && natureData.decreased_stat ? (
                 <span>+{STAT_NAMES[natureData.increased_stat.name]} -{STAT_NAMES[natureData.decreased_stat.name]}</span>
               ) : (
@@ -229,15 +229,15 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         </div>
 
         {/* Level Selector - Glass Morphism */}
-        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 shadow-xl">
+        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-lg">
                 <FaGamepad className="w-5 h-5 text-white" />
               </div>
-              <h3 className="font-bold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">Level</h3>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300">Level</h3>
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">{selectedLevel}</span>
+            <span className="text-2xl font-bold bg-gradient-to-r from-amber-500 to-amber-500 bg-clip-text text-transparent">{selectedLevel}</span>
           </div>
 
           <input
@@ -246,7 +246,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
             max="100"
             value={selectedLevel}
             onChange={(e) => onLevelChange?.(parseInt(e.target.value))}
-            className="w-full mb-4 accent-blue-500"
+            className="w-full mb-4 accent-amber-500"
           />
 
           {/* Quick level buttons */}
@@ -257,15 +257,15 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
                   className={cn(
                     "w-12 h-12 text-xs rounded-full transition-all flex items-center justify-center font-bold backdrop-blur-sm border",
                     selectedLevel === level
-                      ? "bg-gradient-to-br from-blue-400 to-indigo-500 text-white shadow-lg scale-110 border-white/50"
-                      : "bg-white/30 dark:bg-gray-800/30 text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 border-white/30 dark:border-gray-700/30"
+                      ? "bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-lg scale-110 border-white/50"
+                      : "bg-white/30 dark:bg-stone-800/30 text-stone-600 dark:text-stone-300 hover:bg-white/50 dark:hover:bg-stone-700/50 border-white/30 dark:border-stone-700/30"
                   )}
                   onClick={() => onLevelChange?.(level)}
                 >
                   {level}
                 </button>
                 {level === 50 && (
-                  <span className="text-[8px] mt-1 text-gray-500 dark:text-gray-400 uppercase font-semibold">
+                  <span className="text-[8px] mt-1 text-stone-500 dark:text-stone-400 uppercase font-semibold">
                     Default
                   </span>
                 )}
@@ -275,36 +275,36 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         </div>
 
         {/* EV Yield - Glass Morphism */}
-        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 shadow-xl">
+        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-lg">
               <FaDna className="w-5 h-5 text-white" />
             </div>
-            <h3 className="font-bold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">EV Yield</h3>
+            <h3 className="font-bold text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300">EV Yield</h3>
           </div>
 
           <div className="space-y-2">
             {calculatedStats.filter(stat => stat.effort > 0).map(stat => (
               <div
                 key={stat.name}
-                className="bg-purple-100 dark:bg-purple-900/30 rounded-lg px-3 py-2 flex items-center justify-between"
+                className="bg-amber-100 dark:bg-amber-900/30 rounded-lg px-3 py-2 flex items-center justify-between"
               >
                 <span className="text-sm font-medium">{STAT_NAMES[stat.name]}</span>
-                <span className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                <span className="text-lg font-bold text-amber-600 dark:text-amber-400">
                   +{stat.effort}
                 </span>
               </div>
             ))}
             {calculatedStats.filter(stat => stat.effort > 0).length === 0 && (
-              <div className="text-center text-sm text-gray-600 dark:text-gray-400 py-4">
+              <div className="text-center text-sm text-stone-600 dark:text-stone-400 py-4">
                 No EVs yielded
               </div>
             )}
           </div>
 
           {calculatedStats.filter(stat => stat.effort > 0).length > 0 && (
-            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+            <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700">
+              <p className="text-xs text-stone-600 dark:text-stone-400 text-center">
                 Effort Values gained when defeating this Pokémon
               </p>
             </div>

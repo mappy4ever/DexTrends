@@ -37,7 +37,7 @@ const STAT_ORDER = ['hp', 'attack', 'defense', 'special-attack', 'special-defens
 export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
   stats,
   size = 300,
-  typeColors = { primary: 'from-blue-400', secondary: 'to-purple-500' },
+  typeColors = { primary: 'from-amber-400', secondary: 'to-amber-500' },
   showLabels = true,
   showValues = true,
   animate = true,
@@ -157,7 +157,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
               fill="none"
               stroke="currentColor"
               strokeWidth="1"
-              className="text-gray-600 dark:text-gray-400"
+              className="text-stone-600 dark:text-stone-400"
             />
           ))}
         </g>
@@ -173,7 +173,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
               y2={p.y}
               stroke="currentColor"
               strokeWidth="1"
-              className="text-gray-600 dark:text-gray-400"
+              className="text-stone-600 dark:text-stone-400"
             />
           ))}
         </g>
@@ -184,7 +184,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="text-gray-300 dark:text-gray-600"
+          className="text-stone-300 dark:text-stone-600"
         />
         
         {/* Comparison stats (if provided) */}
@@ -194,7 +194,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className="text-gray-400 dark:text-gray-500"
+            className="text-stone-400 dark:text-stone-500"
             strokeDasharray="5,5"
             initial={animate ? { pathLength: 0 } : { pathLength: 1 }}
             animate={{ pathLength: 1 }}
@@ -298,8 +298,8 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
               className={cn(
                 "text-sm font-bold fill-current transition-colors",
                 hoveredStat === stat.name 
-                  ? "text-purple-600 dark:text-purple-400" 
-                  : "text-gray-700 dark:text-gray-300"
+                  ? "text-amber-600 dark:text-amber-400" 
+                  : "text-stone-700 dark:text-stone-300"
               )}
             >
               {STAT_LABELS[stat.name]}
@@ -335,10 +335,10 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
       
       {/* Total stats indicator */}
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center">
-        <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        <div className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-amber-600 bg-clip-text text-transparent">
           {orderedStats.reduce((sum, stat) => sum + stat.value, 0)}
         </div>
-        <div className="text-xs text-gray-600 dark:text-gray-400">Total</div>
+        <div className="text-xs text-stone-600 dark:text-stone-400">Total</div>
       </div>
     </div>
   );

@@ -195,12 +195,12 @@ const UnifiedTypeEffectivenessPage = () => {
   };
 
   const getEffectivenessColor = (multiplier: number) => {
-    if (multiplier === 0) return 'bg-gray-800 dark:bg-gray-600';
+    if (multiplier === 0) return 'bg-stone-800 dark:bg-stone-600';
     if (multiplier === 0.25) return 'bg-red-700 dark:bg-red-600';
     if (multiplier === 0.5) return 'bg-orange-600 dark:bg-orange-500';
     if (multiplier === 2) return 'bg-green-600 dark:bg-green-500';
-    if (multiplier === 4) return 'bg-blue-700 dark:bg-blue-500';
-    return 'bg-gray-500 dark:bg-gray-400';
+    if (multiplier === 4) return 'bg-amber-700 dark:bg-amber-500';
+    return 'bg-stone-500 dark:bg-stone-400';
   };
 
   const getEffectivenessText = (multiplier: number) => {
@@ -226,8 +226,8 @@ const UnifiedTypeEffectivenessPage = () => {
           className={cn(
             'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-2xl transition-all touch-target',
             !selected
-              ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-gray-900 ring-gray-400 shadow-lg'
-              : 'hover:scale-105 hover:shadow-md bg-gray-100 dark:bg-gray-800'
+              ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-stone-900 ring-stone-400 shadow-lg'
+              : 'hover:scale-105 hover:shadow-md bg-stone-100 dark:bg-stone-800'
           )}
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.95 }}
@@ -242,7 +242,7 @@ const UnifiedTypeEffectivenessPage = () => {
           className={cn(
             'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-2xl transition-all touch-target',
             selected === type
-              ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-gray-900 shadow-lg scale-105'
+              ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-stone-900 shadow-lg scale-105'
               : 'hover:scale-105 hover:shadow-md'
           )}
           style={{
@@ -287,12 +287,12 @@ const UnifiedTypeEffectivenessPage = () => {
               Back
             </CircularButton>
             
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent">
               Type Effectiveness
             </h1>
-            
+
             <div className={cn(
-              'text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300',
+              'text-xs sm:text-sm font-medium text-stone-600 dark:text-stone-300',
               'px-2 sm:px-3 py-1 rounded-full',
               glassButtonStyle
             )}>
@@ -365,8 +365,8 @@ const UnifiedTypeEffectivenessPage = () => {
                       'min-h-[44px] px-3 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-sm touch-target',
                       'transition-all duration-300',
                       viewMode === key
-                        ? 'bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-600 text-white shadow-xl'
-                        : cn('text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white', glassButtonStyle)
+                        ? 'bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 text-white shadow-xl'
+                        : cn('text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white', glassButtonStyle)
                     )}
                     whileHover={{ scale: viewMode === key ? 1.05 : 1.02 }}
                     whileTap={{ scale: 0.95 }}
@@ -390,7 +390,7 @@ const UnifiedTypeEffectivenessPage = () => {
                   <motion.div
                     className={cn(
                       'rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8',
-                      'border border-white/20 dark:border-gray-700/50',
+                      'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
                     whileHover={{ scale: 1.02, y: -6 }}
@@ -400,7 +400,7 @@ const UnifiedTypeEffectivenessPage = () => {
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/10 flex items-center justify-center">
                         <span className="text-sm sm:text-lg font-bold text-red-500">ATK</span>
                       </div>
-                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">
                         Attacking Type
                       </h3>
                     </div>
@@ -412,31 +412,31 @@ const UnifiedTypeEffectivenessPage = () => {
                   <motion.div
                     className={cn(
                       'rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8',
-                      'border border-white/20 dark:border-gray-700/50',
+                      'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
                     whileHover={{ scale: 1.02, y: -6 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
                   >
                     <div className="flex items-center gap-3 mb-4 sm:mb-5">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/10 flex items-center justify-center">
-                        <span className="text-sm sm:text-lg font-bold text-blue-500">DEF</span>
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-cyan-500/10 flex items-center justify-center">
+                        <span className="text-sm sm:text-lg font-bold text-amber-500">DEF</span>
                       </div>
-                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">
                         Defending Type(s)
                       </h3>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div>
-                        <label className="text-xs font-medium text-gray-500 dark:text-gray-500 mb-2 sm:mb-3 block uppercase tracking-wider">
+                        <label className="text-xs font-medium text-stone-500 dark:text-stone-500 mb-2 sm:mb-3 block uppercase tracking-wider">
                           Primary Type
                         </label>
                         {renderTypeGrid([...POKEMON_TYPES], selectedDefender1, setSelectedDefender1)}
                       </div>
 
                       <div>
-                        <label className="text-xs font-medium text-gray-500 dark:text-gray-500 mb-2 sm:mb-3 block uppercase tracking-wider">
+                        <label className="text-xs font-medium text-stone-500 dark:text-stone-500 mb-2 sm:mb-3 block uppercase tracking-wider">
                           Secondary Type (Optional)
                         </label>
                         {renderTypeGrid(
@@ -458,7 +458,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     className={cn(
                       'text-center py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8',
                       'rounded-2xl sm:rounded-3xl',
-                      'border border-white/20 dark:border-gray-700/50',
+                      'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
                     style={{
@@ -468,17 +468,17 @@ const UnifiedTypeEffectivenessPage = () => {
                     <div className="flex items-center justify-center gap-4 sm:gap-6 mb-6">
                       <div>
                         <TypeBadge type={selectedAttacker} size="md" />
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">Attacking</p>
+                        <p className="text-xs text-stone-600 dark:text-stone-400 mt-2">Attacking</p>
                       </div>
-                      
-                      <div className="text-xl sm:text-2xl text-gray-400">→</div>
-                      
+
+                      <div className="text-xl sm:text-2xl text-stone-400">→</div>
+
                       <div>
                         <div className="flex gap-2 justify-center">
                           <TypeBadge type={selectedDefender1} size="md" />
                           {selectedDefender2 && <TypeBadge type={selectedDefender2} size="md" />}
                         </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">Defending</p>
+                        <p className="text-xs text-stone-600 dark:text-stone-400 mt-2">Defending</p>
                       </div>
                     </div>
 
@@ -519,11 +519,11 @@ const UnifiedTypeEffectivenessPage = () => {
                 className={cn(
                   'p-4 sm:p-6 lg:p-8',
                   'rounded-2xl sm:rounded-3xl',
-                  'border border-white/20 dark:border-gray-700/50',
+                  'border border-white/20 dark:border-stone-700/50',
                   glassStyle
                 )}
               >
-                <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-center text-gray-800 dark:text-gray-200">
+                <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-center text-stone-800 dark:text-stone-200">
                   Type Effectiveness Chart
                 </h3>
                 
@@ -533,7 +533,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     <table className="w-full">
                       <thead>
                         <tr>
-                          <th className="p-1 text-[10px] sm:text-xs font-bold sticky left-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm z-10">
+                          <th className="p-1 text-[10px] sm:text-xs font-bold sticky left-0 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm z-10">
                             ATK→DEF
                           </th>
                           {POKEMON_TYPES.map(type => (
@@ -548,7 +548,7 @@ const UnifiedTypeEffectivenessPage = () => {
                       <tbody>
                         {POKEMON_TYPES.map(attacker => (
                           <tr key={attacker}>
-                            <td className="p-1 sticky left-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm z-10">
+                            <td className="p-1 sticky left-0 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm z-10">
                               <TypeBadge type={attacker} size="xs" />
                             </td>
                             {POKEMON_TYPES.map(defender => {
@@ -584,10 +584,10 @@ const UnifiedTypeEffectivenessPage = () => {
                   {[
                     { color: 'bg-emerald-600', label: '4×' },
                     { color: 'bg-green-500', label: '2×' },
-                    { color: 'bg-blue-400', label: '1×' },
+                    { color: 'bg-amber-400', label: '1×' },
                     { color: 'bg-red-500', label: '0.5×' },
-                    { color: 'bg-purple-500', label: '0.25×' },
-                    { color: 'bg-gray-400', label: '0×' }
+                    { color: 'bg-amber-500', label: '0.25×' },
+                    { color: 'bg-stone-400', label: '0×' }
                   ].map(({ color, label }) => (
                     <div key={label} className="flex items-center gap-1 justify-center">
                       <div className={cn('w-4 h-4 sm:w-6 sm:h-6 rounded-full', color)} />
@@ -609,7 +609,7 @@ const UnifiedTypeEffectivenessPage = () => {
                 <motion.div
                   className={cn(
                     'rounded-2xl sm:rounded-3xl p-6 sm:p-10',
-                    'border border-white/20 dark:border-gray-700/50',
+                    'border border-white/20 dark:border-stone-700/50',
                     glassStyle
                   )}
                   style={{
@@ -617,14 +617,14 @@ const UnifiedTypeEffectivenessPage = () => {
                   }}
                 >
                   <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/10 flex items-center justify-center">
-                      <span className="text-lg sm:text-xl font-bold text-purple-500">TEAM</span>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-pink-500/10 flex items-center justify-center">
+                      <span className="text-lg sm:text-xl font-bold text-amber-500">TEAM</span>
                     </div>
                     <div>
-                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">
                         Team Synergy Analyzer
                       </h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1 hidden sm:block">
+                      <p className="text-xs text-stone-500 dark:text-stone-500 mt-1 hidden sm:block">
                         Build your perfect team with type coverage analysis
                       </p>
                     </div>
@@ -633,11 +633,11 @@ const UnifiedTypeEffectivenessPage = () => {
                   {/* Team Slots - Responsive grid */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4">
                     {[0, 1, 2, 3, 4, 5].map(slot => (
-                      <motion.div 
-                        key={slot} 
+                      <motion.div
+                        key={slot}
                         className={cn(
                           'rounded-xl sm:rounded-2xl p-4 sm:p-5',
-                          'border border-white/15 dark:border-gray-600/30',
+                          'border border-white/15 dark:border-stone-600/30',
                           glassButtonStyle
                         )}
                         style={{
@@ -646,7 +646,7 @@ const UnifiedTypeEffectivenessPage = () => {
                         whileHover={{ y: -4, scale: 1.02 }}
                       >
                         <div className="flex items-center justify-between mb-2 sm:mb-3">
-                          <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                          <span className="text-xs font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wider">
                             Slot {slot + 1}
                           </span>
                           {teamTypes[slot]?.[0] && (
@@ -682,7 +682,7 @@ const UnifiedTypeEffectivenessPage = () => {
                                   newTeam[slot] = [type];
                                   setTeamTypes(newTeam);
                                 }}
-                                className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-white dark:bg-gray-700 hover:shadow-md"
+                                className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-white dark:bg-stone-700 hover:shadow-md"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                               >
@@ -703,45 +703,45 @@ const UnifiedTypeEffectivenessPage = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     className={cn(
                       'rounded-2xl sm:rounded-3xl p-6 sm:p-10',
-                      'border border-white/20 dark:border-gray-700/50',
+                      'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
                   >
                     {(() => {
                       const analysis = analyzeTeamTypeSynergy(teamTypes);
-                      
+
                       return (
                         <div className="space-y-4 sm:space-y-6">
                           {/* Score Cards - Responsive grid */}
                           <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                            <motion.div 
-                              className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-purple-200 dark:border-purple-800"
+                            <motion.div
+                              className="bg-gradient-to-br from-amber-500/10 to-amber-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-amber-200 dark:border-amber-800"
                               whileHover={{ scale: 1.05 }}
                             >
-                              <div className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+                              <div className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-amber-500 to-amber-500 bg-clip-text text-transparent">
                                 {analysis.defensiveScore}%
                               </div>
-                              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Defense</div>
+                              <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Defense</div>
                             </motion.div>
-                            
-                            <motion.div 
+
+                            <motion.div
                               className="bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-red-200 dark:border-red-800"
                               whileHover={{ scale: 1.05 }}
                             >
                               <div className="text-xl sm:text-3xl font-bold text-red-500">
                                 {Object.keys(analysis.sharedWeaknesses).length}
                               </div>
-                              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Weaknesses</div>
+                              <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Weaknesses</div>
                             </motion.div>
-                            
-                            <motion.div 
+
+                            <motion.div
                               className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-green-200 dark:border-green-800"
                               whileHover={{ scale: 1.05 }}
                             >
                               <div className="text-xl sm:text-3xl font-bold text-green-500">
                                 {18 - analysis.uncoveredTypes.length}
                               </div>
-                              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Coverage</div>
+                              <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Coverage</div>
                             </motion.div>
                           </div>
 
@@ -756,9 +756,9 @@ const UnifiedTypeEffectivenessPage = () => {
                               </h4>
                               <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                 {Object.entries(analysis.sharedWeaknesses).map(([type, count]) => (
-                                  <motion.div 
-                                    key={type} 
-                                    className="flex items-center gap-1 sm:gap-2 bg-white dark:bg-gray-800 px-2 sm:px-3 py-1 sm:py-2 rounded-lg sm:rounded-xl shadow-sm"
+                                  <motion.div
+                                    key={type}
+                                    className="flex items-center gap-1 sm:gap-2 bg-white dark:bg-stone-800 px-2 sm:px-3 py-1 sm:py-2 rounded-lg sm:rounded-xl shadow-sm"
                                     whileHover={{ y: -2 }}
                                   >
                                     <TypeBadge type={type} size="xs" />

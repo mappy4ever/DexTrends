@@ -321,8 +321,8 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
   const getTypeIcon = (type: Listing['type']) => {
     switch (type) {
       case 'sale': return <FaDollarSign className="text-green-500" />;
-      case 'trade': return <FaExchangeAlt className="text-blue-500" />;
-      case 'auction': return <BsGraphUp className="text-purple-500" />;
+      case 'trade': return <FaExchangeAlt className="text-amber-500" />;
+      case 'auction': return <BsGraphUp className="text-amber-500" />;
       default: return <BsCardList />;
     }
   };
@@ -332,13 +332,13 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       case 'pending': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-200';
       case 'accepted': return 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-200';
       case 'declined': return 'text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-200';
-      case 'completed': return 'text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-200';
-      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-300';
+      case 'completed': return 'text-amber-600 bg-amber-100 dark:bg-amber-900 dark:text-amber-200';
+      default: return 'text-stone-600 bg-stone-100 dark:bg-stone-800 dark:text-stone-300';
     }
   };
 
   const ListingCard: React.FC<{ listing: Listing }> = ({ listing }) => (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 ${
+    <div className={`bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6 ${
       listing.featured ? 'ring-2 ring-yellow-400' : ''
     }`}>
       {listing.featured && (
@@ -362,13 +362,13 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
         <div className="flex-1">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="font-semibold text-stone-900 dark:text-white">
                 {listing.card.name}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-stone-600 dark:text-stone-400">
                 {listing.card.set} • {listing.card.rarity}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-stone-500 dark:text-stone-400">
                 Condition: {listing.card.condition}
               </p>
             </div>
@@ -378,7 +378,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
               className={`p-2 rounded-full transition-colors ${
                 watchlist.includes(listing.id)
                   ? 'text-red-500 bg-red-50 dark:bg-red-900/20'
-                  : 'text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
+                  : 'text-stone-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
               }`}
             >
               <FaHeart className={watchlist.includes(listing.id) ? 'fill-current' : ''} />
@@ -390,32 +390,32 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
               src={listing.seller.avatar}
               alt={listing.seller.username}
               className="w-6 h-6 rounded-full"  />
-            <span className="text-sm text-gray-700 dark:text-gray-300">
+            <span className="text-sm text-stone-700 dark:text-stone-300">
               {listing.seller.username}
             </span>
             {listing.seller.verified && (
-              <BsShieldCheck className="text-blue-500" title="Verified seller" />
+              <BsShieldCheck className="text-amber-500" title="Verified seller" />
             )}
             <div className="flex items-center space-x-1">
               <BsStar className="text-yellow-500 w-3 h-3" />
-              <span className="text-xs text-gray-600 dark:text-gray-400">
+              <span className="text-xs text-stone-600 dark:text-stone-400">
                 {listing.seller.rating} ({listing.seller.totalTrades})
               </span>
             </div>
           </div>
 
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+          <p className="text-sm text-stone-600 dark:text-stone-400 mb-3 line-clamp-2">
             {listing.description}
           </p>
 
           {listing.type === 'sale' && (
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                <span className="text-2xl font-bold text-stone-900 dark:text-white">
                   ${listing.price.toFixed(2)}
                 </span>
                 {listing.negotiable && (
-                  <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+                  <span className="text-sm text-stone-500 dark:text-stone-400 ml-2">
                     (negotiable)
                   </span>
                 )}
@@ -432,8 +432,8 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
           {listing.type === 'trade' && (
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Wants: </span>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                <span className="text-sm text-stone-600 dark:text-stone-400">Wants: </span>
+                <span className="text-sm font-medium text-stone-900 dark:text-white">
                   {listing.wantedCards?.join(', ')}
                 </span>
                 {listing.tradeCash && (
@@ -444,7 +444,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
               </div>
               <button
                 onClick={() => handleTradeRequest(listing)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
 
                 Make Offer
               </button>
@@ -454,10 +454,10 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
           {listing.type === 'auction' && (
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-lg font-bold text-gray-900 dark:text-white">
+                <div className="text-lg font-bold text-stone-900 dark:text-white">
                   ${listing.currentBid.toFixed(2)}
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-sm text-stone-500 dark:text-stone-400">
                   {listing.bidders} bidders • {formatTimeRemaining(listing.endsAt)} left
                 </div>
               </div>
@@ -470,15 +470,15 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                     Buy ${listing.buyItNow}
                   </button>
                 )}
-                <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                <button className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
                   Place Bid
                 </button>
               </div>
             </div>
           )}
 
-          <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
-            <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-between mt-3 pt-3 border-t border-stone-200 dark:border-stone-600">
+            <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-400">
               <div className="flex items-center space-x-1">
                 <FaEye />
                 <span>{listing.views}</span>
@@ -488,7 +488,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                 <span>{listing.watchers}</span>
               </div>
             </div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-stone-500 dark:text-stone-400">
               Listed {formatTimeAgo(listing.listedAt)}
             </span>
           </div>
@@ -500,7 +500,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
   return (
     <div className="trading-marketplace space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg shadow-lg p-6">
+      <div className="bg-gradient-to-r from-green-600 to-amber-600 text-white rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold flex items-center">
@@ -510,7 +510,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
             <p className="text-green-100">Buy, sell, and trade Pokemon cards with the community</p>
           </div>
           <div className="text-right">
-            <button className="px-4 py-2 bg-white text-green-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+            <button className="px-4 py-2 bg-white text-green-600 rounded-lg font-medium hover:bg-stone-100 transition-colors">
               List a Card
             </button>
           </div>
@@ -518,7 +518,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+      <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg">
         {[
           { id: 'marketplace' as const, label: 'Marketplace', icon: <FaShoppingCart /> },
           { id: 'my-trades' as const, label: 'My Trades', icon: <FaExchangeAlt /> },
@@ -530,8 +530,8 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${
               activeTab === tab.id
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             {tab.icon}
@@ -544,7 +544,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       {activeTab === 'marketplace' && (
         <div>
           {/* Search and Filters */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 mb-6">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6 mb-6">
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search */}
               <div className="relative flex-1">
@@ -553,8 +553,8 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search cards..."
-                  className="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" />
-                <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  className="w-full px-4 py-2 pl-10 border border-stone-300 dark:border-stone-600 rounded-lg focus:ring-2 focus:ring-amber-500 dark:bg-stone-700 dark:text-white" />
+                <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
               </div>
 
               {/* Quick Filters */}
@@ -562,7 +562,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                 <select
                   value={filters.type}
                   onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value as Filters['type'] }))}
-                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
+                  className="px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg dark:bg-stone-700 dark:text-white">
 
                   <option value="all">All Types</option>
                   <option value="sale">For Sale</option>
@@ -573,7 +573,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
+                  className="px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg dark:bg-stone-700 dark:text-white">
 
                   <option value="newest">Newest First</option>
                   <option value="price-low">Price: Low to High</option>
@@ -582,8 +582,8 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                   <option value="most-watched">Most Watched</option>
                 </select>
 
-                <button className="p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <FaFilter className="text-gray-600 dark:text-gray-400" />
+                <button className="p-2 border border-stone-300 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700">
+                  <FaFilter className="text-stone-600 dark:text-stone-400" />
                 </button>
               </div>
             </div>
@@ -601,14 +601,14 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       {/* My Trades Tab */}
       {activeTab === 'my-trades' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
               Trade History
             </h3>
             
             <div className="space-y-4">
               {myTrades.map(trade => (
-                <div key={trade.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <div key={trade.id} className="border border-stone-200 dark:border-stone-700 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
                       <img
@@ -616,10 +616,10 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                         alt={trade.otherUser.username}
                         className="w-8 h-8 rounded-full"  />
                       <div>
-                        <div className="font-medium text-gray-900 dark:text-white">
+                        <div className="font-medium text-stone-900 dark:text-white">
                           Trade with {trade.otherUser.username}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-sm text-stone-500 dark:text-stone-400">
                           {formatTimeAgo(trade.createdAt)}
                         </div>
                       </div>
@@ -630,7 +630,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                         {trade.status}
                       </span>
                       {trade.status === 'pending' && trade.messages && trade.messages > 0 && (
-                        <div className="flex items-center space-x-1 text-blue-600">
+                        <div className="flex items-center space-x-1 text-amber-600">
                           <BsChatDots />
                           <span className="text-sm">{trade.messages}</span>
                         </div>
@@ -644,12 +644,12 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                         src={trade.myCard.image}
                         alt={trade.myCard.name}
                         className="w-20 h-28 object-cover rounded mx-auto mb-2"  />
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm font-medium text-stone-900 dark:text-white">
                         Your: {trade.myCard.name}
                       </div>
                     </div>
 
-                    <FaExchangeAlt className="text-gray-400" />
+                    <FaExchangeAlt className="text-stone-400" />
 
                     <div className="text-center">
                       {trade.theirCard ? (
@@ -658,7 +658,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                             src={trade.theirCard.image}
                             alt={trade.theirCard.name}
                             className="w-20 h-28 object-cover rounded mx-auto mb-2"  />
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="text-sm font-medium text-stone-900 dark:text-white">
                             Their: {trade.theirCard.name}
                           </div>
                         </>
@@ -667,7 +667,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                           <div className="w-20 h-28 bg-green-100 dark:bg-green-900 rounded flex items-center justify-center mx-auto mb-2">
                             <FaDollarSign className="text-green-600 text-2xl" />
                           </div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="text-sm font-medium text-stone-900 dark:text-white">
                             Cash: ${trade.price}
                           </div>
                         </>
@@ -685,7 +685,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                         <FaTimes />
                         <span>Decline</span>
                       </button>
-                      <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center space-x-2">
+                      <button className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 flex items-center space-x-2">
                         <BsChatDots />
                         <span>Message</span>
                       </button>
@@ -699,10 +699,10 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       )}
 
       {/* Safety Notice */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
         <div className="flex items-start space-x-3">
-          <FaShieldAlt className="text-blue-600 dark:text-blue-400 mt-0.5" />
-          <div className="text-sm text-blue-700 dark:text-blue-300">
+          <FaShieldAlt className="text-amber-600 dark:text-amber-400 mt-0.5" />
+          <div className="text-sm text-amber-700 dark:text-amber-300">
             <strong>Safety First:</strong> Always use our secure escrow service for high-value trades. 
             Report any suspicious activity to our support team. Trade with verified users when possible.
           </div>
@@ -712,26 +712,26 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       {/* Trade Modal */}
       {showTradeModal && selectedListing && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                 Make Trade Offer
               </h3>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                     Your Offer
                   </label>
                   <textarea
                     placeholder="Describe what you're offering for this card..."
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" />
+                    className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg focus:ring-2 focus:ring-amber-500 dark:bg-stone-700 dark:text-white" />
                 </div>
 
                 <div className="flex justify-end space-x-3">
                   <button
                     onClick={() => setShowTradeModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                    className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700">
 
                     Cancel
                   </button>
@@ -740,7 +740,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                       onTradeRequest?.(selectedListing);
                       setShowTradeModal(false);
                     }}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">
 
                     Send Offer
                   </button>

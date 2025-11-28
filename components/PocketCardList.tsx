@@ -80,17 +80,17 @@ const PocketCard = memo<PocketCardProps>(({
     const typeColors: Record<string, string> = {
       'grass': 'from-green-100/60 via-green-50/40 via-70% to-transparent',
       'fire': 'from-red-100/60 via-orange-50/40 via-70% to-transparent',
-      'water': 'from-blue-100/60 via-cyan-50/40 via-70% to-transparent',
+      'water': 'from-amber-100/60 via-amber-50/40 via-70% to-transparent',
       'lightning': 'from-yellow-100/60 via-amber-50/40 via-70% to-transparent',
       'electric': 'from-yellow-100/60 via-amber-50/40 via-70% to-transparent',
-      'psychic': 'from-purple-100/60 via-pink-50/40 via-70% to-transparent',
+      'psychic': 'from-amber-100/60 via-amber-50/40 via-70% to-transparent',
       'fighting': 'from-orange-100/60 via-red-50/40 via-70% to-transparent',
-      'darkness': 'from-purple-100/60 via-gray-50/40 via-70% to-transparent',
-      'dark': 'from-purple-100/60 via-gray-50/40 via-70% to-transparent',
-      'metal': 'from-gray-100/60 via-slate-50/40 via-70% to-transparent',
-      'steel': 'from-gray-100/60 via-slate-50/40 via-70% to-transparent',
-      'dragon': 'from-indigo-100/60 via-purple-50/40 via-70% to-transparent',
-      'colorless': 'from-gray-50/60 via-gray-50/40 via-70% to-transparent',
+      'darkness': 'from-amber-100/60 via-stone-50/40 via-70% to-transparent',
+      'dark': 'from-amber-100/60 via-stone-50/40 via-70% to-transparent',
+      'metal': 'from-stone-100/60 via-stone-50/40 via-70% to-transparent',
+      'steel': 'from-stone-100/60 via-stone-50/40 via-70% to-transparent',
+      'dragon': 'from-amber-100/60 via-amber-50/40 via-70% to-transparent',
+      'colorless': 'from-stone-50/60 via-stone-50/40 via-70% to-transparent',
       'fairy': 'from-pink-100/60 via-rose-50/40 via-70% to-transparent',
     };
     const typeLower = type.toLowerCase();
@@ -102,9 +102,9 @@ const PocketCard = memo<PocketCardProps>(({
       {/* Main Card Container - Mobile Optimized Glass */}
       <div
         className={`
-          backdrop-blur-xl bg-white/90 dark:bg-gray-800/90
+          backdrop-blur-xl bg-white/90 dark:bg-stone-800/90
           rounded-3xl p-2 sm:p-3
-          border-2 border-gray-300/50 dark:border-gray-600/50
+          border-2 border-stone-300/50 dark:border-stone-600/50
           shadow-lg hover:shadow-2xl
           transform transition-all duration-300
           hover:scale-[1.03] hover:-translate-y-1
@@ -120,11 +120,11 @@ const PocketCard = memo<PocketCardProps>(({
         {card.type && (
           <div className={`absolute inset-0 bg-gradient-to-b ${getTypeGradient(card.type)} pointer-events-none rounded-3xl opacity-80`} />
         )}
-        
+
         {/* Card content with relative positioning to be above gradient */}
         <div className="relative z-10 flex flex-col h-full">
         {/* Compact Image Container */}
-        <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800 flex-shrink-0">
+        <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-stone-100 to-stone-50 dark:from-stone-700 dark:to-stone-800 flex-shrink-0">
           <div className="aspect-[110/154] relative">
             <img
               src={card.image || '/back-card.png'}
@@ -143,7 +143,7 @@ const PocketCard = memo<PocketCardProps>(({
               className="
                 absolute bottom-1 right-1
                 w-6 h-6 rounded-full
-                backdrop-blur-md bg-white/70 dark:bg-gray-800/70
+                backdrop-blur-md bg-white/70 dark:bg-stone-800/70
                 flex items-center justify-center
                 shadow-sm border border-white/30
                 opacity-0 group-hover:opacity-100
@@ -154,7 +154,7 @@ const PocketCard = memo<PocketCardProps>(({
                 setZoomedCard(card);
               }}
             >
-              <svg className="w-3 h-3 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-3 h-3 text-stone-600 dark:text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
@@ -165,18 +165,18 @@ const PocketCard = memo<PocketCardProps>(({
         <div className="space-y-1 flex-grow flex flex-col justify-end pb-1">
           {/* First Row - Card Name (Centered) */}
           <div className="px-1 text-center">
-            <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 line-clamp-2 break-words">
+            <span className="text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-300 line-clamp-2 break-words">
               {card.name}
             </span>
           </div>
-          
+
           {/* Second Row - Set Info and Rarity (Switched) */}
           <div className="flex items-center justify-between px-1 gap-1 flex-shrink-0">
             {/* Set Badge with Card Number (Now on Left) */}
             <span className="
               text-[10px] sm:text-xs px-1 sm:px-2 py-0.5 rounded-full
-              bg-gray-100/70 dark:bg-gray-700/70
-              text-gray-600 dark:text-gray-400
+              bg-stone-100/70 dark:bg-stone-700/70
+              text-stone-600 dark:text-stone-400
               font-medium
               truncate max-w-[60%]
             ">
@@ -197,7 +197,7 @@ const PocketCard = memo<PocketCardProps>(({
                   </span>
                 ) : (
                   // Non-gold rarities (diamonds) - all use same purple-pink palette
-                  <span className="text-sm font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
+                  <span className="text-sm font-bold bg-gradient-to-r from-amber-300 via-amber-300 to-amber-300 bg-clip-text text-transparent">
                     {getRarityDisplay(card.rarity)}
                   </span>
                 )}
@@ -391,18 +391,18 @@ function PocketCardListInner({
           </svg>
         </div>
         <h3 className="text-xl font-bold text-red-600">Error Loading Cards</h3>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">{error}</p>
+        <p className="text-stone-600 dark:text-stone-400 mt-2">{error}</p>
       </div>
     );
   }
-  
+
   if (!cards || cards.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <svg className="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-16 h-16 text-stone-400 dark:text-stone-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">{emptyMessage}</h3>
+        <h3 className="text-xl font-medium text-stone-600 dark:text-stone-400">{emptyMessage}</h3>
       </div>
     );
   }
@@ -414,16 +414,16 @@ function PocketCardListInner({
       <div className="flex justify-between items-center mb-6 gap-4">
         {/* Search Bar on Left */}
         {onSearchChange && (
-          <div className="relative flex-1 max-w-xs bg-gray-50/90 dark:bg-gray-800/90 rounded-full p-1 shadow-lg border border-gray-300 dark:border-gray-700/40">
+          <div className="relative flex-1 max-w-xs bg-stone-50/90 dark:bg-stone-800/90 rounded-full p-1 shadow-lg border border-stone-300 dark:border-stone-700/40">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
               <input
                 type="text"
-                className="w-full pl-9 pr-9 py-1.5 bg-transparent rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-400/40 focus:ring-offset-0 transition-all"
+                className="w-full pl-9 pr-9 py-1.5 bg-transparent rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:ring-offset-0 transition-all"
                 placeholder="Search cards..."
                 value={searchValue}
                 onChange={(e) => onSearchChange(e.target.value)}
@@ -437,7 +437,7 @@ function PocketCardListInner({
               />
               {searchValue && (
                 <button
-                  className="absolute inset-y-0 right-0 pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                  className="absolute inset-y-0 right-0 pr-3 text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300"
                   onClick={() => onSearchChange('')}
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -452,13 +452,13 @@ function PocketCardListInner({
         {/* Sort Controls on Right */}
         {showSort && (
         <div className="
-          backdrop-blur-md bg-white/80 dark:bg-gray-800/80
+          backdrop-blur-md bg-white/80 dark:bg-stone-800/80
           rounded-full px-4 py-2
-          border border-white/40 dark:border-gray-700/40
+          border border-white/40 dark:border-stone-700/40
           shadow-lg
           inline-flex items-center gap-2
         ">
-          <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 mr-1">Sort by:</span>
+          <span className="text-xs font-semibold text-stone-600 dark:text-stone-400 mr-1">Sort by:</span>
           
           {/* Sort by Collector # */}
           <button
@@ -471,9 +471,9 @@ function PocketCardListInner({
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'number' 
-                ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
-                : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+              sortOption === 'number'
+                ? 'bg-gradient-to-r from-amber-100/80 to-amber-100/80 dark:from-amber-900/30 dark:to-amber-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
+                : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
             }`}
           >
             <span>Collector #</span>
@@ -495,9 +495,9 @@ function PocketCardListInner({
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'name' 
-                ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
-                : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+              sortOption === 'name'
+                ? 'bg-gradient-to-r from-amber-100/80 to-amber-100/80 dark:from-amber-900/30 dark:to-amber-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
+                : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
             }`}
           >
             <span>Name</span>
@@ -519,9 +519,9 @@ function PocketCardListInner({
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'rarity' 
-                ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
-                : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+              sortOption === 'rarity'
+                ? 'bg-gradient-to-r from-amber-100/80 to-amber-100/80 dark:from-amber-900/30 dark:to-amber-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
+                : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
             }`}
           >
             <span>Rarity</span>
@@ -543,9 +543,9 @@ function PocketCardListInner({
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'type' 
-                ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
-                : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+              sortOption === 'type'
+                ? 'bg-gradient-to-r from-amber-100/80 to-amber-100/80 dark:from-amber-900/30 dark:to-amber-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
+                : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
             }`}
           >
             <span>Type</span>
@@ -567,9 +567,9 @@ function PocketCardListInner({
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'hp' 
-                ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
-                : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+              sortOption === 'hp'
+                ? 'bg-gradient-to-r from-amber-100/80 to-amber-100/80 dark:from-amber-900/30 dark:to-amber-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
+                : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
             }`}
           >
             <span>HP</span>
@@ -618,7 +618,7 @@ function PocketCardListInner({
 
     {/* Cards Count Info */}
     {!hideCardCount && sortedCards.length > 0 && (
-      <div className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+      <div className="text-center mt-4 text-sm text-stone-600 dark:text-stone-400">
         Showing {displayedCards.length} of {sortedCards.length} cards
         {hasMore && !scrollLoading && (
           <div className="text-xs text-primary mt-1">
@@ -629,7 +629,7 @@ function PocketCardListInner({
     )}
 
     {!hideCardCount && !scrollLoading && !hasMore && sortedCards.length > 0 && (
-      <div className="text-center mt-4 text-sm text-gray-500 dark:text-gray-400">
+      <div className="text-center mt-4 text-sm text-stone-500 dark:text-stone-400">
         All {sortedCards.length} cards loaded
       </div>
     )}
@@ -655,7 +655,7 @@ function PocketCardListInner({
           />
           <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
           {zoomedCard.pack && (
-            <p className="text-gray-600 dark:text-gray-400 mt-2">{zoomedCard.pack}</p>
+            <p className="text-stone-600 dark:text-stone-400 mt-2">{zoomedCard.pack}</p>
           )}
         </div>
       </Modal>
@@ -673,11 +673,11 @@ export default function PocketCardList(props: PocketCardListProps) {
         <div className="min-h-96 flex items-center justify-center p-8">
           <div className="glass-medium rounded-xl p-6 text-center max-w-md">
             <div className="text-4xl mb-4">🎴</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Unable to load cards</h3>
-            <p className="text-gray-600 mb-4">There was an error loading the Pocket cards. Please try refreshing the page.</p>
+            <h3 className="text-lg font-semibold text-stone-900 mb-2">Unable to load cards</h3>
+            <p className="text-stone-600 mb-4">There was an error loading the Pocket cards. Please try refreshing the page.</p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
             >
               Refresh
             </button>

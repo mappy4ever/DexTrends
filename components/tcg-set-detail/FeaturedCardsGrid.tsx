@@ -35,7 +35,7 @@ export const FeaturedCardsGrid: React.FC<FeaturedCardsGridProps> = ({
       }),
       'p-4'
     )}>
-      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+      <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-3">
         Featured Cards
       </h3>
       
@@ -49,7 +49,7 @@ export const FeaturedCardsGrid: React.FC<FeaturedCardsGridProps> = ({
               className="group cursor-pointer"
               onClick={() => onCardClick?.(card)}
             >
-              <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+              <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-stone-100 dark:bg-stone-800">
                 <Image
                   src={card.images?.small || ''}
                   alt={card.name}
@@ -65,7 +65,7 @@ export const FeaturedCardsGrid: React.FC<FeaturedCardsGridProps> = ({
                   />
                 </div>
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">
+              <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 truncate">
                 {card.name}
               </p>
             </div>

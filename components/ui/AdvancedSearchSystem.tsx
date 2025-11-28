@@ -479,8 +479,8 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
           onClick={() => setIsAdvancedMode(!isAdvancedMode)}
           className={`px-3 py-1 rounded-full text-sm transition-colors ${
             isAdvancedMode 
-              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-              : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+              ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+              : 'bg-stone-100 text-stone-700 dark:bg-stone-700 dark:text-stone-300'
           }`}
         >
           Advanced Filters {isAdvancedMode ? '▼' : '▶'}
@@ -493,8 +493,8 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
             onClick={() => handleFilterChange('type', filters.type === type ? '' : type)}
             className={`px-3 py-1 rounded-full text-sm capitalize transition-colors ${
               filters.type === type
-                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+                : 'bg-stone-100 text-stone-700 dark:bg-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
             }`}
           >
             {type}
@@ -508,8 +508,8 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
             onClick={() => handleFilterChange('rarity', filters.rarity === rarity ? '' : rarity)}
             className={`px-3 py-1 rounded-full text-sm transition-colors ${
               filters.rarity === rarity
-                ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-                : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+                : 'bg-stone-100 text-stone-700 dark:bg-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
             }`}
           >
             {rarity}
@@ -528,7 +528,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
 
       {/* Advanced Filters Panel */}
       {isAdvancedMode && (
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
+        <div className="bg-stone-50 dark:bg-stone-800 rounded-lg p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Card Type */}
             <div>
@@ -536,7 +536,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
               <select
                 value={filters.cardType}
                 onChange={(e) => handleFilterChange('cardType', e.target.value as SearchFilters['cardType'])}
-                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
+                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-stone-700">
 
                 <option value="all">All Cards</option>
                 <option value="tcg">TCG Cards</option>
@@ -550,7 +550,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
               <select
                 value={filters.set}
                 onChange={(e) => handleFilterChange('set', e.target.value)}
-                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
+                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-stone-700">
 
                 <option value="">All Sets</option>
                 <option value="base1">Base Set</option>
@@ -567,7 +567,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
                 value={filters.artist}
                 onChange={(e) => handleFilterChange('artist', e.target.value)}
                 placeholder="Artist name"
-                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
+                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-stone-700" />
             </div>
 
             {/* Release Year */}
@@ -580,7 +580,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
                 placeholder="1999"
                 min="1996"
                 max="2024"
-                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
+                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-stone-700" />
             </div>
 
             {/* HP Range */}
@@ -592,13 +592,13 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
                   value={filters.hp.min}
                   onChange={(e) => handleFilterChange('hp', { ...filters.hp, min: e.target.value })}
                   placeholder="Min"
-                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
+                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-stone-700" />
                 <input
                   type="number"
                   value={filters.hp.max}
                   onChange={(e) => handleFilterChange('hp', { ...filters.hp, max: e.target.value })}
                   placeholder="Max"
-                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
+                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-stone-700" />
               </div>
             </div>
 
@@ -623,11 +623,11 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
       {/* Sorting Controls */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-4">
-          <span className="text-sm text-gray-600 dark:text-gray-400">Sort by:</span>
+          <span className="text-sm text-stone-600 dark:text-stone-400">Sort by:</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-1 border rounded bg-white dark:bg-gray-700 text-sm">
+            className="px-3 py-1 border rounded bg-white dark:bg-stone-700 text-sm">
 
             <option value="relevance">Relevance</option>
             <option value="name">Name</option>
@@ -638,7 +638,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
           </select>
           <button
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-            className="px-3 py-1 border rounded bg-white dark:bg-gray-700 text-sm">
+            className="px-3 py-1 border rounded bg-white dark:bg-stone-700 text-sm">
 
             {sortOrder === 'asc' ? '↑' : '↓'}
           </button>
@@ -649,7 +649,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
       {searchHistory.length > 0 && (
         <div className="mb-4">
           <details className="group">
-            <summary className="cursor-pointer text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            <summary className="cursor-pointer text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white">
               Recent Searches ({searchHistory.length})
             </summary>
             <div className="mt-2 space-y-1 max-h-32 overflow-y-auto">
@@ -657,10 +657,10 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
                 <button
                   key={index}
                   onClick={() => loadFromHistory(item)}
-                  className="block w-full text-left px-3 py-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                  className="block w-full text-left px-3 py-2 text-sm rounded hover:bg-stone-100 dark:hover:bg-stone-700">
 
                   <span className="font-medium">{item.query}</span>
-                  <span className="text-gray-500 ml-2">({item.resultCount} results)</span>
+                  <span className="text-stone-500 ml-2">({item.resultCount} results)</span>
                 </button>
               ))}
             </div>

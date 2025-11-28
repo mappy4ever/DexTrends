@@ -143,13 +143,13 @@ const PokemonEmptyState = ({
         <div className="relative w-32 h-32 mx-auto mb-6">
           {/* Empty Pokéball */}
           <div className="w-24 h-24 mx-auto relative">
-            <div className="w-24 h-24 rounded-full border-4 border-gray-300 border-dashed relative">
-              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-300"></div>
-              <div className="absolute top-1/2 left-1/2 w-4 h-4 border-2 border-gray-300 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="w-24 h-24 rounded-full border-4 border-stone-300 border-dashed relative">
+              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-stone-300"></div>
+              <div className="absolute top-1/2 left-1/2 w-4 h-4 border-2 border-stone-300 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
             </div>
             {/* Dust cloud */}
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-              <div className="w-8 h-4 bg-gray-200 rounded-full opacity-60 animate-pulse"></div>
+              <div className="w-8 h-4 bg-stone-200 rounded-full opacity-60 animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ const PokemonEmptyState = ({
         <div className="relative w-32 h-32 mx-auto mb-6">
           {/* Flying cards */}
           <div className="relative">
-            <div className="absolute top-2 left-4 w-12 h-16 bg-gradient-to-b from-blue-400 to-blue-600 rounded-lg transform rotate-12 animate-float opacity-60"></div>
+            <div className="absolute top-2 left-4 w-12 h-16 bg-gradient-to-b from-amber-400 to-amber-600 rounded-lg transform rotate-12 animate-float opacity-60"></div>
             <div className="absolute top-6 right-4 w-12 h-16 bg-gradient-to-b from-red-400 to-red-600 rounded-lg transform -rotate-12 animate-float delay-75 opacity-80"></div>
             <div className="absolute top-4 left-1/2 w-12 h-16 bg-gradient-to-b from-yellow-400 to-yellow-600 rounded-lg transform -translate-x-1/2 animate-float delay-150"></div>
           </div>
@@ -210,24 +210,24 @@ const PokemonEmptyState = ({
       </div>
 
       {/* Main Title */}
-      <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      <h2 className="text-2xl md:text-3xl font-bold text-stone-900 dark:text-white mb-4">
         {customMessage || currentData.title}
       </h2>
 
       {/* Rotating Messages */}
       <div className="mb-8 h-8 flex items-center">
-        <p className="text-lg text-gray-600 dark:text-gray-400 animate-fadeIn" key={currentMessage}>
+        <p className="text-lg text-stone-600 dark:text-stone-400 animate-fadeIn" key={currentMessage}>
           {currentData.messages[currentMessage]}
         </p>
       </div>
 
       {/* Suggestions */}
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-8 max-w-md w-full">
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center justify-center">
+      <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-6 mb-8 max-w-md w-full">
+        <h3 className="font-semibold text-stone-900 dark:text-white mb-4 flex items-center justify-center">
           <span className="mr-2">{currentData.emoji}</span>
           Try These Instead:
         </h3>
-        <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+        <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-400">
           {currentData.suggestions.map((suggestion, index) => (
             <li key={index} className="flex items-center">
               <span className="mr-2 text-pokemon-red">•</span>
@@ -250,7 +250,7 @@ const PokemonEmptyState = ({
             {type === 'search' && (
               <button
                 onClick={() => router.reload()}
-                className="bg-pokemon-blue hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105"
+                className="bg-pokemon-blue hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105"
               >
                 🔄 Try Again
               </button>
@@ -277,7 +277,7 @@ const PokemonEmptyState = ({
       </div>
 
       {/* Fun Footer Message */}
-      <div className="mt-8 text-xs text-gray-500 dark:text-gray-400 max-w-sm">
+      <div className="mt-8 text-xs text-stone-500 dark:text-stone-400 max-w-sm">
         <p className="italic">
           "Even the best Trainers face challenges. The real victory is getting back up!" 
           <span className="block mt-1 text-right">- Professor Oak (probably)</span>

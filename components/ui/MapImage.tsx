@@ -29,8 +29,8 @@ export default function MapImage({
   // Fallback to regular img tag if Next/Image fails
   if (hasError) {
     return (
-      <img 
-        src={src} 
+      <img
+        src={src}
         alt={alt}
         className={className}
         style={{

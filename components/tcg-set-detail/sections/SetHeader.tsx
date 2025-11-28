@@ -102,16 +102,16 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
               {setInfo.name}
             </h1>
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-light rounded-lg p-3">
-                <p className="text-gray-600 dark:text-gray-400 text-sm">Series</p>
+                <p className="text-stone-600 dark:text-stone-400 text-sm">Series</p>
                 <p className="font-semibold">{setInfo.series}</p>
               </div>
               <div className="glass-light rounded-lg p-3">
-                <p className="text-gray-600 dark:text-gray-400 text-sm">Release Date</p>
+                <p className="text-stone-600 dark:text-stone-400 text-sm">Release Date</p>
                 <p className="font-semibold">
                   {new Date(setInfo.releaseDate).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -121,16 +121,16 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
                 </p>
               </div>
               <div className="glass-light rounded-lg p-3">
-                <p className="text-gray-600 dark:text-gray-400 text-sm">Total Cards</p>
+                <p className="text-stone-600 dark:text-stone-400 text-sm">Total Cards</p>
                 <p className="font-semibold text-lg">
-                  <span className="text-purple-600">{setInfo.printedTotal}</span>
-                  <span className="text-gray-500 mx-1">/</span>
+                  <span className="text-amber-600">{setInfo.printedTotal}</span>
+                  <span className="text-stone-500 mx-1">/</span>
                   <span className="text-pink-600">{setInfo.total}</span>
                 </p>
               </div>
               {setInfo.ptcgoCode && (
                 <div className="glass-light rounded-lg p-3">
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">PTCGO Code</p>
+                  <p className="text-stone-600 dark:text-stone-400 text-sm">PTCGO Code</p>
                   <p className="font-semibold font-mono">{setInfo.ptcgoCode}</p>
                 </div>
               )}

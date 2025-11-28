@@ -197,10 +197,10 @@ const AdvancedTeamBuilder: NextPage = () => {
         <FadeIn>
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-stone-900 dark:text-white mb-1 sm:mb-2">
               Advanced Team Builder
             </h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+            <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400">
               Build competitive teams with real-time synergy analysis and type coverage visualization
             </p>
           </div>
@@ -211,7 +211,7 @@ const AdvancedTeamBuilder: NextPage = () => {
               onClick={() => setActiveTab('builder')}
               variant={activeTab === 'builder' ? 'primary' : 'secondary'}
               size="md"
-              className={activeTab === 'builder' ? 'bg-blue-600' : ''}
+              className={activeTab === 'builder' ? 'bg-amber-600' : ''}
             >
               Team Builder
             </CircularButton>
@@ -219,7 +219,7 @@ const AdvancedTeamBuilder: NextPage = () => {
               onClick={() => setActiveTab('analysis')}
               variant={activeTab === 'analysis' ? 'primary' : 'secondary'}
               size="md"
-              className={activeTab === 'analysis' ? 'bg-blue-600' : ''}
+              className={activeTab === 'analysis' ? 'bg-amber-600' : ''}
             >
               Synergy Analysis
             </CircularButton>
@@ -227,7 +227,7 @@ const AdvancedTeamBuilder: NextPage = () => {
               onClick={() => setActiveTab('export')}
               variant={activeTab === 'export' ? 'primary' : 'secondary'}
               size="md"
-              className={activeTab === 'export' ? 'bg-blue-600' : ''}
+              className={activeTab === 'export' ? 'bg-amber-600' : ''}
             >
               Export/Import
             </CircularButton>
@@ -247,7 +247,7 @@ const AdvancedTeamBuilder: NextPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Search Panel */}
               <div className="lg:col-span-1">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+                <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6">
                   <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Add Pokemon</h2>
                   
                   <input
@@ -255,12 +255,12 @@ const AdvancedTeamBuilder: NextPage = () => {
                     placeholder="Search Pokemon..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full min-h-[44px] px-3 sm:px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 touch-manipulation"
+                    className="w-full min-h-[44px] px-3 sm:px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 touch-manipulation"
                   />
 
                   {loading && (
                     <div className="mt-4 text-center">
-                      <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
+                      <div className="animate-spin h-8 w-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto"></div>
                     </div>
                   )}
 
@@ -272,7 +272,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                           onClick={() => addToTeam(pokemon)}
                           variant="secondary"
                           size="lg"
-                          className="w-full p-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 !rounded-lg justify-start"
+                          className="w-full p-3 bg-stone-50 dark:bg-stone-700 hover:bg-stone-100 dark:hover:bg-stone-600 !rounded-lg justify-start"
                         >
                           <Image
                             src={pokemon.sprites?.front_default || '/dextrendslogo.png'}
@@ -281,7 +281,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                             height={48}
                           />
                           <div className="text-left">
-                            <div className="font-medium capitalize">{pokemon.name}</div>
+                            <div className="font-medium capitalize text-amber-800 dark:text-amber-200">{pokemon.name}</div>
                             <div className="flex gap-1">
                               {pokemon.types?.map((t) => (
                                 <TypeBadge key={t.type.name} type={t.type.name} size="sm" />
@@ -297,7 +297,7 @@ const AdvancedTeamBuilder: NextPage = () => {
 
               {/* Team Display */}
               <div className="lg:col-span-2">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+                <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6">
                   <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Your Team ({team.length}/6)</h2>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -316,9 +316,9 @@ const AdvancedTeamBuilder: NextPage = () => {
                     {Array.from({ length: 6 - team.length }).map((_, index) => (
                       <div
                         key={`empty-${index}`}
-                        className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 flex items-center justify-center"
+                        className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-lg p-8 flex items-center justify-center"
                       >
-                        <span className="text-gray-400 dark:text-gray-500">Empty Slot</span>
+                        <span className="text-stone-400 dark:text-stone-500">Empty Slot</span>
                       </div>
                     ))}
                   </div>
@@ -330,7 +330,7 @@ const AdvancedTeamBuilder: NextPage = () => {
           {activeTab === 'analysis' && (
             <div className="space-y-6">
               {/* Synergy Graph */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-6">
                 <TeamSynergyGraph
                   team={team}
                   onPokemonClick={(member) => logger.debug('Pokemon clicked:', { member })}
@@ -348,7 +348,7 @@ const AdvancedTeamBuilder: NextPage = () => {
           )}
 
           {activeTab === 'export' && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6">
               <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Export/Import Team</h2>
               
               <div className="space-y-4">
@@ -357,7 +357,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                   disabled={team.length === 0}
                   variant="primary"
                   size="lg"
-                  className="min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 touch-target"
+                  className="min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 bg-amber-600 hover:bg-amber-700 disabled:bg-stone-400 touch-target"
                 >
                   Export Team as JSON
                 </CircularButton>
@@ -367,7 +367,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                   <textarea
                     readOnly
                     value={generateShowdownFormat(team)}
-                    className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-gray-50 dark:bg-gray-900 rounded-lg font-mono text-xs sm:text-sm"
+                    className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-stone-50 dark:bg-stone-900 rounded-lg font-mono text-xs sm:text-sm"
                   />
                 </div>
               </div>
@@ -388,7 +388,7 @@ const TeamMemberCard: React.FC<{
   onUpdate: (updates: Partial<TeamMember>) => void;
 }> = ({ member, index, onRemove, onEdit, onUpdate }) => {
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 sm:p-4">
+    <div className="bg-stone-50 dark:bg-stone-700 rounded-lg p-3 sm:p-4">
       <div className="flex items-start justify-between mb-2 sm:mb-3">
         <div className="flex items-center gap-2 sm:gap-3">
           <Image
@@ -399,7 +399,7 @@ const TeamMemberCard: React.FC<{
             className="w-14 h-14 sm:w-16 sm:h-16"
           />
           <div>
-            <h3 className="font-bold capitalize">
+            <h3 className="font-bold capitalize text-amber-800 dark:text-amber-200">
               {member.nickname || member.pokemon.name}
             </h3>
             <div className="flex gap-1 mt-1">
@@ -415,7 +415,7 @@ const TeamMemberCard: React.FC<{
             onClick={onEdit}
             variant="ghost"
             size="sm"
-            className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm min-h-[36px] touch-target"
+            className="text-amber-600 hover:text-amber-700 text-xs sm:text-sm min-h-[36px] touch-target"
           >
             Edit
           </CircularButton>
@@ -432,20 +432,20 @@ const TeamMemberCard: React.FC<{
 
       <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Level:</span>
+          <span className="text-stone-600 dark:text-stone-400">Level:</span>
           <span>{member.level}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Nature:</span>
+          <span className="text-stone-600 dark:text-stone-400">Nature:</span>
           <span>{member.nature.name}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Ability:</span>
+          <span className="text-stone-600 dark:text-stone-400">Ability:</span>
           <span className="capitalize">{member.ability}</span>
         </div>
         {member.item && (
           <div className="flex justify-between">
-            <span className="text-gray-600 dark:text-gray-400">Item:</span>
+            <span className="text-stone-600 dark:text-stone-400">Item:</span>
             <span>{member.item}</span>
           </div>
         )}
@@ -460,14 +460,14 @@ const TypeCoverageMatrix: React.FC<{ team: TeamMember[] }> = ({ team }) => {
   const analysis = analyzeTeamTypeSynergy(teamTypes);
   
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+    <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6">
       <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Type Coverage Analysis</h3>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <h4 className="font-medium mb-2 text-red-600">Shared Weaknesses</h4>
           {Object.keys(analysis.sharedWeaknesses).length === 0 ? (
-            <p className="text-gray-600 dark:text-gray-400">No shared weaknesses!</p>
+            <p className="text-stone-600 dark:text-stone-400">No shared weaknesses!</p>
           ) : (
             <ul className="space-y-1">
               {Object.entries(analysis.sharedWeaknesses).map(([type, count]) => (
@@ -483,7 +483,7 @@ const TypeCoverageMatrix: React.FC<{ team: TeamMember[] }> = ({ team }) => {
         <div>
           <h4 className="font-medium mb-2 text-orange-600">Uncovered Types</h4>
           {analysis.uncoveredTypes.length === 0 ? (
-            <p className="text-gray-600 dark:text-gray-400">All types covered!</p>
+            <p className="text-stone-600 dark:text-stone-400">All types covered!</p>
           ) : (
             <ul className="space-y-1">
               {analysis.uncoveredTypes.map((type) => (
@@ -520,24 +520,24 @@ const SpeedTierAnalysis: React.FC<{ team: TeamMember[] }> = ({ team }) => {
   }).sort((a, b) => b.actualSpeed - a.actualSpeed);
   
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+    <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6">
       <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Speed Tiers</h3>
-      
+
       <div className="space-y-2">
         {speeds.map((pokemon, index) => (
           <div key={index} className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <span className="text-2xl font-bold text-gray-400">#{index + 1}</span>
+              <span className="text-2xl font-bold text-stone-500">#{index + 1}</span>
               <div>
-                <div className="font-medium capitalize">{pokemon.name}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="font-medium capitalize text-amber-800 dark:text-amber-200">{pokemon.name}</div>
+                <div className="text-sm text-stone-600 dark:text-stone-400">
                   Nature: {pokemon.nature}
                 </div>
               </div>
             </div>
             <div className="text-right">
               <div className="font-bold">{pokemon.actualSpeed}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-stone-600 dark:text-stone-400">
                 Base: {pokemon.baseSpeed}
               </div>
             </div>

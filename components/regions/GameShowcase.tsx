@@ -38,7 +38,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
             <h2 className="text-3xl font-bold mb-3">
               Games in {region.name}
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-stone-600 dark:text-stone-400">
               Experience the {region.name} region across different generations
             </p>
           </div>
@@ -50,30 +50,30 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
             <SlideUp key={game} delay={index * 0.05}>
               <Link href={`/pokemon/games/${game.toLowerCase().replace(/\s+/g, '-')}`} className="block group">
                 <CardHover>
-                  <div className="relative transform transition-all duration-500 hover:-translate-y-3 hover:rotate-1">
+                  <div className="relative transform transition-all duration-500 hover:-transtone-y-3 hover:rotate-1">
                     {/* Liquid Glass Card Container */}
                     <div className={`
                       relative rounded-3xl overflow-hidden
                       backdrop-blur-xl
                       ${
                         theme === 'dark' 
-                          ? 'bg-gradient-to-br from-gray-800/90 via-purple-900/30 to-gray-900/90' 
-                          : 'bg-gradient-to-br from-white/90 via-purple-100/40 to-white/80'
+                          ? 'bg-gradient-to-br from-stone-800/90 via-amber-900/30 to-stone-900/90' 
+                          : 'bg-gradient-to-br from-white/90 via-amber-100/40 to-white/80'
                       }
                       shadow-[0_8px_32px_rgba(139,92,246,0.15)]
                       group-hover:shadow-[0_16px_48px_rgba(139,92,246,0.25)]
                       transition-all duration-500
                       border border-white/20
-                      group-hover:border-purple-400/40
+                      group-hover:border-amber-400/40
                     `}>
                       
                       {/* Animated Gradient Border Glow */}
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div className="absolute inset-[-2px] rounded-3xl bg-gradient-to-r from-pink-400/30 via-purple-400/30 to-blue-400/30 blur-xl" />
+                        <div className="absolute inset-[-2px] rounded-3xl bg-gradient-to-r from-pink-400/30 via-amber-400/30 to-amber-400/30 blur-xl" />
                       </div>
                       
                       {/* Large Game Cover Display */}
-                      <div className="relative aspect-[3/4] w-full overflow-hidden bg-gradient-to-br from-purple-200/20 to-pink-200/20">
+                      <div className="relative aspect-[3/4] w-full overflow-hidden bg-gradient-to-br from-amber-200/20 to-pink-200/20">
                         <Image
                           src={getGameCover(game)}
                           alt={`Pokémon ${game} cover`}
@@ -102,16 +102,16 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-white/10 opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
                         
                         {/* Floating Version Badge */}
-                        <div className="absolute top-4 left-4 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 px-3 py-1.5 rounded-full shadow-lg transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
-                          <span className="text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        <div className="absolute top-4 left-4 backdrop-blur-md bg-white/80 dark:bg-stone-900/80 px-3 py-1.5 rounded-full shadow-lg transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
+                          <span className="text-xs font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                             Gen {region.generation}
                           </span>
                         </div>
                         
                         {/* Interactive Play Button */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <div className="w-20 h-20 rounded-full backdrop-blur-xl bg-white/90 dark:bg-gray-900/90 flex items-center justify-center shadow-2xl transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100">
-                            <BsArrowRight className="text-3xl text-purple-600 dark:text-purple-400 translate-x-0.5" />
+                          <div className="w-20 h-20 rounded-full backdrop-blur-xl bg-white/90 dark:bg-stone-900/90 flex items-center justify-center shadow-2xl transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100">
+                            <BsArrowRight className="text-3xl text-amber-600 dark:text-amber-400 transtone-x-0.5" />
                           </div>
                         </div>
                       </div>
@@ -119,16 +119,16 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                       {/* Glass Info Panel */}
                       <div className="relative p-5">
                         {/* Glass Divider */}
-                        <div className="absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent" />
+                        <div className="absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
                         
                         {/* Title with Gradient */}
-                        <h3 className="font-bold text-lg mb-2 text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
+                        <h3 className="font-bold text-lg mb-2 text-stone-800 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300">
                           Pokémon {game}
                         </h3>
                         
                         {/* Release Info Pills */}
                         <div className="flex flex-wrap gap-2 mb-3">
-                          <span className="px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm bg-purple-100/50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200/30">
+                          <span className="px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm bg-amber-100/50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200/30">
                             {region.name}
                           </span>
                           {game.includes('&') && game.split(' & ').map((version, idx) => (
@@ -143,15 +143,15 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
                               <BsStarFill key={i} className={`text-xs ${
-                                i < 4 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'
+                                i < 4 ? 'text-yellow-400' : 'text-stone-300 dark:text-stone-600'
                               }`} />
                             ))}
                           </div>
                           
                           {/* Play Now Text */}
-                          <span className="text-sm font-semibold text-purple-600 dark:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                          <span className="text-sm font-semibold text-amber-600 dark:text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
                             Play
-                            <BsArrowRight className="group-hover:translate-x-1 transition-transform" />
+                            <BsArrowRight className="group-hover:transtone-x-1 transition-transform" />
                           </span>
                         </div>
                       </div>
@@ -175,12 +175,12 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                 <div className={`absolute inset-0 bg-gradient-to-r ${region.color} rounded-full blur-xl opacity-20 group-hover:opacity-30 transition-opacity`} />
                 <div className={`relative inline-flex items-center gap-3 px-8 py-4 rounded-full ${
                   theme === 'dark' 
-                    ? 'bg-gray-800/80 backdrop-blur-sm border border-gray-700' 
-                    : 'bg-white/80 backdrop-blur-sm border border-gray-200'
+                    ? 'bg-stone-800/80 backdrop-blur-sm border border-stone-700' 
+                    : 'bg-white/80 backdrop-blur-sm border border-stone-200'
                 } shadow-lg`}>
                   <FaGamepad className={`text-2xl bg-gradient-to-r ${region.color} bg-clip-text text-transparent`} />
                   <div className="text-left">
-                    <span className="text-sm text-gray-600 dark:text-gray-400 block">Generation</span>
+                    <span className="text-sm text-stone-600 dark:text-stone-400 block">Generation</span>
                     <span className={`text-3xl font-bold bg-gradient-to-r ${region.color} bg-clip-text text-transparent`}>
                       {region.generation}
                     </span>
@@ -190,10 +190,10 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
               
               {/* Stats or fun fact */}
               <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full ${
-                theme === 'dark' ? 'bg-gray-800/50' : 'bg-gray-100/50'
+                theme === 'dark' ? 'bg-stone-800/50' : 'bg-stone-100/50'
               }`}>
                 <BsStarFill className="text-yellow-500" />
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-stone-600 dark:text-stone-400">
                   {region.games.length} Games Released
                 </span>
               </div>
@@ -201,11 +201,11 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
           </FadeIn>
           
           <FadeIn>
-            <Link href="/pokemon/games" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-2xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <Link href="/pokemon/games" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-2xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <FaGamepad className="relative z-10 text-xl" />
                 <span className="relative z-10">Explore All Pokémon Games</span>
-                <BsArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                <BsArrowRight className="relative z-10 group-hover:transtone-x-1 transition-transform" />
             </Link>
           </FadeIn>
         </div>

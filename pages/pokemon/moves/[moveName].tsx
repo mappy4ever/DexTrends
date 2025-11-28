@@ -92,7 +92,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-amber-500"></div>
       </div>
     );
   }
@@ -102,7 +102,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-500 mb-4">Error Loading Move</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">{error || 'Move not found'}</p>
+          <p className="text-stone-600 dark:text-stone-400 mb-4">{error || 'Move not found'}</p>
           <StyledBackButton 
             text="Back to Moves" 
             onClick={() => router.push('/pokemon/moves')} 
@@ -123,7 +123,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
   const basePower = competitiveData?.power || moveData.power;
   const accuracy = competitiveData?.accuracy || moveData.accuracy;
   const priority = competitiveData?.priority ?? moveData.priority;
-  const typeColor = typeColors[moveType]?.bg || 'bg-gray-600';
+  const typeColor = typeColors[moveType]?.bg || 'bg-stone-600';
   
   // Get generation number
   const generation = moveData.generation.name.replace('generation-', '').toUpperCase();
@@ -160,13 +160,13 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                     <CategoryIcon category={moveCategory as 'physical' | 'special' | 'status' | null} size={24} />
                     <span className="text-sm font-medium capitalize">{moveCategory}</span>
                   </div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Gen {generation}</span>
+                  <span className="text-sm text-stone-500 dark:text-stone-400">Gen {generation}</span>
                 </div>
               </div>
               
               {/* Move ID */}
               <div className="text-right">
-                <div className="text-sm text-gray-500 dark:text-gray-400">Move ID</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Move ID</div>
                 <div className="text-2xl font-bold">#{moveData.id}</div>
               </div>
             </div>
@@ -189,27 +189,27 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 </h2>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
-                    <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Power</div>
+                  <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
+                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">Power</div>
                     <div className="text-2xl font-bold">
                       {basePower || '—'}
                     </div>
                   </div>
                   
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
-                    <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Accuracy</div>
+                  <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
+                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">Accuracy</div>
                     <div className="text-2xl font-bold">
                       {accuracy ? `${accuracy}%` : '—'}
                     </div>
                   </div>
                   
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
-                    <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">PP</div>
+                  <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
+                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">PP</div>
                     <div className="text-2xl font-bold">{moveData.pp}</div>
                   </div>
                   
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
-                    <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Priority</div>
+                  <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
+                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">Priority</div>
                     <div className="text-2xl font-bold">
                       {priority > 0 ? `+${priority}` : priority}
                     </div>
@@ -234,14 +234,14 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
             >
               <GlassContainer variant="medium" className="p-6">
                 <h2 className="text-xl font-bold mb-4">Effect</h2>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-stone-700 dark:text-stone-300 leading-relaxed">
                   {englishEffect?.effect || englishFlavor?.flavor_text || 'No effect description available.'}
                 </p>
                 
                 {englishEffect?.short_effect && englishEffect.short_effect !== englishEffect.effect && (
-                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-700">
                     <h3 className="font-semibold mb-2">Short Description</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-stone-600 dark:text-stone-400">
                       {englishEffect.short_effect}
                     </p>
                   </div>
@@ -270,7 +270,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                         {competitiveData.flags.map(flag => (
                           <span 
                             key={flag}
-                            className="text-xs bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full"
+                            className="text-xs bg-stone-200 dark:bg-stone-700 px-3 py-1 rounded-full"
                           >
                             {flag}
                           </span>
@@ -283,7 +283,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                   {competitiveData.secondary_effect && (
                     <div>
                       <h3 className="font-semibold mb-2">Secondary Effects</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-stone-600 dark:text-stone-400">
                         {formatSecondaryEffects(competitiveData.secondary_effect)}
                       </p>
                     </div>
@@ -301,11 +301,11 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
           >
             <GlassContainer variant="medium" className="p-6">
               <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <FaUsers className="text-blue-500" />
+                <FaUsers className="text-amber-500" />
                 Pokémon that can learn {displayName}
               </h2>
               
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <div className="text-sm text-stone-600 dark:text-stone-400 mb-4">
                 {moveData.learned_by_pokemon.length} Pokémon can learn this move
               </div>
 
@@ -315,7 +315,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                     <Link
                       key={pokemon.name}
                       href={`/pokedex/${pokemon.name}`}
-                      className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-center"
+                      className="bg-stone-100 dark:bg-stone-800 rounded-lg p-3 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors text-center"
                     >
                       <span className="text-sm font-medium capitalize">
                         {pokemon.name.replace(/-/g, ' ')}
@@ -325,7 +325,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 </div>
                 
                 {moveData.learned_by_pokemon.length > 30 && (
-                  <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                  <div className="mt-4 text-center text-sm text-stone-500 dark:text-stone-400">
                     And {moveData.learned_by_pokemon.length - 30} more...
                   </div>
                 )}
@@ -346,7 +346,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/pokemon/moves"
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
                 <FaGamepad />
                 Browse All Moves

@@ -14,10 +14,10 @@ function ErrorFallback({ error, resetErrorBoundary, componentName }: ErrorFallba
     <div className="min-h-[200px] flex items-center justify-center p-6">
       <div className="text-center max-w-md">
         <div className="text-6xl mb-4">😵</div>
-        <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+        <h3 className="text-lg font-semibold mb-2 text-stone-900 dark:text-stone-100">
           Something went wrong{componentName ? ` in ${componentName}` : ''}
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
           We encountered an unexpected error. Please try again.
         </p>
         <Button 
@@ -28,10 +28,10 @@ function ErrorFallback({ error, resetErrorBoundary, componentName }: ErrorFallba
         </Button>
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-4 text-left">
-            <summary className="cursor-pointer text-xs text-gray-500">
+            <summary className="cursor-pointer text-xs text-stone-500">
               Error Details (Development)
             </summary>
-            <pre className="mt-2 text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded overflow-auto">
+            <pre className="mt-2 text-xs bg-stone-100 dark:bg-stone-800 p-2 rounded overflow-auto">
               {error.message}
             </pre>
           </details>

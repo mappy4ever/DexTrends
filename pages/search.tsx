@@ -42,10 +42,10 @@ const SearchPage: NextPage = () => {
       <FullBleedWrapper gradient="pokedex">
         <div className="min-h-screen flex items-center justify-center px-4">
           <div className="text-center max-w-2xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-white mb-4">
               Search DexTrends
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-8">
+            <p className="text-stone-600 dark:text-stone-400 mb-8">
               Search across Pokédex, TCG cards, moves, items, abilities, and more
             </p>
             
@@ -53,7 +53,7 @@ const SearchPage: NextPage = () => {
             <button
               onClick={() => searchModalRef.current?.open()}
               className="inline-flex items-center justify-center px-6 py-3 
-                       bg-purple-600 hover:bg-purple-700 text-white 
+                       bg-amber-600 hover:bg-amber-700 text-white 
                        rounded-lg font-medium transition-colors duration-200
                        min-h-[44px] touch-target"
             >
@@ -63,8 +63,8 @@ const SearchPage: NextPage = () => {
             {/* Back button */}
             <button
               onClick={() => router.back()}
-              className="block mx-auto mt-4 text-gray-600 dark:text-gray-400 
-                       hover:text-purple-600 dark:hover:text-purple-400 
+              className="block mx-auto mt-4 text-stone-600 dark:text-stone-400 
+                       hover:text-amber-600 dark:hover:text-amber-400 
                        transition-colors duration-200 min-h-[44px] touch-target"
             >
               Go Back

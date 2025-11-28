@@ -15,12 +15,12 @@ import StyledBackButton from "../../components/ui/StyledBackButton";
 // SimpleCardWrapper removed during consolidation - using div instead
 const SimpleCardWrapper = ({ children, className, rarity }: any) => {
   const getBorderClass = () => {
-    if (!rarity) return 'border-gray-300';
+    if (!rarity) return 'border-stone-300';
     const rarityLower = rarity.toLowerCase();
     if (rarityLower.includes('secret') || rarityLower.includes('rainbow')) return 'border-yellow-400';
-    if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) return 'border-purple-400';
-    if (rarityLower.includes('rare')) return 'border-blue-400';
-    return 'border-gray-300';
+    if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) return 'border-amber-400';
+    if (rarityLower.includes('rare')) return 'border-amber-400';
+    return 'border-stone-300';
   };
   return <div className={`relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
 };
@@ -541,8 +541,8 @@ export default function CardDetailPage() {
                     )}
                     
                     {/* Magnify icon overlay */}
-                    <div className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-sm pointer-events-none">
-                      <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-stone-800/80 rounded-full shadow-sm pointer-events-none">
+                      <svg className="w-5 h-5 text-stone-600 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                       </svg>
                     </div>
@@ -554,7 +554,7 @@ export default function CardDetailPage() {
                   className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center transition-colors ${
                     isCardFavorite(card.id) 
                       ? 'bg-red-100 dark:bg-red-900/30 text-red-500 hover:bg-red-200 dark:hover:bg-red-900/40' 
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-stone-100 dark:bg-stone-700 text-stone-500 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-600'
                   }`}
                   onClick={handleToggleFavorite}
                 >
@@ -581,7 +581,7 @@ export default function CardDetailPage() {
           <div className="lg:col-span-2">
             {/* Apply gradient background here too for details */}
             <div className="p-6 rounded-xl shadow-lg" style={{ background: bgGradient }}>
-              <div className="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+              <div className="mb-6 border-b border-stone-200 dark:border-stone-700 pb-4">
                 <h1 className="text-3xl font-bold mb-2">{card.name}</h1>
                 <div className="flex flex-wrap items-center gap-3">
                   <Link
@@ -595,11 +595,11 @@ export default function CardDetailPage() {
                         className="h-6 w-6 object-contain mr-1"
                       />
                     )}
-                    <span className="text-blue-600 dark:text-blue-400 hover:underline">{card.set.name}</span>
+                    <span className="text-amber-600 dark:text-amber-400 hover:underline">{card.set.name}</span>
                   </Link>
-                  <span className="text-gray-500 dark:text-gray-400">#{card.number}</span>
+                  <span className="text-stone-500 dark:text-stone-400">#{card.number}</span>
                   {card.rarity && (
-                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">
+                    <span className="px-2 py-1 bg-stone-100 dark:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-full text-sm">
                       {card.rarity}
                     </span>
                   )}
@@ -612,47 +612,47 @@ export default function CardDetailPage() {
                   <div className="space-y-3">
                     {card.supertype && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Supertype:</span>
+                        <span className="text-stone-600 dark:text-stone-400">Supertype:</span>
                         <span className="font-medium">{card.supertype}</span>
                       </div>
                     )}
                     
                     {card.subtypes && card.subtypes.length > 0 && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Subtypes:</span>
+                        <span className="text-stone-600 dark:text-stone-400">Subtypes:</span>
                         <span className="font-medium">{card.subtypes.join(", ")}</span>
                       </div>
                     )}
 
                     {card.hp && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">HP:</span>
+                        <span className="text-stone-600 dark:text-stone-400">HP:</span>
                         <span className="font-medium">{card.hp}</span>
                       </div>
                     )}
 
                     {card.types && card.types.length > 0 && (
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Types:</span>
+                        <span className="text-stone-600 dark:text-stone-400">Types:</span>
                         <div>{renderTypes(card.types)}</div>
                       </div>
                     )}
 
                     {card.evolvesFrom && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Evolves From:</span>
+                        <span className="text-stone-600 dark:text-stone-400">Evolves From:</span>
                         <Link
                           href={`/pokedex/${card.evolvesFrom}`}
-                          className="font-medium text-blue-600 dark:text-blue-400 hover:underline">
-                          
+                          className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
+
                           {card.evolvesFrom}
                         </Link>
                       </div>
                     )}
 
                     {card.rules && card.rules.length > 0 && (
-                      <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3">
-                        <span className="block text-gray-600 dark:text-gray-400 mb-1">Rules:</span>
+                      <div className="border-t border-stone-200 dark:border-stone-700 pt-3 mt-3">
+                        <span className="block text-stone-600 dark:text-stone-400 mb-1">Rules:</span>
                         <ul className="list-disc pl-5 space-y-1">
                           {card.rules.map((rule, index) => (
                             <li key={index} className="text-sm">{rule}</li>
@@ -670,20 +670,20 @@ export default function CardDetailPage() {
                       <div>
                         {Object.entries(card.tcgplayer.prices).map(([priceType, priceData]) => (
                           <div key={priceType} className="mb-2">
-                            <h3 className="font-medium text-gray-800 dark:text-gray-200 capitalize">
+                            <h3 className="font-medium text-stone-800 dark:text-stone-200 capitalize">
                               {priceType.replace(/([A-Z])/g, ' $1').trim()}:
                             </h3>
                             <div className="grid grid-cols-3 gap-2 mt-1">
-                              <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
-                                <div className="text-xs text-gray-500 dark:text-gray-400">Low</div>
+                              <div className="bg-amber-50 dark:bg-amber-900/20 p-2 rounded">
+                                <div className="text-xs text-stone-500 dark:text-stone-400">Low</div>
                                 <div className="font-semibold">${priceData.low?.toFixed(2) || 'N/A'}</div>
                               </div>
                               <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded">
-                                <div className="text-xs text-gray-500 dark:text-gray-400">Market</div>
+                                <div className="text-xs text-stone-500 dark:text-stone-400">Market</div>
                                 <div className="font-semibold">${priceData.market?.toFixed(2) || 'N/A'}</div>
                               </div>
                               <div className="bg-red-50 dark:bg-red-900/20 p-2 rounded">
-                                <div className="text-xs text-gray-500 dark:text-gray-400">High</div>
+                                <div className="text-xs text-stone-500 dark:text-stone-400">High</div>
                                 <div className="font-semibold">${priceData.high?.toFixed(2) || 'N/A'}</div>
                               </div>
                             </div>
@@ -695,7 +695,7 @@ export default function CardDetailPage() {
                             href={card.tcgplayer.url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center"
+                            className="text-amber-600 dark:text-amber-400 hover:underline text-sm flex items-center"
                           >
                             View on TCGPlayer
                             <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -705,7 +705,7 @@ export default function CardDetailPage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="text-gray-500 dark:text-gray-400 italic">
+                      <div className="text-stone-500 dark:text-stone-400 italic">
                         No pricing data available for this card.
                       </div>
                     )}
@@ -716,7 +716,7 @@ export default function CardDetailPage() {
 
             {/* Price history chart */}
             {getCardPrice(card) !== 'N/A' && (
-              <div className={`mt-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
+              <div className={`mt-6 ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
                 <h2 className="text-xl font-semibold mb-4">Price History</h2>
                 <PriceHistoryChart 
                   cardId={card.id} 
@@ -731,7 +731,7 @@ export default function CardDetailPage() {
         {/* Card attacks/abilities section */}
         {((card.attacks?.length || 0) > 0 || (card.abilities?.length || 0) > 0) && (
           <SlideUp delay={100}>
-            <div className={`mt-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
+            <div className={`mt-6 ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
               {(card.abilities?.length || 0) > 0 && (
                 <div className="mb-6">
                   <h2 className="text-xl font-semibold mb-4">Abilities</h2>
@@ -740,7 +740,7 @@ export default function CardDetailPage() {
                       <div key={index} className="border-l-4 border-purple-500 pl-4">
                         <div className="flex justify-between items-center">
                           <h3 className="font-bold text-lg">{ability.name}</h3>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">{ability.type}</span>
+                          <span className="text-sm text-stone-500 dark:text-stone-400">{ability.type}</span>
                         </div>
                         <p className="mt-1">{ability.text}</p>
                       </div>
@@ -783,7 +783,7 @@ export default function CardDetailPage() {
         {/* Related cards section */}
         {relatedCards.length > 0 && (
           <SlideUp delay={200}>
-            <div className={`mt-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
+            <div className={`mt-6 ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
               <h2 className="text-xl font-semibold mb-4">Related Cards</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                 {relatedCards.map(relatedCard => (

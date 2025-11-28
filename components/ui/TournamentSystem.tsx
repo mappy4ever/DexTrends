@@ -289,9 +289,9 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
     switch (status) {
       case 'registration': return 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-200';
       case 'live': return 'text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-200';
-      case 'upcoming': return 'text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-200';
-      case 'completed': return 'text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-300';
-      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-300';
+      case 'upcoming': return 'text-amber-600 bg-amber-100 dark:bg-amber-900 dark:text-amber-200';
+      case 'completed': return 'text-stone-600 bg-stone-100 dark:bg-stone-800 dark:text-stone-300';
+      default: return 'text-stone-600 bg-stone-100 dark:bg-stone-800 dark:text-stone-300';
     }
   };
 
@@ -299,7 +299,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
     switch (trend) {
       case 'rising': return <BsGraphUp className="text-green-500" />;
       case 'falling': return <BsGraphUp className="text-red-500 transform rotate-180" />;
-      default: return <BsLightning className="text-gray-400" />;
+      default: return <BsLightning className="text-stone-400" />;
     }
   };
 
@@ -352,7 +352,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
   };
 
   const TournamentCard: React.FC<{ tournament: Tournament }> = ({ tournament }) => (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 ${
+    <div className={`bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6 ${
       tournament.featured ? 'ring-2 ring-yellow-400' : ''
     }`}>
       {tournament.featured && (
@@ -364,10 +364,10 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
 
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
             {tournament.name}
           </h3>
-          <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <div className="flex items-center space-x-4 text-sm text-stone-600 dark:text-stone-400 mt-1">
             <span className="flex items-center space-x-1">
               <BsShield />
               <span>{tournament.format}</span>
@@ -390,13 +390,13 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
         </span>
       </div>
 
-      <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">
+      <p className="text-stone-700 dark:text-stone-300 text-sm mb-4">
         {tournament.description}
       </p>
 
       {/* Prize Pool */}
       <div className="mb-4">
-        <h4 className="font-medium text-gray-900 dark:text-white mb-2">Prize Pool</h4>
+        <h4 className="font-medium text-stone-900 dark:text-white mb-2">Prize Pool</h4>
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="flex items-center justify-between p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
             <span className="text-yellow-700 dark:text-yellow-300">1st Place</span>
@@ -417,8 +417,8 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
           </div>
           
           {tournament.prizePool.participation && (
-            <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded">
-              <span className="text-gray-700 dark:text-gray-300">All Players</span>
+            <div className="flex items-center justify-between p-2 bg-stone-50 dark:bg-stone-700 rounded">
+              <span className="text-stone-700 dark:text-stone-300">All Players</span>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <GiDiamonds className="text-cyan-500" />
@@ -437,14 +437,14 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       {/* Tournament Info */}
       <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
         <div>
-          <span className="text-gray-600 dark:text-gray-400">Start Time:</span>
-          <div className="font-medium text-gray-900 dark:text-white">
+          <span className="text-stone-600 dark:text-stone-400">Start Time:</span>
+          <div className="font-medium text-stone-900 dark:text-white">
             {tournament.startTime.toLocaleDateString()} {tournament.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
         <div>
-          <span className="text-gray-600 dark:text-gray-400">Entry Fee:</span>
-          <div className="font-medium text-gray-900 dark:text-white">
+          <span className="text-stone-600 dark:text-stone-400">Entry Fee:</span>
+          <div className="font-medium text-stone-900 dark:text-white">
             {tournament.entryFee === 0 ? 'Free' : `$${tournament.entryFee}`}
           </div>
         </div>
@@ -455,7 +455,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
         {tournament.status === 'registration' && (
           <button
             onClick={() => onTournamentJoin?.(tournament)}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
 
             Join Tournament
           </button>
@@ -473,13 +473,13 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
           </button>
         )}
         
-        <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+        <button className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors">
           View Details
         </button>
       </div>
 
       {tournament.status === 'registration' && (
-        <div className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
+        <div className="mt-3 text-center text-sm text-stone-600 dark:text-stone-400">
           Starts in {formatTimeToStart(tournament.startTime)}
         </div>
       )}
@@ -490,14 +490,14 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
     const bracket = generateBracket(tournament);
     
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
             Tournament Bracket - {tournament.name}
           </h3>
           <button
             onClick={() => setShowBracket(false)}
-            className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+            className="text-stone-500 hover:text-stone-700 dark:hover:text-stone-300">
 
             ✕
           </button>
@@ -507,28 +507,28 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
           <div className="flex space-x-8 min-w-max">
             {bracket.rounds.map((round, roundIndex) => (
               <div key={roundIndex} className="flex flex-col justify-center">
-                <h4 className="text-center font-medium text-gray-900 dark:text-white mb-4">
+                <h4 className="text-center font-medium text-stone-900 dark:text-white mb-4">
                   {round.name}
                 </h4>
                 <div className="space-y-8">
                   {round.matches.map((match, matchIndex) => (
-                    <div key={matchIndex} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 min-w-48">
+                    <div key={matchIndex} className="bg-stone-50 dark:bg-stone-700 rounded-lg p-4 min-w-48">
                       <div className={`p-2 rounded mb-2 ${
-                        match.winner?.id === match.player1.id 
+                        match.winner?.id === match.player1.id
                           ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                          : 'bg-gray-100 dark:bg-gray-600'
+                          : 'bg-stone-100 dark:bg-stone-600'
                       }`}>
                         <div className="font-medium">{match.player1.name}</div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400">{match.player1.deck}</div>
+                        <div className="text-xs text-stone-600 dark:text-stone-400">{match.player1.deck}</div>
                       </div>
-                      <div className="text-center text-xs text-gray-500 dark:text-gray-400 mb-2">VS</div>
+                      <div className="text-center text-xs text-stone-500 dark:text-stone-400 mb-2">VS</div>
                       <div className={`p-2 rounded ${
-                        match.winner?.id === match.player2.id 
+                        match.winner?.id === match.player2.id
                           ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                          : 'bg-gray-100 dark:bg-gray-600'
+                          : 'bg-stone-100 dark:bg-stone-600'
                       }`}>
                         <div className="font-medium">{match.player2.name}</div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400">{match.player2.deck}</div>
+                        <div className="text-xs text-stone-600 dark:text-stone-400">{match.player2.deck}</div>
                       </div>
                     </div>
                   ))}
@@ -544,19 +544,19 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
   return (
     <div className="tournament-system space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-red-600 text-white rounded-lg shadow-lg p-6">
+      <div className="bg-gradient-to-r from-amber-600 to-red-600 text-white rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold flex items-center">
               <FaTrophy className="mr-3" />
               Tournament Hub
             </h2>
-            <p className="text-purple-100">Compete in tournaments and climb the competitive ladder</p>
+            <p className="text-amber-100">Compete in tournaments and climb the competitive ladder</p>
           </div>
           <div className="text-right">
             <button
               onClick={() => onCreateTournament?.()}
-              className="px-4 py-2 bg-white text-purple-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+              className="px-4 py-2 bg-white text-amber-600 rounded-lg font-medium hover:bg-stone-100 transition-colors">
 
               Create Tournament
             </button>
@@ -565,7 +565,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+      <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg">
         {[
           { id: 'tournaments' as const, label: 'Active Tournaments', icon: <FaTrophy /> },
           { id: 'my-tournaments' as const, label: 'My History', icon: <FaMedal /> },
@@ -577,8 +577,8 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${
               activeTab === tab.id
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             {tab.icon}
@@ -604,20 +604,20 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       {/* My Tournaments Tab */}
       {activeTab === 'my-tournaments' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
               Tournament History
             </h3>
             
             <div className="space-y-4">
               {myTournaments.map(tournament => (
-                <div key={tournament.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <div key={tournament.id} className="border border-stone-200 dark:border-stone-700 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">
+                      <h4 className="font-medium text-stone-900 dark:text-white">
                         {tournament.name}
                       </h4>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-stone-600 dark:text-stone-400">
                         {tournament.date.toLocaleDateString()} • {tournament.format}
                       </div>
                     </div>
@@ -625,26 +625,26 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                     <div className="text-right">
                       <div className={`text-lg font-bold ${
                         tournament.placement <= 3 ? 'text-yellow-600' :
-                        tournament.placement <= 8 ? 'text-gray-600' : 'text-gray-500'
+                        tournament.placement <= 8 ? 'text-stone-600' : 'text-stone-500'
                       }`}>
                         #{tournament.placement}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs text-stone-500 dark:text-stone-400">
                         of {tournament.totalPlayers}
                       </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-4 text-sm">
-                    <div className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                      <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="text-center p-2 bg-stone-50 dark:bg-stone-700 rounded">
+                      <div className="font-medium text-stone-900 dark:text-white">
                         {tournament.record.wins}-{tournament.record.losses}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">Record</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Record</div>
                     </div>
-                    
-                    <div className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                      <div className="font-medium text-gray-900 dark:text-white flex items-center justify-center space-x-1">
+
+                    <div className="text-center p-2 bg-stone-50 dark:bg-stone-700 rounded">
+                      <div className="font-medium text-stone-900 dark:text-white flex items-center justify-center space-x-1">
                         {tournament.prize.gems && (
                           <>
                             <GiDiamonds className="text-cyan-500" />
@@ -652,11 +652,11 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                           </>
                         )}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">Gems</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Gems</div>
                     </div>
-                    
-                    <div className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                      <div className="font-medium text-gray-900 dark:text-white flex items-center justify-center space-x-1">
+
+                    <div className="text-center p-2 bg-stone-50 dark:bg-stone-700 rounded">
+                      <div className="font-medium text-stone-900 dark:text-white flex items-center justify-center space-x-1">
                         {tournament.prize.coins && (
                           <>
                             <GiTwoCoins className="text-yellow-500" />
@@ -664,7 +664,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                           </>
                         )}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">Coins</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Coins</div>
                     </div>
                   </div>
                 </div>
@@ -679,92 +679,92 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
         <div className="space-y-6">
           {/* Meta Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                <div className="text-3xl font-bold text-stone-900 dark:text-white">
                   {metaAnalysis.totalMatches.toLocaleString()}
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Total Matches</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Total Matches</div>
               </div>
             </div>
-            
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                <div className="text-3xl font-bold text-stone-900 dark:text-white">
                   {metaAnalysis.seasonStats.totalTournaments}
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Tournaments</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Tournaments</div>
               </div>
             </div>
-            
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                <div className="text-3xl font-bold text-stone-900 dark:text-white">
                   {metaAnalysis.seasonStats.averageParticipants}
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Avg. Players</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Avg. Players</div>
               </div>
             </div>
           </div>
 
           {/* Top Archetypes */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
                 Meta Breakdown
               </h3>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-stone-500 dark:text-stone-400">
                 Last updated: {metaAnalysis.lastUpdated.toLocaleDateString()}
               </div>
             </div>
 
             <div className="space-y-4">
               {metaAnalysis.topArchetypes.map((archetype, index) => (
-                <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <div key={index} className="border border-stone-200 dark:border-stone-700 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
                         index === 0 ? 'bg-yellow-500' :
-                        index === 1 ? 'bg-gray-400' :
+                        index === 1 ? 'bg-stone-400' :
                         index === 2 ? 'bg-orange-600' :
-                        'bg-gray-300 text-gray-700'
+                        'bg-stone-300 text-stone-700'
                       }`}>
                         {index + 1}
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900 dark:text-white">
+                        <h4 className="font-medium text-stone-900 dark:text-white">
                           {archetype.name}
                         </h4>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                        <div className="text-sm text-stone-600 dark:text-stone-400">
                           {archetype.keyCards.slice(0, 3).join(', ')}
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-4">
                       <div className="text-right">
-                        <div className="font-medium text-gray-900 dark:text-white">
+                        <div className="font-medium text-stone-900 dark:text-white">
                           {archetype.usage}%
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Usage</div>
+                        <div className="text-xs text-stone-500 dark:text-stone-400">Usage</div>
                       </div>
-                      
+
                       <div className="text-right">
-                        <div className="font-medium text-gray-900 dark:text-white">
+                        <div className="font-medium text-stone-900 dark:text-white">
                           {archetype.winRate}%
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Win Rate</div>
+                        <div className="text-xs text-stone-500 dark:text-stone-400">Win Rate</div>
                       </div>
-                      
+
                       <div className="flex items-center">
                         {getTrendIcon(archetype.trend)}
                       </div>
                     </div>
                   </div>
 
-                  <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                    <div 
-                      className="bg-blue-500 h-2 rounded-full"
+                  <div className="w-full bg-stone-200 dark:bg-stone-600 rounded-full h-2">
+                    <div
+                      className="bg-amber-500 h-2 rounded-full"
                       style={{ width: `${archetype.usage}%` }}
                     />
                   </div>
@@ -776,10 +776,10 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       )}
 
       {/* Tournament Info Panel */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+      <div className="bg-gradient-to-r from-amber-50 to-amber-50 dark:from-amber-900/20 dark:to-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
         <div className="flex items-start space-x-3">
           <FaFire className="text-orange-500 mt-0.5" />
-          <div className="text-sm text-blue-700 dark:text-blue-300">
+          <div className="text-sm text-amber-700 dark:text-amber-300">
             <strong>Tournament Tips:</strong> Practice with meta decks, join beginner tournaments to learn, 
             watch live streams to understand strategy, and always check the latest banned/restricted lists before competing.
           </div>

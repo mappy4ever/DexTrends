@@ -654,27 +654,27 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+    <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-6 border-b border-stone-200 dark:border-stone-700">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-              <SparklesIcon className="h-6 w-6 mr-2 text-purple-500" />
+            <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center">
+              <SparklesIcon className="h-6 w-6 mr-2 text-amber-500" />
               Recommendations
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
               Personalized suggestions based on your collection and interests
             </p>
           </div>
           
           {userProfile && (
             <div className="text-right">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Activity Level: <span className="font-medium capitalize text-purple-600">{userProfile.activityLevel}</span>
+              <div className="text-sm text-stone-600 dark:text-stone-400">
+                Activity Level: <span className="font-medium capitalize text-amber-600">{userProfile.activityLevel}</span>
               </div>
               {userProfile.interests.length > 0 && (
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-stone-600 dark:text-stone-400">
                   Interests: <span className="font-medium">{userProfile.interests.join(', ')}</span>
                 </div>
               )}
@@ -684,7 +684,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
       </div>
       
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200 dark:border-gray-700">
+      <div className="border-b border-stone-200 dark:border-stone-700">
         <nav className="flex space-x-0">
           {tabs.map((tab) => (
             <button
@@ -692,14 +692,14 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-4 px-4 text-center border-b-2 transition-colors ${
                 activeTab === tab.id
-                  ? 'border-purple-500 text-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-amber-500 text-amber-600 bg-amber-50 dark:bg-amber-900/20'
+                  : 'border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300'
               }`}
             >
               <div className="flex flex-col items-center space-y-1">
                 {tab.icon}
                 <span className="text-sm font-medium">{tab.name}</span>
-                <span className="text-xs text-gray-500">{tab.description}</span>
+                <span className="text-xs text-stone-500">{tab.description}</span>
               </div>
             </button>
           ))}
@@ -712,9 +712,9 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="animate-pulse">
-                <div className="bg-gray-300 dark:bg-gray-600 h-48 rounded-lg mb-3"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-                <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+                <div className="bg-stone-300 dark:bg-stone-600 h-48 rounded-lg mb-3"></div>
+                <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded mb-2"></div>
+                <div className="h-3 bg-stone-300 dark:bg-stone-600 rounded w-3/4"></div>
               </div>
             ))}
           </div>
@@ -724,7 +724,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
               <div key={card.id} className="group relative">
                 <Link
                   href={`/cards/${card.id}`}
-                  className="block bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105"
+                  className="block bg-stone-50 dark:bg-stone-700 rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105"
                 >
                   {/* Card Image */}
                   <div className="aspect-w-3 aspect-h-4 mb-3">
@@ -738,11 +738,11 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
                   
                   {/* Card Info */}
                   <div className="space-y-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2">
+                    <h3 className="font-semibold text-stone-900 dark:text-white line-clamp-2">
                       {card.name}
                     </h3>
-                    
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+
+                    <p className="text-sm text-stone-600 dark:text-stone-400">
                       {card.set?.name}
                     </p>
 
@@ -765,7 +765,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
 
                     {/* Recommendation Reason */}
                     {card.reason && (
-                      <div className="flex items-center space-x-2 text-xs text-purple-600 dark:text-purple-400">
+                      <div className="flex items-center space-x-2 text-xs text-amber-600 dark:text-amber-400">
                         {getReasonIcon(card.reason)}
                         <span className="line-clamp-2">{card.reason}</span>
                       </div>
@@ -774,13 +774,13 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
                     {/* Additional info for specific tabs */}
                     {activeTab === 'completion' && card.completion && (
                       <div className="mt-2">
-                        <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                        <div className="flex justify-between text-xs text-stone-600 dark:text-stone-400 mb-1">
                           <span>Set Completion</span>
                           <span>{card.completion}%</span>
                         </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                          <div 
-                            className="bg-purple-500 h-2 rounded-full"
+                        <div className="w-full bg-stone-200 dark:bg-stone-600 rounded-full h-2">
+                          <div
+                            className="bg-amber-500 h-2 rounded-full"
                             style={{ width: `${card.completion}%` }}
                           />
                         </div>
@@ -790,7 +790,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
                     {activeTab === 'investment' && card.potential && (
                       <div className="mt-2">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-600 dark:text-gray-400">Potential</span>
+                          <span className="text-stone-600 dark:text-stone-400">Potential</span>
                           <span className="font-medium text-green-600">+{card.potential}%</span>
                         </div>
                         <div className={`text-xs px-2 py-1 rounded-full mt-1 ${
@@ -808,14 +808,14 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
                 {/* Quick Action Buttons */}
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex space-x-1">
-                    <button 
-                      className="p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                    <button
+                      className="p-1 bg-white dark:bg-stone-800 rounded-full shadow-lg hover:bg-stone-100 dark:hover:bg-stone-700"
                       title="Add to favorites"
                     >
                       <HeartIcon className="h-4 w-4 text-red-500" />
                     </button>
-                    <button 
-                      className="p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                    <button
+                      className="p-1 bg-white dark:bg-stone-800 rounded-full shadow-lg hover:bg-stone-100 dark:hover:bg-stone-700"
                       title="Add to collection"
                     >
                       <StarIcon className="h-4 w-4 text-yellow-500" />
@@ -830,11 +830,11 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
         {/* Empty State */}
         {!isLoading && getRecommendations().length === 0 && (
           <div className="text-center py-12">
-            <SparklesIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            <SparklesIcon className="h-12 w-12 text-stone-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-stone-900 dark:text-white mb-2">
               No recommendations yet
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-stone-600 dark:text-stone-400">
               Add some cards to your collection to get personalized recommendations
             </p>
           </div>

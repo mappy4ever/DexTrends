@@ -177,11 +177,11 @@ export const DynamicIsland: React.FC<DynamicIslandProps> = ({ className = '' }) 
       case 'warning':
         return 'from-yellow-500/20 to-orange-500/20 text-yellow-600 dark:text-yellow-400';
       case 'pokemon':
-        return 'from-purple-500/20 to-pink-500/20 text-purple-600 dark:text-purple-400';
+        return 'from-amber-500/20 to-pink-500/20 text-amber-600 dark:text-amber-400';
       case 'loading':
-        return 'from-blue-500/20 to-indigo-500/20 text-blue-600 dark:text-blue-400';
+        return 'from-amber-500/20 to-amber-500/20 text-amber-600 dark:text-amber-400';
       default:
-        return 'from-gray-500/20 to-slate-500/20 text-gray-600 dark:text-gray-400';
+        return 'from-stone-500/20 to-stone-500/20 text-stone-600 dark:text-stone-400';
     }
   };
 

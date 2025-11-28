@@ -101,7 +101,7 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 10,
     routes: 25,
     pokemonRange: "001-151",
-    color: "from-red-500 to-blue-500",
+    color: "from-red-500 to-amber-500",
     bgColor: "bg-gradient-to-br from-red-100 to-blue-100 dark:from-red-900 dark:to-blue-900",
     map: '/images/scraped/maps/PE_Kanto_Map.png',
     locations: [
@@ -213,7 +213,7 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 16,
     routes: 34,
     pokemonRange: "252-386",
-    color: "from-emerald-500 to-blue-600",
+    color: "from-emerald-500 to-amber-600",
     bgColor: "bg-gradient-to-br from-emerald-100 to-blue-100 dark:from-emerald-900 dark:to-blue-900",
     map: '/images/scraped/maps/Hoenn_ORAS.png',
     gymLeaders: [
@@ -255,7 +255,7 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 14,
     routes: 30,
     pokemonRange: "387-493",
-    color: "from-indigo-500 to-purple-600",
+    color: "from-amber-500 to-amber-600",
     bgColor: "bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900",
     map: '/images/scraped/maps/Sinnoh_BDSP_artwork.png',
     gymLeaders: [
@@ -297,8 +297,8 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 17,
     routes: 23,
     pokemonRange: "494-649",
-    color: "from-gray-600 to-black",
-    bgColor: "bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900",
+    color: "from-stone-600 to-black",
+    bgColor: "bg-gradient-to-br from-stone-100 to-stone-300 dark:from-stone-800 dark:to-stone-900",
     map: '/images/scraped/maps/Unova_B2W2_alt.png',
     gymLeaders: [
       { name: "Cilan", city: "Striaton City", type: "grass", badge: "Trio Badge" },
@@ -339,7 +339,7 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 16,
     routes: 22,
     pokemonRange: "650-721",
-    color: "from-pink-500 to-purple-500",
+    color: "from-pink-500 to-amber-500",
     bgColor: "bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900 dark:to-purple-900",
     map: '/images/scraped/maps/Kalos_map.png',
     gymLeaders: [
@@ -406,7 +406,7 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 13,
     routes: 10,
     pokemonRange: "810-898",
-    color: "from-purple-600 to-red-600",
+    color: "from-amber-600 to-red-600",
     bgColor: "bg-gradient-to-br from-purple-100 to-red-100 dark:from-purple-900 dark:to-red-900",
     map: '/images/scraped/maps/Galar_artwork.png',
     gymLeaders: [
@@ -443,7 +443,7 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 10,
     routes: 15,
     pokemonRange: "906-1025",
-    color: "from-red-500 to-purple-600",
+    color: "from-red-500 to-amber-600",
     bgColor: "bg-gradient-to-br from-red-100 to-purple-100 dark:from-red-900 dark:to-purple-900",
     map: '/images/scraped/maps/Paldea_artwork.png',
     gymLeaders: [
@@ -499,9 +499,9 @@ export default function RegionDetailPage() {
   // Handle loading state
   if (!regionId) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-900">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Loading...</h1>
+          <h1 className="text-2xl font-bold text-stone-900 dark:text-white">Loading...</h1>
         </div>
       </div>
     );
@@ -512,10 +512,10 @@ export default function RegionDetailPage() {
 
   if (!region) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-900">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Region Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
+          <h1 className="text-4xl font-bold mb-4 text-stone-900 dark:text-white">Region Not Found</h1>
+          <p className="text-stone-600 dark:text-stone-400 mb-8">
             The region "{regionId}" does not exist.
           </p>
           <CircularButton
@@ -556,7 +556,7 @@ export default function RegionDetailPage() {
           
           {/* Overlapping Navigation Bar */}
           <motion.div 
-            className={`${isNavSticky ? 'fixed top-20' : 'absolute bottom-0'} left-0 right-0 z-30 bg-gray-50/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300`}
+            className={`${isNavSticky ? 'fixed top-20' : 'absolute bottom-0'} left-0 right-0 z-30 bg-stone-50/95 dark:bg-stone-900/95 backdrop-blur-sm border-b border-stone-200/50 dark:border-stone-700/50 transition-all duration-300`}
             style={{ 
               transform: isNavSticky ? 'translateY(0)' : 'translateY(50%)'
             }}
@@ -589,8 +589,8 @@ export default function RegionDetailPage() {
                       }}
                       className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
                         activeSection === section.id
-                          ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                          : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900'
+                          : 'hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300'
                       }`}
                     >
                       {section.label}
@@ -611,7 +611,7 @@ export default function RegionDetailPage() {
                     </CircularButton>
                   )}
                   
-                  <span className="hidden sm:inline text-sm text-gray-600 dark:text-gray-400 font-medium px-3">
+                  <span className="hidden sm:inline text-sm text-stone-600 dark:text-stone-400 font-medium px-3">
                     {currentRegionIndex + 1} / {regionOrder.length}
                   </span>
                   
@@ -738,13 +738,13 @@ export default function RegionDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <div className="backdrop-blur-xl bg-gradient-to-br from-gray-100/90 to-gray-200/80 dark:from-gray-900/50 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 shadow-xl rounded-2xl p-8">
+              <div className="backdrop-blur-xl bg-gradient-to-br from-gray-100/90 to-gray-200/80 dark:from-gray-900/50 dark:to-gray-800/50 border border-stone-200 dark:border-stone-700 shadow-xl rounded-2xl p-8">
                 <div className="space-y-12">
                   <div className="text-center">
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-2">
                       Your Journey in {region.name}
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-400">
+                    <p className="text-lg text-stone-600 dark:text-stone-400">
                       Challenge the strongest trainers on your path to becoming Champion
                     </p>
                   </div>
@@ -753,7 +753,7 @@ export default function RegionDetailPage() {
                   {region.gymLeaders && (
                     <div className="space-y-6">
                       <div className="text-center">
-                        <h3 className="text-xl font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                        <h3 className="text-xl font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300">
                           Gym Leaders
                         </h3>
                         <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"></div>
@@ -766,7 +766,7 @@ export default function RegionDetailPage() {
                   {region.eliteFour && (
                     <div id="elite-four" className="space-y-6">
                       <div className="text-center">
-                        <h3 className="text-xl font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                        <h3 className="text-xl font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300">
                           Elite Four & Champion
                         </h3>
                         <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"></div>
@@ -793,12 +793,12 @@ export default function RegionDetailPage() {
               <div className="relative">
                 {/* Animated Map Background */}
                 <div className="absolute inset-0 opacity-5 pointer-events-none">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 animate-pulse" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-amber-500 to-pink-500 animate-pulse" />
                 </div>
                 
                 <StandardGlassContainer>
                   <SectionHeader 
-                    icon={<BsGeoAlt className="text-2xl text-purple-500" />}
+                    icon={<BsGeoAlt className="text-2xl text-amber-500" />}
                     title="Explore the Region"
                     subtitle={`Journey through the diverse landscapes of ${region.name}`}
                   />
@@ -808,10 +808,10 @@ export default function RegionDetailPage() {
                     {region.locations && (
                       <div>
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg">
                             <BsGeoAlt className="text-white text-xl" />
                           </div>
-                          <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                          <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-amber-600 bg-clip-text text-transparent">
                             Cities & Towns
                           </h3>
                         </div>
@@ -826,10 +826,10 @@ export default function RegionDetailPage() {
                               whileHover={{ scale: 1.02, x: 10 }}
                               className="relative group cursor-pointer"
                             >
-                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-blue-50/60 to-white/70 dark:from-gray-800/80 dark:via-blue-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-gray-700/30">
+                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-blue-50/60 to-white/70 dark:from-gray-800/80 dark:via-blue-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
                                 {/* Location Type Badge */}
                                 <div className="absolute top-3 right-3 z-10">
-                                  <span className="px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-white shadow-md">
+                                  <span className="px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md bg-gradient-to-r from-amber-500/80 to-amber-500/80 text-white shadow-md">
                                     {location.type?.toUpperCase() || 'CITY'}
                                   </span>
                                 </div>
@@ -838,23 +838,23 @@ export default function RegionDetailPage() {
                                 <div className="p-6">
                                   <div className="flex items-start gap-4">
                                     {/* Location Icon */}
-                                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
+                                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
                                       <BsGeoAlt className="text-white text-2xl" />
                                     </div>
                                     
                                     {/* Location Info */}
                                     <div className="flex-1">
-                                      <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                      <h4 className="text-lg font-bold text-stone-800 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-purple-400 transition-colors">
                                         {location.name}
                                       </h4>
-                                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                      <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
                                         {location.description}
                                       </p>
                                       
                                       {/* Hover Indicator */}
                                       <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-xs font-medium text-purple-600 dark:text-purple-400">Explore</span>
-                                        <BsChevronRight className="text-xs text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
+                                        <span className="text-xs font-medium text-amber-600 dark:text-purple-400">Explore</span>
+                                        <BsChevronRight className="text-xs text-amber-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
                                       </div>
                                     </div>
                                   </div>
@@ -862,7 +862,7 @@ export default function RegionDetailPage() {
                                 
                                 {/* Animated Border Gradient */}
                                 <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                                  <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-50 blur-sm" />
+                                  <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-r from-amber-400 via-purple-400 to-pink-400 opacity-50 blur-sm" />
                                 </div>
                               </div>
                             </motion.div>
@@ -875,10 +875,10 @@ export default function RegionDetailPage() {
                     {region.landmarks && (
                       <div>
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-pink-600 flex items-center justify-center shadow-lg">
                             <BsCompass className="text-white text-xl" />
                           </div>
-                          <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                             Notable Landmarks
                           </h3>
                         </div>
@@ -893,7 +893,7 @@ export default function RegionDetailPage() {
                               whileHover={{ scale: 1.02, x: -10 }}
                               className="relative group cursor-pointer"
                             >
-                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/60 to-white/70 dark:from-gray-800/80 dark:via-purple-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-gray-700/30">
+                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/60 to-white/70 dark:from-gray-800/80 dark:via-purple-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
                                 {/* Special Location Indicator */}
                                 <div className="absolute top-3 right-3 z-10">
                                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-md animate-pulse">
@@ -911,17 +911,17 @@ export default function RegionDetailPage() {
                                     
                                     {/* Landmark Info */}
                                     <div className="flex-1">
-                                      <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                      <h4 className="text-lg font-bold text-stone-800 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-purple-400 transition-colors">
                                         {landmark.name}
                                       </h4>
-                                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                      <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
                                         {landmark.description}
                                       </p>
                                       
                                       {/* Special Features Tags */}
                                       <div className="flex flex-wrap gap-2 mt-3">
                                         {landmark.name.toLowerCase().includes('cave') && (
-                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-200/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300">Cave</span>
+                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-stone-200/50 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300">Cave</span>
                                         )}
                                         {landmark.name.toLowerCase().includes('tower') && (
                                           <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-200/50 dark:bg-purple-700/50 text-purple-700 dark:text-purple-300">Tower</span>
@@ -936,8 +936,8 @@ export default function RegionDetailPage() {
                                       
                                       {/* Hover Indicator */}
                                       <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-xs font-medium text-purple-600 dark:text-purple-400">Discover</span>
-                                        <BsChevronRight className="text-xs text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
+                                        <span className="text-xs font-medium text-amber-600 dark:text-purple-400">Discover</span>
+                                        <BsChevronRight className="text-xs text-amber-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
                                       </div>
                                     </div>
                                   </div>
@@ -965,15 +965,15 @@ export default function RegionDetailPage() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-md">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-pink-500 flex items-center justify-center shadow-md">
                             <BsCompass className="text-white text-lg" />
                           </div>
                           <div>
-                            <h4 className="font-bold text-gray-800 dark:text-white">Region Map Available</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Explore the full {region.name} region map</p>
+                            <h4 className="font-bold text-stone-800 dark:text-white">Region Map Available</h4>
+                            <p className="text-sm text-stone-600 dark:text-stone-400">Explore the full {region.name} region map</p>
                           </div>
                         </div>
-                        <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                        <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-pink-600 text-white font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                           View Map
                         </button>
                       </div>
@@ -1018,19 +1018,19 @@ export default function RegionDetailPage() {
                 <div className="relative">
                   {/* Animated Knowledge Background */}
                   <div className="absolute inset-0 opacity-5 pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500 animate-pulse" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-amber-500 to-pink-500 animate-pulse" />
                   </div>
                   
                   <StandardGlassContainer>
                     <div className="text-center mb-10">
                       <div className="flex items-center justify-center gap-3 mb-4">
                         <BsStar className="text-3xl text-yellow-500 animate-pulse" />
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-600 via-amber-600 to-pink-600 bg-clip-text text-transparent">
                           Did You Know?
                         </h2>
                         <BsStar className="text-3xl text-yellow-500 animate-pulse" />
                       </div>
-                      <p className="text-lg text-gray-600 dark:text-gray-400">
+                      <p className="text-lg text-stone-600 dark:text-stone-400">
                         Fascinating facts and hidden secrets about {region.name}
                       </p>
                     </div>
@@ -1045,7 +1045,7 @@ export default function RegionDetailPage() {
                           whileHover={{ scale: 1.05, rotateY: 5 }}
                           className="relative group"
                         >
-                          <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-yellow-50/60 to-white/80 dark:from-gray-800/90 dark:via-yellow-900/20 dark:to-gray-900/80 shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/30 dark:border-gray-700/30">
+                          <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-yellow-50/60 to-white/80 dark:from-gray-800/90 dark:via-yellow-900/20 dark:to-gray-900/80 shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/30 dark:border-stone-700/30">
                             {/* Fact Number Badge */}
                             <div className="absolute top-4 left-4 z-10">
                               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-transform duration-300">
@@ -1060,7 +1060,7 @@ export default function RegionDetailPage() {
                             
                             {/* Fact Content */}
                             <div className="p-8 pt-16">
-                              <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
+                              <p className="text-stone-700 dark:text-stone-300 leading-relaxed font-medium">
                                 {fact}
                               </p>
                               
@@ -1087,7 +1087,7 @@ export default function RegionDetailPage() {
                             </div>
                             
                             {/* Bottom Gradient Edge */}
-                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 via-amber-500 to-pink-500 opacity-60 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </motion.div>
                       ))}
@@ -1102,9 +1102,9 @@ export default function RegionDetailPage() {
                     >
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <BsLightbulb className="text-yellow-500 text-xl" />
-                        <span className="font-bold text-gray-800 dark:text-white">Pro Tip:</span>
+                        <span className="font-bold text-stone-800 dark:text-white">Pro Tip:</span>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-stone-600 dark:text-stone-400">
                         Share these facts with fellow trainers to become a {region.name} expert!
                       </p>
                     </motion.div>

@@ -244,7 +244,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
   
   const getScoreColor = (score: number) => {
     if (score >= 85) return 'text-green-500';
-    if (score >= 70) return 'text-yellow-500';
+    if (score >= 70) return 'text-amber-500';
     if (score >= 55) return 'text-orange-500';
     return 'text-red-500';
   };
@@ -268,22 +268,22 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
   
   // Get color for effectiveness
   const getEffectivenessColor = (multiplier: number) => {
-    if (multiplier === 0) return 'bg-gray-600 text-gray-200'; // Deep purple-grey for immune
-    if (multiplier === 0.25) return 'bg-green-900 text-green-100'; // Dark dark green for double resistance
-    if (multiplier < 1) return 'bg-green-600 text-white'; // Green for regular resistance
-    if (multiplier === 4) return 'bg-orange-600 text-white'; // Orange for double weakness
-    if (multiplier > 1) return 'bg-red-500 text-white'; // Red for regular weakness
-    return 'bg-gray-400 text-white';
+    if (multiplier === 0) return 'bg-stone-600 text-stone-200'; // Deep stone-grey for immune
+    if (multiplier === 0.25) return 'bg-stone-800 text-stone-100'; // Dark stone for double resistance
+    if (multiplier < 1) return 'bg-stone-600 text-white'; // Stone for regular resistance
+    if (multiplier === 4) return 'bg-stone-600 text-white'; // Stone for double weakness
+    if (multiplier > 1) return 'bg-stone-500 text-white'; // Stone for regular weakness
+    return 'bg-stone-400 text-white';
   };
   
   // Get text color for multipliers
   const getMultiplierTextColor = (multiplier: number) => {
-    if (multiplier === 0) return 'text-gray-600'; // Gray for immune
-    if (multiplier === 0.25) return 'text-green-900'; // Dark green for double resistance
-    if (multiplier < 1) return 'text-green-600'; // Green for regular resistance
-    if (multiplier === 4) return 'text-orange-600'; // Orange for double weakness
-    if (multiplier > 1) return 'text-red-600'; // Red for regular weakness
-    return 'text-gray-600';
+    if (multiplier === 0) return 'text-stone-600'; // Stone for immune
+    if (multiplier === 0.25) return 'text-stone-800'; // Dark stone for double resistance
+    if (multiplier < 1) return 'text-stone-600'; // Stone for regular resistance
+    if (multiplier === 4) return 'text-stone-600'; // Stone for double weakness
+    if (multiplier > 1) return 'text-stone-600'; // Stone for regular weakness
+    return 'text-stone-600';
   };
   
   const TypeBadge = ({ matchup }: { matchup: TypeMatchup }) => (
@@ -298,7 +298,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
       
       {/* Tooltip */}
       <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-        <div className="bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+        <div className="bg-stone-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
           {matchup.type}: {formatMultiplier(matchup.multiplier)}× damage
         </div>
       </div>
@@ -316,11 +316,11 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           transition={{ duration: 0.3 }}
           className="text-center mb-10 relative"
         >
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400 inline-flex items-center gap-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-400 inline-flex items-center gap-1">
             Type Advantage Rating
             <button
               onClick={() => setShowRatingInfo(!showRatingInfo)}
-              className="w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors inline-flex items-center justify-center text-[10px] font-bold"
+              className="w-4 h-4 rounded-full bg-stone-300 dark:bg-stone-600 text-stone-600 dark:text-stone-300 hover:bg-stone-400 dark:hover:bg-stone-500 transition-colors inline-flex items-center justify-center text-[10px] font-bold"
             >
               i
             </button>
@@ -333,8 +333,8 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           <div className="relative">
             {/* Label above */}
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-              <FaShieldAlt className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
+              <FaShieldAlt className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
                 Defense
               </span>
             </div>
@@ -346,7 +346,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             whileTap={{ scale: 0.98 }}
             className={cn(
               "relative rounded-full p-4 transition-all duration-300 cursor-pointer w-28 h-28 flex items-center justify-center",
-              "backdrop-blur-xl bg-white/10 dark:bg-gray-900/10",
+              "backdrop-blur-xl bg-white/10 dark:bg-stone-900/10",
               "shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_-4px_rgba(0,0,0,0.12),0_16px_48px_-8px_rgba(0,0,0,0.08)] hover:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_12px_32px_-4px_rgba(0,0,0,0.18),0_20px_56px_-8px_rgba(0,0,0,0.12)]",
               "border-4 border-white"
             )}
@@ -367,7 +367,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               <span className={cn(
                 "bg-gradient-to-br bg-clip-text text-transparent",
                 defensiveScore >= 85 ? "from-green-600 to-emerald-500" :
-                defensiveScore >= 70 ? "from-blue-600 to-indigo-500" :
+                defensiveScore >= 70 ? "from-amber-600 to-amber-500" :
                 defensiveScore >= 55 ? "from-amber-600 to-orange-500" :
                 "from-red-600 to-rose-500"
               )}>
@@ -375,11 +375,11 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               </span>
             </div>
             {/* Dividing line */}
-            <div className="w-20 h-px bg-gradient-to-r from-transparent via-gray-600 dark:via-gray-400 to-transparent my-2" />
+            <div className="w-20 h-px bg-gradient-to-r from-transparent via-stone-600 dark:via-stone-400 to-transparent my-2" />
             <div className={cn(
               "text-[10px] font-semibold uppercase tracking-wider",
               defensiveScore >= 85 ? "text-green-700 dark:text-green-400" :
-              defensiveScore >= 70 ? "text-blue-700 dark:text-blue-400" :
+              defensiveScore >= 70 ? "text-amber-700 dark:text-amber-400" :
               defensiveScore >= 55 ? "text-amber-700 dark:text-amber-400" :
               "text-red-700 dark:text-red-400"
             )}>
@@ -395,8 +395,8 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           <div className="relative">
             {/* Label above */}
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-              <GiSwordWound className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
+              <GiSwordWound className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
                 Offense
               </span>
             </div>
@@ -408,7 +408,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             whileTap={{ scale: 0.98 }}
             className={cn(
               "relative rounded-full p-4 transition-all duration-300 cursor-pointer w-28 h-28 flex items-center justify-center",
-              "backdrop-blur-xl bg-white/10 dark:bg-gray-900/10",
+              "backdrop-blur-xl bg-white/10 dark:bg-stone-900/10",
               "shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_-4px_rgba(0,0,0,0.12),0_16px_48px_-8px_rgba(0,0,0,0.08)] hover:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_12px_32px_-4px_rgba(0,0,0,0.18),0_20px_56px_-8px_rgba(0,0,0,0.12)]",
               "border-4 border-white"
             )}
@@ -429,7 +429,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               <span className={cn(
                 "bg-gradient-to-br bg-clip-text text-transparent",
                 offensiveScore >= 85 ? "from-green-600 to-emerald-500" :
-                offensiveScore >= 70 ? "from-blue-600 to-indigo-500" :
+                offensiveScore >= 70 ? "from-amber-600 to-amber-500" :
                 offensiveScore >= 55 ? "from-amber-600 to-orange-500" :
                 "from-red-600 to-rose-500"
               )}>
@@ -437,11 +437,11 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               </span>
             </div>
             {/* Dividing line */}
-            <div className="w-20 h-px bg-gradient-to-r from-transparent via-gray-600 dark:via-gray-400 to-transparent my-2" />
+            <div className="w-20 h-px bg-gradient-to-r from-transparent via-stone-600 dark:via-stone-400 to-transparent my-2" />
             <div className={cn(
               "text-[10px] font-semibold uppercase tracking-wider",
               offensiveScore >= 85 ? "text-green-700 dark:text-green-400" :
-              offensiveScore >= 70 ? "text-blue-700 dark:text-blue-400" :
+              offensiveScore >= 70 ? "text-amber-700 dark:text-amber-400" :
               offensiveScore >= 55 ? "text-amber-700 dark:text-amber-400" :
               "text-red-700 dark:text-red-400"
             )}>
@@ -470,11 +470,11 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
                 initial={{ opacity: 0, scale: 0.95, y: 5 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 5 }}
-                className="absolute top-8 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-4 w-64 z-20"
+                className="absolute top-8 right-0 bg-white dark:bg-stone-800 rounded-lg shadow-xl border border-stone-200 dark:border-stone-700 p-4 w-64 z-20"
               >
             <button
               onClick={() => setShowRatingInfo(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="absolute top-2 right-2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300"
             >
               ×
             </button>
@@ -483,31 +483,31 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             <div className="space-y-3 text-xs">
               <div>
                 <p className="font-semibold mb-1">Defense Rating:</p>
-                <p className="text-gray-600 dark:text-gray-400">Based on type resistances, weaknesses, and immunities. Points are added for resistances and subtracted for weaknesses.</p>
+                <p className="text-stone-600 dark:text-stone-400">Based on type resistances, weaknesses, and immunities. Points are added for resistances and subtracted for weaknesses.</p>
               </div>
               
               <div>
                 <p className="font-semibold mb-1">Offense Rating:</p>
-                <p className="text-gray-600 dark:text-gray-400">Based on type coverage and super effective matchups against other types.</p>
+                <p className="text-stone-600 dark:text-stone-400">Based on type coverage and super effective matchups against other types.</p>
               </div>
               
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+              <div className="border-t border-stone-200 dark:border-stone-700 pt-3">
                 <p className="font-semibold mb-2">Score Ranges:</p>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-gradient-to-br from-green-400/80 to-emerald-500/80 border border-gray-400"></div>
+                    <div className="w-4 h-4 rounded bg-gradient-to-br from-green-400/80 to-emerald-500/80 border border-stone-400"></div>
                     <span>85-100: Excellent</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-gradient-to-br from-blue-400/80 to-indigo-500/80 border border-gray-400"></div>
+                    <div className="w-4 h-4 rounded bg-gradient-to-br from-amber-400/80 to-amber-500/80 border border-stone-400"></div>
                     <span>70-84: Good</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-gradient-to-br from-yellow-400/90 to-amber-500/90 border border-gray-400"></div>
+                    <div className="w-4 h-4 rounded bg-gradient-to-br from-yellow-400/90 to-amber-500/90 border border-stone-400"></div>
                     <span>55-69: Average</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-gradient-to-br from-red-400/80 to-rose-500/80 border border-gray-400"></div>
+                    <div className="w-4 h-4 rounded bg-gradient-to-br from-red-400/80 to-rose-500/80 border border-stone-400"></div>
                     <span>0-54: Poor</span>
                   </div>
                 </div>
@@ -525,7 +525,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
               <span className="text-red-500 font-bold">!</span>
             </div>
-            <h3 className="text-sm font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
               Weak to ({weaknesses.length} types)
             </h3>
           </div>
@@ -544,7 +544,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
               <span className="text-green-500 font-bold">✓</span>
             </div>
-            <h3 className="text-sm font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
               Resistant to ({resistances.length} types)
             </h3>
           </div>
@@ -559,10 +559,10 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
       {/* Immunities */}
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-8 h-8 rounded-full bg-gray-500/20 flex items-center justify-center">
-            <span className="text-gray-500 font-bold">∅</span>
+          <div className="w-8 h-8 rounded-full bg-stone-500/20 flex items-center justify-center">
+            <span className="text-stone-500 font-bold">∅</span>
           </div>
-          <h3 className="text-sm font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400">
+          <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
             Immune to ({immunities.length} types)
           </h3>
         </div>
@@ -572,7 +572,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               <TypeBadge key={matchup.type} matchup={matchup} />
             ))
           ) : (
-            <div className="text-sm text-gray-500 dark:text-gray-400 italic">
+            <div className="text-sm text-stone-500 dark:text-stone-400 italic">
               No immunities
             </div>
           )}
@@ -581,12 +581,12 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
       
       {/* Competitive Section - Under Type Advantage Rating */}
       {competitiveTiers && (
-        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-6 pt-6 border-t border-stone-200 dark:border-stone-700">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
-              <span className="text-purple-500 font-bold">★</span>
+            <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center">
+              <span className="text-amber-500 font-bold">★</span>
             </div>
-            <h3 className="text-sm font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
               Competitive Tiers
             </h3>
           </div>

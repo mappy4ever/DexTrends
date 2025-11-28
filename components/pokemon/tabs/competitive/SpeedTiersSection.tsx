@@ -26,7 +26,7 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
     >
       <GlassContainer 
         variant="dark" 
-        className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+        className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
         animate={false}
       >
         <div className="p-6 md:p-8">
@@ -34,7 +34,7 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 flex items-center justify-center">
               <MdCatchingPokemon className="w-5 h-5 text-yellow-400" />
             </div>
-            <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+            <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
               Speed Tiers
             </h3>
           </div>
@@ -45,10 +45,10 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
                 whileHover={{ scale: 1.03, y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <FaRunning className="w-4 h-4 text-blue-400" />
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Base Speed</p>
+                    <FaRunning className="w-4 h-4 text-amber-400" />
+                    <p className="text-sm text-stone-600 dark:text-stone-400">Base Speed</p>
                   </div>
                   <p className="text-2xl font-bold">{baseSpeed}</p>
                 </div>
@@ -59,10 +59,10 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
                 whileHover={{ scale: 1.03, y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <FaStar className="w-4 h-4 text-green-400" />
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Max Speed</p>
+                    <p className="text-sm text-stone-600 dark:text-stone-400">Max Speed</p>
                   </div>
                   <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                     {maxSpeed}
@@ -75,18 +75,18 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
                 whileHover={{ scale: 1.03, y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <FaExchangeAlt className="w-4 h-4 text-purple-400" />
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Scarf Speed</p>
+                    <FaExchangeAlt className="w-4 h-4 text-amber-400" />
+                    <p className="text-sm text-stone-600 dark:text-stone-400">Scarf Speed</p>
                   </div>
-                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                  <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
                     {scarfSpeed}
                   </p>
                 </div>
               </motion.div>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+            <p className="text-sm text-stone-600 dark:text-stone-400 text-center">
               Speed calculations assume Level 100, 31 IVs, 252 EVs, and positive nature
             </p>
           </div>

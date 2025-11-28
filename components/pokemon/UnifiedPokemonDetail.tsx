@@ -155,7 +155,7 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
 
   return (
     <UnifiedPullToRefresh onRefresh={handleRefresh}>
-      <div ref={mainRef} className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
+      <div ref={mainRef} className="min-h-screen bg-gradient-to-b from-white to-stone-50 dark:from-stone-900 dark:to-black">
       {/* Sticky Navigation Header - Responsive */}
       <motion.header 
         className={cn(
@@ -163,7 +163,7 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
           "h-14 md:h-16", // Smaller on mobile
           "px-4 md:px-6",
           "backdrop-blur-xl",
-          isScrolled ? "bg-white/95 dark:bg-gray-900/95 shadow-premium-md" : "bg-transparent"
+          isScrolled ? "bg-white/95 dark:bg-stone-900/95 shadow-premium-md" : "bg-transparent"
         )}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -184,7 +184,7 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
             className={cn(
               "flex items-center gap-2 px-3 py-2 rounded-xl",
               "text-sm font-medium",
-              "hover:bg-gray-100 dark:hover:bg-gray-800",
+              "hover:bg-stone-100 dark:hover:bg-stone-800",
               "transition-all duration-200",
               "touch-target" // Ensures 48px touch target
             )}
@@ -197,10 +197,10 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
           <h1 className={cn(
             "font-bold capitalize",
             "text-responsive-lg md:text-responsive-2xl",
-            "text-gray-900 dark:text-white"
+            "text-stone-900 dark:text-white"
           )}>
             {pokemon.name}
-            <span className="text-gray-500 dark:text-gray-400 ml-2">
+            <span className="text-stone-500 dark:text-stone-400 ml-2">
               #{String(pokemon.id).padStart(3, '0')}
             </span>
           </h1>

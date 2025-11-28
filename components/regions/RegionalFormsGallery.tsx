@@ -298,32 +298,32 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
     const type = types[0].toLowerCase();
     const typeGradients: { [key: string]: string } = {
       fire: 'from-orange-400 to-red-600',
-      water: 'from-blue-400 to-blue-600',
+      water: 'from-amber-400 to-amber-600',
       grass: 'from-green-400 to-green-600',
       electric: 'from-yellow-300 to-yellow-500',
       psychic: 'from-pink-400 to-pink-600',
-      ice: 'from-cyan-300 to-blue-400',
-      dragon: 'from-indigo-600 to-purple-800',
-      dark: 'from-gray-700 to-gray-900',
+      ice: 'from-cyan-300 to-amber-400',
+      dragon: 'from-amber-600 to-purple-800',
+      dark: 'from-stone-700 to-stone-900',
       fairy: 'from-pink-300 to-pink-500',
-      normal: 'from-gray-400 to-gray-600',
+      normal: 'from-stone-400 to-stone-600',
       fighting: 'from-red-700 to-red-900',
-      flying: 'from-blue-300 to-indigo-400',
-      poison: 'from-purple-500 to-purple-700',
+      flying: 'from-amber-300 to-amber-400',
+      poison: 'from-amber-500 to-amber-700',
       ground: 'from-yellow-600 to-orange-700',
       rock: 'from-yellow-700 to-yellow-900',
       bug: 'from-green-500 to-green-700',
-      ghost: 'from-purple-600 to-purple-900',
-      steel: 'from-gray-500 to-gray-700'
+      ghost: 'from-amber-600 to-amber-900',
+      steel: 'from-stone-500 to-stone-700'
     };
-    return typeGradients[type] || 'from-gray-400 to-gray-600';
+    return typeGradients[type] || 'from-stone-400 to-stone-600';
   };
 
   return (
     <div className="relative">
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-pink-500 to-blue-500 animate-pulse" />
       </div>
 
       <GlassContainer 
@@ -337,13 +337,13 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
         <FadeIn>
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <BsArrowRepeat className="text-3xl text-purple-500 animate-spin-slow" />
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <BsArrowRepeat className="text-3xl text-amber-500 animate-spin-slow" />
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                 Regional Forms
               </h2>
               <GiPalmTree className="text-3xl text-green-500" />
             </div>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-stone-600 dark:text-stone-400">
               Unique adaptations found only in {region.name}
             </p>
           </div>
@@ -366,7 +366,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={isFlipped ? 'original' : 'regional'}
-                        className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-purple-50/70 to-white/80 dark:from-gray-800/90 dark:via-purple-900/30 dark:to-gray-900/80 shadow-xl border border-white/30 dark:border-gray-700/30 h-full"
+                        className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-amber-50/70 to-white/80 dark:from-stone-800/90 dark:via-amber-900/30 dark:to-stone-900/80 shadow-xl border border-white/30 dark:border-stone-700/30 h-full"
                         initial={{ rotateY: 90, opacity: 0 }}
                         animate={{ rotateY: 0, opacity: 1 }}
                         exit={{ rotateY: -90, opacity: 0 }}
@@ -381,8 +381,8 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
                         <div className="absolute top-4 left-4 z-10">
                           <div className={`px-3 py-1.5 rounded-full backdrop-blur-md ${
                             isFlipped 
-                              ? 'bg-gray-900/70 text-white' 
-                              : 'bg-gradient-to-r from-purple-600/80 to-pink-600/80 text-white'
+                              ? 'bg-stone-900/70 text-white' 
+                              : 'bg-gradient-to-r from-amber-600/80 to-pink-600/80 text-white'
                           } text-xs font-bold shadow-lg`}>
                             {isFlipped ? 'Original' : region.name}
                           </div>
@@ -391,9 +391,9 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
                         {/* Flip Button */}
                         <button
                           onClick={() => setShowOriginal({ ...showOriginal, [index]: !isFlipped })}
-                          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
+                          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/80 dark:bg-stone-900/80 backdrop-blur-md shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
                         >
-                          <BsArrowRepeat className="text-purple-600 dark:text-purple-400 text-lg" />
+                          <BsArrowRepeat className="text-amber-600 dark:text-amber-400 text-lg" />
                         </button>
 
                         {/* Pokémon Image */}
@@ -412,7 +412,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
 
                         {/* Info Panel */}
                         <div className="p-5 pt-2">
-                          <h3 className="text-lg font-bold text-center text-gray-800 dark:text-white mb-2">
+                          <h3 className="text-lg font-bold text-center text-stone-800 dark:text-white mb-2">
                             {isFlipped ? form.originalName : form.regionalName}
                           </h3>
                           
@@ -432,7 +432,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
 
                           {/* Description */}
                           {!isFlipped && (
-                            <p className="text-xs text-center text-gray-600 dark:text-gray-400 leading-relaxed">
+                            <p className="text-xs text-center text-stone-600 dark:text-stone-400 leading-relaxed">
                               {form.description}
                             </p>
                           )}
@@ -440,7 +440,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
                           {/* View Details Link */}
                           <Link 
                             href={`/pokemon/${isFlipped ? form.originalId : form.regionalId}`}
-                            className="flex items-center justify-center gap-1 mt-3 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+                            className="flex items-center justify-center gap-1 mt-3 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-purple-300 transition-colors"
                           >
                             <span className="text-sm font-medium">View Details</span>
                             <BsChevronRight className="text-sm" />
@@ -457,16 +457,16 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
 
         {/* Regional Adaptation Info */}
         <motion.div 
-          className="mt-10 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-purple-100/50 via-pink-100/50 to-blue-100/50 dark:from-purple-900/20 dark:via-pink-900/20 dark:to-blue-900/20 border border-purple-200/30 dark:border-purple-700/30"
+          className="mt-10 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-amber-100/50 via-pink-100/50 to-blue-100/50 dark:from-amber-900/20 dark:via-pink-900/20 dark:to-blue-900/20 border border-purple-200/30 dark:border-amber-700/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
           <div className="flex items-center gap-3 mb-3">
-            <GiMountains className="text-2xl text-purple-600 dark:text-purple-400" />
-            <h3 className="font-bold text-gray-800 dark:text-white">About Regional Forms</h3>
+            <GiMountains className="text-2xl text-amber-600 dark:text-amber-400" />
+            <h3 className="font-bold text-stone-800 dark:text-white">About Regional Forms</h3>
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
             Regional forms are Pokémon that have adapted to the unique environment of {region.name}. 
             These variants have different types, abilities, and appearances from their original forms, 
             showcasing the incredible diversity of Pokémon evolution across different regions.

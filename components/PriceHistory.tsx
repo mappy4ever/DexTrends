@@ -21,8 +21,8 @@ interface SimpleLineChartProps {
 function SimpleLineChart({ data, title, height = 200 }: SimpleLineChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-48 flex items-center justify-center">
-        <p className="text-gray-500 dark:text-gray-400">No price data available</p>
+      <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4 h-48 flex items-center justify-center">
+        <p className="text-stone-500 dark:text-stone-400">No price data available</p>
       </div>
     );
   }
@@ -32,19 +32,19 @@ function SimpleLineChart({ data, title, height = 200 }: SimpleLineChartProps) {
   const priceRange = maxPrice - minPrice || 1;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{title}</h3>
-      
+    <div className="bg-white dark:bg-stone-800 rounded-lg p-4 shadow-lg">
+      <h3 className="text-lg font-semibold mb-4 text-stone-900 dark:text-white">{title}</h3>
+
       <div className="relative" style={{ height: `${height}px` }}>
         {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 pr-2">
+        <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-stone-500 dark:text-stone-400 pr-2">
           <span>${maxPrice.toFixed(2)}</span>
           <span>${((maxPrice + minPrice) / 2).toFixed(2)}</span>
           <span>${minPrice.toFixed(2)}</span>
         </div>
         
         {/* Chart area */}
-        <div className="ml-12 h-full relative bg-gray-50 dark:bg-gray-700 rounded">
+        <div className="ml-12 h-full relative bg-stone-50 dark:bg-stone-700 rounded">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             {/* Grid lines */}
             <defs>
@@ -85,7 +85,7 @@ function SimpleLineChart({ data, title, height = 200 }: SimpleLineChartProps) {
         </div>
         
         {/* X-axis labels */}
-        <div className="ml-12 flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <div className="ml-12 flex justify-between text-xs text-stone-500 dark:text-stone-400 mt-1">
           <span>{data[0]?.collected_at?.split('T')[0]}</span>
           <span>{data[data.length - 1]?.collected_at?.split('T')[0]}</span>
         </div>
@@ -102,10 +102,10 @@ interface PriceStatsProps {
 function PriceStats({ stats, loading }: PriceStatsProps) {
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
+      <div className="bg-white dark:bg-stone-800 rounded-lg p-4 shadow-lg">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-          <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+          <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded mb-2"></div>
+          <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-3/4"></div>
         </div>
       </div>
     );
@@ -113,8 +113,8 @@ function PriceStats({ stats, loading }: PriceStatsProps) {
 
   if (!stats) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
-        <p className="text-gray-500 dark:text-gray-400">No statistics available</p>
+      <div className="bg-white dark:bg-stone-800 rounded-lg p-4 shadow-lg">
+        <p className="text-stone-500 dark:text-stone-400">No statistics available</p>
       </div>
     );
   }
@@ -123,7 +123,7 @@ function PriceStats({ stats, loading }: PriceStatsProps) {
     switch (direction) {
       case 'UP': return 'text-green-600 dark:text-green-400';
       case 'DOWN': return 'text-red-600 dark:text-red-400';
-      default: return 'text-gray-600 dark:text-gray-400';
+      default: return 'text-stone-600 dark:text-stone-400';
     }
   };
 
@@ -136,43 +136,43 @@ function PriceStats({ stats, loading }: PriceStatsProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Price Statistics</h3>
+    <div className="bg-white dark:bg-stone-800 rounded-lg p-4 shadow-lg">
+      <h3 className="text-lg font-semibold mb-4 text-stone-900 dark:text-white">Price Statistics</h3>
       
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Current Price</p>
-          <p className="text-lg font-bold text-gray-900 dark:text-white">
+          <p className="text-sm text-stone-500 dark:text-stone-400">Current Price</p>
+          <p className="text-lg font-bold text-stone-900 dark:text-white">
             ${parseFloat(String(stats.current_price || 0)).toFixed(2)}
           </p>
         </div>
-        
+
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Average Price</p>
-          <p className="text-lg font-bold text-gray-900 dark:text-white">
+          <p className="text-sm text-stone-500 dark:text-stone-400">Average Price</p>
+          <p className="text-lg font-bold text-stone-900 dark:text-white">
             ${parseFloat(String(stats.avg_price || 0)).toFixed(2)}
           </p>
         </div>
-        
+
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Price Range</p>
-          <p className="text-sm text-gray-900 dark:text-white">
+          <p className="text-sm text-stone-500 dark:text-stone-400">Price Range</p>
+          <p className="text-sm text-stone-900 dark:text-white">
             ${parseFloat(String(stats.min_price || 0)).toFixed(2)} - ${parseFloat(String(stats.max_price || 0)).toFixed(2)}
           </p>
         </div>
-        
+
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Trend</p>
+          <p className="text-sm text-stone-500 dark:text-stone-400">Trend</p>
           <p className={`text-sm font-medium flex items-center ${getTrendColor(stats.trend_direction)}`}>
             {getTrendIcon(stats.trend_direction)} {stats.trend_direction}
           </p>
         </div>
       </div>
-      
+
       {stats.price_volatility && (
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Volatility</p>
-          <p className="text-sm text-gray-900 dark:text-white">
+        <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-600">
+          <p className="text-sm text-stone-500 dark:text-stone-400">Volatility</p>
+          <p className="text-sm text-stone-900 dark:text-white">
             ${parseFloat(String(stats.price_volatility)).toFixed(2)}
           </p>
         </div>
@@ -234,33 +234,33 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
       {/* Header with controls */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-bold text-stone-900 dark:text-white">
             Price History: {cardName}
           </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
+          <p className="text-sm text-stone-500 dark:text-stone-400 capitalize">
             {variantType} variant
           </p>
         </div>
-        
+
         <div className="flex gap-2">
           <select
             value={daysBack}
             onChange={(e) => setDaysBack(parseInt(e.target.value))}
-            className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm"
+            className="bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-600 rounded-md px-3 py-1 text-sm"
           >
             <option value={7}>7 days</option>
             <option value={30}>30 days</option>
             <option value={90}>90 days</option>
             <option value={365}>1 year</option>
           </select>
-          
+
           <select
             value={variantType}
             onChange={(e) => {
               setError(null);
               setPriceHistory([]);
             }}
-            className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm">
+            className="bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-600 rounded-md px-3 py-1 text-sm">
 
             <option value="holofoil">Holofoil</option>
             <option value="normal">Normal</option>
@@ -274,8 +274,8 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           {loading ? (
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4 h-64 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
             </div>
           ) : (
             <SimpleLineChart
@@ -285,7 +285,7 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
             />
           )}
         </div>
-        
+
         <div>
           <PriceStats stats={priceStats} loading={loading} />
         </div>
@@ -293,39 +293,39 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
 
       {/* Recent price data table */}
       {!loading && priceHistory.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Prices</h3>
+        <div className="bg-white dark:bg-stone-800 rounded-lg shadow-lg overflow-hidden">
+          <div className="px-4 py-3 border-b border-stone-200 dark:border-stone-700">
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white">Recent Prices</h3>
           </div>
-          
+
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+            <table className="min-w-full divide-y divide-stone-200 dark:divide-stone-700">
+              <thead className="bg-stone-50 dark:bg-stone-700">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Market Price</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Low</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">High</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Change</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 dark:text-stone-300 uppercase">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 dark:text-stone-300 uppercase">Market Price</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 dark:text-stone-300 uppercase">Low</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 dark:text-stone-300 uppercase">High</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 dark:text-stone-300 uppercase">Change</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-stone-200 dark:divide-stone-700">
                 {priceHistory.slice(0, 10).map((row, index) => (
-                  <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                  <tr key={index} className="hover:bg-stone-50 dark:hover:bg-stone-700">
+                    <td className="px-4 py-3 text-sm text-stone-900 dark:text-white">
                       {row.collected_at?.split('T')[0]}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-900 dark:text-white font-medium">
+                    <td className="px-4 py-3 text-sm text-stone-900 dark:text-white font-medium">
                       ${parseFloat(String(row.price_market || 0)).toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                    <td className="px-4 py-3 text-sm text-stone-500 dark:text-stone-400">
                       ${parseFloat(String(row.price_low || 0)).toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                    <td className="px-4 py-3 text-sm text-stone-500 dark:text-stone-400">
                       ${parseFloat(String(row.price_high || 0)).toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">
+                      <span className="text-stone-500 dark:text-stone-400">
                         -
                       </span>
                     </td>

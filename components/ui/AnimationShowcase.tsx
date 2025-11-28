@@ -55,22 +55,22 @@ const AnimationShowcase: React.FC = () => {
   const pokemonTypes = ['Fire', 'Water', 'Electric', 'Grass', 'Psychic', 'Dark', 'Steel', 'Fairy'];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-900 p-8">
       <EnhancedPageTransition variant="slideUp">
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Header */}
           <ScrollReveal direction="down" className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-4xl font-bold text-stone-900 dark:text-white mb-4">
               DexTrends Animation System
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-stone-600 dark:text-stone-400">
               Comprehensive animation showcase with performance optimizations
             </p>
           </ScrollReveal>
 
           {/* Animation Controls */}
           <ScrollReveal direction="up" delay={0.1}>
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg">
               <h2 className="text-2xl font-semibold mb-4">Animation Settings</h2>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -105,9 +105,9 @@ const AnimationShowcase: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {(['fade', 'slideUp', 'scale'] as PageTransitionVariant[]).map((variant, index) => (
                 <ScrollReveal key={variant} direction="up" delay={index * 0.1}>
-                  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                  <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg">
                     <h3 className="font-medium capitalize mb-2">{variant} Transition</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-stone-600 dark:text-stone-400">
                       Used for {variant === 'fade' ? 'subtle' : variant === 'slideUp' ? 'content reveal' : 'emphasis'} transitions
                     </p>
                   </div>
@@ -126,7 +126,7 @@ const AnimationShowcase: React.FC = () => {
                 <ScrollReveal key={card.id} direction="up" delay={index * 0.1}>
                   <div className="transition-transform hover:scale-105">
                     <InteractiveCard 
-                      className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
+                      className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg cursor-pointer"
                       glowColor={
                         card.rarity === 'secret' ? 'rgba(236, 72, 153, 0.5)' :
                         card.rarity === 'ultra' ? 'rgba(251, 191, 36, 0.5)' :
@@ -135,7 +135,7 @@ const AnimationShowcase: React.FC = () => {
                       }
                     >
                       <h3 className="font-bold text-lg mb-2">{card.name}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                      <p className="text-sm text-stone-600 dark:text-stone-400 capitalize">
                         {card.rarity} Card
                       </p>
                     </InteractiveCard>
@@ -160,7 +160,7 @@ const AnimationShowcase: React.FC = () => {
             </div>
 
             <AnimatedModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-lg max-w-md">
+              <div className="bg-white dark:bg-stone-800 p-8 rounded-lg max-w-md">
                 <h3 className="text-xl font-bold mb-4">Animated Modal</h3>
                 <p className="mb-6">This modal uses smooth scale and fade animations.</p>
                 <AnimatedButton onClick={() => setModalOpen(false)} variant="primary" className="w-full">
@@ -187,7 +187,7 @@ const AnimationShowcase: React.FC = () => {
             </ScrollReveal>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ScrollReveal direction="left">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
+                <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg space-y-4">
                   <h3 className="font-medium mb-4">Form Elements</h3>
                   <AnimatedInput
                     value={inputValue}
@@ -205,7 +205,7 @@ const AnimationShowcase: React.FC = () => {
               </ScrollReveal>
               
               <ScrollReveal direction="right">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
+                <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg space-y-4">
                   <h3 className="font-medium mb-4">Button Variants</h3>
                   <div className="space-y-2">
                     {(['primary', 'secondary', 'success', 'danger'] as ButtonVariant[]).map((variant) => (
@@ -227,7 +227,7 @@ const AnimationShowcase: React.FC = () => {
             
             {/* Type Badges */}
             <ScrollReveal delay={0.1}>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
+              <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg mb-6">
                 <h3 className="font-medium mb-4">Animated Type Badges</h3>
                 <div className="flex flex-wrap gap-2">
                   {pokemonTypes.map((type) => (
@@ -239,7 +239,7 @@ const AnimationShowcase: React.FC = () => {
 
             {/* Card Flip */}
             <ScrollReveal delay={0.2}>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
+              <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg mb-6">
                 <h3 className="font-medium mb-4">Card Flip Animation</h3>
                 <div className="flex justify-center">
                   <FlippableCard
@@ -247,12 +247,12 @@ const AnimationShowcase: React.FC = () => {
                     onFlip={() => setCardFlipped(!cardFlipped)}
                     className="w-48 h-64"
                     frontContent={
-                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                      <div className="w-full h-full bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center text-white font-bold">
                         Card Front
                       </div>
                     }
                     backContent={
-                      <div className="w-full h-full bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold">
+                      <div className="w-full h-full bg-gradient-to-br from-amber-600 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold">
                         Card Back
                       </div>
                     }
@@ -263,7 +263,7 @@ const AnimationShowcase: React.FC = () => {
 
             {/* Pack Opening */}
             <ScrollReveal delay={0.3}>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
+              <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg mb-6">
                 <h3 className="font-medium mb-4">Pack Opening Animation</h3>
                 <AnimatedButton onClick={() => setPackOpen(true)} variant="primary">
                   Open Pack
@@ -285,15 +285,15 @@ const AnimationShowcase: React.FC = () => {
 
             {/* Evolution Chain */}
             <ScrollReveal delay={0.4}>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+              <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-medium mb-4">Evolution Animation</h3>
                 <EvolutionAnimation
                   currentStage={evolutionStage}
                   onStageChange={setEvolutionStage}
                   stages={[
                     <div key="stage-1" className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">1</div>,
-                    <div key="stage-2" className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">2</div>,
-                    <div key="stage-3" className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">3</div>,
+                    <div key="stage-2" className="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold">2</div>,
+                    <div key="stage-3" className="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold">3</div>,
                   ]}
                 />
               </div>
@@ -307,7 +307,7 @@ const AnimationShowcase: React.FC = () => {
             </ScrollReveal>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ScrollReveal direction="left">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg">
                   <h3 className="font-medium mb-4">Loading Indicators</h3>
                   <div className="flex items-center justify-around">
                     {(['sm', 'md', 'lg'] as LoadingSize[]).map((size) => (
@@ -318,7 +318,7 @@ const AnimationShowcase: React.FC = () => {
               </ScrollReveal>
               
               <ScrollReveal direction="right">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg">
                   <h3 className="font-medium mb-4">Skeleton Loading</h3>
                   <div className="space-y-3">
                     <AnimatedSkeleton height="1rem" />
@@ -337,9 +337,9 @@ const AnimationShowcase: React.FC = () => {
             </ScrollReveal>
             <StaggerList className="space-y-3">
               {['First Item', 'Second Item', 'Third Item', 'Fourth Item', 'Fifth Item'].map((item, index) => (
-                <div key={index} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+                <div key={index} className="bg-white dark:bg-stone-800 p-4 rounded-lg shadow-lg">
                   <h3 className="font-medium">{item}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-stone-600 dark:text-stone-400">
                     This item appears with a staggered delay
                   </p>
                 </div>

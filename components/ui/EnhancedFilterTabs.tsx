@@ -57,11 +57,11 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
         {/* Header with Results Count */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300">
+            <h3 className="text-sm font-bold text-stone-700 dark:text-stone-300">
               Filters
             </h3>
-            <div className="px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30">
-              <span className="text-xs font-medium text-purple-700 dark:text-purple-300">
+            <div className="px-2 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30">
+              <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
                 {filteredCards} / {totalCards} cards
               </span>
             </div>
@@ -71,7 +71,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
             onClick={() => setIsExpanded(!isExpanded)}
             className={cn(
               'p-1.5 rounded-full',
-              'backdrop-blur-md bg-white/50 dark:bg-gray-700/50',
+              'backdrop-blur-md bg-white/50 dark:bg-stone-700/50',
               'hover:bg-white/70 transition-all duration-200'
             )}
           >
@@ -131,8 +131,8 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                     'backdrop-blur-md transition-all duration-200',
                     'flex items-center justify-center gap-1',
                     !selectedRarity
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
-                      : 'bg-white/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-white/70'
+                      ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md'
+                      : 'bg-white/50 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300 hover:bg-white/70'
                   )}
                 >
                   <span>All</span>
@@ -147,8 +147,8 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                       'relative group p-2 rounded-xl',
                       'backdrop-blur-md transition-all duration-200',
                       selectedRarity === rarity
-                        ? 'bg-white/70 dark:bg-gray-700/70 shadow-md scale-110'
-                        : 'bg-white/30 dark:bg-gray-800/30 hover:bg-white/50'
+                        ? 'bg-white/70 dark:bg-stone-700/70 shadow-md scale-110'
+                        : 'bg-white/30 dark:bg-stone-800/30 hover:bg-white/50'
                     )}
                   >
                     <RarityIcon
@@ -160,7 +160,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                     <div className={cn(
                       'absolute bottom-full left-1/2 -translate-x-1/2 mb-2',
                       'px-2 py-1 rounded-lg',
-                      'bg-gray-900 text-white text-xs whitespace-nowrap',
+                      'bg-stone-900 text-white text-xs whitespace-nowrap',
                       'opacity-0 group-hover:opacity-100 pointer-events-none',
                       'transition-opacity duration-200 z-50'
                     )}>
@@ -172,14 +172,14 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
               
               {/* Selected Rarity Info */}
               {selectedRarity && (
-                <div className="mt-3 p-3 rounded-xl bg-gradient-to-r from-purple-100/50 to-pink-100/50 dark:from-purple-900/20 dark:to-pink-900/20">
+                <div className="mt-3 p-3 rounded-xl bg-gradient-to-r from-amber-100/50 to-amber-100/50 dark:from-amber-900/20 dark:to-amber-900/20">
                   <div className="flex items-center gap-2">
                     <RarityIcon rarity={selectedRarity} size="md" />
                     <div>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
                         {selectedRarity}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-stone-500 dark:text-stone-400">
                         Showing only {selectedRarity} cards
                       </p>
                     </div>
@@ -194,7 +194,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
             <div className="space-y-4 animate-fadeIn">
               {/* Supertype Filter */}
               <div>
-                <label className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2 block">
+                <label className="text-xs font-medium text-stone-600 dark:text-stone-400 mb-2 block">
                   Card Type
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -217,7 +217,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
               {/* Subtype Filter */}
               {availableSubtypes.length > 0 && (
                 <div>
-                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2 block">
+                  <label className="text-xs font-medium text-stone-600 dark:text-stone-400 mb-2 block">
                     Subtype
                   </label>
                   <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
@@ -253,16 +253,16 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                   placeholder="Search cards by name, text, or ability..."
                   className={cn(
                     'w-full px-4 py-3 pl-10 rounded-xl',
-                    'backdrop-blur-md bg-white/50 dark:bg-gray-800/50',
-                    'border border-white/50 dark:border-gray-700/50',
-                    'text-sm text-gray-700 dark:text-gray-300',
-                    'placeholder-gray-500 dark:placeholder-gray-400',
-                    'focus:outline-none focus:ring-2 focus:ring-purple-500/50',
+                    'backdrop-blur-md bg-white/50 dark:bg-stone-800/50',
+                    'border border-white/50 dark:border-stone-700/50',
+                    'text-sm text-stone-700 dark:text-stone-300',
+                    'placeholder-stone-500 dark:placeholder-stone-400',
+                    'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
                     'transition-all duration-200'
                   )}
                 />
                 <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -272,7 +272,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                 {searchQuery && (
                   <button
                     onClick={() => onSearchChange('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -282,7 +282,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
               </div>
               
               {searchQuery && (
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-stone-500 dark:text-stone-400">
                   Searching for "{searchQuery}"...
                 </p>
               )}
@@ -291,7 +291,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
         </div>
 
         {/* Quick Actions - Always Visible */}
-        <div className="mt-4 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
+        <div className="mt-4 pt-4 border-t border-stone-200/50 dark:border-stone-700/50">
           <div className="flex items-center justify-between">
             <button
               onClick={() => {
@@ -300,29 +300,29 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                 onSubtypeChange('');
                 onSearchChange('');
               }}
-              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="text-xs text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors"
             >
               Clear all filters
             </button>
             
             <div className="flex gap-2">
               {selectedRarity && (
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30">
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30">
                   <RarityIcon rarity={selectedRarity} size="xs" />
                   <button
                     onClick={() => onRarityChange('')}
-                    className="ml-1 text-purple-600 dark:text-purple-400 hover:text-purple-700"
+                    className="ml-1 text-amber-600 dark:text-amber-400 hover:text-amber-700"
                   >
                     ×
                   </button>
                 </div>
               )}
               {selectedSupertype && (
-                <div className="px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-xs">
-                  <span className="text-blue-700 dark:text-blue-300">{selectedSupertype}</span>
+                <div className="px-2 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-xs">
+                  <span className="text-amber-700 dark:text-amber-300">{selectedSupertype}</span>
                   <button
                     onClick={() => onSupertypeChange('')}
-                    className="ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-700"
+                    className="ml-1 text-amber-600 dark:text-amber-400 hover:text-amber-700"
                   >
                     ×
                   </button>
@@ -351,8 +351,8 @@ const TabButton: React.FC<{
       'backdrop-blur-md transition-all duration-200',
       'flex items-center justify-center gap-1',
       active
-        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
-        : 'bg-white/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-white/70'
+        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md'
+        : 'bg-white/50 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300 hover:bg-white/70'
     )}
   >
     <span>{icon}</span>
@@ -378,8 +378,8 @@ const TypeButton: React.FC<{
       'backdrop-blur-md transition-all duration-200',
       size === 'sm' ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-xs',
       active
-        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md'
-        : 'bg-white/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-white/70'
+        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md'
+        : 'bg-white/50 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300 hover:bg-white/70'
     )}
   >
     {label}

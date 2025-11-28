@@ -89,9 +89,9 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
             shadow: 'xl',
             rounded: 'xl'
           }),
-          isSelected && "ring-4 ring-purple-500/50",
+          isSelected && "ring-4 ring-amber-500/50",
           isPremium && "bg-gradient-to-br from-yellow-100/20 to-amber-100/20",
-          isUltraPremium && "bg-gradient-to-br from-purple-100/20 via-pink-100/20 to-yellow-100/20"
+          isUltraPremium && "bg-gradient-to-br from-amber-100/20 via-pink-100/20 to-yellow-100/20"
         )}>
           {/* Card Image */}
           <div className="relative aspect-[2.5/3.5]">
@@ -107,7 +107,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
             {isUltraPremium && (
               <div className="absolute top-2 right-2">
                 <motion.div
-                  className="px-2 py-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold"
+                  className="px-2 py-1 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-xs font-bold"
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
@@ -153,10 +153,10 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+          <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
             {title}
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
             {subtitle}
           </p>
         </div>
@@ -169,10 +169,10 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
             onChange={(e) => setSortBy(e.target.value as SortOption)}
             className={cn(
               "px-4 py-2 rounded-lg text-sm",
-              "bg-white/50 dark:bg-gray-800/50",
+              "bg-white/50 dark:bg-stone-800/50",
               "backdrop-blur-md",
-              "border border-white/30 dark:border-gray-700/30",
-              "focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              "border border-white/30 dark:border-stone-700/30",
+              "focus:outline-none focus:ring-2 focus:ring-amber-500/50"
             )}
           >
             <option value="price-desc">Price: High to Low</option>
@@ -198,8 +198,8 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                 className={cn(
                   "px-3 py-1.5 rounded text-sm font-medium transition-all capitalize",
                   viewMode === mode
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
-                    : "text-gray-600 dark:text-gray-400"
+                    ? "bg-gradient-to-r from-amber-500 to-pink-500 text-white"
+                    : "text-stone-600 dark:text-stone-400"
                 )}
               >
                 {mode}
@@ -251,10 +251,10 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                   <div className="p-6 space-y-3">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h4 className="text-xl font-bold text-gray-800 dark:text-gray-200">
+                        <h4 className="text-xl font-bold text-stone-800 dark:text-stone-200">
                           {selectedCard.name}
                         </h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <p className="text-sm text-stone-500 dark:text-stone-400">
                           {selectedCard.set.name} • #{selectedCard.number}
                         </p>
                       </div>
@@ -269,7 +269,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                     </div>
                     
                     {selectedCard.artist && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-stone-600 dark:text-stone-400">
                         <span className="font-medium">Artist:</span> {selectedCard.artist}
                       </p>
                     )}
@@ -324,9 +324,9 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                   transition={{ delay: index * 0.02 }}
                   className={cn(
                     "flex items-center gap-4 p-4 rounded-xl cursor-pointer",
-                    "backdrop-blur-md bg-white/50 dark:bg-gray-800/50",
-                    "border border-white/30 dark:border-gray-700/30",
-                    "hover:bg-white/70 dark:hover:bg-gray-800/70",
+                    "backdrop-blur-md bg-white/50 dark:bg-stone-800/50",
+                    "border border-white/30 dark:border-stone-700/30",
+                    "hover:bg-white/70 dark:hover:bg-stone-800/70",
                     "transition-all hover:scale-[1.02]"
                   )}
                   onClick={() => onCardClick?.(card)}
@@ -343,10 +343,10 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                   
                   {/* Card Info */}
                   <div className="flex-1">
-                    <h4 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                    <h4 className="text-sm font-semibold text-stone-800 dark:text-stone-200">
                       {card.name}
                     </h4>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-stone-500 dark:text-stone-400">
                       #{card.number} • {card.set.name}
                     </p>
                   </div>
@@ -373,7 +373,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
       </AnimatePresence>
       
       {/* Summary Stats */}
-      <div className="mt-6 pt-6 border-t border-gray-200/50 dark:border-gray-700/50">
+      <div className="mt-6 pt-6 border-t border-stone-200/50 dark:border-stone-700/50">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
             label="Total Value"
@@ -383,7 +383,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
           <StatCard
             label="Average Price"
             value={`$${(cards.reduce((sum, card) => sum + getPrice(card), 0) / cards.length).toFixed(2)}`}
-            gradient="from-blue-500 to-cyan-500"
+            gradient="from-amber-500 to-cyan-500"
           />
           <StatCard
             label="Most Valuable"
@@ -393,7 +393,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
           <StatCard
             label="Cards Shown"
             value={cards.length.toString()}
-            gradient="from-purple-500 to-pink-500"
+            gradient="from-amber-500 to-pink-500"
           />
         </div>
       </div>
@@ -408,7 +408,7 @@ const StatCard: React.FC<{
   gradient: string;
 }> = ({ label, value, gradient }) => (
   <div className="text-center">
-    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">{label}</p>
     <p className={cn(
       "text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent",
       gradient

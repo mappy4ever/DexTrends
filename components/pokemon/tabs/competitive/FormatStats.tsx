@@ -39,17 +39,17 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
     >
       <GlassContainer
         variant="dark"
-        className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+        className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
         animate={false}
       >
         <div className="p-6 md:p-8">
           {/* Format Tabs */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
-                <MdCatchingPokemon className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
+                <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
               </div>
-              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
                 Competitive Formats
               </h2>
             </div>
@@ -71,7 +71,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     "transform hover:scale-[1.02] active:scale-[0.98]",
                     isSelected
                       ? `bg-gradient-to-br ${format.color} text-white border-transparent shadow-lg`
-                      : "bg-white/5 dark:bg-gray-800/50 border-gray-200/50 dark:border-gray-700/50 hover:bg-white/10"
+                      : "bg-white/5 dark:bg-stone-800/50 border-stone-200/50 dark:border-stone-700/50 hover:bg-white/10"
                   )}
                 >
                   <Icon className="w-6 h-6" />
@@ -87,28 +87,28 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
             {selectedFormat === 'standard' && (
               <div className="space-y-6">
                 {/* Section Header */}
-                <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-xl">
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Standard Format Statistics</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Current generation competitive play</p>
+                <div className="text-center p-4 bg-gradient-to-r from-amber-50 to-amber-50 dark:from-amber-900/10 dark:to-amber-900/10 rounded-xl">
+                  <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-2">Standard Format Statistics</h3>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">Current generation competitive play</p>
                 </div>
 
                 {/* Usage and Win Rate Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Singles Stats */}
-                  <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                  <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                      <MdCatchingPokemon className="w-4 h-4 text-blue-400" />
+                      <MdCatchingPokemon className="w-4 h-4 text-amber-400" />
                       Singles Format
                     </h4>
                     <div className="space-y-3">
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-gray-600 dark:text-gray-400">Usage Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-400">Usage Rate</span>
                           <span className="font-bold text-sm">{usageStats.usage.toFixed(1)}%</span>
                         </div>
-                        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                           <motion.div
-                            className="h-full bg-gradient-to-r from-blue-400 to-blue-600"
+                            className="h-full bg-gradient-to-r from-amber-400 to-amber-600"
                             initial={{ width: 0 }}
                             animate={{ width: `${Math.min(100, usageStats.usage * 10)}%` }}
                             transition={{ duration: 0.8 }}
@@ -117,10 +117,10 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                       </div>
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-gray-600 dark:text-gray-400">Win Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-400">Win Rate</span>
                           <span className="font-bold text-sm">{usageStats.winRate.toFixed(1)}%</span>
                         </div>
-                        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                           <motion.div
                             className={cn(
                               "h-full",
@@ -138,20 +138,20 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   </div>
 
                   {/* Doubles Stats */}
-                  <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                  <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                      <MdCatchingPokemon className="w-4 h-4 text-purple-400" />
+                      <MdCatchingPokemon className="w-4 h-4 text-amber-400" />
                       Doubles Format
                     </h4>
                     <div className="space-y-3">
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-gray-600 dark:text-gray-400">Usage Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-400">Usage Rate</span>
                           <span className="font-bold text-sm">{FORMAT_STATS.standard.doubles.usage}%</span>
                         </div>
-                        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                           <motion.div
-                            className="h-full bg-gradient-to-r from-purple-400 to-purple-600"
+                            className="h-full bg-gradient-to-r from-amber-400 to-amber-600"
                             initial={{ width: 0 }}
                             animate={{ width: `${FORMAT_STATS.standard.doubles.usage * 10}%` }}
                             transition={{ duration: 0.8 }}
@@ -160,10 +160,10 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                       </div>
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-gray-600 dark:text-gray-400">Win Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-400">Win Rate</span>
                           <span className="font-bold text-sm">{FORMAT_STATS.standard.doubles.winRate}%</span>
                         </div>
-                        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                           <motion.div
                             className={cn(
                               "h-full",
@@ -182,28 +182,28 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
+                <div className="h-px bg-gradient-to-r from-transparent via-stone-300 dark:via-stone-600 to-transparent" />
 
                 {/* All Tiers, VGC, and Battle Stadium in one row */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                   {/* Current Tiers */}
-                  <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                  <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <div className="flex items-center justify-center gap-2 mb-3">
-                      <MdCatchingPokemon className="w-5 h-5 text-purple-400" />
-                      <p className="text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Current Tiers</p>
+                      <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
+                      <p className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">Current Tiers</p>
                     </div>
                     <div className="text-center">
                       {competitiveTiers ? (
                         <div className="flex items-center justify-center gap-4">
                           {competitiveTiers.singles_tier && (
                             <div className="flex flex-col items-center">
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Singles</p>
+                              <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">Singles</p>
                               <TierBadge tier={competitiveTiers.singles_tier} size="md" />
                             </div>
                           )}
                           {competitiveTiers.doubles_tier && (
                             <div className="flex flex-col items-center">
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Doubles</p>
+                              <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">Doubles</p>
                               <TierBadge tier={competitiveTiers.doubles_tier} format="doubles" size="md" />
                             </div>
                           )}
@@ -214,7 +214,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                       ) : (
                         <div>
                           <TierBadge tier={estimatedTier} size="md" />
-                          <p className="text-xs text-gray-500 dark:text-gray-400 italic mt-2">
+                          <p className="text-xs text-stone-500 dark:text-stone-400 italic mt-2">
                             Estimated based on stats
                           </p>
                         </div>
@@ -223,42 +223,42 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   </div>
 
                   {/* VGC Eligibility */}
-                  <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                  <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <div className="flex items-center justify-center gap-2 mb-3">
-                      <MdCatchingPokemon className="w-5 h-5 text-blue-400" />
-                      <h4 className="text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">VGC Eligibility</h4>
+                      <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
+                      <h4 className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">VGC Eligibility</h4>
                     </div>
                     <div className="flex items-center justify-center gap-2 text-center">
                       {formatEligibility.vgc ? (
                         <>
                           <FaCheckCircle className="w-5 h-5 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">Legal</span>
+                          <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Legal</span>
                         </>
                       ) : (
                         <>
                           <FaTimesCircle className="w-5 h-5 text-red-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">Not Legal</span>
+                          <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Not Legal</span>
                         </>
                       )}
                     </div>
                   </div>
 
                   {/* Battle Stadium */}
-                  <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                  <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <MdCatchingPokemon className="w-5 h-5 text-yellow-400" />
-                      <h4 className="text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Battle Stadium</h4>
+                      <h4 className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">Battle Stadium</h4>
                     </div>
                     <div className="flex items-center justify-center gap-2 text-center">
                       {formatEligibility.battleStadium ? (
                         <>
                           <FaCheckCircle className="w-5 h-5 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">Legal</span>
+                          <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Legal</span>
                         </>
                       ) : (
                         <>
                           <FaTimesCircle className="w-5 h-5 text-red-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">Restricted</span>
+                          <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Restricted</span>
                         </>
                       )}
                     </div>
@@ -271,12 +271,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
               <div className="space-y-6">
                 {/* Section Header */}
                 <div className="text-center p-4 bg-gradient-to-r from-teal-50 to-green-50 dark:from-teal-900/10 dark:to-green-900/10 rounded-xl">
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">National Dex Format</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">All generations with legacy mechanics</p>
+                  <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-2">National Dex Format</h3>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">All generations with legacy mechanics</p>
                 </div>
 
                 {/* National Dex Stats */}
-                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
                     <MdCatchingPokemon className="w-4 h-4 text-teal-400" />
                     National Dex Statistics
@@ -284,10 +284,10 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-gray-600 dark:text-gray-400">Usage Rate</span>
+                        <span className="text-xs text-stone-600 dark:text-stone-400">Usage Rate</span>
                         <span className="font-bold text-sm">{FORMAT_STATS.nationalDex.usage}%</span>
                       </div>
-                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                         <motion.div
                           className="h-full bg-gradient-to-r from-teal-400 to-teal-600"
                           initial={{ width: 0 }}
@@ -298,10 +298,10 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     </div>
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-gray-600 dark:text-gray-400">Win Rate</span>
+                        <span className="text-xs text-stone-600 dark:text-stone-400">Win Rate</span>
                         <span className="font-bold text-sm">{FORMAT_STATS.nationalDex.winRate}%</span>
                       </div>
-                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                         <motion.div
                           className={cn(
                             "h-full",
@@ -319,19 +319,19 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
+                <div className="h-px bg-gradient-to-r from-transparent via-stone-300 dark:via-stone-600 to-transparent" />
 
-                <div className="text-center p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="text-center p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-3">
-                    <MdCatchingPokemon className="w-5 h-5 text-purple-400" />
-                    <p className="text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">National Dex Tier</p>
+                    <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
+                    <p className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">National Dex Tier</p>
                   </div>
                   {competitiveTiers?.national_dex_tier ? (
                     <TierBadge tier={competitiveTiers.national_dex_tier} format="national-dex" size="lg" />
                   ) : (
                     <div>
                       <TierBadge tier={estimatedTier} format="national-dex" size="lg" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400 italic mt-2">
+                      <p className="text-sm text-stone-500 dark:text-stone-400 italic mt-2">
                         Estimated tier - actual may vary
                       </p>
                     </div>
@@ -349,24 +349,24 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
               <div className="space-y-6">
                 {/* Section Header */}
                 <div className="text-center p-4 bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-900/10 dark:to-pink-900/10 rounded-xl">
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Alternative Formats</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Special rulesets and niche metagames</p>
+                  <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-2">Alternative Formats</h3>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">Special rulesets and niche metagames</p>
                 </div>
 
                 <div className="space-y-4">
                 {/* Little Cup */}
-                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <h4 className="font-semibold text-sm mb-2">Little Cup</h4>
                   <div className="flex items-start gap-2">
                     {formatEligibility.littleCup ? (
                       <>
                         <FaCheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Little Cup eligible (Level 5, unevolved)</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-400">Little Cup eligible (Level 5, unevolved)</span>
                       </>
                     ) : (
                       <>
                         <FaTimesCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-sm text-stone-600 dark:text-stone-400">
                           {species.is_baby
                             ? 'Baby Pokémon are banned in Little Cup'
                             : species.evolves_from_species
@@ -378,66 +378,66 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   </div>
                   {formatEligibility.littleCup && (
                     <div className="mt-2 text-xs">
-                      <span className="text-gray-500">Usage: </span>
+                      <span className="text-stone-500">Usage: </span>
                       <span className="font-bold">{FORMAT_STATS.otherFormats.littleCup.usage}%</span>
                     </div>
                   )}
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
+                <div className="h-px bg-gradient-to-r from-transparent via-stone-300 dark:via-stone-600 to-transparent" />
 
                 {/* Monotype */}
-                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <h4 className="font-semibold text-sm mb-2">Monotype</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-stone-600 dark:text-stone-400">
                     Good on {pokemon.types?.map(t => t.type.name).join(' and ') || 'Unknown type'} teams
                   </p>
                   <div className="mt-2 text-xs">
-                    <span className="text-gray-500">Usage: </span>
+                    <span className="text-stone-500">Usage: </span>
                     <span className="font-bold">{FORMAT_STATS.otherFormats.monotype.usage}%</span>
-                    <span className="text-gray-500 ml-2">Win Rate: </span>
+                    <span className="text-stone-500 ml-2">Win Rate: </span>
                     <span className="font-bold">{FORMAT_STATS.otherFormats.monotype.winRate}%</span>
                   </div>
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
+                <div className="h-px bg-gradient-to-r from-transparent via-stone-300 dark:via-stone-600 to-transparent" />
 
                 {/* NFE */}
-                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <h4 className="font-semibold text-sm mb-2">NFE (Not Fully Evolved)</h4>
                   <div className="flex items-center gap-2">
                     {formatEligibility.nfe ? (
                       <>
                         <FaCheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Eligible for NFE format</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-400">Eligible for NFE format</span>
                       </>
                     ) : (
                       <>
                         <FaTimesCircle className="w-4 h-4 text-red-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Fully evolved - not NFE eligible</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-400">Fully evolved - not NFE eligible</span>
                       </>
                     )}
                   </div>
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
+                <div className="h-px bg-gradient-to-r from-transparent via-stone-300 dark:via-stone-600 to-transparent" />
 
                 {/* 1v1 */}
-                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-gray-800/50 dark:to-gray-800/30 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <h4 className="font-semibold text-sm mb-2">1v1</h4>
                   <div className="flex items-center gap-2">
                     {baseStatTotal >= 500 ? (
                       <>
                         <FaCheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Viable in 1v1 format</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-400">Viable in 1v1 format</span>
                       </>
                     ) : (
                       <>
                         <FaExclamationTriangle className="w-4 h-4 text-yellow-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">May struggle in 1v1</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-400">May struggle in 1v1</span>
                       </>
                     )}
                   </div>

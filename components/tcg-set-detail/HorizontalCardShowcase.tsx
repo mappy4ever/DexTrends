@@ -128,10 +128,10 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
     <div className="relative w-full">
       {/* Header */}
       <div className="mb-4 px-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
           Top Value Cards
         </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
           Drag to browse collection
         </p>
       </div>
@@ -191,7 +191,7 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
                   )}
                 >
                   {/* Background gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-pink-500/10" />
                   
                   {/* Content */}
                   <div className="relative h-full p-4 flex gap-4">
@@ -214,14 +214,14 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
                     {/* Card Info */}
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
-                        <h3 className="text-sm font-bold text-gray-900 dark:text-white line-clamp-2">
+                        <h3 className="text-sm font-bold text-stone-900 dark:text-white line-clamp-2">
                           {card.name.replace(/Team Rocket's/gi, "TR's")}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-400">
                           {card.set.name}
                         </p>
                         {card.rarity && (
-                          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                          <p className="text-xs text-stone-500 dark:text-stone-500 mt-1">
                             {card.rarity.replace(/Special Illustration Rare/gi, "SIR")}
                           </p>
                         )}
@@ -232,7 +232,7 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
                         <p className="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
                           ${price.toFixed(2)}
                         </p>
-                        <p className="text-xs text-gray-500">Market Price</p>
+                        <p className="text-xs text-stone-500">Market Price</p>
                       </div>
                     </div>
                   </div>
@@ -258,10 +258,10 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
         >
           {/* Scroll indicator bar */}
           <div className="absolute bottom-2 left-6 right-6">
-            <div 
+            <div
               className={cn(
                 "relative h-1.5 rounded-full overflow-hidden",
-                "bg-gray-200/40 dark:bg-gray-700/40 backdrop-blur-sm"
+                "bg-stone-200/40 dark:bg-stone-700/40 backdrop-blur-sm"
               )}
               onMouseDown={(e) => {
                 e.stopPropagation();
@@ -281,8 +281,8 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
               }}
             >
               {/* Progress indicator */}
-              <motion.div 
-                className="absolute h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-sm"
+              <motion.div
+                className="absolute h-full bg-gradient-to-r from-amber-500 to-pink-500 rounded-full shadow-sm"
                 style={{ 
                   width: '15%' // Fixed smaller width for the thumb
                 }}
@@ -292,15 +292,15 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
               />
             </div>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 text-center">
+            <p className="text-xs text-stone-400 dark:text-stone-500 mt-0.5 text-center">
               Drag to navigate
             </p>
           </div>
         </div>
 
         {/* Gradient fade edges */}
-        <div className="absolute left-0 top-0 bottom-12 w-12 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-12 w-12 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-12 w-12 bg-gradient-to-r from-stone-50 dark:from-stone-900 to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-12 w-12 bg-gradient-to-l from-stone-50 dark:from-stone-900 to-transparent pointer-events-none" />
       </div>
     </div>
   );

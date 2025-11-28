@@ -270,18 +270,18 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
 
   // Chart colors based on theme
   const getChartColors = (): ChartColors => {
-    return theme === 'dark' 
+    return theme === 'dark'
       ? {
-          line: '#3b82f6',
-          area: 'rgba(59, 130, 246, 0.2)',
-          text: '#e5e7eb',
-          grid: '#374151'
+          line: '#fbbf24',
+          area: 'rgba(251, 191, 36, 0.2)',
+          text: '#d4d4d8',
+          grid: '#44403c'
         }
       : {
-          line: '#2563eb',
-          area: 'rgba(37, 99, 235, 0.1)',
-          text: '#4b5563',
-          grid: '#e5e7eb'
+          line: '#f59e0b',
+          area: 'rgba(245, 158, 11, 0.1)',
+          text: '#78716c',
+          grid: '#e7e5e4'
         };
   };
 
@@ -305,12 +305,12 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64 bg-gray-50 dark:bg-gray-800 rounded-lg">
+      <div className="flex items-center justify-center h-64 bg-stone-50 dark:bg-stone-800 rounded-lg">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent" role="status">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-amber-500 border-r-transparent" role="status">
             <span className="sr-only">Loading...</span>
           </div>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">Loading price history...</p>
+          <p className="mt-2 text-stone-600 dark:text-stone-300">Loading price history...</p>
         </div>
       </div>
     );
@@ -336,17 +336,17 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
 
   if (priceData.length === 0) {
     return (
-      <div className="text-center p-6 bg-gray-100 dark:bg-gray-800 rounded-lg">
-        <svg className="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="text-center p-6 bg-stone-100 dark:bg-stone-800 rounded-lg">
+        <svg className="w-12 h-12 mx-auto mb-2 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
-        <p className="text-gray-600 dark:text-gray-300 font-medium">No price history available</p>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-stone-600 dark:text-stone-300 font-medium">No price history available</p>
+        <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
           Price data will appear here once collected
         </p>
         <button
           onClick={handleCollectPrices}
-          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="mt-3 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors"
         >
           Start Price Collection
         </button>
@@ -358,16 +358,16 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
     <div className="w-full">
       {/* Price Statistics */}
       <div className="grid grid-cols-3 gap-2 mb-4">
-        <div className="text-center p-2 rounded-lg bg-gray-100">
-          <p className="text-xs text-gray-500">Highest</p>
+        <div className="text-center p-2 rounded-lg bg-stone-100">
+          <p className="text-xs text-stone-500">Highest</p>
           <p className="font-bold text-green-600">${highestPrice.toFixed(2)}</p>
         </div>
-        <div className="text-center p-2 rounded-lg bg-gray-100">
-          <p className="text-xs text-gray-500">Average</p>
+        <div className="text-center p-2 rounded-lg bg-stone-100">
+          <p className="text-xs text-stone-500">Average</p>
           <p className="font-bold">${averagePrice.toFixed(2)}</p>
         </div>
-        <div className="text-center p-2 rounded-lg bg-gray-100">
-          <p className="text-xs text-gray-500">Lowest</p>
+        <div className="text-center p-2 rounded-lg bg-stone-100">
+          <p className="text-xs text-stone-500">Lowest</p>
           <p className="font-bold text-red-600">${lowestPrice.toFixed(2)}</p>
         </div>
       </div>
@@ -381,9 +381,9 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
               type="button"
               className={`px-4 py-1 text-sm font-medium first:rounded-l-lg last:rounded-r-lg ${
                 selectedRange === range.value
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              } border border-gray-300`}
+                  ? 'bg-amber-600 text-white'
+                  : 'bg-white text-stone-700 hover:bg-stone-100'
+              } border border-stone-300`}
               onClick={() => setSelectedRange(range.value)}
             >
               {range.label}
@@ -500,12 +500,12 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
         </svg>
         
         {/* Current price */}
-        <div className="absolute top-0 right-0 bg-blue-100 text-blue-800 font-bold px-2 py-1 rounded-bl-md text-sm">
+        <div className="absolute top-0 right-0 bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded-bl-md text-sm">
           ${priceData[priceData.length - 1].price.toFixed(2)}
         </div>
       </div>
       
-      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2 space-y-1">
+      <div className="text-xs text-stone-500 dark:text-stone-400 text-center mt-2 space-y-1">
         <div>
           {dataSource === 'supabase' && 'Live price data from Pokemon TCG API'}
           {dataSource === 'sample' && 'Sample price data for demonstration'}
@@ -519,7 +519,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
         {dataSource !== 'supabase' && (
           <button
             onClick={handleCollectPrices}
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-amber-600 dark:text-amber-400 hover:underline"
           >
             Collect real price data
           </button>

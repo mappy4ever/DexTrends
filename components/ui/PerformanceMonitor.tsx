@@ -131,7 +131,7 @@ export const PerformanceMonitor = ({ showInDev = true }: PerformanceMonitorProps
       {/* Toggle button */}
       <button
         onClick={() => setShowMetrics(!showMetrics)}
-        className="fixed top-32 right-4 z-30 bg-gray-800 text-white p-2 rounded-full text-xs font-mono"
+        className="fixed top-32 right-4 z-30 bg-stone-800 text-white p-2 rounded-full text-xs font-mono"
         title="Performance Metrics"
       >
         📊
@@ -167,7 +167,7 @@ export const PerformanceMonitor = ({ showInDev = true }: PerformanceMonitorProps
 
           {/* Optimization suggestions */}
           {getOptimizationSuggestions().length > 0 && (
-            <div className="border-t border-gray-600 pt-2">
+            <div className="border-t border-stone-600 pt-2">
               <h5 className="font-bold text-yellow-400 mb-1">Suggestions:</h5>
               {getOptimizationSuggestions().map((suggestion: string, index: number) => (
                 <div key={index} className="text-yellow-300 text-xs mb-1">
@@ -198,11 +198,11 @@ export const OptimizedImage = ({ src, alt, className, priority = false, ...props
   return (
     <div className={`relative ${className}`} {...props}>
       {loading && !error && (
-        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+        <div className="absolute inset-0 bg-stone-200 dark:bg-stone-700 animate-pulse rounded" />
       )}
       
       {error && (
-        <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 rounded">
+        <div className="absolute inset-0 bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 rounded">
           <span className="text-2xl">📷</span>
         </div>
       )}
