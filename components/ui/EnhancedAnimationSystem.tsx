@@ -441,7 +441,7 @@ export const AnimatedDrawer: React.FC<AnimatedDrawerProps> = ({
             transition={{ duration: 0.2 / animationSpeed }}
           />
           <motion.div
-            className={`fixed ${positionClasses[position]} bg-white dark:bg-gray-900 shadow-2xl z-50 ${className}`}
+            className={`fixed ${positionClasses[position]} bg-white dark:bg-stone-900 shadow-2xl z-50 ${className}`}
             initial="hidden"
             animate="visible"
             exit="hidden"
@@ -484,7 +484,7 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
 
   const variants = {
     primary: 'bg-blue-600 hover:bg-blue-700 text-white',
-    secondary: 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white',
+    secondary: 'bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600 text-stone-900 dark:text-white',
     success: 'bg-green-600 hover:bg-green-700 text-white',
     danger: 'bg-red-600 hover:bg-red-700 text-white',
   };
@@ -544,7 +544,7 @@ export const AnimatedToggle: React.FC<AnimatedToggleProps> = ({
         />
         <div className={`
           w-12 h-6 rounded-full transition-colors
-          ${checked ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-700'}
+          ${checked ? 'bg-blue-600' : 'bg-stone-300 dark:bg-stone-700'}
         `}>
           <motion.div
             className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md"
@@ -602,7 +602,7 @@ export const AnimatedInput: React.FC<AnimatedInputProps> = ({
           w-full px-4 py-2 rounded-lg border transition-all
           ${error 
             ? 'border-red-500 focus:ring-2 focus:ring-red-500' 
-            : 'border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500'
+            : 'border-stone-300 dark:border-stone-700 focus:ring-2 focus:ring-blue-500'
           }
           ${className}
         `}
@@ -780,7 +780,7 @@ export const AnimatedSkeleton: React.FC<AnimatedSkeletonProps> = ({
   return (
     <div
       className={`
-        relative overflow-hidden bg-gray-200 dark:bg-gray-700
+        relative overflow-hidden bg-stone-200 dark:bg-stone-700
         ${variantClasses[variant] || variantClasses.rectangular}
         ${className}
       `}

@@ -408,9 +408,9 @@ const PocketDecks: NextPage = () => {
                     </div>
                     
                     {/* Strategy */}
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-3 mb-4">
-                      <h4 className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">Strategy</h4>
-                      <p className="text-xs text-blue-600 dark:text-blue-200 leading-relaxed">{deck.strategy}</p>
+                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-3 mb-4">
+                      <h4 className="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-1">Strategy</h4>
+                      <p className="text-xs text-amber-600 dark:text-amber-200 leading-relaxed">{deck.strategy}</p>
                     </div>
                     
                     {/* Stats */}
@@ -423,9 +423,9 @@ const PocketDecks: NextPage = () => {
                         <p className="text-xs text-purple-700 dark:text-purple-300 font-medium">Tournaments</p>
                         <p className="font-bold text-purple-900 dark:text-purple-100">{deck.tournaments}</p>
                       </div>
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-800/30 dark:to-indigo-800/30 rounded-2xl p-3 border border-blue-200/50 dark:border-blue-700/50">
-                        <p className="text-xs text-blue-700 dark:text-blue-300 font-medium">Avg Place</p>
-                        <p className="font-bold text-blue-900 dark:text-blue-100">{deck.avgPlacement.toFixed(1)}</p>
+                      <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-800/30 dark:to-orange-800/30 rounded-2xl p-3 border border-amber-200/50 dark:border-amber-700/50">
+                        <p className="text-xs text-amber-700 dark:text-amber-300 font-medium">Avg Place</p>
+                        <p className="font-bold text-amber-900 dark:text-amber-100">{deck.avgPlacement.toFixed(1)}</p>
                       </div>
                     </div>
                   </div>
@@ -457,7 +457,7 @@ const PocketDecks: NextPage = () => {
 
         {/* Show scroll hint */}
         {!loading && !error && hasMore && (
-          <div className="text-center mt-8 text-gray-600 dark:text-gray-400">
+          <div className="text-center mt-8 text-stone-600 dark:text-stone-400">
             <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-full px-6 py-3 shadow-md">
               <span className="text-sm font-medium">Showing {visibleDecks.length} of {sortedDecks.length} decks</span>
             </div>
@@ -489,8 +489,8 @@ const PocketDecks: NextPage = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">No Decks Found</h2>
-              <p className="text-gray-600">
+              <h2 className="text-2xl font-bold text-stone-800 mb-2">No Decks Found</h2>
+              <p className="text-stone-600">
                 {search ? `No decks match "${search}". Try a different search term.` : "No decks available at the moment."}
               </p>
             </div>

@@ -97,7 +97,7 @@ export const RaritySelector: React.FC<RaritySelectorProps> = ({
             className={`px-3 py-2 rounded-lg border-2 transition-all ${
               isSelected 
                 ? 'border-pink-400 bg-pink-50 dark:bg-pink-900/20' 
-                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                : 'border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600'
             }`}
           >
             <RarityBadge 

@@ -359,9 +359,9 @@ export default function CardDetailPage() {
         <div className="bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-4 rounded-md">
           <h2 className="text-xl font-bold mb-2">Error</h2>
           <p>{error}</p>
-          <button 
+          <button
             onClick={() => router.back()}
-            className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded"
+            className="mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors duration-150"
           >
             Go Back
           </button>
@@ -374,12 +374,12 @@ export default function CardDetailPage() {
   if (!card) {
     return (
       <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
-        <div className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 p-4 rounded-md">
+        <div className="bg-amber-100 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 p-4 rounded-xl">
           <h2 className="text-xl font-bold mb-2">Card Not Found</h2>
           <p>The card you&apos;re looking for couldn&apos;t be found.</p>
-          <button 
+          <button
             onClick={() => router.back()}
-            className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded"
+            className="mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors duration-150"
           >
             Go Back
           </button>

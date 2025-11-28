@@ -30,7 +30,7 @@ const EvolutionStageCard: React.FC<EvolutionStageCardProps> = ({
 
   return (
     <div className={`flex flex-col items-center ${isCurrent ? 'scale-110' : ''}`}>
-      <div className={`relative ${sizeClasses[circleSize]} rounded-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 border-2 ${isCurrent ? 'border-pokemon-red shadow-lg' : 'border-gray-300 dark:border-gray-600'}`}>
+      <div className={`relative ${sizeClasses[circleSize]} rounded-full overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-800 border-2 ${isCurrent ? 'border-pokemon-red shadow-lg' : 'border-stone-300 dark:border-stone-600'}`}>
         <Image
           src={spriteUrl}
           alt={name}
@@ -38,7 +38,7 @@ const EvolutionStageCard: React.FC<EvolutionStageCardProps> = ({
           className="object-contain p-2"
         />
       </div>
-      <span className={`mt-2 text-sm font-medium text-center ${isCurrent ? 'text-pokemon-red' : 'text-gray-700 dark:text-gray-300'}`}>
+      <span className={`mt-2 text-sm font-medium text-center ${isCurrent ? 'text-pokemon-red' : 'text-stone-700 dark:text-stone-300'}`}>
         {name}
       </span>
       {types && types.length > 0 && (
@@ -87,7 +87,7 @@ export default function EvolutionTreeRenderer({
     if (!details || details.length === 0) return null;
     
     return (
-      <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+      <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">
         {details.map((detail, idx) => (
           <div key={idx}>
             {formatEvolutionDetails ? formatEvolutionDetails(detail) : 'Evolves'}
@@ -118,7 +118,7 @@ export default function EvolutionTreeRenderer({
             
             {/* Arrow */}
             <div className="my-2">
-              <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-6 h-6 text-stone-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </div>

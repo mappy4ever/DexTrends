@@ -297,9 +297,9 @@ const PocketExpansions: NextPage = () => {
                         <p className="text-xs text-green-700 dark:text-green-300 font-medium">Released</p>
                         <p className="font-bold text-green-900 dark:text-green-100">{expansion.releaseDate || "TBA"}</p>
                       </div>
-                      <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-3 border border-blue-200/50 dark:border-blue-700/50">
-                        <p className="text-xs text-blue-700 dark:text-blue-300 font-medium">Total Cards</p>
-                        <p className="font-bold text-blue-900 dark:text-blue-100">{expansion.cardCount || "?"}</p>
+                      <div className="bg-amber-50 dark:bg-amber-900/30 rounded-xl p-3 border border-amber-200/50 dark:border-amber-700/50">
+                        <p className="text-xs text-amber-700 dark:text-amber-300 font-medium">Total Cards</p>
+                        <p className="font-bold text-amber-900 dark:text-amber-100">{expansion.cardCount || "?"}</p>
                       </div>
                     </div>
 

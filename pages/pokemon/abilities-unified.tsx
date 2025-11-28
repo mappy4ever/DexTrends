@@ -36,7 +36,7 @@ interface AbilityApiResponse {
 }
 
 const ABILITY_CATEGORIES = [
-  { key: 'all', name: 'All', color: 'from-gray-400 to-gray-500' },
+  { key: 'all', name: 'All', color: 'from-stone-400 to-stone-500' },
   { key: 'competitive', name: 'Competitive', color: 'from-purple-400 to-pink-500' },
   { key: 'offensive', name: 'Offensive', color: 'from-red-400 to-orange-500' },
   { key: 'defensive', name: 'Defensive', color: 'from-blue-400 to-cyan-500' },
@@ -184,7 +184,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
       renderCell: (ability: Ability) => (
         <div className="flex items-center gap-2">
           <div>
-            <div className="font-medium text-gray-900 dark:text-white">
+            <div className="font-medium text-stone-900 dark:text-white">
               {ability.displayName}
             </div>
             {ability.is_competitive && (
@@ -206,7 +206,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
         ability.rating !== undefined ? (
           <CompetitiveTierBadge rating={ability.rating} />
         ) : (
-          <span className="text-gray-400">-</span>
+          <span className="text-stone-400">-</span>
         )
       )
     },
@@ -216,7 +216,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
       priority: 'detail',
       sortable: false,
       renderCell: (ability: Ability) => (
-        <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+        <div className="text-sm text-stone-600 dark:text-stone-400 line-clamp-2">
           {ability.short_effect}
         </div>
       ),
@@ -229,11 +229,11 @@ const UnifiedAbilitiesPage: NextPage = () => {
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all"
+      className="bg-white dark:bg-stone-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all"
     >
       <div className="flex justify-between items-start mb-2">
         <div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">
+          <h3 className="font-semibold text-stone-900 dark:text-white">
             {ability.displayName}
           </h3>
           <div className="flex items-center gap-2 mt-1">
@@ -248,7 +248,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
           </div>
         </div>
       </div>
-      <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-3">
+      <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3">
         {ability.short_effect}
       </p>
     </motion.div>
@@ -256,19 +256,19 @@ const UnifiedAbilitiesPage: NextPage = () => {
 
   // Expanded row renderer
   const renderExpanded = (ability: Ability) => (
-    <div className="p-4 bg-gray-50 dark:bg-gray-900">
+    <div className="p-4 bg-stone-50 dark:bg-stone-900">
       <div className="space-y-3">
         <div>
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+          <h4 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-1">
             Full Description
           </h4>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-stone-600 dark:text-stone-400">
             {ability.effect || ability.short_effect}
           </p>
         </div>
         
         <div>
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <h4 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
             Pokémon with this ability
           </h4>
           <button
@@ -276,7 +276,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
               const pokemon = await fetchAbilityPokemon(ability.id, ability.name);
               // This would trigger a re-render with the fetched Pokemon
             }}
-            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-sm text-amber-600 dark:text-amber-400 hover:underline"
           >
             {loadingPokemon[ability.id] ? (
               'Loading...'
@@ -285,14 +285,14 @@ const UnifiedAbilitiesPage: NextPage = () => {
                 {abilityPokemon[ability.id].slice(0, 10).map((p: any) => (
                   <span 
                     key={p.pokemon.name}
-                    className="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs"
+                    className="px-2 py-1 bg-stone-200 dark:bg-stone-700 rounded text-xs"
                   >
                     {p.pokemon.name}
                     {p.is_hidden && ' (H)'}
                   </span>
                 ))}
                 {abilityPokemon[ability.id].length > 10 && (
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-stone-500">
                     +{abilityPokemon[ability.id].length - 10} more
                   </span>
                 )}
@@ -334,7 +334,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
                 Abilities
               </h1>
-              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">
+              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 hidden sm:block">
                 Explore Pokemon abilities and effects
               </p>
             </div>
@@ -346,14 +346,14 @@ const UnifiedAbilitiesPage: NextPage = () => {
               <div className="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400">
                 {filteredAbilities.length}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Abilities</div>
+              <div className="text-xs text-stone-600 dark:text-stone-400">Abilities</div>
             </div>
           </div>
         </div>
       </motion.div>
 
       {/* Category Filter - Responsive scrollable */}
-      <div className="sticky top-[73px] sm:top-[89px] z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700">
+      <div className="sticky top-[73px] sm:top-[89px] z-40 bg-white/80 dark:bg-stone-900/80 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
         <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
             {ABILITY_CATEGORIES.map(category => (
@@ -366,7 +366,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
                   'px-3 sm:px-4 py-1.5 sm:py-2 rounded-full whitespace-nowrap text-xs sm:text-sm font-medium transition-all',
                   selectedCategory === category.key
                     ? 'bg-gradient-to-r text-white shadow-lg ' + category.color
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                 )}
               >
                 {category.name}
@@ -378,16 +378,16 @@ const UnifiedAbilitiesPage: NextPage = () => {
 
       {/* Tier Legend - Responsive */}
       <div className="container mx-auto px-4 py-3 sm:py-4">
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+        <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-lg p-3 sm:p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
+            <span className="text-xs sm:text-sm font-medium text-stone-600 dark:text-stone-400">
               Competitive Tiers:
             </span>
             <div className="flex gap-2 sm:gap-3 overflow-x-auto">
               {[5, 4, 3, 2, 1, 0].map(rating => (
                 <div key={rating} className="flex items-center gap-1">
                   <CompetitiveTierBadge rating={rating} />
-                  <span className="text-xs text-gray-500 dark:text-gray-500 hidden sm:inline">
+                  <span className="text-xs text-stone-500 dark:text-stone-500 hidden sm:inline">
                     {rating === 5 ? 'S' : rating === 4 ? 'A' : rating === 3 ? 'B' : rating === 2 ? 'C' : rating === 1 ? 'D' : 'F'}
                   </span>
                 </div>

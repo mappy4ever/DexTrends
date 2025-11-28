@@ -206,7 +206,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
                   <span className="flex items-center gap-1 text-stone-700 dark:text-stone-300">
                     {finalConfig.label}:
                   </span>
-                  <span className="flex items-center text-gray-900 dark:text-white">
+                  <span className="flex items-center text-stone-900 dark:text-white">
                     {stat.natureModifier && stat.natureModifier !== 1 && (
                       <span className={cn(
                         "text-xs mr-1 font-bold",

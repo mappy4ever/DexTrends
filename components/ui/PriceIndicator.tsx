@@ -92,8 +92,8 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice,
       },
       STABLE: {
         icon: '→',
-        color: 'text-gray-600 dark:text-gray-400',
-        bgColor: 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+        color: 'text-stone-600 dark:text-stone-400',
+        bgColor: 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700'
       }
     };
 
@@ -105,7 +105,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice,
 
   if (currentPrice === 'N/A') {
     return (
-      <span className={`inline-block text-xs font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md ${className}`}>
+      <span className={`inline-block text-xs font-medium text-stone-400 bg-stone-50 dark:bg-stone-800 px-2 py-0.5 rounded-md ${className}`}>
         N/A
       </span>
     );
@@ -114,7 +114,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice,
   return (
     <div className={`inline-flex items-center gap-1 ${className}`}>
       {/* Main price display */}
-      <span className={`inline-block font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 tracking-tight ${sizeClasses[size as keyof typeof sizeClasses]}`}>
+      <span className={`inline-block font-medium text-stone-800 dark:text-stone-200 bg-stone-50 dark:bg-stone-800 rounded-md border border-stone-200 dark:border-stone-700 tracking-tight ${sizeClasses[size as keyof typeof sizeClasses]}`}>
         {currentPrice}
       </span>
 
@@ -166,14 +166,14 @@ interface SimplePriceDisplayProps {
 export function SimplePriceDisplay({ currentPrice, className = '' }: SimplePriceDisplayProps) {
   if (currentPrice === 'N/A') {
     return (
-      <span className={`inline-block text-xs font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md ${className}`}>
+      <span className={`inline-block text-xs font-medium text-stone-400 bg-stone-50 dark:bg-stone-800 px-2 py-0.5 rounded-md ${className}`}>
         N/A
       </span>
     );
   }
 
   return (
-    <span className={`inline-block text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md border border-gray-200 dark:border-gray-700 tracking-tight ${className}`}>
+    <span className={`inline-block text-sm font-medium text-stone-800 dark:text-stone-200 bg-stone-50 dark:bg-stone-800 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700 tracking-tight ${className}`}>
       {currentPrice}
     </span>
   );

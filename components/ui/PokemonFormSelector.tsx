@@ -280,7 +280,7 @@ export default function PokemonFormSelector({
 
   return (
     <div className="mb-4">
-      <h4 className="text-sm font-semibold text-gray-700 mb-2">Forms</h4>
+      <h4 className="text-sm font-semibold text-stone-700 mb-2">Forms</h4>
       <div className="flex flex-wrap gap-2">
         {forms.map((form) => (
           <button
@@ -290,12 +290,12 @@ export default function PokemonFormSelector({
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
               selectedForm?.name === form.name
                 ? 'bg-pokemon-red text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
             } ${isChangingForm ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {isChangingForm && selectedForm?.name !== form.name ? (
               <span className="flex items-center gap-1">
-                <span className="animate-spin h-3 w-3 border-2 border-gray-500 border-t-transparent rounded-full inline-block"></span>
+                <span className="animate-spin h-3 w-3 border-2 border-stone-500 border-t-transparent rounded-full inline-block"></span>
                 Loading...
               </span>
             ) : (

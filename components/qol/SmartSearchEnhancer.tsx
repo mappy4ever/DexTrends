@@ -227,10 +227,10 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
           onKeyDown={handleKeyDown}
           onFocus={() => searchTerm && setIsOpen(true)}
           placeholder={placeholder}
-          className="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          className="w-full px-4 py-2 pl-10 pr-4 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent" />
         
         {/* Search icon */}
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -243,7 +243,7 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
               setSearchTerm('');
               setIsOpen(false);
             }}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300">
 
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -254,21 +254,21 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
 
       {/* Suggestions dropdown */}
       {isOpen && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-80 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg shadow-lg max-h-80 overflow-y-auto">
           {suggestions.map((suggestion, index) => (
             <div
               key={`${suggestion.type}-${suggestion.term}`}
               onClick={() => handleSuggestionClick(suggestion)}
               className={`flex items-center px-4 py-2 cursor-pointer transition-colors ${
                 index === selectedIndex
-                  ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
+                  ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
+                  : 'hover:bg-stone-50 dark:hover:bg-stone-700 text-stone-900 dark:text-stone-100'
               }`}
             >
               <span className="mr-3 text-lg">{getSuggestionIcon(suggestion.type)}</span>
               <span className="flex-1">{suggestion.term}</span>
               {suggestion.type === 'popular' && suggestion.count && (
-                <span className="text-xs text-gray-400 ml-2">
+                <span className="text-xs text-stone-400 ml-2">
                   {suggestion.count} searches
                 </span>
               )}
@@ -277,10 +277,10 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
           
           {/* Clear history option */}
           {searchHistory.length > 0 && (
-            <div className="border-t border-gray-200 dark:border-gray-700">
+            <div className="border-t border-stone-200 dark:border-stone-700">
               <button
                 onClick={clearSearchHistory}
-                className="w-full px-4 py-2 text-left text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                className="w-full px-4 py-2 text-left text-sm text-stone-500 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors">
 
                 🗑️ Clear search history
               </button>
@@ -290,7 +290,7 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
       )}
 
       {/* Search shortcuts help */}
-      <div className="absolute top-full left-0 mt-1 text-xs text-gray-400 pointer-events-none">
+      <div className="absolute top-full left-0 mt-1 text-xs text-stone-400 pointer-events-none">
         <div>↑↓ Navigate • Enter: Search • Esc: Close</div>
       </div>
     </div>
@@ -365,7 +365,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center pt-20 z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl max-w-md w-full mx-4">
         <div className="p-4">
           <input
             type="text"
@@ -373,7 +373,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a command or search..."
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             autoFocus
           />
         </div>
@@ -384,8 +384,8 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
               key={command.id}
               className={`px-4 py-2 cursor-pointer flex justify-between items-center ${
                 index === selectedIndex 
-                  ? 'bg-blue-500 text-white' 
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'bg-amber-500 text-white' 
+                  : 'hover:bg-stone-100 dark:hover:bg-stone-700'
               }`}
               onClick={() => {
                 command.action();
@@ -399,13 +399,13 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
             </div>
           ))}
           {filteredCommands.length === 0 && (
-            <div className="px-4 py-2 text-gray-500 text-center">
+            <div className="px-4 py-2 text-stone-500 text-center">
               No commands found
             </div>
           )}
         </div>
         
-        <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-200 dark:border-gray-600">
+        <div className="px-4 py-2 text-xs text-stone-500 border-t border-stone-200 dark:border-stone-600">
           Use ↑↓ to navigate, Enter to select, Esc to close
         </div>
       </div>

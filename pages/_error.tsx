@@ -49,12 +49,12 @@ function Error({ statusCode }: ErrorProps) {
         <title>{statusCode || 'Error'} - {title} | DexTrends</title>
         <meta name="description" content={message} />
       </Head>
-      
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50 via-white to-amber-50/30">
         {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-4 -left-4 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-purple-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute -top-4 -left-4 w-72 h-72 bg-amber-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-amber-200/20 rounded-full blur-3xl"></div>
         </div>
 
         <div className="relative z-10 w-full max-w-md">
@@ -63,11 +63,11 @@ function Error({ statusCode }: ErrorProps) {
             {/* Error icon and code */}
             <div className="text-center mb-6">
               <div className="text-6xl mb-4 animate-pulse">{icon}</div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-amber-600 to-amber-700 bg-clip-text text-transparent mb-2">
                 {statusCode || '???'}
               </h1>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{title}</h2>
-              <p className="text-gray-600 leading-relaxed">{message}</p>
+              <h2 className="text-2xl font-bold text-stone-900 mb-2">{title}</h2>
+              <p className="text-stone-600 leading-relaxed">{message}</p>
             </div>
 
             {/* Pokemon-themed message */}
@@ -85,11 +85,11 @@ function Error({ statusCode }: ErrorProps) {
                     window.location.reload();
                   }
                 }}
-                className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                className="w-full px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl hover:from-amber-700 hover:to-amber-800 transition-all duration-150 font-medium shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
               >
                 Try Again
               </button>
-              
+
               <button
                 onClick={() => {
                   // Use window.location for reliable navigation in error states (SSR safe)
@@ -97,7 +97,7 @@ function Error({ statusCode }: ErrorProps) {
                     window.location.href = '/';
                   }
                 }}
-                className="w-full px-6 py-3 bg-white/70 text-gray-700 rounded-xl hover:bg-white/90 transition-all duration-200 font-medium border border-gray-200/50 backdrop-blur-sm"
+                className="w-full px-6 py-3 bg-white/70 text-stone-700 rounded-xl hover:bg-white/90 transition-all duration-150 font-medium border border-stone-200/50 backdrop-blur-sm"
               >
                 Go to Homepage
               </button>
@@ -109,7 +109,7 @@ function Error({ statusCode }: ErrorProps) {
                       window.history.back();
                     }
                   }}
-                  className="w-full px-6 py-3 bg-gray-100/70 text-gray-600 rounded-xl hover:bg-gray-200/70 transition-all duration-200 font-medium"
+                  className="w-full px-6 py-3 bg-stone-100/70 text-stone-600 rounded-xl hover:bg-stone-200/70 transition-all duration-150 font-medium"
                 >
                   Go Back
                 </button>
@@ -118,14 +118,14 @@ function Error({ statusCode }: ErrorProps) {
 
             {/* Additional help text */}
             <div className="text-center mt-6">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-stone-500">
                 Need help? Contact our support team.
               </p>
             </div>
 
             {/* Error ID for debugging */}
-            <div className="mt-4 p-2 bg-gray-50/50 rounded text-center">
-              <p className="text-xs text-gray-400">
+            <div className="mt-4 p-2 bg-stone-50/50 rounded text-center">
+              <p className="text-xs text-stone-400">
                 Error ID: err-{Date.now()}-{Math.random().toString(36).substr(2, 9)}
               </p>
             </div>

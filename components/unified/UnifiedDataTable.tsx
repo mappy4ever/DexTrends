@@ -206,7 +206,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         className={cn(
-          'bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden',
+          'bg-white dark:bg-stone-800 rounded-xl shadow-md overflow-hidden',
           'transform transition-all duration-200',
           hover && 'hover:shadow-lg hover:scale-[1.02]',
           'cursor-pointer'
@@ -222,7 +222,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
                   {col.renderCell ? (
                     col.renderCell(item)
                   ) : (
-                    <div className="font-semibold text-gray-900 dark:text-white">
+                    <div className="font-semibold text-stone-900 dark:text-white">
                       {String(item[col.key] || '-')}
                     </div>
                   )}
@@ -237,7 +237,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
                   e.stopPropagation();
                   toggleExpanded(itemKey);
                 }}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="p-2 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors"
               >
                 <svg 
                   className={cn(
@@ -255,7 +255,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
           </div>
           
           {/* Secondary Info */}
-          <div className="flex flex-wrap gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex flex-wrap gap-2 text-sm text-stone-600 dark:text-stone-400">
             {secondaryCols.map(col => (
               <div key={String(col.key)} className="flex items-center gap-1">
                 <span className="font-medium">{col.mobileLabel || col.label}:</span>
@@ -277,22 +277,22 @@ export function UnifiedDataTable<T extends Record<string, any>>({
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="border-t border-gray-200 dark:border-gray-700"
+              className="border-t border-stone-200 dark:border-stone-700"
             >
-              <div className="p-4 bg-gray-50 dark:bg-gray-900">
+              <div className="p-4 bg-stone-50 dark:bg-stone-900">
                 {renderExpanded ? (
                   renderExpanded(item)
                 ) : (
                   <div className="space-y-2 text-sm">
                     {detailCols.map(col => (
                       <div key={String(col.key)} className="flex justify-between">
-                        <span className="font-medium text-gray-600 dark:text-gray-400">
+                        <span className="font-medium text-stone-600 dark:text-stone-400">
                           {col.label}:
                         </span>
                         {col.renderCell ? (
                           col.renderCell(item)
                         ) : (
-                          <span className="text-gray-900 dark:text-white">
+                          <span className="text-stone-900 dark:text-white">
                             {String(item[col.key] || '-')}
                           </span>
                         )}
@@ -321,8 +321,8 @@ export function UnifiedDataTable<T extends Record<string, any>>({
         <tr
           className={cn(
             'transition-colors',
-            striped && index % 2 === 0 && 'bg-gray-50 dark:bg-gray-900',
-            hover && 'hover:bg-gray-100 dark:hover:bg-gray-800',
+            striped && index % 2 === 0 && 'bg-stone-50 dark:bg-stone-900',
+            hover && 'hover:bg-stone-100 dark:hover:bg-stone-800',
             onItemClick && 'cursor-pointer',
             compact ? 'h-10' : 'h-14'
           )}
@@ -335,7 +335,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
                   e.stopPropagation();
                   toggleExpanded(itemKey);
                 }}
-                className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="p-1 rounded hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
               >
                 <svg 
                   className={cn(
@@ -365,7 +365,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
               {col.renderCell ? (
                 col.renderCell(item)
               ) : (
-                <span className="text-gray-900 dark:text-white">
+                <span className="text-stone-900 dark:text-white">
                   {String(item[col.key] || '-')}
                 </span>
               )}
@@ -381,7 +381,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-700"
+                className="bg-stone-50 dark:bg-stone-900 border-y border-stone-200 dark:border-stone-700"
               >
                 <div className="p-4">
                   {renderExpanded(item)}
@@ -402,7 +402,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
     return (
       <div className={cn('space-y-4', className)}>
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="bg-gray-200 dark:bg-gray-700 rounded-lg h-20 animate-pulse" />
+          <div key={i} className="bg-stone-200 dark:bg-stone-700 rounded-lg h-20 animate-pulse" />
         ))}
       </div>
     );
@@ -419,10 +419,10 @@ export function UnifiedDataTable<T extends Record<string, any>>({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full px-4 py-2 pl-10 text-base bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 touch-manipulation"
+              className="w-full px-4 py-2 pl-10 text-base bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 touch-manipulation"
               style={{ fontSize: '16px' }}
             />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -431,7 +431,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
       
       {/* Results count */}
       {searchTerm && (
-        <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+        <div className="mb-4 text-sm text-stone-600 dark:text-stone-400">
           Found {sortedData.length} results
         </div>
       )}
@@ -466,16 +466,16 @@ export function UnifiedDataTable<T extends Record<string, any>>({
       ) : (
         /* Desktop: Table View */
         <div className="overflow-x-auto rounded-lg shadow-md max-h-[calc(100vh-200px)] overflow-y-auto">
-          <table className="w-full bg-white dark:bg-gray-800">
-            <thead className="bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
+          <table className="w-full bg-white dark:bg-stone-800">
+            <thead className="bg-stone-100 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 sticky top-0 z-10">
               <tr>
                 {expandable && <th className="w-12" />}
                 {columns.map(col => (
                   <th
                     key={String(col.key)}
                     className={cn(
-                      'px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300',
-                      col.sortable && 'cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors',
+                      'px-4 py-3 text-left font-semibold text-stone-700 dark:text-stone-300',
+                      col.sortable && 'cursor-pointer hover:bg-stone-200 dark:hover:bg-stone-800 transition-colors',
                       col.align === 'center' && 'text-center',
                       col.align === 'right' && 'text-right'
                     )}
@@ -504,7 +504,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
                 <tr>
                   <td 
                     colSpan={columns.length + (expandable ? 1 : 0)} 
-                    className="text-center py-8 text-gray-500 dark:text-gray-400"
+                    className="text-center py-8 text-stone-500 dark:text-stone-400"
                   >
                     No data found
                   </td>

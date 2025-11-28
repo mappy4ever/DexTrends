@@ -250,7 +250,7 @@ export default function Navbar() {
                       }
                     }}
                   >
-                    <span className={`flex-shrink-0 flex items-center justify-center w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-gray-500'}`}>
+                    <span className={`flex-shrink-0 flex items-center justify-center w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                       {item.icon}
                     </span>
                     <span className="text-sm font-medium">{item.label}</span>

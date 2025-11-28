@@ -621,16 +621,16 @@ function DeckBuilder() {
       lightning: 'bg-yellow-400 hover:bg-yellow-500 text-black',
       psychic: 'bg-pink-500 hover:bg-pink-600 text-white',
       fighting: 'bg-orange-600 hover:bg-orange-700 text-white',
-      darkness: 'bg-gray-800 hover:bg-gray-900 text-white',
-      metal: 'bg-gray-500 hover:bg-gray-600 text-white',
+      darkness: 'bg-stone-800 hover:bg-stone-900 text-white',
+      metal: 'bg-stone-500 hover:bg-stone-600 text-white',
       dragon: 'bg-indigo-600 hover:bg-indigo-700 text-white',
-      colorless: 'bg-gray-300 hover:bg-gray-400 text-gray-800',
+      colorless: 'bg-stone-300 hover:bg-stone-400 text-stone-800',
       trainer: 'bg-purple-500 hover:bg-purple-600 text-white',
       item: 'bg-blue-500 hover:bg-blue-600 text-white',
       supporter: 'bg-orange-500 hover:bg-orange-600 text-white',
       tool: 'bg-purple-600 hover:bg-purple-700 text-white'
     };
-    return typeColors[type?.toLowerCase() || ''] || 'bg-gray-400 hover:bg-gray-500 text-white';
+    return typeColors[type?.toLowerCase() || ''] || 'bg-stone-400 hover:bg-stone-500 text-white';
   };
 
   // Pack colors
@@ -652,13 +652,13 @@ function DeckBuilder() {
       'Lunala': 'bg-indigo-600 hover:bg-indigo-700',
       'Extradimensional Crisis': 'bg-violet-500 hover:bg-violet-600'
     };
-    return packColors[pack] || 'bg-gray-500 hover:bg-gray-600';
+    return packColors[pack] || 'bg-stone-500 hover:bg-stone-600';
   };
 
   // Rarity colors
   const getRarityColor = (rarity: string | undefined): string => {
     const rarityColors: Record<string, string> = {
-      '◊': 'from-gray-400 to-gray-500',
+      '◊': 'from-stone-400 to-stone-500',
       '◊◊': 'from-green-400 to-green-500',
       '◊◊◊': 'from-blue-400 to-blue-500',
       '◊◊◊◊': 'from-purple-400 to-purple-500',
@@ -666,7 +666,7 @@ function DeckBuilder() {
       '★★': 'from-red-400 to-rose-500',
       '☆☆☆': 'from-pink-400 to-fuchsia-500'
     };
-    return rarityColors[rarity || ''] || 'from-gray-400 to-gray-500';
+    return rarityColors[rarity || ''] || 'from-stone-400 to-stone-500';
   };
 
   if (loading) {
@@ -682,16 +682,16 @@ function DeckBuilder() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center">
         <Head>
           <title>Deck Builder | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center shadow-xl max-w-md">
+        <div className="bg-white dark:bg-stone-800 rounded-2xl p-8 text-center shadow-xl max-w-md">
           <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
+          <p className="text-stone-600 dark:text-stone-400 mb-6">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-pokemon-blue hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+            className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
           >
             Try Again
           </button>
@@ -709,27 +709,27 @@ function DeckBuilder() {
       <div className="min-h-screen">
 
       {/* Header */}
-      <div className="sticky top-16 z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="sticky top-16 z-40 bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link 
                 href="/pocketmode" 
-                className="flex items-center gap-2 text-pokemon-blue hover:text-blue-700 font-medium transition-colors"
+                className="flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
                 Back
               </Link>
-              <div className="w-px h-6 bg-gray-300 dark:bg-gray-600"></div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Deck Builder</h1>
+              <div className="w-px h-6 bg-stone-300 dark:bg-stone-600"></div>
+              <h1 className="text-2xl font-bold text-stone-900 dark:text-white">Deck Builder</h1>
             </div>
             
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setShowImportModal(true)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
               >
                 Import
               </button>
@@ -749,7 +749,7 @@ function DeckBuilder() {
                   </button>
                   <Link
                     href="/pocketmode/decks"
-                    className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
+                    className="px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white rounded-lg font-medium transition-colors"
                   >
                     My Decks
                   </Link>
@@ -761,16 +761,16 @@ function DeckBuilder() {
       </div>
 
       {/* Sticky Deck View at Top */}
-      <div className="sticky top-16 z-30 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-lg">
+      <div className="sticky top-16 z-30 bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-4">
           {/* Deck Header */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Your Deck</h2>
+              <h2 className="text-lg font-bold text-stone-900 dark:text-white">Your Deck</h2>
               <div className={`text-xl font-bold ${
                 deckStats.isFull ? 'text-green-600' : 
                 deckStats.totalCards > 15 ? 'text-yellow-600' : 
-                'text-gray-600 dark:text-gray-400'
+                'text-stone-600 dark:text-stone-400'
               }`}>
                 {deckStats.totalCards}/{MAX_DECK_SIZE}
               </div>
@@ -781,10 +781,10 @@ function DeckBuilder() {
               {!deckStats.isEmpty && (
                 <button
                   onClick={() => setDeckZoomIndex(0)}
-                  className="p-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                  className="p-1.5 bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 rounded-lg transition-colors"
                   title="View deck cards"
                 >
-                  <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-stone-700 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                   </svg>
                 </button>
@@ -793,7 +793,7 @@ function DeckBuilder() {
               {/* Actions */}
               <button
                 onClick={addDefaultCards}
-                className="px-3 py-1.5 bg-pokemon-blue hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-colors"
+                className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-sm rounded-lg font-medium transition-colors"
               >
                 + Starter
               </button>
@@ -811,7 +811,7 @@ function DeckBuilder() {
           {/* Deck Cards Grid */}
           <div className="w-full">
             {deck.length === 0 ? (
-              <div className="flex items-center justify-center py-8 text-gray-400">
+              <div className="flex items-center justify-center py-8 text-stone-400">
                 <div className="text-center">
                   <div className="text-3xl mb-2">🎴</div>
                   <p className="text-sm">Add cards to build your deck</p>
@@ -833,7 +833,7 @@ function DeckBuilder() {
                           onClick={() => removeCardFromDeck(entry.card.id)}
                           className="relative aspect-[3/4] cursor-pointer group"
                         >
-                          <div className="relative w-full h-full bg-gray-100 dark:bg-gray-700 rounded-md lg:rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 hover:border-red-500 transition-all hover:scale-105">
+                          <div className="relative w-full h-full bg-stone-100 dark:bg-stone-700 rounded-md lg:rounded-lg overflow-hidden border border-stone-200 dark:border-stone-600 hover:border-red-500 transition-all hover:scale-105">
                             <Image
                               src={entry.card.image || "/back-card.png"}
                               alt={entry.card.name}
@@ -871,7 +871,7 @@ function DeckBuilder() {
                   return (
                     <div
                       key={`empty-${index}`}
-                      className="relative aspect-[3/4] bg-gray-100 dark:bg-gray-700 rounded-md lg:rounded-lg border border-dashed border-gray-300 dark:border-gray-600 opacity-30"
+                      className="relative aspect-[3/4] bg-stone-100 dark:bg-stone-700 rounded-md lg:rounded-lg border border-dashed border-stone-300 dark:border-stone-600 opacity-30"
                     />
                   );
                 })}
@@ -884,14 +884,14 @@ function DeckBuilder() {
       <div className="max-w-7xl mx-auto p-4">
         <div className="space-y-4">
           {/* Tab Navigation */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-2">
+          <div className="bg-white dark:bg-stone-800 rounded-xl shadow-sm border border-stone-200 dark:border-stone-700 p-2">
             <div className="flex space-x-2">
               <button
                 onClick={() => setActiveTab('builder')}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   activeTab === 'builder'
                     ? 'bg-pokemon-red text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700'
                 }`}
               >
                 Card Browser
@@ -901,7 +901,7 @@ function DeckBuilder() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                   activeTab === 'validation'
                     ? 'bg-pokemon-red text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700'
                 }`}
               >
                 Validation
@@ -916,7 +916,7 @@ function DeckBuilder() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   activeTab === 'analysis'
                     ? 'bg-pokemon-red text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700'
                 }`}
               >
                 Meta Analysis
@@ -928,12 +928,12 @@ function DeckBuilder() {
           {activeTab === 'builder' && (
             <div className="space-y-4">
             {/* Search and Filters */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-stone-800 rounded-xl p-4 shadow-sm border border-stone-200 dark:border-stone-700">
               {/* Search */}
               <div className="mb-4">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
@@ -942,7 +942,7 @@ function DeckBuilder() {
                     placeholder="Search cards..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-pokemon-red focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-4 py-3 bg-stone-50 dark:bg-stone-700 border border-stone-200 dark:border-stone-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-pokemon-red focus:border-transparent transition-all text-stone-900 dark:text-white placeholder-stone-400"
                   />
                 </div>
               </div>
@@ -951,7 +951,7 @@ function DeckBuilder() {
               <div className="space-y-3">
                 {/* Type Filters */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wider">Types</label>
+                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">Types</label>
                   <div className="flex flex-wrap gap-2">
                     {filterOptions.types.map(type => {
                       const displayType = getDisplayType(type, { type } as ExtendedPocketCard);
@@ -962,7 +962,7 @@ function DeckBuilder() {
                           className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
                             selectedTypes.includes(type)
                               ? `${getTypeColor(type)} shadow-md scale-105`
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                              : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-600'
                           }`}
                         >
                           {displayType}
@@ -974,7 +974,7 @@ function DeckBuilder() {
 
                 {/* Rarity Filters */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wider">Rarity</label>
+                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">Rarity</label>
                   <div className="flex flex-wrap gap-2">
                     {filterOptions.rarities.map(rarity => (
                       <button
@@ -983,7 +983,7 @@ function DeckBuilder() {
                         className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
                           selectedRarities.includes(rarity)
                             ? `bg-gradient-to-r ${getRarityColor(rarity)} text-white shadow-md scale-105`
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-600'
                         }`}
                       >
                         {rarity}
@@ -994,7 +994,7 @@ function DeckBuilder() {
 
                 {/* Pack Filters - Core packs only */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wider">Packs</label>
+                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">Packs</label>
                   <div className="flex flex-wrap gap-2">
                     {filterOptions.packs.map(pack => (
                       <button
@@ -1003,7 +1003,7 @@ function DeckBuilder() {
                         className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all text-white ${
                           selectedPacks.includes(pack)
                             ? `${getPackColor(pack)} shadow-md scale-105`
-                            : 'bg-gray-400 hover:bg-gray-500 opacity-60'
+                            : 'bg-stone-400 hover:bg-stone-500 opacity-60'
                         }`}
                       >
                         {pack}
@@ -1013,18 +1013,18 @@ function DeckBuilder() {
                 </div>
 
                 {/* Sort */}
-                <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-700">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as SortBy)}
-                    className="px-3 py-1.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pokemon-red text-gray-900 dark:text-white"
+                    className="px-3 py-1.5 bg-stone-50 dark:bg-stone-700 border border-stone-200 dark:border-stone-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pokemon-red text-stone-900 dark:text-white"
                   >
                     <option value="name">Name</option>
                     <option value="type">Type</option>
                     <option value="health">Health</option>
                     <option value="rarity">Rarity</option>
                   </select>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-stone-500 dark:text-stone-400">
                     {filteredCards.length} cards
                   </div>
                 </div>
@@ -1042,12 +1042,12 @@ function DeckBuilder() {
                   <div
                     key={card.id}
                     onClick={() => canAdd && addCardToDeck(card)}
-                    className={`group relative bg-white dark:bg-gray-800 rounded-lg shadow-sm border transition-all duration-300 overflow-hidden ${
+                    className={`group relative bg-white dark:bg-stone-800 rounded-lg shadow-sm border transition-all duration-300 overflow-hidden ${
                       !canAdd 
-                        ? 'border-gray-200 dark:border-gray-700 opacity-50 cursor-not-allowed' 
+                        ? 'border-stone-200 dark:border-stone-700 opacity-50 cursor-not-allowed' 
                         : countInDeck > 0
                           ? 'border-2 border-green-500 cursor-pointer hover:shadow-lg hover:scale-105 hover:border-green-400'
-                          : 'border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-lg hover:scale-105 hover:border-pokemon-blue hover:border-2'
+                          : 'border border-stone-200 dark:border-stone-700 cursor-pointer hover:shadow-lg hover:scale-105 hover:border-pokemon-blue hover:border-2'
                     }`}
                   >
                     {/* Count Badge - Centered and larger */}
@@ -1058,7 +1058,7 @@ function DeckBuilder() {
                     )}
                     
                     {/* Card Image */}
-                    <div className="relative w-full aspect-[3/4] bg-gray-100 dark:bg-gray-700">
+                    <div className="relative w-full aspect-[3/4] bg-stone-100 dark:bg-stone-700">
                       <Image
                         src={card.image || "/back-card.png"}
                         alt={card.name}
@@ -1089,10 +1089,10 @@ function DeckBuilder() {
                           e.stopPropagation();
                           setZoomedCard(card);
                         }}
-                        className="absolute top-2 left-2 p-1.5 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                        className="absolute top-2 left-2 p-1.5 bg-white/90 dark:bg-stone-800/90 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
                         title="View card details"
                       >
-                        <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-4 h-4 text-stone-700 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                         </svg>
                       </button>
@@ -1118,8 +1118,8 @@ function DeckBuilder() {
 
           {/* Validation Tab */}
           {activeTab === 'validation' && validation && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Deck Validation</h3>
+            <div className="bg-white dark:bg-stone-800 rounded-xl shadow-sm border border-stone-200 dark:border-stone-700 p-6">
+              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Deck Validation</h3>
               
               {/* Validation Status */}
               <div className={`mb-6 p-4 rounded-lg ${
@@ -1178,11 +1178,11 @@ function DeckBuilder() {
               {/* Suggestions */}
               {validation.suggestions.length > 0 && (
                 <div className="mb-6">
-                  <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-3">Suggestions</h4>
+                  <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-3">Suggestions</h4>
                   <div className="space-y-2">
                     {validation.suggestions.map((suggestion, index) => (
-                      <div key={index} className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                        <div className="text-blue-700 dark:text-blue-300">{suggestion}</div>
+                      <div key={index} className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                        <div className="text-amber-700 dark:text-amber-300">{suggestion}</div>
                       </div>
                     ))}
                   </div>
@@ -1192,31 +1192,31 @@ function DeckBuilder() {
               {/* Deck Statistics */}
               {validation.stats && (
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Deck Statistics</h4>
+                  <h4 className="font-semibold text-stone-900 dark:text-white mb-3">Deck Statistics</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                      <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.totalCards}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Total Cards</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Total Cards</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                      <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.pokemon}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Pokémon</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Pokémon</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                      <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.trainers}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Trainers</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Trainers</div>
                     </div>
-                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                      <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.basicPokemon}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Basic Pokémon</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Basic Pokémon</div>
                     </div>
                   </div>
                 </div>
@@ -1226,34 +1226,34 @@ function DeckBuilder() {
 
           {/* Meta Analysis Tab */}
           {activeTab === 'analysis' && metaAnalysis && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Meta Game Analysis</h3>
+            <div className="bg-white dark:bg-stone-800 rounded-xl shadow-sm border border-stone-200 dark:border-stone-700 p-6">
+              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Meta Game Analysis</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                  <div className="text-3xl font-bold text-stone-900 dark:text-white">
                     {metaAnalysis.score}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Meta Score</div>
+                  <div className="text-sm text-stone-500 dark:text-stone-400">Meta Score</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                  <div className="text-2xl font-bold text-stone-900 dark:text-white">
                     {metaAnalysis.tier}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Tier Rating</div>
+                  <div className="text-sm text-stone-500 dark:text-stone-400">Tier Rating</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                  <div className="text-2xl font-bold text-stone-900 dark:text-white">
                     {metaAnalysis.consistency}%
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Consistency</div>
+                  <div className="text-sm text-stone-500 dark:text-stone-400">Consistency</div>
                 </div>
               </div>
 
               {/* Deck Archetype */}
-              <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">Identified Archetype</div>
-                <div className="text-xl font-bold text-blue-900 dark:text-blue-100">{metaAnalysis.archetype}</div>
+              <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+                <div className="text-sm text-amber-600 dark:text-amber-400 mb-1">Identified Archetype</div>
+                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">{metaAnalysis.archetype}</div>
               </div>
 
               {/* Strengths & Weaknesses */}
@@ -1266,7 +1266,7 @@ function DeckBuilder() {
                         <svg className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span className="text-gray-700 dark:text-gray-300">{strength}</span>
+                        <span className="text-stone-700 dark:text-stone-300">{strength}</span>
                       </div>
                     ))}
                   </div>
@@ -1279,7 +1279,7 @@ function DeckBuilder() {
                         <svg className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span className="text-gray-700 dark:text-gray-300">{weakness}</span>
+                        <span className="text-stone-700 dark:text-stone-300">{weakness}</span>
                       </div>
                     ))}
                   </div>
@@ -1288,13 +1288,13 @@ function DeckBuilder() {
 
               {/* Matchup Analysis */}
               <div className="mb-6">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Predicted Matchups</h4>
+                <h4 className="font-semibold text-stone-900 dark:text-white mb-3">Predicted Matchups</h4>
                 <div className="space-y-2">
                   {metaAnalysis.matchups.map((matchup, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <span className="font-medium text-gray-900 dark:text-white">{matchup.archetype}</span>
+                    <div key={index} className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
+                      <span className="font-medium text-stone-900 dark:text-white">{matchup.archetype}</span>
                       <div className="flex items-center gap-3">
-                        <div className="w-32 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                        <div className="w-32 bg-stone-200 dark:bg-stone-600 rounded-full h-2">
                           <div 
                             className={`h-2 rounded-full transition-all duration-300 ${
                               matchup.winRate >= 60 ? 'bg-green-500' :
@@ -1306,7 +1306,7 @@ function DeckBuilder() {
                         <span className={`text-sm font-semibold w-12 text-right ${
                           matchup.difficulty === 'favorable' ? 'text-green-600 dark:text-green-400' :
                           matchup.difficulty === 'unfavorable' ? 'text-red-600 dark:text-red-400' :
-                          'text-gray-600 dark:text-gray-400'
+                          'text-stone-600 dark:text-stone-400'
                         }`}>
                           {matchup.winRate}%
                         </span>
@@ -1336,20 +1336,20 @@ function DeckBuilder() {
       {/* Save Modal */}
       {showSaveModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Save Deck</h3>
+          <div className="bg-white dark:bg-stone-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Save Deck</h3>
             <input
               type="text"
               value={deckName}
               onChange={(e) => setDeckName(e.target.value)}
               placeholder="Enter deck name..."
-              className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pokemon-red text-gray-900 dark:text-white mb-4"
+              className="w-full px-4 py-3 bg-stone-50 dark:bg-stone-700 border border-stone-200 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pokemon-red text-stone-900 dark:text-white mb-4"
               autoFocus
             />
             <div className="flex gap-3">
               <button
                 onClick={() => setShowSaveModal(false)}
-                className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+                className="flex-1 px-4 py-2 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded-lg font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -1367,9 +1367,9 @@ function DeckBuilder() {
       {/* Import Modal */}
       {showImportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Import Deck</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          <div className="bg-white dark:bg-stone-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Import Deck</h3>
+            <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
               Paste your deck list below. Supported formats:
               <br />• Card Name x2
               <br />• 2x Card Name
@@ -1380,7 +1380,7 @@ function DeckBuilder() {
               value={importText}
               onChange={(e) => setImportText(e.target.value)}
               placeholder="Paste deck list here..."
-              className="w-full h-64 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pokemon-red text-gray-900 dark:text-white mb-4 font-mono text-sm"
+              className="w-full h-64 px-4 py-3 bg-stone-50 dark:bg-stone-700 border border-stone-200 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pokemon-red text-stone-900 dark:text-white mb-4 font-mono text-sm"
               autoFocus
             />
             {importError && (
@@ -1395,13 +1395,13 @@ function DeckBuilder() {
                   setImportText('');
                   setImportError('');
                 }}
-                className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+                className="flex-1 px-4 py-2 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded-lg font-medium transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={importDeck}
-                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                className="flex-1 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
               >
                 Import
               </button>
@@ -1413,10 +1413,10 @@ function DeckBuilder() {
       {/* Export Modal */}
       {showExportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Export Deck</h3>
-            <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
-              <pre className="text-sm font-mono text-gray-900 dark:text-white whitespace-pre-wrap">
+          <div className="bg-white dark:bg-stone-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Export Deck</h3>
+            <div className="bg-stone-50 dark:bg-stone-700 border border-stone-200 dark:border-stone-600 rounded-lg p-4 mb-4">
+              <pre className="text-sm font-mono text-stone-900 dark:text-white whitespace-pre-wrap">
                 {exportDeckToText()}
               </pre>
             </div>
@@ -1442,7 +1442,7 @@ function DeckBuilder() {
             </div>
             <button
               onClick={() => setShowExportModal(false)}
-              className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+              className="w-full px-4 py-2 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded-lg font-medium transition-colors"
             >
               Close
             </button>
@@ -1462,13 +1462,13 @@ function DeckBuilder() {
           >
             <button
               onClick={() => setZoomedCard(null)}
-              className="absolute -top-12 right-0 p-2 text-white hover:text-gray-300 transition-colors"
+              className="absolute -top-12 right-0 p-2 text-white hover:text-stone-300 transition-colors"
             >
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl">
+            <div className="bg-white dark:bg-stone-800 rounded-xl overflow-hidden shadow-2xl">
               <div className="relative aspect-[3/4]">
                 <Image
                   src={zoomedCard.image || "/back-card.png"}
@@ -1480,7 +1480,7 @@ function DeckBuilder() {
                 />
               </div>
               <div className="p-4 space-y-3">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">{zoomedCard.name}</h3>
+                <h3 className="text-xl font-bold text-stone-900 dark:text-white">{zoomedCard.name}</h3>
                 <div className="flex items-center gap-2">
                   {zoomedCard.type && (
                     <TypeBadge type={zoomedCard.type} size="sm" />
@@ -1497,7 +1497,7 @@ function DeckBuilder() {
                   )}
                 </div>
                 {zoomedCard.pack && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-stone-600 dark:text-stone-400">
                     Pack: <span className="font-medium">{zoomedCard.pack}</span>
                   </p>
                 )}
@@ -1511,8 +1511,8 @@ function DeckBuilder() {
                   disabled={getCardCountInDeck(zoomedCard.id) >= MAX_COPIES_PER_CARD || deckStats.isFull}
                   className={`w-full py-3 rounded-lg font-medium transition-colors ${
                     getCardCountInDeck(zoomedCard.id) >= MAX_COPIES_PER_CARD || deckStats.isFull
-                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                      : 'bg-pokemon-blue hover:bg-blue-700 text-white'
+                      ? 'bg-stone-200 dark:bg-stone-700 text-stone-400 cursor-not-allowed'
+                      : 'bg-amber-600 hover:bg-amber-700 text-white'
                   }`}
                 >
                   {getCardCountInDeck(zoomedCard.id) >= MAX_COPIES_PER_CARD 
@@ -1584,7 +1584,7 @@ function DeckBuilder() {
               if (!currentCard) return null;
               
               return (
-                <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl">
+                <div className="bg-white dark:bg-stone-800 rounded-xl overflow-hidden shadow-2xl">
                   <div className="relative aspect-[3/4]">
                     <Image
                       src={currentCard.image || "/back-card.png"}
@@ -1596,7 +1596,7 @@ function DeckBuilder() {
                     />
                   </div>
                   <div className="p-4 space-y-3">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{currentCard.name}</h3>
+                    <h3 className="text-xl font-bold text-stone-900 dark:text-white">{currentCard.name}</h3>
                     <div className="flex items-center gap-2">
                       {currentCard.type && (
                         <TypeBadge type={currentCard.type} size="sm" />
@@ -1613,7 +1613,7 @@ function DeckBuilder() {
                       )}
                     </div>
                     {currentCard.pack && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-stone-600 dark:text-stone-400">
                         Pack: <span className="font-medium">{currentCard.pack}</span>
                       </p>
                     )}
@@ -1640,7 +1640,7 @@ function DeckBuilder() {
             {/* Close button */}
             <button
               onClick={() => setDeckZoomIndex(null)}
-              className="absolute -top-12 right-0 p-2 text-white hover:text-gray-300 transition-colors"
+              className="absolute -top-12 right-0 p-2 text-white hover:text-stone-300 transition-colors"
             >
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1651,14 +1651,14 @@ function DeckBuilder() {
       )}
 
       {/* Mobile Save/View Actions - Fixed at bottom */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 z-40">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700 p-4 z-40">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
-            <h3 className="font-bold text-gray-900 dark:text-white">Actions</h3>
+            <h3 className="font-bold text-stone-900 dark:text-white">Actions</h3>
             <div className={`text-lg font-bold ${
               deckStats.isFull ? 'text-green-600' : 
               deckStats.totalCards > 15 ? 'text-yellow-600' : 
-              'text-gray-600 dark:text-gray-400'
+              'text-stone-600 dark:text-stone-400'
             }`}>
               {deckStats.totalCards}/{MAX_DECK_SIZE}
             </div>
@@ -1666,7 +1666,7 @@ function DeckBuilder() {
           <div className="flex gap-2">
             <button
               onClick={addDefaultCards}
-              className="px-3 py-1.5 bg-pokemon-blue hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-colors"
+              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-sm rounded-lg font-medium transition-colors"
             >
               + Starter
             </button>
@@ -1685,7 +1685,7 @@ function DeckBuilder() {
         <div className="flex gap-2 mb-2">
           <button
             onClick={() => setShowImportModal(true)}
-            className="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-colors"
+            className="flex-1 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-sm rounded-lg font-medium transition-colors"
           >
             Import
           </button>
@@ -1709,7 +1709,7 @@ function DeckBuilder() {
                   onClick={() => removeCardFromDeck(entry.card.id)}
                   className="flex-shrink-0 w-12 cursor-pointer group"
                 >
-                  <div className="relative aspect-[3/4] bg-gray-100 dark:bg-gray-700 rounded overflow-hidden border border-gray-200 dark:border-gray-600 hover:border-red-500 transition-colors">
+                  <div className="relative aspect-[3/4] bg-stone-100 dark:bg-stone-700 rounded overflow-hidden border border-stone-200 dark:border-stone-600 hover:border-red-500 transition-colors">
                     <Image
                       src={entry.card.image || "/back-card.png"}
                       alt={entry.card.name}

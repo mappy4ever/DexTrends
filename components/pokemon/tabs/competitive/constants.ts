@@ -163,7 +163,7 @@ export const ROLE_INFO: Record<string, RoleInfo> = {
   'Wall': {
     description: 'Extremely high defenses, stalls opponents',
     icon: FaShieldAlt,
-    color: 'text-gray-400'
+    color: 'text-stone-400'
   },
   'Support': {
     description: 'Sets up entry hazards, status, or team support',

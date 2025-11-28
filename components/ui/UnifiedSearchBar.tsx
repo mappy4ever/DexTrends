@@ -172,9 +172,9 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
 
   // Variant configurations - clean, consistent styling
   const variantClasses = {
-    default: 'bg-white dark:bg-gray-800/95 border border-gray-200 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.04)]',
-    minimal: 'bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/50',
-    bordered: 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600',
+    default: 'bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 shadow-[0_2px_8px_rgba(0,0,0,0.04)]',
+    minimal: 'bg-stone-50 dark:bg-stone-800/60 border border-stone-100 dark:border-stone-700/50',
+    bordered: 'bg-white dark:bg-stone-800 border-2 border-stone-300 dark:border-stone-600',
   };
 
   // Combine suggestions with recent searches
@@ -198,7 +198,7 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
           {loading ? (
             <div className={`${currentSize.iconSize} animate-spin rounded-full border-2 border-blue-500 border-t-transparent`} />
           ) : (
-            <Search className={`${currentSize.iconSize} text-gray-400`} />
+            <Search className={`${currentSize.iconSize} text-stone-400`} />
           )}
         </div>
 
@@ -216,7 +216,7 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
           className={`
             w-full ${currentSize.padding} ${currentSize.text} ${currentSize.height}
             bg-transparent outline-none rounded-xl
-            placeholder:text-gray-400 text-gray-900 dark:text-gray-100
+            placeholder:text-stone-400 text-stone-900 dark:text-stone-100
             ${inputClassName}
           `}
           style={{ fontSize: '16px' }}
@@ -226,10 +226,10 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
         {value && (
           <button
             onClick={handleClear}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors duration-150"
             tabIndex={-1}
           >
-            <X className={`${currentSize.iconSize} text-gray-400 hover:text-gray-600 dark:hover:text-gray-300`} />
+            <X className={`${currentSize.iconSize} text-stone-400 hover:text-stone-600 dark:hover:text-stone-300`} />
           </button>
         )}
 
@@ -261,20 +261,20 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full mt-2 w-full z-50 bg-white dark:bg-gray-800/95 border border-gray-200 dark:border-gray-700 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden"
+            className="absolute top-full mt-2 w-full z-50 bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden"
           >
             <div className="py-1.5">
               {displaySuggestions.map((suggestion) => (
                 <button
                   key={suggestion.id}
                   onClick={() => handleSuggestionClick(suggestion.text)}
-                  className="w-full px-3 py-2.5 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 flex items-center gap-3"
+                  className="w-full px-3 py-2.5 text-left hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors duration-150 flex items-center gap-3"
                 >
                   {suggestion.type === 'recent' && (
-                    <span className="text-xs text-gray-400 px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">Recent</span>
+                    <span className="text-xs text-stone-400 px-1.5 py-0.5 bg-stone-100 dark:bg-stone-700 rounded">Recent</span>
                   )}
                   {suggestion.icon}
-                  <span className="flex-1 text-gray-900 dark:text-gray-100 text-sm">{suggestion.text}</span>
+                  <span className="flex-1 text-stone-900 dark:text-stone-100 text-sm">{suggestion.text}</span>
                 </button>
               ))}
             </div>

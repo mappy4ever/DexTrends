@@ -33,11 +33,11 @@ export const ModernCard: React.FC<ModernCardProps> = ({
   const baseStyles = 'relative overflow-hidden transition-all duration-300';
 
   const variantStyles = {
-    default: 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700',
-    glass: 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/20 dark:border-gray-700/30',
-    gradient: gradient || 'bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900',
-    outlined: 'bg-transparent border-2 border-gray-300 dark:border-gray-600',
-    elevated: 'bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-900/30',
+    default: 'bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700',
+    glass: 'bg-white/80 dark:bg-stone-800/80 backdrop-blur-xl border border-white/20 dark:border-stone-700/30',
+    gradient: gradient || 'bg-gradient-to-br from-white to-stone-50 dark:from-stone-800 dark:to-stone-900',
+    outlined: 'bg-transparent border-2 border-stone-300 dark:border-stone-600',
+    elevated: 'bg-white dark:bg-stone-800 shadow-lg dark:shadow-stone-900/30',
   };
 
   const hoverStyles = {
@@ -110,7 +110,7 @@ export const StatCard: React.FC<StatCardProps> = ({
     red: 'from-red-500 to-red-600',
     yellow: 'from-yellow-500 to-amber-600',
     purple: 'from-purple-500 to-purple-600',
-    gray: 'from-gray-500 to-gray-600',
+    gray: 'from-stone-500 to-stone-600',
   };
 
   const sizeStyles = {
@@ -129,9 +129,9 @@ export const StatCard: React.FC<StatCardProps> = ({
     <ModernCard variant="glass" padding="none" className={sizeStyles[size]}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{label}</p>
+          <p className="text-sm text-stone-500 dark:text-stone-400 mb-1">{label}</p>
           <div className="flex items-center gap-2">
-            <span className={`${valueSizes[size]} font-bold text-gray-900 dark:text-white`}>
+            <span className={`${valueSizes[size]} font-bold text-stone-900 dark:text-white`}>
               {value}
             </span>
             {trend && (
@@ -139,7 +139,7 @@ export const StatCard: React.FC<StatCardProps> = ({
                 'text-sm font-medium',
                 trend === 'up' && 'text-green-500',
                 trend === 'down' && 'text-red-500',
-                trend === 'neutral' && 'text-gray-500'
+                trend === 'neutral' && 'text-stone-500'
               )}>
                 {trend === 'up' && '↑'}
                 {trend === 'down' && '↓'}
@@ -191,8 +191,8 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
       <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
         {icon}
       </div>
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
-      <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">{title}</h3>
+      <p className="text-sm text-stone-600 dark:text-stone-400">{description}</p>
     </ModernCard>
   );
 };
@@ -217,12 +217,12 @@ export const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
   return (
     <ModernCard variant="glass" padding="xl" className="text-center">
       {icon && (
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-stone-100 dark:bg-stone-700 flex items-center justify-center text-stone-400">
           {icon}
         </div>
       )}
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400 mb-4">{description}</p>
+      <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-2">{title}</h3>
+      <p className="text-stone-600 dark:text-stone-400 mb-4">{description}</p>
       {action && (
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -253,7 +253,7 @@ export const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
 }) => {
   return (
     <div className={cn(`p-[${borderWidth}px] rounded-2xl bg-gradient-to-r ${gradient}`, className)}>
-      <div className="bg-white dark:bg-gray-800 rounded-[14px] h-full">
+      <div className="bg-white dark:bg-stone-800 rounded-[14px] h-full">
         {children}
       </div>
     </div>

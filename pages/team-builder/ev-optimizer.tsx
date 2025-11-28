@@ -196,7 +196,7 @@ const EVOptimizer: NextPage = () => {
                   placeholder="Search Pokemon..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 rounded-full glass-light border border-stone-200 dark:border-stone-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
+                  className="w-full px-4 py-3 rounded-full glass-light border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
                 />
 
                 {loading && (

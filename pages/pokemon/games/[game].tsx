@@ -970,7 +970,7 @@ export default function GameDetailPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Game Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-stone-600 dark:text-stone-400 mb-8">
             The game "{gameId}" does not exist.
           </p>
           <StyledBackButton 
@@ -1011,7 +1011,7 @@ export default function GameDetailPage() {
       stars.push(<BsStar key="half" className="text-yellow-400" />);
     }
     for (let i = stars.length; i < 5; i++) {
-      stars.push(<BsStar key={i + 5} className="text-gray-400" />);
+      stars.push(<BsStar key={i + 5} className="text-stone-400" />);
     }
     return stars;
   };
@@ -1036,7 +1036,7 @@ export default function GameDetailPage() {
           {/* Game Header */}
           <SlideUp>
             <div className={`rounded-2xl overflow-hidden ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              theme === 'dark' ? 'bg-stone-800' : 'bg-white'
             } shadow-xl mb-8`}>
               <div className={`h-48 bg-gradient-to-r ${game.color} relative overflow-hidden`}>
                 <div className="absolute inset-0 bg-black/30" />
@@ -1069,7 +1069,7 @@ export default function GameDetailPage() {
                 className={`px-6 py-3 rounded-full font-semibold transition-all ${
                   activeTab === tab
                     ? `bg-gradient-to-r ${game.color} text-white scale-110`
-                    : 'bg-gray-200 dark:bg-gray-700 hover:scale-105'
+                    : 'bg-stone-200 dark:bg-stone-700 hover:scale-105'
                 }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -1083,33 +1083,33 @@ export default function GameDetailPage() {
               {/* Description */}
               <SlideUp>
                 <div className={`p-8 rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-4">About {game.names.join(" & ")}</h2>
-                  <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+                  <p className="text-lg text-stone-600 dark:text-stone-400 mb-6">
                     {game.longDescription}
                   </p>
                   
                   {/* Key Info Grid */}
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <BsCalendar className="text-2xl mb-2 text-pokemon-blue" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Release Date</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-400">Release Date</p>
                       <p className="font-bold">{new Date(game.releaseDate).toLocaleDateString()}</p>
                     </div>
-                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <BsController className="text-2xl mb-2 text-pokemon-red" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Platform</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-400">Platform</p>
                       <p className="font-bold">{game.platform}</p>
                     </div>
-                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <BsGlobe className="text-2xl mb-2 text-pokemon-green" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Region</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-400">Region</p>
                       <p className="font-bold">{game.region}</p>
                     </div>
-                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <GiCrystalBall className="text-2xl mb-2 text-pokemon-purple" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Pokédex Size</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-400">Pokédex Size</p>
                       <p className="font-bold">{game.pokedexSize} Pokémon</p>
                     </div>
                   </div>
@@ -1119,7 +1119,7 @@ export default function GameDetailPage() {
               {/* Starter Pokemon */}
               <SlideUp>
                 <div className={`p-8 rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Starter Pokémon</h2>
                   <div className="grid md:grid-cols-3 gap-6">
@@ -1128,9 +1128,9 @@ export default function GameDetailPage() {
                       return individualStarters.map((s, subIdx) => (
                         <CardHover key={`${s}-${idx}-${subIdx}`}>
                           <div className={`rounded-xl overflow-hidden ${
-                            theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                            theme === 'dark' ? 'bg-stone-700' : 'bg-white'
                           } shadow-lg`}>
-                            <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+                            <div className="relative h-48 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-800 dark:to-stone-900">
                               <Image
                                 src={getStarterImage(s.trim())}
                                 alt={s.trim()}
@@ -1160,26 +1160,26 @@ export default function GameDetailPage() {
               {/* Sales and Reception */}
               <SlideUp>
                 <div className={`p-8 rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Sales & Reception</h2>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                       <h3 className="text-xl font-bold mb-4">Commercial Performance</h3>
-                      <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                      <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                         <BsGraphUp className="text-4xl mb-3 text-pokemon-green" />
                         <p className="text-3xl font-bold text-pokemon-green">{game.sales}</p>
-                        <p className="text-gray-600 dark:text-gray-400">Units Sold Worldwide</p>
+                        <p className="text-stone-600 dark:text-stone-400">Units Sold Worldwide</p>
                       </div>
                     </div>
                     <div>
                       <h3 className="text-xl font-bold mb-4">Critical Reception</h3>
-                      <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                      <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                         <div className="flex gap-1 mb-3 justify-center">
                           {renderStars(game.rating)}
                         </div>
                         <p className="text-3xl font-bold text-center">{game.rating}/5</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">
+                        <p className="text-sm text-stone-600 dark:text-stone-400 mt-3">
                           {game.reception}
                         </p>
                       </div>
@@ -1195,7 +1195,7 @@ export default function GameDetailPage() {
               {/* Key Features */}
               <SlideUp>
                 <div className={`p-8 rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Key Features</h2>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -1214,13 +1214,13 @@ export default function GameDetailPage() {
               {/* Innovations */}
               <SlideUp>
                 <div className={`p-8 rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Innovations</h2>
                   <div className="space-y-4">
                     {game.innovations.map((innovation, idx) => (
                       <div key={idx} className={`p-4 rounded-lg flex items-center gap-4 ${
-                        theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                        theme === 'dark' ? 'bg-stone-700' : 'bg-white'
                       }`}>
                         <GiCrystalBall className="text-2xl text-pokemon-purple" />
                         <p className="text-lg">{innovation}</p>
@@ -1233,7 +1233,7 @@ export default function GameDetailPage() {
               {/* Game Stats */}
               <SlideUp>
                 <div className={`p-8 rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Game Statistics</h2>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -1241,7 +1241,7 @@ export default function GameDetailPage() {
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.gymLeaders || game.trialCaptains || game.wardens || 0}
                       </div>
-                      <div className="text-gray-600 dark:text-gray-400">
+                      <div className="text-stone-600 dark:text-stone-400">
                         {game.gymLeaders ? "Gym Leaders" : game.trialCaptains ? "Trial Captains" : "Wardens"}
                       </div>
                     </div>
@@ -1249,19 +1249,19 @@ export default function GameDetailPage() {
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.pokedexSize}
                       </div>
-                      <div className="text-gray-600 dark:text-gray-400">Pokédex Size</div>
+                      <div className="text-stone-600 dark:text-stone-400">Pokédex Size</div>
                     </div>
                     <div>
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.legendaries.length}
                       </div>
-                      <div className="text-gray-600 dark:text-gray-400">Legendaries</div>
+                      <div className="text-stone-600 dark:text-stone-400">Legendaries</div>
                     </div>
                     <div>
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.starters.length}
                       </div>
-                      <div className="text-gray-600 dark:text-gray-400">Starters</div>
+                      <div className="text-stone-600 dark:text-stone-400">Starters</div>
                     </div>
                   </div>
                 </div>
@@ -1272,26 +1272,26 @@ export default function GameDetailPage() {
           {activeTab === "development" && (
             <SlideUp>
               <div className={`p-8 rounded-2xl ${
-                theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
               }`}>
                 <h2 className="text-3xl font-bold mb-6">Development Team</h2>
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                  <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                     <h3 className="font-bold mb-2">Developer</h3>
                     <p className="text-xl">{game.developer}</p>
                   </div>
-                  <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                  <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                     <h3 className="font-bold mb-2">Publisher</h3>
                     <p className="text-xl">{game.publisher}</p>
                   </div>
                   {game.director && (
-                    <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                    <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <h3 className="font-bold mb-2">Director</h3>
                       <p className="text-xl">{game.director}</p>
                     </div>
                   )}
                   {game.producer && (
-                    <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                    <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <h3 className="font-bold mb-2">Producer</h3>
                       <p className="text-xl">{game.producer}</p>
                     </div>
@@ -1301,13 +1301,13 @@ export default function GameDetailPage() {
                 <div className="mt-8">
                   <h3 className="text-2xl font-bold mb-4">Release Information</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Japan Release</p>
+                    <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
+                      <p className="text-sm text-stone-500 dark:text-stone-400">Japan Release</p>
                       <p className="font-bold">{new Date(game.releaseDate).toLocaleDateString()}</p>
                     </div>
                     {game.releaseDateUS && (
-                      <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">US Release</p>
+                      <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
+                        <p className="text-sm text-stone-500 dark:text-stone-400">US Release</p>
                         <p className="font-bold">{new Date(game.releaseDateUS).toLocaleDateString()}</p>
                       </div>
                     )}
@@ -1320,10 +1320,10 @@ export default function GameDetailPage() {
           {activeTab === "legacy" && (
             <SlideUp>
               <div className={`p-8 rounded-2xl ${
-                theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
               }`}>
                 <h2 className="text-3xl font-bold mb-6">Legacy & Impact</h2>
-                <div className={`p-6 rounded-lg mb-6 ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'}`}>
+                <div className={`p-6 rounded-lg mb-6 ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                   <GiTrophy className="text-4xl mb-4 text-pokemon-yellow" />
                   <p className="text-lg">{game.legacy}</p>
                 </div>
@@ -1343,7 +1343,7 @@ export default function GameDetailPage() {
           {activeTab === "trivia" && (
             <SlideUp>
               <div className={`p-8 rounded-2xl ${
-                theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
               }`}>
                 <h2 className="text-3xl font-bold mb-6">Did You Know?</h2>
                 <div className="space-y-4">
@@ -1352,7 +1352,7 @@ export default function GameDetailPage() {
                       <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${game.color} flex items-center justify-center text-white font-bold flex-shrink-0`}>
                         {idx + 1}
                       </div>
-                      <p className="text-lg text-gray-600 dark:text-gray-400 pt-2">
+                      <p className="text-lg text-stone-600 dark:text-stone-400 pt-2">
                         {fact}
                       </p>
                     </div>

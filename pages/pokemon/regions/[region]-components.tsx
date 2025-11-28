@@ -725,7 +725,7 @@ const RegionDetailPage: NextPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Region Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-stone-600 dark:text-stone-400 mb-8">
             The region "{regionId}" does not exist.
           </p>
           <StyledBackButton 
@@ -746,7 +746,7 @@ const RegionDetailPage: NextPage = () => {
       </Head>
 
       {/* Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 dark:bg-gray-800 z-50">
+      <div className="fixed top-0 left-0 w-full h-1 bg-stone-200 dark:bg-stone-800 z-50">
         <div 
           className={`h-full bg-gradient-to-r ${region.color} transition-all duration-200`}
           style={{ width: `${scrollProgress}%` }}
@@ -832,12 +832,12 @@ const RegionDetailPage: NextPage = () => {
       )}
 
       {/* Locations Section */}
-      <div className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
+      <div className={`py-20 ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'}`}>
         <div className="max-w-7xl mx-auto px-8">
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-5xl font-bold mb-4">Explore {region.name}</h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400">
+              <p className="text-xl text-stone-600 dark:text-stone-400">
                 Discover the cities, towns, and landmarks of the region
               </p>
             </div>
@@ -846,7 +846,7 @@ const RegionDetailPage: NextPage = () => {
             {/* Cities Grid */}
             <SlideUp>
               <div className={`rounded-3xl overflow-hidden ${
-                theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                theme === 'dark' ? 'bg-stone-700' : 'bg-white'
               } p-8 h-full`}>
                 <div className="flex items-center gap-3 mb-6">
                   <GiModernCity className="text-3xl text-pokemon-blue" />
@@ -858,7 +858,7 @@ const RegionDetailPage: NextPage = () => {
                       <BsGeoAlt className="text-pokemon-blue mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold">{city.name}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-400">
                           {city.description}
                         </p>
                       </div>
@@ -871,7 +871,7 @@ const RegionDetailPage: NextPage = () => {
             {/* Landmarks Grid */}
             <SlideUp delay={0.1}>
               <div className={`rounded-3xl overflow-hidden ${
-                theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                theme === 'dark' ? 'bg-stone-700' : 'bg-white'
               } p-8 h-full`}>
                 <div className="flex items-center gap-3 mb-6">
                   <BsCompass className="text-3xl text-pokemon-red" />
@@ -883,7 +883,7 @@ const RegionDetailPage: NextPage = () => {
                       <BsMap className="text-pokemon-red mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold">{landmark.name}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-400">
                           {landmark.description}
                         </p>
                       </div>
@@ -900,12 +900,12 @@ const RegionDetailPage: NextPage = () => {
       <GameShowcase region={region} theme={theme} />
 
       {/* Legendary Pokémon Section */}
-      <div className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
+      <div className={`py-20 ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'}`}>
         <div className="max-w-7xl mx-auto px-8">
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-5xl font-bold mb-4">Legendary Pokémon</h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400">
+              <p className="text-xl text-stone-600 dark:text-stone-400">
                 The mythical creatures that shape {region.name}'s legends
               </p>
             </div>
@@ -918,7 +918,7 @@ const RegionDetailPage: NextPage = () => {
                   <a className="group">
                     <CardHover>
                       <div className={`relative rounded-2xl overflow-hidden ${
-                        theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                        theme === 'dark' ? 'bg-stone-700' : 'bg-white'
                       } p-6 text-center hover:shadow-2xl transition-all`}>
                         <div className="relative w-24 h-24 mx-auto mb-3">
                           <Image
@@ -932,7 +932,7 @@ const RegionDetailPage: NextPage = () => {
                         <h3 className="font-bold text-sm">
                           {region.legendaries[idx]}
                         </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-stone-500 dark:text-stone-400">
                           #{String(id).padStart(3, '0')}
                         </p>
                       </div>
@@ -946,12 +946,12 @@ const RegionDetailPage: NextPage = () => {
       </div>
 
       {/* Trivia Section */}
-      <div className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
+      <div className={`py-20 ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto px-8">
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-5xl font-bold mb-4">Did You Know?</h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400">
+              <p className="text-xl text-stone-600 dark:text-stone-400">
                 Fascinating facts about {region.name}
               </p>
             </div>
@@ -961,7 +961,7 @@ const RegionDetailPage: NextPage = () => {
             {region.trivia.map((fact, idx) => (
               <SlideUp key={idx} delay={idx * 0.1}>
                 <div className={`relative rounded-2xl overflow-hidden ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 } p-8 hover:shadow-xl transition-all`}>
                   <div className={`absolute top-0 left-0 w-16 h-16 bg-gradient-to-br ${region.color} 
                     rounded-br-3xl flex items-center justify-center text-white font-bold text-2xl`}>
@@ -978,13 +978,13 @@ const RegionDetailPage: NextPage = () => {
       </div>
 
       {/* Footer Section */}
-      <div className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
+      <div className={`py-20 ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'}`}>
         <div className="max-w-7xl mx-auto px-8 text-center">
           <FadeIn>
             <h2 className="text-4xl font-bold mb-4">
               Ready to explore {region.name}?
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+            <p className="text-xl text-stone-600 dark:text-stone-400 mb-8">
               Start your journey in the world of Pokémon
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
@@ -994,7 +994,7 @@ const RegionDetailPage: NextPage = () => {
                 </a>
               </Link>
               <Link href="/pokemon/regions">
-                <a className="px-8 py-4 bg-gray-200 dark:bg-gray-700 font-semibold rounded-full hover:scale-105 transition-transform">
+                <a className="px-8 py-4 bg-stone-200 dark:bg-stone-700 font-semibold rounded-full hover:scale-105 transition-transform">
                   Explore Other Regions
                 </a>
               </Link>

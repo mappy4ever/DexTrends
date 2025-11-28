@@ -115,7 +115,7 @@ class ErrorBoundary extends React.Component<
           <h3 className="text-lg font-semibold text-red-600 mb-2">
             Failed to load component
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-stone-600 mb-4">
             {this.state.error?.message || 'An unexpected error occurred'}
           </p>
           <button

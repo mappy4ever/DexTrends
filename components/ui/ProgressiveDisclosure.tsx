@@ -157,11 +157,11 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   
   const getVariantClasses = () => {
     const variants: Record<string, string> = {
-      default: 'border border-gray-200 rounded-lg bg-white',
-      card: 'border border-gray-200 rounded-lg bg-white shadow-sm',
-      minimal: 'border-b border-gray-200 last:border-b-0',
-      outlined: 'border-2 border-gray-300 rounded-lg',
-      filled: 'bg-gray-50 rounded-lg border border-gray-200'
+      default: 'border border-stone-200 rounded-lg bg-white',
+      card: 'border border-stone-200 rounded-lg bg-white shadow-sm',
+      minimal: 'border-b border-stone-200 last:border-b-0',
+      outlined: 'border-2 border-stone-300 rounded-lg',
+      filled: 'bg-stone-50 rounded-lg border border-stone-200'
     };
     return variants[variant] || variants.default;
   };
@@ -170,7 +170,7 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
     const base = 'flex items-center justify-between w-full p-4 text-left transition-colors duration-200';
     const interactive = disabled 
       ? 'cursor-not-allowed opacity-50' 
-      : 'cursor-pointer hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pokemon-blue focus:ring-inset';
+      : 'cursor-pointer hover:bg-stone-50 focus:bg-stone-50 focus:outline-none focus:ring-2 focus:ring-pokemon-blue focus:ring-inset';
     
     return `${base} ${interactive}`;
   };
@@ -204,11 +204,11 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
       >
         <div className="flex items-center gap-3">
           {icon && (
-            <span className="flex-shrink-0 text-gray-500">
+            <span className="flex-shrink-0 text-stone-500">
               {icon}
             </span>
           )}
-          <span className={`text-gray-900 ${getLevelClasses()}`}>
+          <span className={`text-stone-900 ${getLevelClasses()}`}>
             {title}
           </span>
           {badge && (
@@ -220,7 +220,7 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
         
         <div className={`flex items-center gap-2 ${isAnimating ? 'animate-pulse' : ''}`}>
           <svg
-            className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+            className={`w-5 h-5 text-stone-500 transition-transform duration-200 ${
               isExpanded ? 'rotate-180' : ''
             }`}
             fill="none"
@@ -367,7 +367,7 @@ export const StepByStepDisclosure: React.FC<StepByStepDisclosureProps> = ({
     const statusClasses: Record<string, string> = {
       completed: 'bg-green-50 border border-green-200 text-green-800',
       active: 'bg-pokemon-red bg-opacity-10 border border-pokemon-red text-pokemon-red',
-      pending: 'bg-gray-50 border border-gray-200 text-gray-500'
+      pending: 'bg-stone-50 border border-stone-200 text-stone-500'
     };
     
     const interactive = (allowSkip || stepIndex <= activeStep + 1) 
@@ -399,7 +399,7 @@ export const StepByStepDisclosure: React.FC<StepByStepDisclosureProps> = ({
     }
     
     return (
-      <div className="w-6 h-6 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center">
+      <div className="w-6 h-6 bg-stone-300 text-stone-600 rounded-full flex items-center justify-center">
         <span className="text-sm">{stepIndex + 1}</span>
       </div>
     );
@@ -410,11 +410,11 @@ export const StepByStepDisclosure: React.FC<StepByStepDisclosureProps> = ({
       {/* Progress Bar */}
       {showProgress && (
         <div className="mb-6">
-          <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <div className="flex justify-between text-sm text-stone-600 mb-2">
             <span>Progress</span>
             <span>{Math.round(((completedSteps.size + (activeStep > 0 ? 1 : 0)) / steps.length) * 100)}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-stone-200 rounded-full h-2">
             <div
               className="bg-pokemon-red h-2 rounded-full transition-all duration-500"
               style={{
@@ -447,7 +447,7 @@ export const StepByStepDisclosure: React.FC<StepByStepDisclosureProps> = ({
             
             {/* Step Content */}
             {index === activeStep && step.content && (
-              <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200 animate-in slide-in-from-top-2 fade-in">
+              <div className="mt-4 p-4 bg-white rounded-lg border border-stone-200 animate-in slide-in-from-top-2 fade-in">
                 {typeof step.content === 'function' 
                   ? step.content({ onComplete: () => handleStepComplete(index) })
                   : step.content
@@ -492,7 +492,7 @@ export const TabbedDisclosure: React.FC<TabbedDisclosureProps> = ({
     return `${base} ${
       isActive
         ? 'bg-pokemon-red text-white shadow-sm'
-        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+        : 'text-stone-600 hover:text-stone-800 hover:bg-stone-100'
     }`;
   };
   
@@ -587,9 +587,9 @@ export const DetailsSummary: React.FC<DetailsSummaryProps> = ({
   
   const getVariantClasses = () => {
     const variants: Record<string, string> = {
-      default: 'border border-gray-200 rounded-lg',
-      card: 'border border-gray-200 rounded-lg shadow-sm',
-      minimal: 'border-b border-gray-200 last:border-b-0'
+      default: 'border border-stone-200 rounded-lg',
+      card: 'border border-stone-200 rounded-lg shadow-sm',
+      minimal: 'border-b border-stone-200 last:border-b-0'
     };
     return variants[variant] || variants.default;
   };
@@ -611,16 +611,16 @@ export const DetailsSummary: React.FC<DetailsSummaryProps> = ({
     >
       <summary className={`
         flex items-center justify-between p-4 cursor-pointer
-        hover:bg-gray-50 transition-colors duration-200
+        hover:bg-stone-50 transition-colors duration-200
         focus:outline-none focus:ring-2 focus:ring-pokemon-blue focus:ring-inset
         ${getSizeClasses()}
       `}>
         <div className="flex items-center gap-3">
-          {icon && <span className="text-gray-500">{icon}</span>}
-          <span className="font-medium text-gray-900">{summary}</span>
+          {icon && <span className="text-stone-500">{icon}</span>}
+          <span className="font-medium text-stone-900">{summary}</span>
         </div>
         <svg
-          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+          className={`w-5 h-5 text-stone-500 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
           fill="none"
@@ -678,11 +678,11 @@ export const ProgressiveForm: React.FC<ProgressiveFormProps> = ({
     <div className={`progressive-form ${className}`}>
       {showProgress && (
         <div className="mb-6">
-          <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <div className="flex justify-between text-sm text-stone-600 mb-2">
             <span>Section {currentSection + 1} of {sections.length}</span>
             <span>{Math.round((completedSections.size / sections.length) * 100)}% Complete</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-stone-200 rounded-full h-2">
             <div
               className="bg-pokemon-red h-2 rounded-full transition-all duration-500"
               style={{ width: `${(completedSections.size / sections.length) * 100}%` }}
@@ -704,7 +704,7 @@ export const ProgressiveForm: React.FC<ProgressiveFormProps> = ({
       
       <div className="flex justify-between mt-6">
         <button
-          className="px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50"
+          className="px-4 py-2 text-stone-600 hover:text-stone-800 disabled:opacity-50"
           disabled={currentSection === 0}
           onClick={() => setCurrentSection(currentSection - 1)}
         >

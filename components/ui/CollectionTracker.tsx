@@ -638,7 +638,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="border-b border-gray-200 dark:border-gray-700">
+        <div className="border-b border-stone-200 dark:border-stone-700">
           <nav className="flex space-x-8">
             {tabs.map((tab) => (
               <button
@@ -646,8 +646,8 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap flex items-center space-x-2 ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-amber-500 text-amber-600'
+                    : 'border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300'
                 }`}
               >
                 {tab.icon}
@@ -661,31 +661,31 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Overall Progress Chart */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border">
+            <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow border">
               <DoughnutChart data={completionChart.data} options={completionChart.options} />
             </div>
 
             {/* Rarity Progress Chart */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border">
+            <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow border">
               <DoughnutChart data={rarityChart.data} options={rarityChart.options} />
             </div>
 
             {/* Set Progress Chart */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border lg:col-span-2">
+            <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow border lg:col-span-2">
               <BarChart data={setProgressChart.data} options={setProgressChart.options} />
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border lg:col-span-2">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow border lg:col-span-2">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                 Collection Insights
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-2xl font-bold text-amber-600">
                     {collectionAnalysis.averageSetCompletion.toFixed(1)}%
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-stone-600 dark:text-stone-400">
                     Average Set Completion
                   </div>
                 </div>
@@ -693,7 +693,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                   <div className="text-2xl font-bold text-green-600">
                     {collectionAnalysis.nearCompleteSets.length}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-stone-600 dark:text-stone-400">
                     Sets Near Completion (80%+)
                   </div>
                 </div>
@@ -701,7 +701,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                   <div className="text-2xl font-bold text-purple-600">
                     {collectionAnalysis.highPriorityMissing.length}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-stone-600 dark:text-stone-400">
                     High Priority Missing Cards
                   </div>
                 </div>
@@ -717,7 +717,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
               <select
                 value={selectedSet}
                 onChange={(e) => setSelectedSet(e.target.value)}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                className="px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800">
 
                 <option value="all">All Sets</option>
                 <option value="completed">Completed Sets</option>
@@ -737,9 +737,9 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 })
                 .sort((a, b) => b.completionRate - a.completionRate)
                 .map(set => (
-                  <div key={set.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+                  <div key={set.id} className="bg-white dark:bg-stone-800 p-4 rounded-lg shadow border">
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-semibold text-gray-900 dark:text-white line-clamp-1">
+                      <h4 className="font-semibold text-stone-900 dark:text-white line-clamp-1">
                         {set.name}
                       </h4>
                       {set.completionRate === 100 && (
@@ -749,15 +749,15 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-stone-600 dark:text-stone-400">
                           {set.ownedCards} / {set.totalCards} cards
                         </span>
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-stone-900 dark:text-white">
                           {set.completionRate.toFixed(1)}%
                         </span>
                       </div>
                       
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2">
                         <div 
                           className="bg-blue-500 h-2 rounded-full transition-all duration-500"
         style={{ width: `${set.completionRate}%` }}
@@ -765,7 +765,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                       </div>
                       
                       {set.missingCards > 0 && (
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                        <div className="text-sm text-stone-600 dark:text-stone-400">
                           {set.missingCards} cards remaining
                         </div>
                       )}
@@ -780,12 +780,12 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
           <div className="space-y-6">
             {/* Create Goal Button */}
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
                 Collection Goals
               </h3>
               <button
                 onClick={() => setShowCreateGoal(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 flex items-center space-x-2">
 
                 <FaPlus className="h-4 w-4" />
                 <span>Create Goal</span>
@@ -796,13 +796,13 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
             {trackingGoals.length > 0 ? (
               <div className="space-y-4">
                 {trackingGoals.map(goal => (
-                  <div key={goal.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+                  <div key={goal.id} className="bg-white dark:bg-stone-800 p-4 rounded-lg shadow border">
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">
+                        <h4 className="font-semibold text-stone-900 dark:text-white">
                           {goal.name}
                         </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-400">
                           {goal.description}
                         </p>
                       </div>
@@ -813,15 +813,15 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-stone-600 dark:text-stone-400">
                           Progress
                         </span>
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-stone-900 dark:text-white">
                           {goal.progress.toFixed(1)}%
                         </span>
                       </div>
                       
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2">
                         <div 
                           className={`h-2 rounded-full transition-all duration-500 ${
                             goal.completed ? 'bg-green-500' : 'bg-blue-500'
@@ -831,7 +831,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                       </div>
                       
                       {goal.deadline && (
-                        <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                        <div className="text-sm text-stone-600 dark:text-stone-400 flex items-center">
                           <FaClock className="h-4 w-4 mr-1" />
                           Deadline: {new Date(goal.deadline).toLocaleDateString()}
                         </div>
@@ -842,16 +842,16 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
               </div>
             ) : (
               <div className="text-center py-12">
-                <FaTrophy className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                <FaTrophy className="h-12 w-12 text-stone-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-stone-900 dark:text-white mb-2">
                   No goals set yet
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-stone-600 dark:text-stone-400 mb-4">
                   Set collection goals to track your progress and stay motivated
                 </p>
                 <button
                   onClick={() => setShowCreateGoal(true)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                  className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">
 
                   Create Your First Goal
                 </button>
@@ -897,7 +897,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                     className={`p-4 rounded-lg border-2 transition-all ${
                       isUnlocked
                         ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20'
-                        : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800'
+                        : 'border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800'
                     }`}
                   >
                     <div className="flex items-center space-x-3">
@@ -906,12 +906,12 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                       </div>
                       <div className="flex-1">
                         <h4 className={`font-semibold ${
-                          isUnlocked ? 'text-yellow-800 dark:text-yellow-200' : 'text-gray-700 dark:text-gray-300'
+                          isUnlocked ? 'text-yellow-800 dark:text-yellow-200' : 'text-stone-700 dark:text-stone-300'
                         }`}>
                           {achievement.name}
                         </h4>
                         <p className={`text-sm ${
-                          isUnlocked ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-600 dark:text-gray-400'
+                          isUnlocked ? 'text-yellow-600 dark:text-yellow-400' : 'text-stone-600 dark:text-stone-400'
                         }`}>
                           {achievement.description}
                         </p>
@@ -922,7 +922,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                         )}
                       </div>
                       <div className={`text-right ${
-                        isUnlocked ? 'text-yellow-600' : 'text-gray-500'
+                        isUnlocked ? 'text-yellow-600' : 'text-stone-500'
                       }`}>
                         <div className="font-bold">{achievement.points} pts</div>
                         {isUnlocked && <FaCheckCircle className="h-5 w-5 text-green-500 mx-auto mt-1" />}
@@ -940,36 +940,36 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
       <Modal isOpen={showCreateGoal} onClose={() => setShowCreateGoal(false)} title="Create Collection Goal">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               Goal Name
             </label>
             <input
               type="text"
               value={newGoal.name}
               onChange={(e) => setNewGoal(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+              className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800" />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               Description
             </label>
             <textarea
               value={newGoal.description}
               onChange={(e) => setNewGoal(prev => ({ ...prev, description: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+              className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800"
         placeholder="Goal description..."
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               Goal Type
             </label>
             <select
               value={newGoal.type}
               onChange={(e) => setNewGoal(prev => ({ ...prev, type: e.target.value as 'set' | 'count' | 'rarity' }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+              className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800">
 
               <option value="set">Complete a specific set</option>
               <option value="count">Collect a certain number of cards</option>
@@ -978,14 +978,14 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               Target
             </label>
             {newGoal.type === 'set' ? (
               <select
                 value={newGoal.target}
                 onChange={(e) => setNewGoal(prev => ({ ...prev, target: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800">
 
                 <option value="">Select a set...</option>
                 {Object.values(collectionAnalysis.setAnalysis).map(set => (
@@ -997,31 +997,31 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 type={newGoal.type === 'count' ? 'number' : 'text'}
                 value={newGoal.target}
                 onChange={(e) => setNewGoal(prev => ({ ...prev, target: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800" />
             )}
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
               Deadline (Optional)
             </label>
             <input
               type="date"
               value={newGoal.deadline}
               onChange={(e) => setNewGoal(prev => ({ ...prev, deadline: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+              className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800" />
           </div>
           
           <div className="flex justify-end space-x-3">
             <button
               onClick={() => setShowCreateGoal(false)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+              className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700">
 
               Cancel
             </button>
             <button
               onClick={createGoal}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">
 
               Create Goal
             </button>

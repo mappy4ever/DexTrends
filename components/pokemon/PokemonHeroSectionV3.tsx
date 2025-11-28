@@ -469,7 +469,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 
                 {/* Total */}
                 <div className="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-700">
-                  <span className="text-sm font-medium text-gray-600 dark:text-stone-400">Total</span>
+                  <span className="text-sm font-medium text-stone-600 dark:text-stone-400">Total</span>
                   <span className="text-lg font-bold" style={{ color: typeColors.accent }}>{totalStats}</span>
                 </div>
               </div>
@@ -552,7 +552,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   <div className="flex-1 flex items-center justify-center">
                     <div className="flex items-center gap-1">
                       {genderRatio.genderless ? (
-                        <span className="text-gray-500 text-xs sm:text-sm font-semibold">Genderless</span>
+                        <span className="text-stone-500 text-xs sm:text-sm font-semibold">Genderless</span>
                       ) : (
                         <>
                           <FaMars className="text-blue-500 w-3 h-3 sm:w-4 sm:h-4 drop-shadow-sm" />

@@ -72,14 +72,14 @@ const OptimizedImage = memo(({
     <div ref={imgRef} className={`relative ${className}`}>
       {loading && !error && !skipLoadingState && (
         <div 
-          className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"
+          className="absolute inset-0 bg-stone-200 dark:bg-stone-700 animate-pulse rounded"
           style={{ width, height }}
         />
       )}
       
       {error && (
         <div 
-          className="absolute inset-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 rounded"
+          className="absolute inset-0 bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 rounded"
           style={{ width, height }}
         >
           <span className="text-2xl">📷</span>

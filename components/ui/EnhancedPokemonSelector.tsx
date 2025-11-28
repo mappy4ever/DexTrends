@@ -34,12 +34,12 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, in
     <button
       onClick={() => onSelect(pokemon)}
       data-testid="pokemon-option"
-      className="w-full p-4 rounded-xl border-2 transition-all transform hover:scale-[1.02] border-gray-200 hover:border-blue-400 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="w-full p-4 rounded-xl border-2 transition-all transform hover:scale-[1.02] border-stone-200 hover:border-amber-400 bg-white hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {/* Type Color Circle - placeholder until Pokemon data is loaded */}
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-stone-300 to-stone-400 flex items-center justify-center">
             <span className="text-sm font-bold text-white">
               {pokemon.name.charAt(0).toUpperCase()}
             </span>
@@ -47,10 +47,10 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, in
           
           {/* Pokemon Info */}
           <div className="text-left">
-            <div className="font-bold text-lg capitalize text-gray-800">
+            <div className="font-bold text-lg capitalize text-stone-800">
               {pokemon.name}
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-stone-500">
               #{pokemonId.padStart(3, '0')}
             </div>
           </div>
@@ -126,16 +126,16 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
               placeholder="Search Pokémon by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-12 py-3 border-2 border-gray-300 rounded-full focus:ring-4 focus:ring-blue-500 focus:ring-opacity-20 focus:border-blue-500 transition-all text-lg"
+              className="w-full px-12 py-3 border-2 border-stone-300 rounded-full focus:ring-4 focus:ring-amber-500 focus:ring-opacity-20 focus:border-blue-500 transition-all text-lg"
               autoFocus
             />
-            <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-600"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -148,11 +148,11 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
             {/* Sort Options */}
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-700">Sort by:</span>
+              <span className="text-sm font-medium text-stone-700">Sort by:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortBy)}
-                className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-3 py-1 border border-stone-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent"
               >
                 <option value="id">Pokédex Number</option>
                 <option value="name">Name (A-Z)</option>
@@ -170,7 +170,7 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
           </div>
           
           {/* Results Count */}
-          <div className="text-sm text-gray-600 text-center">
+          <div className="text-sm text-stone-600 text-center">
             {loading ? 'Loading...' : `${filteredPokemon.length} Pokémon available`}
           </div>
         </div>
@@ -183,8 +183,8 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
         ) : filteredPokemon.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-bold text-gray-700 mb-2">No Pokémon Found</h3>
-            <p className="text-gray-500">
+            <h3 className="text-xl font-bold text-stone-700 mb-2">No Pokémon Found</h3>
+            <p className="text-stone-500">
               {searchTerm ? `No Pokémon match "${searchTerm}"` : 'No Pokémon available'}
             </p>
             {searchTerm && (
@@ -197,7 +197,7 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-3 max-h-[500px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          <div className="grid grid-cols-1 gap-3 max-h-[500px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
             {filteredPokemon.map((pokemon, index) => (
               <PokemonSelectionItem
                 key={pokemon.name}

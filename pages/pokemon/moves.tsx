@@ -189,7 +189,7 @@ const MovesPage: NextPage = () => {
       case 'physical':
         return <span className="text-orange-500">⚔️</span>;
       case 'special':
-        return <span className="text-blue-500">✨</span>;
+        return <span className="text-amber-500">✨</span>;
       case 'status':
         return <span className="text-stone-500">🛡️</span>;
       default:
@@ -391,7 +391,7 @@ const MovesPage: NextPage = () => {
         <meta name="description" content="Browse all Pokémon moves with details on power, accuracy, type, and effects" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
         <div className="container mx-auto px-4 py-6">
           {/* Header */}
           <div className="text-center mb-8">

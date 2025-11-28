@@ -188,7 +188,7 @@ export function UnifiedGrid<T extends GridItem>({
         onClick={() => handleItemClick(item)}
         className={cn(
           'relative group overflow-hidden',
-          'bg-white dark:bg-gray-800',
+          'bg-white dark:bg-stone-800',
           'rounded-2xl shadow-md hover:shadow-xl',
           'transform transition-all duration-200',
           'hover:scale-105 active:scale-95',
@@ -367,7 +367,7 @@ function ProgressiveImage({
       
       {/* Loading spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+        <div className="absolute inset-0 flex items-center justify-center bg-stone-100 dark:bg-stone-800">
           <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
         </div>
       )}

@@ -483,7 +483,7 @@ export const DropZone: React.FC<DropZoneProps> = ({
       isDragging && canAccept && 'drag-active',
       isHovered && 'drag-hover bg-blue-50 border-2 border-blue-300 border-dashed',
       isDragging && !canAccept && 'drag-reject opacity-50',
-      highlightOnHover && isDragging && canAccept && 'border border-gray-300 border-dashed'
+      highlightOnHover && isDragging && canAccept && 'border border-stone-300 border-dashed'
     ].filter(Boolean).join(' ');
     
     return `${baseClasses} ${stateClasses} ${className}`;
@@ -788,14 +788,14 @@ export const DragDropCollectionManager: React.FC<DragDropCollectionManagerProps>
                 <h3 className="text-lg font-semibold capitalize">
                   {collectionId.replace('-', ' ')}
                 </h3>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-stone-500">
                   {cards.length} cards
                 </span>
               </div>
               
               <DropZone
                 id={collectionId}
-                className="collection-drop-zone min-h-40 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" accepts={['card']}>
+                className="collection-drop-zone min-h-40 p-4 bg-stone-50 rounded-lg border-2 border-dashed border-stone-200" accepts={['card']}>
                 <div className="grid grid-cols-2 gap-2">
                   {cards.map((card) => (
                     <DraggableItem
@@ -816,7 +816,7 @@ export const DragDropCollectionManager: React.FC<DragDropCollectionManagerProps>
                 </div>
                 
                 {cards.length === 0 && (
-                  <div className="flex items-center justify-center h-32 text-gray-400">
+                  <div className="flex items-center justify-center h-32 text-stone-400">
                     <div className="text-center">
                       <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />

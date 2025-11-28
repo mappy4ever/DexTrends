@@ -57,7 +57,7 @@ const DamageCalcPage: NextPage = () => {
           </div>
           <button
             onClick={calculate}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded"
+            className="w-full px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors duration-150"
           >
             Calculate
           </button>

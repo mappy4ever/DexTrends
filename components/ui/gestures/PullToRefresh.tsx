@@ -74,7 +74,7 @@ export const PullToRefresh: React.FC<PullToRefreshProps> = ({
           >
             {/* Background gradient */}
             <div 
-              className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-gray-800"
+              className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-stone-800"
               style={{ opacity: progress * 0.3 }}
             />
             
@@ -153,7 +153,7 @@ export const PullToRefresh: React.FC<PullToRefreshProps> = ({
                   "mt-2 text-xs font-medium",
                   pullState.shouldTrigger 
                     ? "text-blue-600 dark:text-blue-400" 
-                    : "text-gray-500 dark:text-gray-400"
+                    : "text-stone-500 dark:text-stone-400"
                 )}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}

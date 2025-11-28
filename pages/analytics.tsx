@@ -130,14 +130,14 @@ const MetricCard: React.FC<{ metric: AnalyticsMetric; icon: React.ReactNode }> =
     <div className="flex items-start justify-between">
       <div className="flex-1">
         <div className="flex items-center gap-3 mb-2">
-          <div className="text-blue-600 dark:text-blue-400">
+          <div className="text-amber-600 dark:text-amber-400">
             {icon}
           </div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <p className="text-sm font-medium text-stone-600 dark:text-stone-400">
             {metric.label}
           </p>
         </div>
-        <p className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+        <p className="text-2xl font-bold text-stone-900 dark:text-white mb-1">
           {typeof metric.value === 'number' ? metric.value.toLocaleString() : metric.value}
         </p>
         {metric.change !== undefined && (
@@ -176,7 +176,7 @@ const PopularItemsList: React.FC<{
       <div className="text-purple-600 dark:text-purple-400">
         {icon}
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+      <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
         {title}
       </h3>
     </div>
@@ -187,24 +187,24 @@ const PopularItemsList: React.FC<{
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="flex items-center justify-between p-3 rounded-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm"
+          className="flex items-center justify-between p-3 rounded-lg bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm"
         >
           <div className="flex-1">
-            <p className="font-medium text-gray-900 dark:text-white">
+            <p className="font-medium text-stone-900 dark:text-white">
               {item.name}
             </p>
             {item.type && (
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p className="text-xs text-stone-600 dark:text-stone-400">
                 {item.type}
               </p>
             )}
           </div>
           <div className="text-right">
-            <p className="font-bold text-gray-900 dark:text-white">
+            <p className="font-bold text-stone-900 dark:text-white">
               {item.count.toLocaleString()}
             </p>
             {showPercentage && item.percentage && (
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p className="text-xs text-stone-600 dark:text-stone-400">
                 {item.percentage}%
               </p>
             )}
@@ -415,9 +415,9 @@ const Analytics: NextPage = () => {
               {Array.from({ length: 6 }).map((_, i) => (
                 <GlassContainer key={i} variant="medium" blur="md">
                   <div className="animate-pulse">
-                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/4 mb-2"></div>
-                    <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-4"></div>
-                    <div className="h-32 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                    <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-1/4 mb-2"></div>
+                    <div className="h-8 bg-stone-300 dark:bg-stone-600 rounded w-1/3 mb-4"></div>
+                    <div className="h-32 bg-stone-300 dark:bg-stone-600 rounded"></div>
                   </div>
                 </GlassContainer>
               ))}
@@ -435,11 +435,11 @@ const Analytics: NextPage = () => {
           <div className="container mx-auto px-4 py-8">
             <GlassContainer variant="medium" blur="md">
               <div className="text-center py-12">
-                <FiBarChart2 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                <FiBarChart2 className="w-16 h-16 text-stone-400 mx-auto mb-4" />
+                <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-2">
                   No Analytics Data Available
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-stone-600 dark:text-stone-400">
                   Analytics data is not available at the moment. Please try again later.
                 </p>
               </div>
@@ -467,10 +467,10 @@ const Analytics: NextPage = () => {
           >
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-stone-900 dark:text-white mb-2">
                   Analytics Dashboard
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-stone-600 dark:text-stone-400">
                   Comprehensive insights into DexTrends usage and performance
                 </p>
               </div>
@@ -496,7 +496,7 @@ const Analytics: NextPage = () => {
             transition={{ delay: 0.1 }}
             className="mb-8"
           >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-4">
               Overview
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
@@ -534,13 +534,13 @@ const Analytics: NextPage = () => {
             transition={{ delay: 0.2 }}
             className="mb-8"
           >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-4">
               Trends & Analytics
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Search Trends Chart */}
               <GlassContainer variant="medium" blur="md" className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Search Trends (30 Days)
                 </h3>
                 <div className="h-64">
@@ -556,7 +556,7 @@ const Analytics: NextPage = () => {
 
               {/* Page Views Chart */}
               <GlassContainer variant="medium" blur="md" className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Page Views by Section
                 </h3>
                 <div className="h-64">
@@ -572,7 +572,7 @@ const Analytics: NextPage = () => {
 
               {/* Device Statistics */}
               <GlassContainer variant="medium" blur="md" className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Device Usage
                 </h3>
                 <div className="h-64">
@@ -588,7 +588,7 @@ const Analytics: NextPage = () => {
 
               {/* Performance Metrics */}
               <GlassContainer variant="medium" blur="md" className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Performance Metrics
                 </h3>
                 <div className="space-y-4">
@@ -616,7 +616,7 @@ const Analytics: NextPage = () => {
             transition={{ delay: 0.3 }}
             className="mb-8"
           >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-4">
               Popular Content
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

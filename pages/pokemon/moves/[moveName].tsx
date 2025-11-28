@@ -217,8 +217,8 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 </div>
 
                 {moveData.effect_chance && (
-                  <div className="mt-4 bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3">
-                    <div className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                  <div className="mt-4 bg-amber-100 dark:bg-amber-900/30 rounded-lg p-3">
+                    <div className="text-sm font-medium text-amber-800 dark:text-amber-200">
                       Effect Chance: {moveData.effect_chance}%
                     </div>
                   </div>
@@ -346,7 +346,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/pokemon/moves"
-                className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
               >
                 <FaGamepad />
                 Browse All Moves

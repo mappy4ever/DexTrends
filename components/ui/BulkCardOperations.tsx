@@ -292,11 +292,11 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
           <div className="flex items-center space-x-3">
             <CheckIcon className="h-6 w-6 text-blue-600" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
                 {selectedCards.length} cards selected
               </h3>
               {selectionAnalytics && (
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-stone-600 dark:text-stone-400">
                   Total value: ${selectionAnalytics.totalValue.toFixed(2)}
                 </p>
               )}
@@ -311,7 +311,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
         </div>
 
         {/* Tab navigation */}
-        <div className="border-b border-gray-200 dark:border-gray-700">
+        <div className="border-b border-stone-200 dark:border-stone-700">
           <nav className="-mb-px flex space-x-8">
             {tabs.map((tab) => (
               <button
@@ -320,7 +320,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                 className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300'
                 }`}
               >
                 <span className="mr-2">{tab.icon}</span>
@@ -335,7 +335,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
           <div className="space-y-6">
             {/* Quick selection buttons */}
             <div>
-              <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+              <h4 className="text-lg font-medium text-stone-900 dark:text-white mb-3">
                 Quick Selection
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -347,7 +347,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                 </button>
                 <button
                   onClick={quickSelect.none}
-                  className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                  className="px-4 py-2 bg-stone-600 text-white rounded-lg hover:bg-stone-700 transition-colors">
 
                   Select None
                 </button>
@@ -364,11 +364,11 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* By Rarity */}
               <div>
-                <h5 className="font-medium text-gray-900 dark:text-white mb-2">Select by Rarity</h5>
+                <h5 className="font-medium text-stone-900 dark:text-white mb-2">Select by Rarity</h5>
                 <select
                   value={rarityFilter}
                   onChange={(e) => setRarityFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800">
 
                   <option value="">Choose a rarity...</option>
                   {[...new Set(cards.map(card => card.rarity))].filter(Boolean).map(rarity => (
@@ -387,14 +387,14 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
 
               {/* By Price */}
               <div>
-                <h5 className="font-medium text-gray-900 dark:text-white mb-2">Select by Price</h5>
+                <h5 className="font-medium text-stone-900 dark:text-white mb-2">Select by Price</h5>
                 <div className="space-y-2">
                   <input
                     type="number"
                     value={priceThreshold}
                     onChange={(e) => setPriceThreshold(e.target.value)}
                     placeholder="Price threshold..."
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                    className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800" />
                   {priceThreshold && (
                     <div className="grid grid-cols-3 gap-2">
                       <button
@@ -426,14 +426,14 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
         {activeTab === 'actions' && (
           <div className="space-y-6">
             {selectedCards.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-8 text-stone-500 dark:text-stone-400">
                 Select some cards to see available actions
               </div>
             ) : (
               <>
                 {/* Favorites */}
                 <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-3 flex items-center">
+                  <h4 className="text-lg font-medium text-stone-900 dark:text-white mb-3 flex items-center">
                     <StarIcon className="h-5 w-5 mr-2" />
                     Favorites
                   </h4>
@@ -448,7 +448,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                     <button
                       onClick={bulkActions.removeFromFavorites}
                       disabled={actionInProgress}
-                      className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50">
+                      className="px-4 py-2 bg-stone-600 text-white rounded-lg hover:bg-stone-700 transition-colors disabled:opacity-50">
 
                       Remove from Favorites
                     </button>
@@ -457,7 +457,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
 
                 {/* Collections */}
                 <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-3 flex items-center">
+                  <h4 className="text-lg font-medium text-stone-900 dark:text-white mb-3 flex items-center">
                     <TagIcon className="h-5 w-5 mr-2" />
                     Collections
                   </h4>
@@ -467,7 +467,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                       value={targetCollection}
                       onChange={(e) => setTargetCollection(e.target.value)}
                       placeholder="Collection name..."
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                      className="flex-1 px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800" />
                     <button
                       onClick={() => bulkActions.addToCollection(targetCollection)}
                       disabled={actionInProgress || !targetCollection.trim()}
@@ -480,7 +480,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
 
                 {/* Tags */}
                 <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+                  <h4 className="text-lg font-medium text-stone-900 dark:text-white mb-3">
                     Custom Tags
                   </h4>
                   
@@ -491,7 +491,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                       value={newTag}
                       onChange={(e) => setNewTag(e.target.value)}
                       placeholder="New tag name..."
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                      className="flex-1 px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800" />
                     <button
                       onClick={addCustomTag}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
@@ -505,11 +505,11 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                     <div className="space-y-2">
                       <div className="flex flex-wrap gap-2">
                         {customTags.map(tag => (
-                          <div key={tag} className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-1">
-                            <span className="text-sm text-gray-700 dark:text-gray-300">{tag}</span>
+                          <div key={tag} className="flex items-center bg-stone-100 dark:bg-stone-700 rounded-lg px-3 py-1">
+                            <span className="text-sm text-stone-700 dark:text-stone-300">{tag}</span>
                             <button
                               onClick={() => removeCustomTag(tag)}
-                              className="ml-2 text-gray-500 hover:text-red-500">
+                              className="ml-2 text-stone-500 hover:text-red-500">
 
                               <XMarkIcon className="h-4 w-4" />
                             </button>
@@ -529,7 +529,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
 
                 {/* Export */}
                 <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-3 flex items-center">
+                  <h4 className="text-lg font-medium text-stone-900 dark:text-white mb-3 flex items-center">
                     <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
                     Export Options
                   </h4>
@@ -572,7 +572,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
         {activeTab === 'analytics' && (
           <div className="space-y-6">
             {!selectionAnalytics ? (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-8 text-stone-500 dark:text-stone-400">
                 Select some cards to see analytics
               </div>
             ) : (
@@ -581,39 +581,39 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-blue-600">{selectionAnalytics.count}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Cards Selected</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Cards Selected</div>
                   </div>
                   <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-green-600">${selectionAnalytics.totalValue.toFixed(2)}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Total Value</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Total Value</div>
                   </div>
                   <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-purple-600">${selectionAnalytics.averageValue.toFixed(2)}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Average Value</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Average Value</div>
                   </div>
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-yellow-600">{Object.keys(selectionAnalytics.sets).length}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Different Sets</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-400">Different Sets</div>
                   </div>
                 </div>
 
                 {/* Breakdown charts */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Rarity breakdown */}
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h5 className="font-semibold text-gray-900 dark:text-white mb-3">Rarity Distribution</h5>
+                  <div className="bg-white dark:bg-stone-800 p-4 rounded-lg border border-stone-200 dark:border-stone-700">
+                    <h5 className="font-semibold text-stone-900 dark:text-white mb-3">Rarity Distribution</h5>
                     <div className="space-y-2">
                       {Object.entries(selectionAnalytics.rarities).map(([rarity, count]) => (
                         <div key={rarity} className="flex justify-between items-center">
-                          <span className="text-sm text-gray-600 dark:text-gray-400">{rarity}</span>
+                          <span className="text-sm text-stone-600 dark:text-stone-400">{rarity}</span>
                           <div className="flex items-center space-x-2">
-                            <div className="w-20 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                            <div className="w-20 h-2 bg-stone-200 dark:bg-stone-600 rounded-full overflow-hidden">
                               <div 
                                 className="h-full bg-blue-500 rounded-full"
         style={{ width: `${(count / selectionAnalytics.count) * 100}%` }}
                               />
                             </div>
-                            <span className="text-sm font-medium text-gray-900 dark:text-white w-8 text-right">
+                            <span className="text-sm font-medium text-stone-900 dark:text-white w-8 text-right">
                               {count}
                             </span>
                           </div>
@@ -623,16 +623,16 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                   </div>
 
                   {/* Set breakdown */}
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h5 className="font-semibold text-gray-900 dark:text-white mb-3">Set Distribution</h5>
+                  <div className="bg-white dark:bg-stone-800 p-4 rounded-lg border border-stone-200 dark:border-stone-700">
+                    <h5 className="font-semibold text-stone-900 dark:text-white mb-3">Set Distribution</h5>
                     <div className="space-y-2 max-h-40 overflow-y-auto">
                       {Object.entries(selectionAnalytics.sets)
                         .sort(([,a], [,b]) => b - a)
                         .slice(0, 10)
                         .map(([setName, count]) => (
                         <div key={setName} className="flex justify-between items-center">
-                          <span className="text-sm text-gray-600 dark:text-gray-400 truncate">{setName}</span>
-                          <span className="text-sm font-medium text-gray-900 dark:text-white ml-2">
+                          <span className="text-sm text-stone-600 dark:text-stone-400 truncate">{setName}</span>
+                          <span className="text-sm font-medium text-stone-900 dark:text-white ml-2">
                             {count}
                           </span>
                         </div>
@@ -642,19 +642,19 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                 </div>
 
                 {/* Notable cards */}
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <h5 className="font-semibold text-gray-900 dark:text-white mb-3">Notable Cards</h5>
+                <div className="bg-white dark:bg-stone-800 p-4 rounded-lg border border-stone-200 dark:border-stone-700">
+                  <h5 className="font-semibold text-stone-900 dark:text-white mb-3">Notable Cards</h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Oldest Card</div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm text-stone-600 dark:text-stone-400">Oldest Card</div>
+                      <div className="font-medium text-stone-900 dark:text-white">
                         {selectionAnalytics.oldestCard?.name} 
                         ({new Date(selectionAnalytics.oldestCard?.set?.releaseDate || '1999-01-01').getFullYear()})
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Newest Card</div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm text-stone-600 dark:text-stone-400">Newest Card</div>
+                      <div className="font-medium text-stone-900 dark:text-white">
                         {selectionAnalytics.newestCard?.name} 
                         ({new Date(selectionAnalytics.newestCard?.set?.releaseDate || '1999-01-01').getFullYear()})
                       </div>
@@ -669,10 +669,10 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
         {/* Action in progress indicator */}
         {actionInProgress && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl">
+            <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-xl">
               <div className="flex items-center space-x-3">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                <span className="text-gray-900 dark:text-white">Processing bulk action...</span>
+                <span className="text-stone-900 dark:text-white">Processing bulk action...</span>
               </div>
             </div>
           </div>

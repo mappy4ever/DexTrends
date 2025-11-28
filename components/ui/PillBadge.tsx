@@ -46,17 +46,17 @@ export const PillBadge: React.FC<PillBadgeProps> = ({
     filled: cn(
       'text-white border-transparent',
       selected ? 'ring-2 ring-offset-2' : '',
-      !color && 'bg-gray-600 dark:bg-gray-700'
+      !color && 'bg-stone-600 dark:bg-stone-700'
     ),
     outlined: cn(
       'bg-transparent border-2',
       selected ? 'ring-2 ring-offset-1' : '',
-      !color && 'border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300'
+      !color && 'border-stone-300 text-stone-700 dark:border-stone-600 dark:text-stone-300'
     ),
     ghost: cn(
       'bg-transparent border-transparent',
-      selected ? 'bg-opacity-20' : 'hover:bg-gray-100 dark:hover:bg-gray-800',
-      !color && 'text-gray-700 dark:text-gray-300'
+      selected ? 'bg-opacity-20' : 'hover:bg-stone-100 dark:hover:bg-stone-800',
+      !color && 'text-stone-700 dark:text-stone-300'
     )
   };
 
@@ -78,7 +78,7 @@ export const PillBadge: React.FC<PillBadgeProps> = ({
         <span className={cn(
           "inline-flex items-center justify-center rounded-full min-w-[1.25rem] h-5 px-1",
           "bg-white/20 text-[0.8em] font-semibold",
-          variant === 'outlined' && "bg-gray-100 dark:bg-gray-800"
+          variant === 'outlined' && "bg-stone-100 dark:bg-stone-800"
         )}>
           {count > 99 ? '99+' : count}
         </span>
@@ -94,7 +94,7 @@ export const PillBadge: React.FC<PillBadgeProps> = ({
             "inline-flex items-center justify-center -mr-1 ml-1",
             "w-4 h-4 rounded-full transition-all",
             "hover:bg-white/20 dark:hover:bg-black/20",
-            variant === 'outlined' && "hover:bg-gray-200 dark:hover:bg-gray-700"
+            variant === 'outlined' && "hover:bg-stone-200 dark:hover:bg-stone-700"
           )}
           disabled={disabled}
         >

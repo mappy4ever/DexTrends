@@ -821,10 +821,10 @@ export default function StarterDetailPage() {
                 {regionData.region} Starters
               </span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-xl text-stone-600 dark:text-stone-400 mb-2">
               Generation {regionData.generation} • {regionData.games.join(", ")}
             </p>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-3xl mx-auto">
               {regionData.description}
             </p>
           </div>
@@ -835,7 +835,7 @@ export default function StarterDetailPage() {
               <SlideUp key={starter.id} delay={index * 0.1}>
                 <CardHover>
                   <div className={`rounded-2xl overflow-hidden ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                    theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                   } shadow-xl h-full`}>
                     {/* Header with Type Icon */}
                     <div className={`p-6 bg-gradient-to-r ${
@@ -855,7 +855,7 @@ export default function StarterDetailPage() {
                     </div>
 
                     {/* Pokemon Image */}
-                    <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-900">
+                    <div className="relative h-64 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-900">
                       <Image
                         src={getPokemonImage(starter.id)}
                         alt={starter.name}
@@ -872,7 +872,7 @@ export default function StarterDetailPage() {
 
                     {/* Info Section */}
                     <div className="p-6">
-                      <p className="text-gray-600 dark:text-gray-400 mb-4">
+                      <p className="text-stone-600 dark:text-stone-400 mb-4">
                         {starter.description}
                       </p>
 
@@ -882,7 +882,7 @@ export default function StarterDetailPage() {
                         <div className="flex flex-wrap gap-2">
                           {starter.abilities.map((ability) => (
                             <span key={ability} className={`px-3 py-1 rounded-full text-xs ${
-                              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+                              theme === 'dark' ? 'bg-stone-700' : 'bg-stone-200'
                             }`}>
                               {ability}
                             </span>
@@ -901,7 +901,7 @@ export default function StarterDetailPage() {
                                 onMouseEnter={() => setHoveredEvolution(`${starter.id}-${evo.id}`)}
                                 onMouseLeave={() => setHoveredEvolution(null)}
                               >
-                                <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600">
+                                <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-stone-300 dark:border-stone-600">
                                   <Image
                                     src={getPokemonImage(evo.id)}
                                     alt={evo.name}
@@ -916,7 +916,7 @@ export default function StarterDetailPage() {
                                 )}
                               </div>
                               {evoIndex < starter.evolutions.length - 1 && (
-                                <BsChevronRight className="text-gray-400" />
+                                <BsChevronRight className="text-stone-400" />
                               )}
                             </React.Fragment>
                           ))}
@@ -940,7 +940,7 @@ export default function StarterDetailPage() {
           {/* Comparison Section */}
           <SlideUp>
             <div className={`rounded-2xl overflow-hidden ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+              theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
             } p-8`}>
               <h2 className="text-2xl font-bold mb-6 text-center">Base Stats Comparison</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -961,7 +961,7 @@ export default function StarterDetailPage() {
                             stroke="currentColor"
                             strokeWidth="8"
                             fill="none"
-                            className="text-gray-300 dark:text-gray-600"
+                            className="text-stone-300 dark:text-stone-600"
                           />
                           <circle
                             cx="64"
@@ -974,12 +974,12 @@ export default function StarterDetailPage() {
                             className={
                               starter.types[0] === 'grass' ? 'text-green-500' :
                               starter.types[0] === 'fire' ? 'text-red-500' :
-                              'text-blue-500'
+                              'text-amber-500'
                             }
                           />
                         </svg>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Total Base Stats</p>
+                      <p className="text-sm text-stone-600 dark:text-stone-400">Total Base Stats</p>
                     </div>
                   );
                 })}
@@ -996,7 +996,7 @@ export default function StarterDetailPage() {
               <SlideUp>
                 <div 
                   className={`max-w-6xl w-full rounded-2xl overflow-hidden ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                    theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                   } max-h-[90vh] overflow-y-auto`}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -1026,7 +1026,7 @@ export default function StarterDetailPage() {
                         <div className="space-y-4 mb-8">
                           {selectedStarter.evolutions.map((evo, idx) => (
                             <div key={evo.id} className={`flex items-center gap-4 p-4 rounded-xl ${
-                              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
+                              theme === 'dark' ? 'bg-stone-700' : 'bg-stone-100'
                             }`}>
                               <div className="relative w-24 h-24">
                                 <Image
@@ -1038,7 +1038,7 @@ export default function StarterDetailPage() {
                               </div>
                               <div className="flex-1">
                                 <h4 className="font-bold text-lg">{evo.name}</h4>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <p className="text-sm text-stone-600 dark:text-stone-400">
                                   {idx === 0 ? 'Base Form' : `Evolves at Level ${evo.level}`}
                                 </p>
                                 <div className="flex gap-2 mt-2">
@@ -1060,7 +1060,7 @@ export default function StarterDetailPage() {
                           {selectedStarter.funFacts.map((fact, idx) => (
                             <li key={idx} className="flex items-start gap-2">
                               <BsStar className="text-yellow-500 mt-1 flex-shrink-0" />
-                              <span className="text-gray-600 dark:text-gray-400">{fact}</span>
+                              <span className="text-stone-600 dark:text-stone-400">{fact}</span>
                             </li>
                           ))}
                         </ul>
@@ -1079,7 +1079,7 @@ export default function StarterDetailPage() {
                                 </span>
                                 <span className="text-sm font-bold">{value}</span>
                               </div>
-                              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                              <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-3">
                                 <div 
                                   className={`bg-gradient-to-r ${getStatColor(value)} rounded-full h-3 transition-all duration-500`}
                                   style={{ width: `${getStatPercentage(value)}%` }}
@@ -1087,7 +1087,7 @@ export default function StarterDetailPage() {
                               </div>
                             </div>
                           ))}
-                          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                          <div className="pt-4 border-t border-stone-200 dark:border-stone-700">
                             <div className="flex justify-between">
                               <span className="font-bold">Total</span>
                               <span className="font-bold">
@@ -1099,7 +1099,7 @@ export default function StarterDetailPage() {
 
                         {/* Strategy */}
                         <h3 className="text-2xl font-bold mb-4">Battle Strategy</h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4">
+                        <p className="text-stone-600 dark:text-stone-400 mb-4">
                           {selectedStarter.strategy}
                         </p>
 

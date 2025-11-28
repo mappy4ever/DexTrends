@@ -19,7 +19,7 @@ interface DynamicLoaderProps {
 const DynamicLoader: React.FC<DynamicLoaderProps> = ({ children, ...props }) => (
   <div className="flex items-center justify-center p-4" {...props}>
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-    {children && <span className="ml-2 text-sm text-gray-600">{children}</span>}
+    {children && <span className="ml-2 text-sm text-stone-600">{children}</span>}
   </div>
 );
 
@@ -95,7 +95,7 @@ export const DynamicPriceAlerts = dynamic(
 export const DynamicFontAwesome = dynamic(
   () => import('./FontAwesomeIcon'),
   {
-    loading: () => <span className="inline-block w-4 h-4 bg-gray-200 rounded animate-pulse"></span>,
+    loading: () => <span className="inline-block w-4 h-4 bg-stone-200 rounded animate-pulse"></span>,
     ssr: false
   }
 ) as ComponentType<any>; // FontAwesome icon component

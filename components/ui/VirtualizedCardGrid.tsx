@@ -174,7 +174,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   if (cards.length === 0) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-gray-500">No cards to display</p>
+        <p className="text-stone-500">No cards to display</p>
       </div>
     );
   }
@@ -203,7 +203,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
       </div>
       
       {/* Stats */}
-      <div className="text-center mt-4 text-sm text-gray-500">
+      <div className="text-center mt-4 text-sm text-stone-500">
         {cards.length} cards
       </div>
     </div>

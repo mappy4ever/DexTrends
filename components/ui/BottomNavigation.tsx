@@ -67,7 +67,7 @@ export const BottomNavigation: React.FC = () => {
       href: '/search', 
       label: 'Search', 
       icon: <Search className="w-5 h-5" />,
-      color: 'text-gray-600 dark:text-gray-400'
+      color: 'text-stone-600 dark:text-stone-400'
     }
   ];
 
@@ -96,8 +96,8 @@ export const BottomNavigation: React.FC = () => {
       <nav 
         className={cn(
           "fixed bottom-0 left-0 right-0 z-40 md:hidden",
-          "bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg",
-          "border-t border-gray-200 dark:border-gray-700",
+          "bg-white/95 dark:bg-stone-900/95 backdrop-blur-lg",
+          "border-t border-stone-200 dark:border-stone-700",
           "safe-area-bottom" // For iOS safe area
         )}
       >
@@ -139,7 +139,7 @@ export const BottomNavigation: React.FC = () => {
                 <motion.div
                   className={cn(
                     "mb-1 transition-colors duration-200",
-                    active ? item.color : "text-gray-500 dark:text-gray-400"
+                    active ? item.color : "text-stone-500 dark:text-stone-400"
                   )}
                   whileTap={{ scale: 0.9 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -152,8 +152,8 @@ export const BottomNavigation: React.FC = () => {
                   className={cn(
                     "text-[10px] font-medium transition-colors duration-200",
                     active 
-                      ? "text-gray-900 dark:text-white" 
-                      : "text-gray-500 dark:text-gray-400"
+                      ? "text-stone-900 dark:text-white" 
+                      : "text-stone-500 dark:text-stone-400"
                   )}
                 >
                   {item.label}
@@ -161,7 +161,7 @@ export const BottomNavigation: React.FC = () => {
                 
                 {/* Touch feedback ripple */}
                 <motion.div
-                  className="absolute inset-0 rounded-lg bg-gray-100 dark:bg-gray-800 opacity-0"
+                  className="absolute inset-0 rounded-lg bg-stone-100 dark:bg-stone-800 opacity-0"
                   whileTap={{ opacity: 0.1 }}
                   transition={{ duration: 0.15 }}
                 />

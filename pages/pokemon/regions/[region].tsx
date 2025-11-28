@@ -632,7 +632,7 @@ export default function RegionDetailPage() {
         </div>
 
         {/* Main Content */}
-        <main className="relative bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 pt-16 overflow-x-hidden">
+        <main className="relative bg-gradient-to-br from-stone-50 via-purple-50/30 to-stone-100 dark:from-stone-900 dark:via-purple-900/20 dark:to-stone-900 pt-16 overflow-x-hidden">
           {/* Content Sections */}
           <div className="container mx-auto px-2 sm:px-4 py-8 space-y-16 max-w-full overflow-hidden">
             {/* Overview Section */}
@@ -738,7 +738,7 @@ export default function RegionDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <div className="backdrop-blur-xl bg-gradient-to-br from-gray-100/90 to-gray-200/80 dark:from-gray-900/50 dark:to-gray-800/50 border border-stone-200 dark:border-stone-700 shadow-xl rounded-2xl p-8">
+              <div className="backdrop-blur-xl bg-gradient-to-br from-stone-100/90 to-stone-200/80 dark:from-stone-900/50 dark:to-stone-800/50 border border-stone-200 dark:border-stone-700 shadow-xl rounded-2xl p-8">
                 <div className="space-y-12">
                   <div className="text-center">
                     <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-2">
@@ -756,7 +756,7 @@ export default function RegionDetailPage() {
                         <h3 className="text-xl font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300">
                           Gym Leaders
                         </h3>
-                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"></div>
+                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-stone-400 to-transparent rounded-full"></div>
                       </div>
                       <GymLeaderGrid region={region} gymLeaders={region.gymLeaders} theme={theme} />
                     </div>
@@ -769,7 +769,7 @@ export default function RegionDetailPage() {
                         <h3 className="text-xl font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300">
                           Elite Four & Champion
                         </h3>
-                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"></div>
+                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-stone-400 to-transparent rounded-full"></div>
                       </div>
                       <EliteFourGrid 
                         region={region} 
@@ -826,7 +826,7 @@ export default function RegionDetailPage() {
                               whileHover={{ scale: 1.02, x: 10 }}
                               className="relative group cursor-pointer"
                             >
-                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-blue-50/60 to-white/70 dark:from-gray-800/80 dark:via-blue-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
+                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-blue-50/60 to-white/70 dark:from-stone-800/80 dark:via-blue-900/30 dark:to-stone-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
                                 {/* Location Type Badge */}
                                 <div className="absolute top-3 right-3 z-10">
                                   <span className="px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md bg-gradient-to-r from-amber-500/80 to-amber-500/80 text-white shadow-md">
@@ -893,7 +893,7 @@ export default function RegionDetailPage() {
                               whileHover={{ scale: 1.02, x: -10 }}
                               className="relative group cursor-pointer"
                             >
-                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/60 to-white/70 dark:from-gray-800/80 dark:via-purple-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
+                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/60 to-white/70 dark:from-stone-800/80 dark:via-purple-900/30 dark:to-stone-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
                                 {/* Special Location Indicator */}
                                 <div className="absolute top-3 right-3 z-10">
                                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-md animate-pulse">
@@ -1045,7 +1045,7 @@ export default function RegionDetailPage() {
                           whileHover={{ scale: 1.05, rotateY: 5 }}
                           className="relative group"
                         >
-                          <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-yellow-50/60 to-white/80 dark:from-gray-800/90 dark:via-yellow-900/20 dark:to-gray-900/80 shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/30 dark:border-stone-700/30">
+                          <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-yellow-50/60 to-white/80 dark:from-stone-800/90 dark:via-yellow-900/20 dark:to-stone-900/80 shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/30 dark:border-stone-700/30">
                             {/* Fact Number Badge */}
                             <div className="absolute top-4 left-4 z-10">
                               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-transform duration-300">

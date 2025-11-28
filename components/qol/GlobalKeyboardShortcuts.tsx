@@ -69,47 +69,47 @@ const GlobalKeyboardShortcuts: React.FC = () => {
     
     const helpContent = `
       <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onclick="this.remove()">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md mx-4" onclick="event.stopPropagation()">
-          <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Keyboard Shortcuts</h3>
+        <div class="bg-white dark:bg-stone-800 rounded-lg p-6 max-w-md mx-4" onclick="event.stopPropagation()">
+          <h3 class="text-lg font-bold mb-4 text-stone-900 dark:text-white">Keyboard Shortcuts</h3>
           <div class="space-y-2 text-sm">
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Search</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Ctrl+K</span>
+              <span class="text-stone-600 dark:text-stone-400">Search</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">Ctrl+K</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Home</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">H</span>
+              <span class="text-stone-600 dark:text-stone-400">Home</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">H</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Pokedex</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">P</span>
+              <span class="text-stone-600 dark:text-stone-400">Pokedex</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">P</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">TCG Sets</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">T</span>
+              <span class="text-stone-600 dark:text-stone-400">TCG Sets</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">T</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Pocket Mode</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">K</span>
+              <span class="text-stone-600 dark:text-stone-400">Pocket Mode</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">K</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Favorites</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">F</span>
+              <span class="text-stone-600 dark:text-stone-400">Favorites</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">F</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Leaderboard</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">L</span>
+              <span class="text-stone-600 dark:text-stone-400">Leaderboard</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">L</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Help</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">?</span>
+              <span class="text-stone-600 dark:text-stone-400">Help</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">?</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600 dark:text-gray-400">Close Modal</span>
-              <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Esc</span>
+              <span class="text-stone-600 dark:text-stone-400">Close Modal</span>
+              <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">Esc</span>
             </div>
           </div>
-          <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onclick="this.closest('.fixed').remove()">
+          <button class="mt-4 px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-600" onclick="this.closest('.fixed').remove()">
             Close
           </button>
         </div>

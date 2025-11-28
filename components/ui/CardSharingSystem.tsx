@@ -330,10 +330,10 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         style={{ width: '800px', padding: '40px', backgroundColor: '#ffffff' }}
       >
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl font-bold text-stone-900 mb-2">
             My Pokemon Card Collection
           </h2>
-          <p className="text-gray-600">
+          <p className="text-stone-600">
             {cards.length} cards • Shared from DexTrends
           </p>
         </div>
@@ -341,20 +341,20 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         <div className="grid grid-cols-3 gap-6">
           {displayCards.map((card, index) => (
             <div key={card.id} className="text-center">
-              <div className="bg-gray-100 rounded-lg p-4 mb-3">
+              <div className="bg-stone-100 rounded-lg p-4 mb-3">
                 {getCardImages(card).small ? (
                   <img 
                     src={getCardImages(card).small} 
                     alt={card.name}
                     className="w-full h-32 object-contain mx-auto"  />
                 ) : (
-                  <div className="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                    <FaImage className="h-8 w-8 text-gray-400" />
+                  <div className="w-full h-32 bg-stone-200 rounded flex items-center justify-center">
+                    <FaImage className="h-8 w-8 text-stone-400" />
                   </div>
                 )}
               </div>
-              <h3 className="font-semibold text-sm text-gray-900">{card.name}</h3>
-              <p className="text-xs text-gray-600">{getCardSet(card).name}</p>
+              <h3 className="font-semibold text-sm text-stone-900">{card.name}</h3>
+              <p className="text-xs text-stone-600">{getCardSet(card).name}</p>
               {exportOptions.includePrices && (
                 <p className="text-xs font-medium text-green-600">
                   ${String(getCardProperty(card, 'currentPrice') || getCardProperty(card, 'price') || 'N/A')}
@@ -366,14 +366,14 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         
         {cards.length > maxCards && (
           <div className="text-center mt-6">
-            <p className="text-gray-600">
+            <p className="text-stone-600">
               +{cards.length - maxCards} more cards
             </p>
           </div>
         )}
         
-        <div className="text-center mt-8 pt-6 border-t border-gray-200">
-          <p className="text-xs text-gray-500">
+        <div className="text-center mt-8 pt-6 border-t border-stone-200">
+          <p className="text-xs text-stone-500">
             Powered by DexTrends • {window.location.origin}
           </p>
         </div>
@@ -467,7 +467,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
     <Modal isOpen={isOpen} onClose={onClose || (() => {})} title="Share & Export Cards" size="xl">
       <div className="space-y-6">
         {/* Tab navigation */}
-        <div className="border-b border-gray-200 dark:border-gray-700">
+        <div className="border-b border-stone-200 dark:border-stone-700">
           <nav className="-mb-px flex space-x-8">
             {tabs.map((tab) => (
               <button
@@ -476,7 +476,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                 className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap flex items-center space-x-2 ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300'
                 }`}
               >
                 {tab.icon}
@@ -490,7 +490,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         {activeTab === 'share' && (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-medium text-stone-900 dark:text-white mb-4">
                 Share your {shareMode === 'single' ? 'card' : 'collection'}
               </h3>
               
@@ -501,7 +501,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     shareFormat === 'link'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaLink className="h-6 w-6" />
@@ -513,7 +513,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     shareFormat === 'qr'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaQrcode className="h-6 w-6" />
@@ -525,7 +525,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     shareFormat === 'image'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaImage className="h-6 w-6" />
@@ -537,7 +537,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     shareFormat === 'social'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaShare className="h-6 w-6" />
@@ -547,11 +547,11 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
 
               {/* Generated content */}
               {generatedLink && shareFormat === 'link' && (
-                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                <div className="bg-stone-50 dark:bg-stone-800 p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 mr-3">
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Share Link</p>
-                      <p className="text-sm font-mono bg-white dark:bg-gray-700 p-2 rounded border break-all">
+                      <p className="text-sm text-stone-600 dark:text-stone-400 mb-1">Share Link</p>
+                      <p className="text-sm font-mono bg-white dark:bg-stone-700 p-2 rounded border break-all">
                         {generatedLink}
                       </p>
                     </div>
@@ -566,10 +566,10 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
               )}
 
               {generatedQR && shareFormat === 'qr' && (
-                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">QR Code</p>
+                <div className="bg-stone-50 dark:bg-stone-800 p-4 rounded-lg text-center">
+                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-3">QR Code</p>
                   <img src={generatedQR} alt="QR Code" className="mx-auto" />
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-stone-500 mt-2">
                     Scan with any QR code scanner to view the cards
                   </p>
                 </div>
@@ -577,7 +577,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
 
               {/* Share options */}
               <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white">Share Options</h4>
+                <h4 className="font-medium text-stone-900 dark:text-white">Share Options</h4>
                 <div className="space-y-3">
                   <label className="flex items-center">
                     <input
@@ -621,7 +621,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         {activeTab === 'export' && (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-medium text-stone-900 dark:text-white mb-4">
                 Export your cards
               </h3>
               
@@ -632,7 +632,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     exportFormat === 'json'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaDownload className="h-6 w-6" />
@@ -644,7 +644,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     exportFormat === 'csv'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaDownload className="h-6 w-6" />
@@ -656,7 +656,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     exportFormat === 'pdf'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaDownload className="h-6 w-6" />
@@ -668,7 +668,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                   className={`p-4 border-2 rounded-lg flex flex-col items-center space-y-2 transition-colors ${
                     exportFormat === 'image'
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                      : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <FaImage className="h-6 w-6" />
@@ -678,7 +678,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
 
               {/* Export options */}
               <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white">Export Options</h4>
+                <h4 className="font-medium text-stone-900 dark:text-white">Export Options</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <label className="flex items-center">
@@ -720,13 +720,13 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
 
                 {(exportFormat === 'image' || exportFormat === 'pdf') && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                       Template Style
                     </label>
                     <select
                       value={exportOptions.templateStyle}
                       onChange={(e) => setExportOptions(prev => ({ ...prev, templateStyle: e.target.value as ExportOptions['templateStyle'] }))}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                      className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800">
 
                       <option value="modern">Modern</option>
                       <option value="classic">Classic</option>
@@ -755,10 +755,10 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         {/* Loading overlay */}
         {isGenerating && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl">
+            <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-xl">
               <div className="flex items-center space-x-3">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                <span className="text-gray-900 dark:text-white">
+                <span className="text-stone-900 dark:text-white">
                   {activeTab === 'share' ? 'Generating share content...' : 'Exporting cards...'}
                 </span>
               </div>

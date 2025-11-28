@@ -39,7 +39,7 @@ export const RippleButton: React.FC<RippleButtonProps> = ({
 
   const variantClasses = {
     primary: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white',
-    secondary: 'bg-white/80 dark:bg-gray-800/80 text-gray-800 dark:text-white',
+    secondary: 'bg-white/80 dark:bg-stone-800/80 text-stone-800 dark:text-white',
     ghost: 'bg-transparent hover:bg-white/10'
   };
 
@@ -248,7 +248,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       {children}
       <motion.div
         className={cn(
-          'absolute z-50 px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg whitespace-nowrap pointer-events-none',
+          'absolute z-50 px-3 py-2 text-sm font-medium text-white bg-stone-900 rounded-lg whitespace-nowrap pointer-events-none',
           positionClasses[position]
         )}
         initial={{ opacity: 0, scale: 0.8 }}
@@ -370,7 +370,7 @@ export const ElasticTabs: React.FC<ElasticTabsProps> = ({
   onTabChange
 }) => {
   return (
-    <div className="relative flex space-x-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
+    <div className="relative flex space-x-2 p-1 bg-stone-100 dark:bg-stone-800 rounded-lg">
       {tabs.map((tab, index) => (
         <button
           key={tab}
@@ -379,7 +379,7 @@ export const ElasticTabs: React.FC<ElasticTabsProps> = ({
             'relative z-10 px-4 py-2 text-sm font-medium transition-colors',
             activeTab === index
               ? 'text-white'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           )}
         >
           {tab}

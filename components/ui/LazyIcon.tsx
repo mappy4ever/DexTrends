@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 
 // Create a generic icon placeholder
 const IconPlaceholder = ({ className }: { className?: string }) => (
-  <div className={`w-4 h-4 bg-gray-300 rounded animate-pulse ${className || ''}`} />
+  <div className={`w-4 h-4 bg-stone-300 rounded animate-pulse ${className || ''}`} />
 );
 
 // Dynamic icon imports with specific icon names

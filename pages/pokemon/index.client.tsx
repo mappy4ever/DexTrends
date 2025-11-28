@@ -38,14 +38,14 @@ interface Section {
 }
 
 // Component that renders after dynamic imports are loaded
-const PokemonHubContent: FC<PokemonHubContentProps> = ({ 
-  FadeIn, 
-  SlideUp, 
-  CardHover, 
-  StaggeredChildren, 
-  FullBleedWrapper, 
-  useTheme, 
-  pokemonTheme 
+const PokemonHubContent: FC<PokemonHubContentProps> = ({
+  FadeIn,
+  SlideUp,
+  CardHover,
+  StaggeredChildren,
+  FullBleedWrapper,
+  useTheme,
+  pokemonTheme
 }) => {
   const router = useRouter();
   const { theme } = useTheme();
@@ -57,8 +57,8 @@ const PokemonHubContent: FC<PokemonHubContentProps> = ({
       description: "Explore all Pokémon regions from Kanto to Paldea",
       icon: <BsGlobeEuropeAfrica size={40} />,
       href: "/pokemon/regions",
-      color: "from-blue-500 to-purple-500",
-      hoverColor: "hover:from-blue-600 hover:to-purple-600"
+      color: "from-emerald-500 to-teal-500",
+      hoverColor: "hover:from-emerald-600 hover:to-teal-600"
     },
     {
       id: "games",
@@ -75,8 +75,8 @@ const PokemonHubContent: FC<PokemonHubContentProps> = ({
       description: "Meet all starter Pokémon from every generation",
       icon: <BsBook size={40} />,
       href: "/pokemon/starters",
-      color: "from-green-500 to-blue-500",
-      hoverColor: "hover:from-green-600 hover:to-blue-600"
+      color: "from-green-500 to-emerald-500",
+      hoverColor: "hover:from-green-600 hover:to-emerald-600"
     },
     {
       id: "pokedex",
@@ -93,8 +93,8 @@ const PokemonHubContent: FC<PokemonHubContentProps> = ({
       description: "Explore Pokémon Trading Card Game collection",
       icon: <GiCardPickup size={40} />,
       href: "/",
-      color: "from-yellow-500 to-orange-500",
-      hoverColor: "hover:from-yellow-600 hover:to-orange-600"
+      color: "from-amber-500 to-orange-500",
+      hoverColor: "hover:from-amber-600 hover:to-orange-600"
     },
     {
       id: "abilities",
@@ -135,33 +135,33 @@ const PokemonHubContent: FC<PokemonHubContentProps> = ({
       <div className="container mx-auto px-4 py-8">
         <FadeIn>
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-amber-600 to-amber-700 bg-clip-text text-transparent">
               Pokémon Hub
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               Your gateway to the Pokémon universe
             </p>
           </div>
         </FadeIn>
 
         <StaggeredChildren>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
             {sections.map((section, index) => (
               <SlideUp key={section.id} delay={index * 100}>
                 <CardHover>
                   <Link
                     href={section.href}
-                    className={`block p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group`}
+                    className={`block p-6 rounded-2xl shadow-lg bg-white dark:bg-stone-800 hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-2 group`}
                   >
                     <div
-                      className={`w-20 h-20 rounded-full bg-gradient-to-r ${section.color} ${section.hoverColor} flex items-center justify-center mb-4 mx-auto text-white transition-all duration-300 group-hover:scale-110`}
+                      className={`w-20 h-20 rounded-full bg-gradient-to-r ${section.color} ${section.hoverColor} flex items-center justify-center mb-4 mx-auto text-white transition-all duration-200 group-hover:scale-110`}
                     >
                       {section.icon}
                     </div>
-                    <h2 className="text-2xl font-bold mb-2 text-center text-gray-800 dark:text-white">
+                    <h2 className="text-2xl font-bold mb-2 text-center text-stone-800 dark:text-white">
                       {section.title}
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-300 text-center">
+                    <p className="text-stone-600 dark:text-stone-300 text-center">
                       {section.description}
                     </p>
                   </Link>
@@ -177,26 +177,26 @@ const PokemonHubContent: FC<PokemonHubContentProps> = ({
             <h2 className="text-3xl font-bold mb-8 text-center">
               Popular Sections
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+              <div className="bg-white dark:bg-stone-800 rounded-xl p-6 shadow-lg">
                 <h3 className="text-xl font-semibold mb-4">Latest Pokémon</h3>
-                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <ul className="space-y-2 text-stone-600 dark:text-stone-300">
                   <li>• Generation IX Pokémon</li>
                   <li>• Paldea Region Updates</li>
                   <li>• New Forms & Variants</li>
                 </ul>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <div className="bg-white dark:bg-stone-800 rounded-xl p-6 shadow-lg">
                 <h3 className="text-xl font-semibold mb-4">Featured Games</h3>
-                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <ul className="space-y-2 text-stone-600 dark:text-stone-300">
                   <li>• Pokémon Scarlet & Violet</li>
                   <li>• Pokémon Legends: Arceus</li>
                   <li>• Pokémon GO Updates</li>
                 </ul>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <div className="bg-white dark:bg-stone-800 rounded-xl p-6 shadow-lg">
                 <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <ul className="space-y-2 text-stone-600 dark:text-stone-300">
                   <li>• Type Effectiveness Chart</li>
                   <li>• Evolution Methods</li>
                   <li>• Competitive Guides</li>
@@ -246,10 +246,10 @@ const PokemonHub: NextPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Loading Error</h1>
-          <p className="text-gray-600 mb-4">{loadError}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          <p className="text-stone-600 mb-4">{loadError}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-150"
           >
             Reload Page
           </button>
@@ -262,8 +262,8 @@ const PokemonHub: NextPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading Pokémon Hub...</p>
+          <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-stone-600">Loading Pokémon Hub...</p>
         </div>
       </div>
     );
