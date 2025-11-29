@@ -478,8 +478,8 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             {/* Additional Info Row - All in one container */}
             <div className="flex items-center justify-center mt-6">
               {/* Unified Stats Container */}
-              <motion.div 
-                className="relative rounded-2xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300"
+              <motion.div
+                className="relative rounded-xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}

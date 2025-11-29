@@ -34,9 +34,9 @@ export const FORMAT_INFO: Record<string, FormatInfo> = {
 // Complete tier descriptions including all formats
 export const TIER_INFO: Record<string, TierInfo> = {
   // Anything Goes
-  'AG': { 
+  'AG': {
     description: 'Anything Goes - No restrictions, all Pokemon and strategies allowed',
-    color: 'from-black to-gray-800'
+    color: 'from-black to-stone-800'
   },
   
   // Singles Tiers
@@ -94,9 +94,9 @@ export const TIER_INFO: Record<string, TierInfo> = {
     description: 'Little Cup Uber - Banned from Little Cup for being too strong',
     color: 'from-pink-700 to-pink-600'
   },
-  'NFE': { 
+  'NFE': {
     description: 'Not Fully Evolved - Can still evolve further',
-    color: 'from-gray-600 to-gray-500'
+    color: 'from-stone-600 to-stone-500'
   },
   
   // Doubles Tiers (shown without D prefix in UI)
@@ -127,19 +127,19 @@ export const TIER_INFO: Record<string, TierInfo> = {
     color: 'from-teal-400 to-teal-500'
   },
   
-  'Untiered': { 
+  'Untiered': {
     description: 'Not ranked in any competitive tier',
-    color: 'from-gray-600 to-gray-500'
+    color: 'from-stone-600 to-stone-500'
   },
   
   // Special Status Tiers
-  'Illegal': { 
+  'Illegal': {
     description: 'Not obtainable or usable in this generation/format',
-    color: 'from-gray-800 to-gray-700'
+    color: 'from-stone-800 to-stone-700'
   },
-  'Unreleased': { 
+  'Unreleased': {
     description: 'Not yet released but exists in game data',
-    color: 'from-gray-700 to-gray-600'
+    color: 'from-stone-700 to-stone-600'
   }
 };
 

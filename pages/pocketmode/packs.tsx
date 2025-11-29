@@ -4,12 +4,15 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import PackOpening from '../../components/ui/PackOpening';
-import StyledBackButton from '../../components/ui/StyledBackButton';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
+import { PageHeader } from '../../components/ui/BreadcrumbNavigation';
+import Container from '../../components/ui/Container';
+import { cn } from '../../utils/cn';
 import logger from '../../utils/logger';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
@@ -552,7 +555,7 @@ const Expansions: NextPage = () => {
         <Head>
           <title>Expansions | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="bg-black/60 backdrop-blur-xl rounded-3xl p-12 text-center border border-red-500/20 shadow-2xl">
+        <div className="bg-black/60 backdrop-blur-xl rounded-xl p-12 text-center border border-red-500/20 shadow-2xl">
           <div className="text-6xl mb-6">❌</div>
           <h2 className="text-3xl font-bold mb-4 text-red-400">Oops! Something went wrong</h2>
           <p className="text-stone-300 mb-8 text-lg">{error}</p>
@@ -575,78 +578,53 @@ const Expansions: NextPage = () => {
         <meta name="description" content="Experience realistic Pokemon Pocket booster pack opening with authentic rarity rates" />
       </Head>
       <div className="min-h-screen">
-      {/* Clean Header */}
-      <div className="sticky top-0 z-40 bg-white/95 dark:bg-stone-900/95 backdrop-blur-sm border-b border-border-color shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <StyledBackButton 
-                variant="pocket" 
-                text="Back to Pocket Mode"
-                onClick={() => router.push('/pocketmode')}
-              />
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                  </svg>
-                </div>
-                <h1 className="text-2xl font-bold text-dark-text">
-                  Pack Opening
-                </h1>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <div className="bg-light-grey rounded-lg px-4 py-2 border border-border-color">
-                <span className="text-sm font-medium text-text-grey">Packs Opened: </span>
-                <span className="text-pokemon-red font-bold">{packOpenCount}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="bg-pokemon-green/10 text-pokemon-green px-3 py-1 rounded-full text-sm font-medium border border-pokemon-green/20">
-                  {expansions.length} Booster Packs
-                </span>
-              </div>
-              {packHistory.length > 0 && (
-                <button
-                  onClick={() => {
-                    if (confirm('Clear pack opening history?')) {
-                      setPackHistory([]);
-                      setPackOpenCount(0);
-                      if (typeof window !== 'undefined') {
-                        localStorage.removeItem('packOpeningHistory');
-                      }
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* PageHeader with Breadcrumbs */}
+        <PageHeader
+          title="Pack Opening"
+          description="Experience realistic Pokémon TCG Pocket pack opening with authentic rarity rates"
+          breadcrumbs={[
+            { title: 'Home', href: '/', icon: '🏠', isActive: false },
+            { title: 'Pocket Mode', href: '/pocketmode', icon: '📱', isActive: false },
+            { title: 'Pack Opening', href: '/pocketmode/packs', icon: '📦', isActive: true },
+          ]}
+        >
+          {/* Stats Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-3 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-sm font-medium rounded-full">
+              {packOpenCount} packs opened
+            </span>
+            <span className="px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium rounded-full">
+              {expansions.length} booster packs
+            </span>
+            {packHistory.length > 0 && (
+              <button
+                onClick={() => {
+                  if (confirm('Clear pack opening history?')) {
+                    setPackHistory([]);
+                    setPackOpenCount(0);
+                    if (typeof window !== 'undefined') {
+                      localStorage.removeItem('packOpeningHistory');
                     }
-                  }}
-                  className="text-sm text-text-grey hover:text-pokemon-red transition-colors"
-                >
-                  Clear History
-                </button>
-              )}
-            </div>
+                  }
+                }}
+                className="text-sm text-stone-500 hover:text-red-600 underline transition-colors"
+              >
+                Clear History
+              </button>
+            )}
           </div>
-        </div>
-      </div>
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Clean Hero Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-pokemon-red mb-4">
-            Booster Pack Opening
-          </h2>
-          <p className="text-lg text-text-grey max-w-2xl mx-auto leading-relaxed">
-            Experience realistic Pokémon TCG Pocket pack opening with authentic rarity rates, 
-            <span className="font-semibold text-dark-text"> guaranteed rare cards</span>, and 
-            <span className="font-semibold text-dark-text"> smooth animations</span>.
-          </p>
-        </div>
+        </PageHeader>
 
         {/* Expansion Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {expansions.map((expansion, _index) => {
             return (
-              <div
+              <Container
                 key={expansion.id}
-                className="group bg-white dark:bg-stone-800 border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden hover:shadow-lg hover:border-pokemon-red/20 transition-all duration-300"
+                variant="elevated"
+                rounded="lg"
+                className="group overflow-hidden hover:shadow-lg transition-all duration-300"
                 data-testid="pack-item"
               >
                 {/* Pack Image - Vertical Showcase */}
@@ -735,86 +713,86 @@ const Expansions: NextPage = () => {
                     </Link>
                   </div>
                 </div>
-              </div>
+              </Container>
             );
           })}
         </div>
 
         {/* Pack Opening Statistics */}
         {packHistory.length > 0 && (
-          <div className="bg-white dark:bg-stone-800 rounded-lg border border-border-color shadow-sm p-8 mb-8">
-            <h3 className="text-2xl font-bold text-dark-text mb-6 text-center">
+          <Container variant="elevated" rounded="lg" className="p-6 mb-8">
+            <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-6 text-center">
               Your Pack Opening Stats
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
-                <div className="text-2xl font-bold text-pokemon-red">{packOpenCount}</div>
-                <div className="text-sm text-text-grey">Total Packs Opened</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
+                <div className="text-2xl font-bold text-amber-600">{packOpenCount}</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Packs Opened</div>
               </div>
-              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
-                <div className="text-2xl font-bold text-pokemon-yellow">
-                  {packHistory.reduce((acc, pack) => 
+              <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
+                <div className="text-2xl font-bold text-yellow-500">
+                  {packHistory.reduce((acc, pack) =>
                     acc + pack.cards.filter(c => c.rarity?.includes('★') || c.rarity?.includes('◊◊◊')).length, 0
                   )}
                 </div>
-                <div className="text-sm text-text-grey">Rare Cards Pulled</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Rare Cards</div>
               </div>
-              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
-                <div className="text-2xl font-bold text-pokemon-blue">
-                  {packOpenCount > 0 ? (Math.round((packHistory.reduce((acc, pack) => 
+              <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
+                <div className="text-2xl font-bold text-blue-500">
+                  {packOpenCount > 0 ? (Math.round((packHistory.reduce((acc, pack) =>
                     acc + pack.cards.filter(c => c.rarity?.includes('★') || c.rarity?.includes('◊◊◊')).length, 0
                   ) / packOpenCount) * 100) / 100) : 0}
                 </div>
-                <div className="text-sm text-text-grey">Avg Rares per Pack</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Avg Rares/Pack</div>
               </div>
-              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
-                <div className="text-2xl font-bold text-pokemon-green">
+              <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
+                <div className="text-2xl font-bold text-green-500">
                   {Object.keys(packHistory.reduce((acc, pack) => {
                     acc[pack.expansion] = true;
                     return acc;
                   }, {} as Record<string, boolean>)).length}
                 </div>
-                <div className="text-sm text-text-grey">Different Packs Tried</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">Packs Tried</div>
               </div>
             </div>
-          </div>
+          </Container>
         )}
 
         {/* Clean Feature Highlights */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg border border-border-color shadow-sm p-8 text-center">
-          <h3 className="text-2xl font-bold text-dark-text mb-6">
+        <Container variant="elevated" rounded="lg" className="p-6 text-center">
+          <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-6">
             Pack Opening Features
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
-              <div className="w-12 h-12 bg-pokemon-blue text-white rounded-full flex items-center justify-center mx-auto mb-3">
+            <div className="group p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-all">
+              <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h4 className="text-lg font-semibold mb-2 text-dark-text">Authentic Experience</h4>
-              <p className="text-text-grey text-sm">Experience realistic pack opening with distribution matching Pokemon Pocket cards</p>
+              <h4 className="text-base font-semibold mb-2 text-stone-900 dark:text-white">Authentic Experience</h4>
+              <p className="text-stone-500 dark:text-stone-400 text-sm">Realistic pack opening with authentic rarity rates</p>
             </div>
-            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
-              <div className="w-12 h-12 bg-pokemon-green text-white rounded-full flex items-center justify-center mx-auto mb-3">
+            <div className="group p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-all">
+              <div className="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 0v1.5M9 21v-5a2 2 0 012-2h2a2 2 0 012 2v5" />
                 </svg>
               </div>
-              <h4 className="text-lg font-semibold mb-2 text-dark-text">Free & Fun</h4>
-              <p className="text-text-grey text-sm">Open unlimited packs and discover new cards without any cost or limits</p>
+              <h4 className="text-base font-semibold mb-2 text-stone-900 dark:text-white">Free & Fun</h4>
+              <p className="text-stone-500 dark:text-stone-400 text-sm">Open unlimited packs without any cost</p>
             </div>
-            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
-              <div className="w-12 h-12 bg-pokemon-yellow text-white rounded-full flex items-center justify-center mx-auto mb-3">
+            <div className="group p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-all">
+              <div className="w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
-              <h4 className="text-lg font-semibold mb-2 text-dark-text">Beautiful Animations</h4>
-              <p className="text-text-grey text-sm">Enjoy smooth animations and satisfying card reveals with special effects</p>
+              <h4 className="text-base font-semibold mb-2 text-stone-900 dark:text-white">Beautiful Animations</h4>
+              <p className="text-stone-500 dark:text-stone-400 text-sm">Smooth animations and satisfying card reveals</p>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
       {/* Pack Opening Modal */}
       <PackOpening 

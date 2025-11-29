@@ -569,7 +569,7 @@ interface EvolutionChainNode {
          
         >
           <div className="p-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center mx-auto">
               <FaDna className="w-8 h-8 text-stone-400" />
             </div>
             <p className="text-stone-500 dark:text-stone-400">
@@ -751,7 +751,7 @@ interface EvolutionChainNode {
                   whileHover={{ scale: 1.03, y: -2 }}
                   transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 >
-                  <div className="bg-white dark:bg-stone-900/50 rounded-2xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
+                  <div className="bg-white dark:bg-stone-900/50 rounded-xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                     <div className="flex items-center gap-2 mb-2">
                       <FaExchangeAlt className="w-4 h-4 text-amber-400" />
                       <span className="font-semibold text-sm">Evolution Requirements</span>
@@ -783,7 +783,7 @@ interface EvolutionChainNode {
                   whileHover={{ scale: 1.03, y: -2 }}
                   transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 >
-                  <div className="bg-white dark:bg-stone-900/50 rounded-2xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
+                  <div className="bg-white dark:bg-stone-900/50 rounded-xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                     <div className="flex items-center gap-2 mb-2">
                       <GiStoneSphere className="w-4 h-4 text-green-400" />
                       <span className="font-semibold text-sm">Special Items</span>

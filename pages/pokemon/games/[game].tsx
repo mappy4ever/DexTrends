@@ -164,7 +164,7 @@ const gamesData: Record<string, GameData> = {
     legendaries: ["Raikou", "Entei", "Suicune", "Lugia", "Ho-Oh", "Celebi"],
     gymLeaders: 16,
     pokedexSize: 251,
-    color: "from-yellow-500 to-gray-400",
+    color: "from-yellow-500 to-stone-400",
     sales: "23 million",
     rating: 4.8,
     reception: "Considered by many as the series peak",
@@ -421,7 +421,7 @@ const gamesData: Record<string, GameData> = {
     legendaries: ["Dialga", "Palkia", "Giratina", "Uxie", "Mesprit", "Azelf", "Cresselia", "Darkrai"],
     gymLeaders: 8,
     pokedexSize: 493,
-    color: "from-gray-600 to-gray-800",
+    color: "from-stone-600 to-stone-800",
     sales: "7.6 million",
     rating: 4.6,
     reception: "Fixed most Diamond/Pearl issues",
@@ -464,7 +464,7 @@ const gamesData: Record<string, GameData> = {
     legendaries: ["Raikou", "Entei", "Suicune", "Lugia", "Ho-Oh", "Celebi"],
     gymLeaders: 16,
     pokedexSize: 493,
-    color: "from-yellow-500 to-gray-500",
+    color: "from-yellow-500 to-stone-500",
     sales: "12.72 million",
     rating: 4.9,
     reception: "Nearly universal acclaim",
@@ -508,7 +508,7 @@ const gamesData: Record<string, GameData> = {
     legendaries: ["Reshiram", "Zekrom", "Kyurem", "Cobalion", "Terrakion", "Virizion", "Tornadus", "Thundurus", "Landorus"],
     gymLeaders: 8,
     pokedexSize: 649,
-    color: "from-gray-900 to-gray-100",
+    color: "from-stone-900 to-stone-100",
     sales: "15.64 million",
     rating: 4.4,
     reception: "Divisive but appreciated for innovation",
@@ -551,7 +551,7 @@ const gamesData: Record<string, GameData> = {
     legendaries: ["Reshiram", "Zekrom", "Kyurem", "Cobalion", "Terrakion", "Virizion", "Tornadus", "Thundurus", "Landorus"],
     gymLeaders: 8,
     pokedexSize: 649,
-    color: "from-gray-800 to-gray-200",
+    color: "from-stone-800 to-stone-200",
     sales: "8.52 million",
     rating: 4.5,
     reception: "Praised as improvement over originals",
@@ -900,7 +900,7 @@ const gamesData: Record<string, GameData> = {
     gymLeaders: 0,
     wardens: 10,
     pokedexSize: 242,
-    color: "from-gray-600 to-yellow-600",
+    color: "from-stone-600 to-yellow-600",
     sales: "14.83 million",
     rating: 4.4,
     reception: "Praised for innovation and fresh take",
@@ -1035,7 +1035,7 @@ export default function GameDetailPage() {
 
           {/* Game Header */}
           <SlideUp>
-            <div className={`rounded-2xl overflow-hidden ${
+            <div className={`rounded-xl overflow-hidden ${
               theme === 'dark' ? 'bg-stone-800' : 'bg-white'
             } shadow-xl mb-8`}>
               <div className={`h-48 bg-gradient-to-r ${game.color} relative overflow-hidden`}>
@@ -1082,7 +1082,7 @@ export default function GameDetailPage() {
             <StaggeredChildren className="space-y-8">
               {/* Description */}
               <SlideUp>
-                <div className={`p-8 rounded-2xl ${
+                <div className={`p-8 rounded-xl ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-4">About {game.names.join(" & ")}</h2>
@@ -1118,7 +1118,7 @@ export default function GameDetailPage() {
 
               {/* Starter Pokemon */}
               <SlideUp>
-                <div className={`p-8 rounded-2xl ${
+                <div className={`p-8 rounded-xl ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Starter Pokémon</h2>
@@ -1159,7 +1159,7 @@ export default function GameDetailPage() {
 
               {/* Sales and Reception */}
               <SlideUp>
-                <div className={`p-8 rounded-2xl ${
+                <div className={`p-8 rounded-xl ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Sales & Reception</h2>
@@ -1194,7 +1194,7 @@ export default function GameDetailPage() {
             <StaggeredChildren className="space-y-8">
               {/* Key Features */}
               <SlideUp>
-                <div className={`p-8 rounded-2xl ${
+                <div className={`p-8 rounded-xl ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Key Features</h2>
@@ -1213,7 +1213,7 @@ export default function GameDetailPage() {
 
               {/* Innovations */}
               <SlideUp>
-                <div className={`p-8 rounded-2xl ${
+                <div className={`p-8 rounded-xl ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Innovations</h2>
@@ -1232,7 +1232,7 @@ export default function GameDetailPage() {
 
               {/* Game Stats */}
               <SlideUp>
-                <div className={`p-8 rounded-2xl ${
+                <div className={`p-8 rounded-xl ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-6">Game Statistics</h2>
@@ -1271,7 +1271,7 @@ export default function GameDetailPage() {
 
           {activeTab === "development" && (
             <SlideUp>
-              <div className={`p-8 rounded-2xl ${
+              <div className={`p-8 rounded-xl ${
                 theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
               }`}>
                 <h2 className="text-3xl font-bold mb-6">Development Team</h2>
@@ -1319,7 +1319,7 @@ export default function GameDetailPage() {
 
           {activeTab === "legacy" && (
             <SlideUp>
-              <div className={`p-8 rounded-2xl ${
+              <div className={`p-8 rounded-xl ${
                 theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
               }`}>
                 <h2 className="text-3xl font-bold mb-6">Legacy & Impact</h2>
@@ -1342,7 +1342,7 @@ export default function GameDetailPage() {
 
           {activeTab === "trivia" && (
             <SlideUp>
-              <div className={`p-8 rounded-2xl ${
+              <div className={`p-8 rounded-xl ${
                 theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
               }`}>
                 <h2 className="text-3xl font-bold mb-6">Did You Know?</h2>

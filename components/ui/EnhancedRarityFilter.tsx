@@ -350,7 +350,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
                       setIsExpanded(false);
                     }}
                     className={cn(
-                      'relative px-3 py-2 rounded-2xl',
+                      'relative px-3 py-2 rounded-xl',
                       'bg-gradient-to-r from-stone-100/80 to-stone-200/80',
                       'backdrop-blur-md border border-white/30',
                       'hover:from-stone-200/90 hover:to-stone-300/90',
@@ -376,7 +376,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
                         setIsExpanded(false);
                       }}
                       className={cn(
-                        'relative px-3 py-2 rounded-2xl',
+                        'relative px-3 py-2 rounded-xl',
                         'backdrop-blur-md border border-white/30',
                         'hover:scale-105 active:scale-95',
                         'transition-all duration-300',
@@ -397,7 +397,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
                       {/* Sparkle effect on hover */}
                       {hoveredRarity === option.value && (
                         <div
-                          className="absolute inset-0 rounded-2xl pointer-events-none opacity-100 transition-opacity"
+                          className="absolute inset-0 rounded-xl pointer-events-none opacity-100 transition-opacity"
                         >
                           <div className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full animate-pulse" />
                           <div className="absolute bottom-2 left-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse delay-75" />

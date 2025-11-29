@@ -59,7 +59,7 @@ export default function Tooltip({ children, text, position = 'top', className = 
         >
           {text}
           {/* Tooltip Arrow - adjust border color to match tooltip bg */}
-          <div className={`${getArrowClasses()} border-stone-800 dark:border-stone-700`}></div>
+          <div className={`${getArrowClasses()} border-stone-800 dark:border-stone-700`} aria-hidden="true"></div>
         </div>
       )}
     </div>

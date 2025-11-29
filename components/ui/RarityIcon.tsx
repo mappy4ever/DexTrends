@@ -232,7 +232,7 @@ export const RarityIcon: React.FC<RarityIconProps> = ({
   };
   
   return (
-    <div 
+    <div
       className={cn(
         'inline-flex items-center gap-1',
         onClick && 'cursor-pointer hover:scale-110 transition-transform',
@@ -240,10 +240,15 @@ export const RarityIcon: React.FC<RarityIconProps> = ({
         className
       )}
       onClick={onClick}
+      {...(onClick ? {
+        role: 'button',
+        tabIndex: 0,
+        'aria-label': `Filter by ${finalRarityData.label} rarity`
+      } : {})}
     >
       {/* Icons without containers - pure Pokemon TCG style */}
       {renderIcons()}
-      
+
       {/* Label */}
       {showLabel && (
         <span className={cn(

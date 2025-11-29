@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { BsCardList, BsHeart, BsBarChart } from 'react-icons/bs';
 import { FiTrendingUp, FiShoppingBag } from 'react-icons/fi';
+import Button from './ui/Button';
 
 interface Feature {
   href: string;
@@ -74,7 +75,7 @@ const PokemonTCGLanding: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
             <Link key={index} href={feature.href}>
-              <div className="group bg-white dark:bg-stone-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+              <div className="group bg-white dark:bg-stone-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer">
                 <div className={`${feature.color} ${feature.hoverColor} w-16 h-16 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   {feature.icon}
                 </div>
@@ -93,7 +94,7 @@ const PokemonTCGLanding: React.FC = () => {
         </div>
 
         {/* Featured Content */}
-        <div className="bg-white dark:bg-stone-800 rounded-2xl shadow-lg p-8 mb-16">
+        <div className="bg-white dark:bg-stone-800 rounded-xl shadow-lg p-8 mb-16">
           <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-8 text-center">
             What's New in TCG
           </h2>
@@ -108,9 +109,9 @@ const PokemonTCGLanding: React.FC = () => {
                 identify investment opportunities, and never miss a trend.
               </p>
               <Link href="/trending">
-                <button className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <Button variant="primary" size="md">
                   View Trends
-                </button>
+                </Button>
               </Link>
             </div>
             
@@ -123,9 +124,9 @@ const PokemonTCGLanding: React.FC = () => {
                 and get insights into your portfolio's performance.
               </p>
               <Link href="/collections">
-                <button className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <Button variant="primary" size="md">
                   Manage Collection
-                </button>
+                </Button>
               </Link>
             </div>
           </div>
@@ -140,9 +141,9 @@ const PokemonTCGLanding: React.FC = () => {
             Join thousands of collectors and traders in the ultimate TCG experience.
           </p>
           <Link href="/tcgexpansions">
-            <button className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <Button variant="primary" size="xl" gradient>
               Explore All Sets
-            </button>
+            </Button>
           </Link>
         </div>
       </div>

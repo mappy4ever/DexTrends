@@ -140,7 +140,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-block backdrop-blur-xl bg-white/70 dark:bg-stone-800/70 rounded-3xl px-8 py-6 shadow-2xl border border-white/30 dark:border-stone-700/30">
+          <div className="inline-block backdrop-blur-xl bg-white/70 dark:bg-stone-800/70 rounded-xl px-8 py-6 shadow-2xl border border-white/30 dark:border-stone-700/30">
             <h2 className="text-5xl font-black mb-3 bg-gradient-to-r from-stone-800 to-stone-600 dark:from-white dark:to-stone-300 bg-clip-text text-transparent">
               {region.name} Region
             </h2>
@@ -239,7 +239,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
                   whileHover={{ scale: 1.05, y: -2 }}
                   className="relative group cursor-pointer"
                 >
-                  <div className="backdrop-blur-xl bg-white/80 dark:bg-stone-800/80 rounded-2xl px-6 py-3 shadow-lg border border-white/30 dark:border-stone-700/30 overflow-hidden">
+                  <div className="backdrop-blur-xl bg-white/80 dark:bg-stone-800/80 rounded-xl px-6 py-3 shadow-lg border border-white/30 dark:border-stone-700/30 overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-br ${genColor} opacity-10 group-hover:opacity-20 transition-opacity duration-300`} />
                     <div className="relative flex items-center gap-2">
                       <BsController className="text-lg text-stone-600 dark:text-stone-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
@@ -328,7 +328,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
                   whileHover={{ scale: 1.05, y: -3 }}
                   className="relative group"
                 >
-                  <div className="backdrop-blur-xl bg-gradient-to-br from-yellow-50/80 via-white/80 to-amber-50/80 dark:from-stone-800/80 dark:via-stone-700/80 dark:to-stone-800/80 rounded-2xl p-4 shadow-xl border border-yellow-200/30 dark:border-yellow-700/30 overflow-hidden">
+                  <div className="backdrop-blur-xl bg-gradient-to-br from-yellow-50/80 via-white/80 to-amber-50/80 dark:from-stone-800/80 dark:via-stone-700/80 dark:to-stone-800/80 rounded-xl p-4 shadow-xl border border-yellow-200/30 dark:border-yellow-700/30 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-400/10" />
                     <div className="relative flex items-center gap-3">
                       <BsGem className="text-xl text-yellow-600 dark:text-yellow-400" />

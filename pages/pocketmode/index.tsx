@@ -5,23 +5,199 @@ import Image from "next/image";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { FaCrown } from "react-icons/fa";
+import { IoFilter, IoClose, IoChevronDown } from "react-icons/io5";
 import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import { TypeFilter } from "../../components/ui/forms/TypeFilter";
 import { GradientButton, CircularButton } from '../../components/ui/design-system';
 import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
 import Container from '../../components/ui/Container';
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import PocketCardList from "../../components/PocketCardList";
 import { fetchPocketData } from "../../utils/pocketData";
 import BackToTop from "../../components/ui/BaseBackToTop";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
+import { PageHeader } from "../../components/ui/BreadcrumbNavigation";
 import { PocketCard } from "../../types/api/pocket-cards";
 import { NextPage } from "next";
+import { cn } from "../../utils/cn";
+import { TYPOGRAPHY } from "../../components/ui/design-system/glass-constants";
 
 // Dynamic imports for components that might cause SSR issues
 import { CardGridSkeleton } from "../../components/ui/Skeleton";
 const PokemonEmptyState = dynamic(() => import("../../components/ui/loading/PokemonEmptyState"), { ssr: false });
+
+// ===========================================
+// MOBILE FILTER DRAWER
+// ===========================================
+
+interface MobileFilterDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  typeFilter: string;
+  setTypeFilter: (type: string) => void;
+  rarityFilter: RarityFilter;
+  setRarityFilter: (rarity: RarityFilter) => void;
+  uniqueTypes: string[];
+  activeFilterCount: number;
+  onClearFilters: () => void;
+}
+
+function MobileFilterDrawer({
+  isOpen,
+  onClose,
+  typeFilter,
+  setTypeFilter,
+  rarityFilter,
+  setRarityFilter,
+  uniqueTypes,
+  activeFilterCount,
+  onClearFilters,
+}: MobileFilterDrawerProps) {
+  if (!isOpen) return null;
+
+  const typeColors: Record<string, { bg: string; border: string; text: string }> = {
+    'grass': { bg: 'from-green-200 to-green-300', border: 'border-green-500', text: 'text-green-800' },
+    'fire': { bg: 'from-red-200 to-orange-200', border: 'border-red-500', text: 'text-red-800' },
+    'water': { bg: 'from-blue-200 to-cyan-200', border: 'border-blue-500', text: 'text-blue-800' },
+    'lightning': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800' },
+    'psychic': { bg: 'from-purple-200 to-pink-200', border: 'border-purple-500', text: 'text-purple-800' },
+    'fighting': { bg: 'from-orange-200 to-red-200', border: 'border-orange-500', text: 'text-orange-800' },
+    'darkness': { bg: 'from-stone-300 to-stone-400', border: 'border-stone-600', text: 'text-stone-800' },
+    'metal': { bg: 'from-stone-200 to-stone-300', border: 'border-stone-500', text: 'text-stone-800' },
+    'dragon': { bg: 'from-indigo-200 to-violet-200', border: 'border-indigo-500', text: 'text-indigo-800' },
+    'colorless': { bg: 'from-stone-100 to-stone-200', border: 'border-stone-400', text: 'text-stone-700' },
+    'item': { bg: 'from-blue-200 to-blue-300', border: 'border-blue-500', text: 'text-blue-800' },
+    'supporter': { bg: 'from-orange-200 to-orange-300', border: 'border-orange-500', text: 'text-orange-800' },
+    'tool': { bg: 'from-purple-200 to-purple-300', border: 'border-purple-500', text: 'text-purple-800' },
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 lg:hidden"
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+
+      {/* Drawer */}
+      <motion.div
+        initial={{ x: '100%' }}
+        animate={{ x: 0 }}
+        exit={{ x: '100%' }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-stone-900 shadow-2xl overflow-y-auto"
+      >
+        {/* Header */}
+        <div className="sticky top-0 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <IoFilter className="w-5 h-5 text-amber-600" />
+            <h2 className={cn(TYPOGRAPHY.heading.h4)}>Filters</h2>
+            {activeFilterCount > 0 && (
+              <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-semibold rounded-full">
+                {activeFilterCount} active
+              </span>
+            )}
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+          >
+            <IoClose className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Rarity Section */}
+        <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+          <h3 className="text-sm font-bold text-stone-700 dark:text-stone-300 mb-3">Rarity</h3>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { value: 'all', label: 'All' },
+              { value: '◊', label: '♦' },
+              { value: '◊◊', label: '♦♦' },
+              { value: '◊◊◊', label: '♦♦♦' },
+              { value: '◊◊◊◊', label: '♦♦♦♦' },
+              { value: '★', label: '★' },
+              { value: '☆☆', label: '★★' },
+              { value: 'immersive', label: '★★★' },
+              { value: '★★', label: '♕' },
+              { value: 'fullart', label: 'Full Art' },
+            ].map(({ value, label }) => (
+              <button
+                key={value}
+                onClick={() => setRarityFilter(value as RarityFilter)}
+                className={cn(
+                  'px-3 py-2 rounded-lg text-sm font-semibold transition-all border',
+                  rarityFilter === value
+                    ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
+                    : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400'
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Type Section */}
+        <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+          <h3 className="text-sm font-bold text-stone-700 dark:text-stone-300 mb-3">Type</h3>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setTypeFilter('all')}
+              className={cn(
+                'px-3 py-2 rounded-lg text-sm font-semibold transition-all border',
+                typeFilter === 'all'
+                  ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
+                  : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400'
+              )}
+            >
+              All Types
+            </button>
+            {uniqueTypes.filter(t => t !== 'all').map(type => {
+              const colors = typeColors[type.toLowerCase()] || { bg: 'from-stone-200 to-stone-300', border: 'border-stone-500', text: 'text-stone-700' };
+              return (
+                <button
+                  key={type}
+                  onClick={() => setTypeFilter(type)}
+                  className={cn(
+                    'px-3 py-2 rounded-lg text-sm font-semibold uppercase transition-all border bg-gradient-to-r',
+                    colors.bg,
+                    typeFilter === type
+                      ? `${colors.border}/70 ${colors.text} ring-2 ring-${type}-500/50`
+                      : `${colors.border}/40 ${colors.text} opacity-70`
+                  )}
+                >
+                  {type}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="p-4 space-y-3">
+          {activeFilterCount > 0 && (
+            <button
+              onClick={onClearFilters}
+              className="w-full py-3 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-medium hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
+            >
+              Clear All Filters
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-pink-600 text-white font-semibold hover:from-amber-700 hover:to-pink-700 transition-all"
+          >
+            Show Results
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 // Extended PocketCard interface with additional properties from the actual data
 interface ExtendedPocketCard extends PocketCard {
@@ -55,6 +231,16 @@ const PocketMode: NextPage = () => {
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [rarityFilter, setRarityFilter] = useState<RarityFilter>("all");
   const [sortBy, setSortBy] = useState<SortBy>("name"); // name, rarity
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  // Calculate active filter count
+  const activeFilterCount = (typeFilter !== 'all' ? 1 : 0) + (rarityFilter !== 'all' ? 1 : 0);
+
+  // Clear all filters
+  const clearFilters = () => {
+    setTypeFilter('all');
+    setRarityFilter('all');
+  };
   
   // Replace fetchPokemonData to use the live Pocket API
   const fetchPokemonData = async () => {
@@ -244,211 +430,133 @@ const PocketMode: NextPage = () => {
         <meta name="keywords" content="Pokemon TCG Pocket, Pokemon cards, TCG mobile, Pocket decks, Pokemon expansions" />
       </Head>
       <FadeIn>
-        {/* Header Section */}
-        <Container variant="elevated" rounded="xl" className="mb-6 p-6">
-          {/* Header with Centered Title */}
-          <div className="text-center mb-4">
-            <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 bg-clip-text text-transparent inline-block mb-3">
-              Pokémon TCG Pocket Cards
-            </h1>
-            <div className="flex justify-center">
-              <span className="px-4 py-2 bg-stone-100 dark:bg-stone-700 rounded-full text-sm font-bold text-stone-700 dark:text-stone-300">
-                {pokemon.length} Total Cards
-              </span>
-            </div>
-          </div>
-
+        {/* PageHeader with Breadcrumbs */}
+        <PageHeader
+          title="TCG Pocket Cards"
+          description={`${pokemon.length} cards available • Browse, filter, and build your collection`}
+          breadcrumbs={[
+            { title: 'Home', href: '/', icon: '🏠', isActive: false },
+            { title: 'Pocket Mode', href: '/pocketmode', icon: '📱', isActive: true },
+          ]}
+        >
           {/* Tab Navigation */}
-          <div className="flex justify-center mb-4">
-            <div className="bg-stone-100 dark:bg-stone-800 rounded-xl p-2 inline-flex gap-2">
-              <button
-                onClick={() => router.push('/pocketmode')}
-                className="px-4 py-2 font-semibold text-sm bg-gradient-to-r from-amber-600 to-pink-600 text-white rounded-full transition-all hover:scale-105"
-              >
-                Card List
-              </button>
-              <button
-                onClick={() => router.push('/pocketmode/deckbuilder')}
-                className="px-4 py-2 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 rounded-full transition-all hover:scale-105"
-              >
-                Deck Builder
-              </button>
-              <button
-                onClick={() => router.push('/pocketmode/decks')}
-                className="px-4 py-2 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 rounded-full transition-all hover:scale-105"
-              >
-                Pre-Built Decks
-              </button>
-            </div>
+          <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full">
+            <button className="px-4 py-1.5 text-sm font-semibold bg-gradient-to-r from-amber-600 to-pink-600 text-white rounded-full">
+              Cards
+            </button>
+            <button
+              onClick={() => router.push('/pocketmode/deckbuilder')}
+              className="px-4 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-amber-600 rounded-full transition-colors"
+            >
+              Deck Builder
+            </button>
+            <button
+              onClick={() => router.push('/pocketmode/packs')}
+              className="px-4 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-amber-600 rounded-full transition-colors"
+            >
+              Packs
+            </button>
           </div>
-          
-          {/* Filter Section */}
-          <div className="space-y-3">
-            {/* Rarity Filter */}
-            <div className="flex items-center gap-3 p-3 bg-stone-50 dark:bg-stone-800/50 rounded-xl border border-stone-200 dark:border-stone-700">
-              <span className="text-sm font-bold text-stone-700 dark:text-stone-300 ml-1">Rarity</span>
-              <div className="flex flex-wrap gap-1 flex-1">
-                <button
-                  onClick={() => setRarityFilter('all')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === 'all'
-                      ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setRarityFilter('◊')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊'
-                      ? 'bg-stone-100 dark:bg-stone-800 border-stone-400/50 text-stone-700 dark:text-stone-300'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
-                  }`}
-                >
-                  <span className="text-stone-500">♦</span>
-                </button>
-                <button
-                  onClick={() => setRarityFilter('◊◊')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊◊'
-                      ? 'bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-green-400/50 text-green-700 dark:text-green-300'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
-                  }`}
-                >
-                  <span className="text-stone-500">♦♦</span>
-                </button>
-                <button
-                  onClick={() => setRarityFilter('◊◊◊')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊◊◊'
-                      ? 'bg-gradient-to-r from-amber-100 to-sky-100 dark:from-amber-900/30 dark:to-sky-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
-                  }`}
-                >
-                  <span className="text-stone-500">♦♦♦</span>
-                </button>
-                <button
-                  onClick={() => setRarityFilter('◊◊◊◊')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === '◊◊◊◊'
-                      ? 'bg-gradient-to-r from-amber-100 to-violet-100 dark:from-amber-900/30 dark:to-violet-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
-                  }`}
-                >
-                  <span className="text-stone-500">♦♦♦♦</span>
-                </button>
-                <button
-                  onClick={() => setRarityFilter('★')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
-                    rarityFilter === '★'
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
-                  }`}
-                >
-                  <span className={rarityFilter === '★' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-stone-500 dark:text-stone-400'}>
-                    ★
-                  </span>
-                </button>
-                <button
-                  onClick={() => setRarityFilter('☆☆')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
-                    rarityFilter === '☆☆'
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
-                  }`}
-                >
-                  <span className={rarityFilter === '☆☆' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-stone-500 dark:text-stone-400'}>
-                    ★★
-                  </span>
-                </button>
-                <button
-                  onClick={() => setRarityFilter('immersive')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
-                    rarityFilter === 'immersive'
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
-                  }`}
-                >
-                  <span className={rarityFilter === 'immersive' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-orange-500 bg-clip-text text-transparent' : 'text-stone-500 dark:text-stone-400'}>
-                    ★★★
-                  </span>
-                </button>
-                <button
-                  onClick={() => setRarityFilter('★★')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-                    rarityFilter === '★★'
-                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 hover:bg-white/80'
-                  }`}
-                >
-                  <FaCrown className={rarityFilter === '★★' ? 'text-yellow-500' : 'text-stone-500 dark:text-stone-400'} size={16} />
-                </button>
-                <button
-                  onClick={() => setRarityFilter('fullart')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
-                    rarityFilter === 'fullart'
-                      ? 'bg-gradient-to-r from-amber-100/90 to-pink-100/90 dark:from-amber-900/40 dark:to-pink-900/40 border-amber-300/50 text-amber-700 dark:text-amber-300 shadow-lg shadow-amber-500/20 dark:shadow-amber-500/10'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-500 dark:text-stone-400 hover:bg-white/80'
-                  }`}
-                >
-                  Full Art
-                </button>
+        </PageHeader>
+
+        {/* Compact Filter Bar */}
+        <Container variant="elevated" rounded="xl" className="mb-6 p-4">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+            {/* Search */}
+            <div className="flex-1 max-w-md">
+              <UnifiedSearchBar
+                value={search}
+                onChange={setSearch}
+                placeholder="Search cards..."
+                className="w-full"
+              />
+            </div>
+
+            {/* Desktop Filters */}
+            <div className="hidden lg:flex items-center gap-3 flex-1">
+              {/* Quick Type Filters - Popular types */}
+              <div className="flex flex-wrap gap-1.5">
+                {['fire', 'water', 'grass', 'lightning', 'psychic', 'fighting'].map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setTypeFilter(typeFilter === type ? 'all' : type)}
+                    className={cn(
+                      'p-1.5 rounded-lg border transition-all',
+                      typeFilter === type
+                        ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-400/50'
+                        : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 hover:border-amber-400/50'
+                    )}
+                  >
+                    <TypeBadge type={type} size="xs" />
+                  </button>
+                ))}
+              </div>
+
+              {/* Quick Rarity Filters */}
+              <div className="flex gap-1">
+                {[
+                  { value: '★', label: '★' },
+                  { value: '☆☆', label: '★★' },
+                  { value: 'fullart', label: 'Full Art' },
+                ].map(({ value, label }) => (
+                  <button
+                    key={value}
+                    onClick={() => setRarityFilter(rarityFilter === value ? 'all' : value as RarityFilter)}
+                    className={cn(
+                      'px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all',
+                      rarityFilter === value
+                        ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50 text-yellow-700 dark:text-yellow-300'
+                        : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:border-amber-400/50'
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
             </div>
-            
-            {/* Type Filter */}
-            <div className="flex items-center gap-3 p-3 bg-stone-50 dark:bg-stone-800/50 rounded-xl border border-stone-200 dark:border-stone-700">
-              <span className="text-sm font-bold text-stone-700 dark:text-stone-300 ml-1">Type</span>
-              <div className="flex flex-wrap gap-1 flex-1">
-                <button
-                  onClick={() => setTypeFilter('all')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase transition-all backdrop-blur-md border ${
-                    typeFilter === 'all'
-                      ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300 ring-2 ring-amber-400/50'
-                      : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
-                  }`}
-                >
-                  All Types
-                </button>
-                {uniqueTypes.filter(t => t !== 'all').map(type => {
-                  const typeColors: Record<string, { bg: string; border: string; text: string; ring: string }> = {
-                    'grass': { bg: 'from-green-200 to-green-300', border: 'border-green-500', text: 'text-green-800 dark:text-green-200', ring: 'ring-green-500' },
-                    'fire': { bg: 'from-red-200 to-orange-200', border: 'border-red-500', text: 'text-red-800 dark:text-red-200', ring: 'ring-red-500' },
-                    'water': { bg: 'from-amber-200 to-cyan-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
-                    'lightning': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800 dark:text-yellow-200', ring: 'ring-yellow-500' },
-                    'electric': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800 dark:text-yellow-200', ring: 'ring-yellow-500' },
-                    'psychic': { bg: 'from-amber-200 to-pink-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
-                    'fighting': { bg: 'from-orange-200 to-red-200', border: 'border-orange-500', text: 'text-orange-800 dark:text-orange-200', ring: 'ring-orange-500' },
-                    'darkness': { bg: 'from-stone-300 to-amber-200', border: 'border-stone-600', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-600' },
-                    'dark': { bg: 'from-stone-300 to-amber-200', border: 'border-stone-600', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-600' },
-                    'metal': { bg: 'from-stone-200 to-stone-200', border: 'border-stone-500', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-500' },
-                    'steel': { bg: 'from-stone-200 to-stone-200', border: 'border-stone-500', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-500' },
-                    'dragon': { bg: 'from-amber-200 to-amber-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
-                    'colorless': { bg: 'from-stone-100 to-stone-200', border: 'border-stone-400', text: 'text-stone-700 dark:text-stone-300', ring: 'ring-stone-400' },
-                    'fairy': { bg: 'from-pink-200 to-rose-200', border: 'border-pink-500', text: 'text-pink-800 dark:text-pink-200', ring: 'ring-pink-500' },
-                    'item': { bg: 'from-amber-200 to-amber-300', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
-                    'supporter': { bg: 'from-amber-200 to-orange-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
-                    'tool': { bg: 'from-stone-200 to-stone-200', border: 'border-stone-500', text: 'text-stone-800 dark:text-stone-200', ring: 'ring-stone-500' },
-                  };
-                  const colors = typeColors[type.toLowerCase()] || { bg: 'from-stone-200 to-stone-300', border: 'border-stone-500', text: 'text-stone-700 dark:text-stone-300', ring: 'ring-stone-400' };
-                  
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setTypeFilter(type)}
-                      className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase transition-all backdrop-blur-md border bg-gradient-to-r ${colors.bg} ${
-                        typeFilter === type 
-                          ? `${colors.border}/70 ${colors.text} ring-2 ${colors.ring}/50 opacity-100` 
-                          : `${colors.border}/40 ${colors.text} opacity-60 hover:opacity-90`
-                      }`}
-                    >
-                      {type}
+
+            {/* Mobile Filter Button */}
+            <button
+              onClick={() => setMobileFilterOpen(true)}
+              className="lg:hidden flex items-center gap-2 px-4 py-2 bg-stone-100 dark:bg-stone-800 rounded-xl font-medium text-stone-700 dark:text-stone-300"
+            >
+              <IoFilter className="w-4 h-4" />
+              <span>Filters</span>
+              {activeFilterCount > 0 && (
+                <span className="px-2 py-0.5 bg-amber-500 text-white text-xs font-bold rounded-full">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+
+            {/* Active Filter Pills */}
+            {activeFilterCount > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                {typeFilter !== 'all' && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium rounded-full">
+                    <TypeBadge type={typeFilter} size="xs" />
+                    <span className="capitalize">{typeFilter}</span>
+                    <button onClick={() => setTypeFilter('all')} className="ml-1 hover:text-blue-900">
+                      <IoClose className="w-3.5 h-3.5" />
                     </button>
-                  );
-                })}
+                  </span>
+                )}
+                {rarityFilter !== 'all' && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium rounded-full">
+                    {rarityFilter === 'fullart' ? 'Full Art' : rarityFilter}
+                    <button onClick={() => setRarityFilter('all')} className="ml-1 hover:text-yellow-900">
+                      <IoClose className="w-3.5 h-3.5" />
+                    </button>
+                  </span>
+                )}
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-stone-500 hover:text-amber-600 underline"
+                >
+                  Clear all
+                </button>
               </div>
-            </div>
+            )}
           </div>
         </Container>
         
@@ -492,17 +600,6 @@ const PocketMode: NextPage = () => {
               </div>
               {/* Cards Container */}
               <Container variant="elevated" rounded="xl" className="p-6 md:p-8">
-                {/* Search Bar */}
-                <div className="mb-6">
-                  <UnifiedSearchBar
-                    value={search}
-                    onChange={setSearch}
-                    placeholder="Search Pocket cards... (Press / to focus)"
-                    className="w-full"
-                    showSearchButton
-                  />
-                </div>
-
                 <PocketCardList
                   cards={filteredPokemon}
                   loading={false}
@@ -548,6 +645,23 @@ const PocketMode: NextPage = () => {
           </Link>
         </div>
       </FadeIn>
+
+      {/* Mobile Filter Drawer */}
+      <AnimatePresence>
+        {mobileFilterOpen && (
+          <MobileFilterDrawer
+            isOpen={mobileFilterOpen}
+            onClose={() => setMobileFilterOpen(false)}
+            typeFilter={typeFilter}
+            setTypeFilter={setTypeFilter}
+            rarityFilter={rarityFilter}
+            setRarityFilter={setRarityFilter}
+            uniqueTypes={uniqueTypes}
+            activeFilterCount={activeFilterCount}
+            onClearFilters={clearFilters}
+          />
+        )}
+      </AnimatePresence>
       </div>
       <BackToTop />
     </FullBleedWrapper>

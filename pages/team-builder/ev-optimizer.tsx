@@ -19,6 +19,10 @@ import { TypeGradientBadge } from '../../components/ui/design-system/TypeGradien
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import StyledBackButton from '../../components/ui/StyledBackButton';
+import { PageHeader } from '../../components/ui/BreadcrumbNavigation';
+import { IoInformationCircle, IoHelpCircle, IoClose } from 'react-icons/io5';
+import { TYPOGRAPHY } from '../../components/ui/design-system/glass-constants';
+import { cn } from '../../utils/cn';
 import { 
   calculateAllStats, 
   NATURE_MODIFIERS, 
@@ -53,6 +57,27 @@ const COMMON_SPEED_BENCHMARKS: SpeedBenchmark[] = [
   { name: 'Aegislash', speed: 60, description: 'Base 60 Speed' },
 ];
 
+// Onboarding Tooltip Component
+function OnboardingTip({ title, children, onDismiss }: { title: string; children: React.ReactNode; onDismiss: () => void }) {
+  return (
+    <div className="relative p-4 mb-6 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border border-blue-200 dark:border-blue-800">
+      <button
+        onClick={onDismiss}
+        className="absolute top-2 right-2 p-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
+      >
+        <IoClose className="w-4 h-4 text-blue-500" />
+      </button>
+      <div className="flex gap-3">
+        <IoHelpCircle className="w-6 h-6 text-blue-500 flex-shrink-0 mt-0.5" />
+        <div>
+          <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-1">{title}</h4>
+          <div className="text-sm text-blue-700 dark:text-blue-400">{children}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const EVOptimizer: NextPage = () => {
   const router = useRouter();
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
@@ -76,6 +101,7 @@ const EVOptimizer: NextPage = () => {
     sticky: false,
   });
   const [targetSpeed, setTargetSpeed] = useState<number | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   // Search for Pokemon
   const searchPokemon = useCallback(async (query: string) => {
@@ -167,23 +193,33 @@ const EVOptimizer: NextPage = () => {
       
       <div className="max-w-7xl mx-auto px-4 py-8 relative">
         <FadeIn>
-          {/* Header */}
-          <div className="mb-8">
-            <StyledBackButton 
-              variant="default" 
-              text="Back to Team Builder"
-              onClick={() => router.push('/team-builder/advanced')}
-              className="mb-4"
-            />
-            <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">
-                Team Builder
-              </h1>
-              <p className="text-stone-600 dark:text-stone-400 text-lg">
-                Visualize and optimize your Pokemon's effort values with advanced heat mapping
+          {/* Page Header with Breadcrumbs */}
+          <PageHeader
+            title="EV Optimizer"
+            description="Visualize and optimize your Pokemon's effort values with advanced tools"
+            breadcrumbs={[
+              { title: 'Home', href: '/', icon: '🏠', isActive: false },
+              { title: 'Team Builder', href: '/team-builder', icon: '👥', isActive: false },
+              { title: 'EV Optimizer', href: '/team-builder/ev-optimizer', icon: '📊', isActive: true },
+            ]}
+          />
+
+          {/* Onboarding Tip */}
+          {showOnboarding && (
+            <OnboardingTip
+              title="What are EVs?"
+              onDismiss={() => setShowOnboarding(false)}
+            >
+              <p className="mb-2">
+                <strong>EVs (Effort Values)</strong> are hidden stats that boost your Pokemon's power.
+                Each Pokemon can have up to <strong>510 total EVs</strong>, with a max of <strong>252</strong> in any single stat.
               </p>
-            </div>
-          </div>
+              <p>
+                💡 <strong>Quick Tip:</strong> Most competitive spreads invest 252 in two stats and 4 in a third.
+                Use the speed calculator to outspeed specific threats!
+              </p>
+            </OnboardingTip>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Pokemon Selection */}
@@ -196,7 +232,7 @@ const EVOptimizer: NextPage = () => {
                   placeholder="Search Pokemon..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 rounded-full glass-light border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
+                  className="w-full px-4 py-3 rounded-full bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
                 />
 
                 {loading && (
@@ -215,7 +251,7 @@ const EVOptimizer: NextPage = () => {
                           setSearchQuery('');
                           setSearchResults([]);
                         }}
-                        className="w-full p-3 glass-light rounded-xl hover:glass-medium transition-all flex items-center gap-3 group"
+                        className="w-full p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-700 transition-all flex items-center gap-3 group"
                       >
                         <Image
                           src={pokemon.sprites?.front_default || '/dextrendslogo.png'}
@@ -267,7 +303,7 @@ const EVOptimizer: NextPage = () => {
                           max="100"
                           value={level}
                           onChange={(e) => setLevel(parseInt(e.target.value) || 50)}
-                          className="w-full px-3 py-2 rounded-full glass-light border border-stone-200 dark:border-stone-700"
+                          className="w-full px-3 py-2 rounded-full bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-700"
                         />
                       </div>
 
@@ -276,7 +312,7 @@ const EVOptimizer: NextPage = () => {
                         <select
                           value={nature}
                           onChange={(e) => setNature(e.target.value)}
-                          className="w-full px-3 py-2 rounded-full glass-light border border-stone-200 dark:border-stone-700"
+                          className="w-full px-3 py-2 rounded-full bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-700"
                         >
                           {Object.entries(NATURE_MODIFIERS).map(([name, mods]) => (
                             <option key={name} value={name}>

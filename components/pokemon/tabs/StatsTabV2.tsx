@@ -1,13 +1,17 @@
 import React, { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, Nature } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
 import { Container } from '../../ui/Container';
 import PokemonStatBars from '../PokemonStatBars';
+import QuickStatsCard from '../QuickStatsCard';
+import PokemonComparePanel from '../PokemonComparePanel';
+import Button from '../../ui/Button';
 import { cn } from '../../../utils/cn';
 import {
   FaDna, FaFlask, FaGamepad
 } from 'react-icons/fa';
+import { IoSwapHorizontal } from 'react-icons/io5';
 
 interface StatsTabV2Props {
   pokemon: Pokemon;
@@ -43,6 +47,8 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
 }) => {
   // State for perfect IVs/EVs toggle
   const [usePerfectStats, setUsePerfectStats] = useState(false);
+  // State for comparison mode
+  const [showCompare, setShowCompare] = useState(false);
 
   // Memoize stats to prevent recreation on every render
   const stats = useMemo(() => pokemon.stats || [], [pokemon.stats]);
@@ -123,8 +129,66 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
 
   const ranking = getStatRanking(totalBaseStats);
 
+  // Convert stats to the format QuickStatsCard expects
+  const quickStats = useMemo(() => ({
+    hp: pokemon.stats?.find(s => s.stat.name === 'hp')?.base_stat || 0,
+    attack: pokemon.stats?.find(s => s.stat.name === 'attack')?.base_stat || 0,
+    defense: pokemon.stats?.find(s => s.stat.name === 'defense')?.base_stat || 0,
+    specialAttack: pokemon.stats?.find(s => s.stat.name === 'special-attack')?.base_stat || 0,
+    specialDefense: pokemon.stats?.find(s => s.stat.name === 'special-defense')?.base_stat || 0,
+    speed: pokemon.stats?.find(s => s.stat.name === 'speed')?.base_stat || 0,
+  }), [pokemon.stats]);
+
   return (
     <div className="space-y-6">
+      {/* Quick Stats Summary - At-a-glance view */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="relative">
+          <QuickStatsCard
+            stats={quickStats}
+            pokemonName={pokemon.name}
+          />
+          {/* Compare Button */}
+          <div className="absolute top-4 right-4">
+            <Button
+              variant={showCompare ? 'primary' : 'secondary'}
+              size="sm"
+              onClick={() => setShowCompare(!showCompare)}
+              icon={<IoSwapHorizontal className="w-4 h-4" />}
+            >
+              Compare
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Comparison Panel */}
+      <AnimatePresence>
+        {showCompare && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <PokemonComparePanel
+              pokemon1={{
+                id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                name: pokemon.name,
+                stats: quickStats,
+                sprite: pokemon.sprites?.front_default || '',
+                types: pokemon.types?.map(t => t.type.name) || [],
+              }}
+              onClose={() => setShowCompare(false)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Stats Display */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -198,7 +262,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
         {/* Nature Selector - Glass Morphism */}
-        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
+        <div className="relative rounded-xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg">
               <FaFlask className="w-5 h-5 text-white" />
@@ -208,7 +272,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
           <select
             value={selectedNature}
             onChange={(e) => onNatureChange?.(e.target.value)}
-            className="w-full p-3 text-sm bg-white/50 dark:bg-stone-800/50 rounded-2xl border border-white/50 dark:border-stone-600/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
+            className="w-full p-3 text-sm bg-white/50 dark:bg-stone-800/50 rounded-xl border border-white/50 dark:border-stone-600/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
           >
             {allNatures.map(nature => (
               <option key={nature.name} value={nature.name}>
@@ -229,7 +293,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         </div>
 
         {/* Level Selector - Glass Morphism */}
-        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
+        <div className="relative rounded-xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-lg">
@@ -275,7 +339,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         </div>
 
         {/* EV Yield - Glass Morphism */}
-        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
+        <div className="relative rounded-xl p-5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-xl border border-white/40 dark:border-stone-700/40 shadow-xl">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-lg">
               <FaDna className="w-5 h-5 text-white" />

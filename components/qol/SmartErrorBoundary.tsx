@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import Router from 'next/router';
 import logger from '../../utils/logger';
+import { Container } from '../ui/Container';
 
 // Type definitions
 interface SmartErrorBoundaryProps {
@@ -36,7 +37,7 @@ export class SmartErrorBoundary extends React.Component<SmartErrorBoundaryProps,
 
       return (
         <div className="min-h-screen flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl p-6 max-w-md w-full">
+          <Container variant="elevated" padding="lg" className="max-w-md w-full">
             <div className="text-center">
               <div className="text-red-500 text-6xl mb-4">⚠️</div>
               <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100 mb-2">
@@ -73,7 +74,7 @@ export class SmartErrorBoundary extends React.Component<SmartErrorBoundaryProps,
                 </details>
               )}
             </div>
-          </div>
+          </Container>
         </div>
       );
     }

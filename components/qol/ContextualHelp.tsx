@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, ReactNode, useCallback, useMemo } f
 import { useRouter } from 'next/router';
 import { useNotifications } from '../../hooks/useNotifications';
 import logger from '../../utils/logger';
+import { Container } from '../ui/Container';
 
 // Type definitions
 interface SmartTooltipProps {
@@ -257,7 +258,7 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
       {/* Help modal */}
       {helpMode && currentHelp && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl max-w-lg w-full max-h-80 overflow-y-auto">
+          <Container variant="elevated" className="max-w-lg w-full max-h-80 overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
@@ -300,7 +301,7 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
                 </div>
               </div>
             </div>
-          </div>
+          </Container>
         </div>
       )}
 

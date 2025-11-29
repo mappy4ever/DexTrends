@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../context/UnifiedAppContext';
 import Head from 'next/head';
 import logger from '../utils/logger';
 import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+import { PageHeader } from '../components/ui/BreadcrumbNavigation';
 import { CircularButton } from '../components/ui/design-system';
 import type { NextPage } from 'next';
 
@@ -41,7 +41,6 @@ interface PokemonApiResponse {
 }
 
 const FunPage: NextPage & { fullBleed?: boolean } = () => {
-  const { theme } = useTheme();
   const [currentFact, setCurrentFact] = useState(0);
   const [randomPokemon, setRandomPokemon] = useState<RandomPokemon | null>(null);
   const [loadingRandomPokemon, setLoadingRandomPokemon] = useState(false);
@@ -179,21 +178,22 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
       </Head>
 
       <FullBleedWrapper gradient="pokedex">
-        <div className="max-w-6xl mx-auto py-8">
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
-              🎉 Fun Zone 🎉
-            </h1>
-            <p className="text-xl text-stone-600 dark:text-stone-300 mb-6">
-              Discover amazing Pokémon facts, test your knowledge, and have fun!
-            </p>
-          </div>
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          {/* PageHeader with Breadcrumbs */}
+          <PageHeader
+            title="Fun Zone"
+            description="Random Pokemon, fun facts, and trivia"
+            breadcrumbs={[
+              { title: 'Home', href: '/', icon: '🏠', isActive: false },
+              { title: 'Fun Zone', href: '/fun', icon: '🎮', isActive: true },
+            ]}
+          />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Random Pokemon */}
-            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
-              <h2 className="text-2xl font-bold mb-4 text-center text-amber-600">
-                🎲 Random Pokémon
+            <div className="bg-white dark:bg-stone-800 rounded-xl p-6 shadow-sm border border-stone-100 dark:border-stone-700 transition-all duration-150 hover:shadow-md hover:-translate-y-0.5">
+              <h2 className="text-lg font-semibold mb-4 text-center text-stone-800 dark:text-stone-200">
+                Random Pokemon
               </h2>
               {loadingRandomPokemon ? (
                 <div className="text-center">
@@ -251,9 +251,9 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
             </div>
 
             {/* Pokemon Facts */}
-            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
-              <h2 className="text-2xl font-bold mb-4 text-center text-amber-600">
-                💡 Pokémon Facts
+            <div className="bg-white dark:bg-stone-800 rounded-xl p-6 shadow-sm border border-stone-100 dark:border-stone-700 transition-all duration-150 hover:shadow-md hover:-translate-y-0.5">
+              <h2 className="text-lg font-semibold mb-4 text-center text-stone-800 dark:text-stone-200">
+                Pokemon Facts
               </h2>
               <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-xl">
                 <div className="text-center">
@@ -272,9 +272,9 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
             </div>
 
             {/* Pokemon Quiz */}
-            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
-              <h2 className="text-2xl font-bold mb-4 text-center text-amber-600">
-                🧠 Pokémon Quiz
+            <div className="bg-white dark:bg-stone-800 rounded-xl p-6 shadow-sm border border-stone-100 dark:border-stone-700 transition-all duration-150 hover:shadow-md hover:-translate-y-0.5">
+              <h2 className="text-lg font-semibold mb-4 text-center text-stone-800 dark:text-stone-200">
+                Pokemon Quiz
               </h2>
               <div className="mb-4">
                 <h3 className="font-bold text-lg mb-4 text-stone-800 dark:text-white">
@@ -321,9 +321,9 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
           </div>
 
           {/* Pokemon Joke Section */}
-          <div className="mt-12 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
-            <h2 className="text-3xl font-bold mb-6 text-center text-amber-600">
-              😂 Pokémon Jokes
+          <div className="mt-8 bg-white dark:bg-stone-800 rounded-xl p-6 shadow-sm border border-stone-100 dark:border-stone-700">
+            <h2 className="text-lg font-semibold mb-6 text-center text-stone-800 dark:text-stone-200">
+              Pokemon Jokes
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-6 rounded-xl">

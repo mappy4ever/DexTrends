@@ -103,7 +103,7 @@ const PocketCard = memo<PocketCardProps>(({
       <div
         className={`
           backdrop-blur-xl bg-white/90 dark:bg-stone-800/90
-          rounded-3xl p-2 sm:p-3
+          rounded-xl p-2 sm:p-3
           border-2 border-stone-300/50 dark:border-stone-600/50
           shadow-lg hover:shadow-2xl
           transform transition-all duration-150
@@ -118,13 +118,13 @@ const PocketCard = memo<PocketCardProps>(({
       >
         {/* Subtle type-based gradient overlay */}
         {card.type && (
-          <div className={`absolute inset-0 bg-gradient-to-b ${getTypeGradient(card.type)} pointer-events-none rounded-3xl opacity-80`} />
+          <div className={`absolute inset-0 bg-gradient-to-b ${getTypeGradient(card.type)} pointer-events-none rounded-xl opacity-80`} />
         )}
 
         {/* Card content with relative positioning to be above gradient */}
         <div className="relative z-10 flex flex-col h-full">
         {/* Compact Image Container */}
-        <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-stone-100 to-stone-50 dark:from-stone-700 dark:to-stone-800 flex-shrink-0">
+        <div className="relative rounded-xl overflow-hidden mb-2 bg-gradient-to-br from-stone-100 to-stone-50 dark:from-stone-700 dark:to-stone-800 flex-shrink-0">
           <div className="aspect-[110/154] relative">
             <img
               src={card.image || '/back-card.png'}
@@ -671,7 +671,7 @@ export default function PocketCardList(props: PocketCardListProps) {
       context="PocketCardList"
       fallback={
         <div className="min-h-96 flex items-center justify-center p-8">
-          <div className="glass-medium rounded-xl p-6 text-center max-w-md">
+          <div className="bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl p-6 text-center max-w-md shadow-md">
             <div className="text-4xl mb-4">🎴</div>
             <h3 className="text-lg font-semibold text-stone-900 mb-2">Unable to load cards</h3>
             <p className="text-stone-600 mb-4">There was an error loading the Pocket cards. Please try refreshing the page.</p>

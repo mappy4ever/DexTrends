@@ -544,7 +544,7 @@ export default function PocketPokemonDetail() {
               >
                 {/* Card Glow Effect */}
                 <motion.div
-                  className="absolute -inset-4 bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 rounded-2xl opacity-0 blur-xl"
+                  className="absolute -inset-4 bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 rounded-xl opacity-0 blur-xl"
                   variants={{
                     hover: { opacity: 0.4 }
                   }}
@@ -706,7 +706,7 @@ export default function PocketPokemonDetail() {
                 <div className="grid grid-cols-2 gap-4">
                   {pokemonDetails.hp && (
                     <motion.div 
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-6 border border-green-500/20"
+                      className="relative overflow-hidden rounded-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-6 border border-green-500/20"
                       whileHover={{ scale: 1.02, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
@@ -726,7 +726,7 @@ export default function PocketPokemonDetail() {
                   
                   {pokemonDetails.stage && (
                     <motion.div
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6 border border-amber-500/20"
+                      className="relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6 border border-amber-500/20"
                       whileHover={{ scale: 1.02, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
@@ -738,7 +738,7 @@ export default function PocketPokemonDetail() {
                   
                   {pokemonDetails.weakness && (
                     <motion.div 
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-500/10 to-pink-500/10 p-6 border border-red-500/20"
+                      className="relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500/10 to-pink-500/10 p-6 border border-red-500/20"
                       whileHover={{ scale: 1.02, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
@@ -750,7 +750,7 @@ export default function PocketPokemonDetail() {
                   
                   {pokemonDetails.retreat && (
                     <motion.div
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-stone-500/10 to-stone-500/10 p-6 border border-stone-500/20"
+                      className="relative overflow-hidden rounded-xl bg-gradient-to-br from-stone-500/10 to-stone-500/10 p-6 border border-stone-500/20"
                       whileHover={{ scale: 1.02, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
@@ -763,7 +763,7 @@ export default function PocketPokemonDetail() {
 
                 {pokemonDetails.ability && (
                   <motion.div
-                    className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 to-pink-500/10 p-6 border border-amber-500/20 mt-4"
+                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500/10 to-pink-500/10 p-6 border border-amber-500/20 mt-4"
                     whileHover={{ scale: 1.01, y: -2 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
@@ -879,7 +879,7 @@ export default function PocketPokemonDetail() {
                   <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
                     Other {pokemonDetails.type} type cards from the {pokemonDetails.pack} pack
                   </p>
-                  <div className="glass-light rounded-2xl p-4 border border-stone-200 dark:border-stone-700">
+                  <div className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4 border border-stone-200 dark:border-stone-700">
                     <PocketCardList 
                       cards={relatedCards.related}
                       loading={false}

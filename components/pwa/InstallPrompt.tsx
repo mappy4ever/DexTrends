@@ -212,10 +212,10 @@ const InstallPrompt: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-end justify-center p-4">
-      <div className="glass-medium rounded-t-3xl w-full max-w-md mx-auto shadow-2xl border border-white/20 backdrop-blur-md animate-slide-up">
+      <div className="bg-white/95 dark:bg-stone-800/95 rounded-t-3xl w-full max-w-md mx-auto shadow-2xl border border-stone-200 dark:border-stone-700 backdrop-blur-md animate-slide-up">
         {/* Header */}
         <div className="p-6 text-center border-b border-white/10">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
             <span className="text-2xl">📱</span>
           </div>
           <h2 className="text-xl font-bold text-stone-900 mb-2">
@@ -281,7 +281,7 @@ const InstallPrompt: React.FC = () => {
             // Android/Chrome install
             <div className="space-y-4">
               <div className="space-y-4">
-                <div className="glass-light rounded-lg p-4 border border-white/20">
+                <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4 border border-stone-200 dark:border-stone-600">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-stone-900">Benefits of installing:</h3>
                     <button

@@ -834,7 +834,7 @@ export default function StarterDetailPage() {
             {regionData.starters.map((starter, index) => (
               <SlideUp key={starter.id} delay={index * 0.1}>
                 <CardHover>
-                  <div className={`rounded-2xl overflow-hidden ${
+                  <div className={`rounded-xl overflow-hidden ${
                     theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                   } shadow-xl h-full`}>
                     {/* Header with Type Icon */}
@@ -939,7 +939,7 @@ export default function StarterDetailPage() {
 
           {/* Comparison Section */}
           <SlideUp>
-            <div className={`rounded-2xl overflow-hidden ${
+            <div className={`rounded-xl overflow-hidden ${
               theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
             } p-8`}>
               <h2 className="text-2xl font-bold mb-6 text-center">Base Stats Comparison</h2>
@@ -995,7 +995,7 @@ export default function StarterDetailPage() {
             >
               <SlideUp>
                 <div 
-                  className={`max-w-6xl w-full rounded-2xl overflow-hidden ${
+                  className={`max-w-6xl w-full rounded-xl overflow-hidden ${
                     theme === 'dark' ? 'bg-stone-800' : 'bg-white'
                   } max-h-[90vh] overflow-y-auto`}
                   onClick={(e) => e.stopPropagation()}

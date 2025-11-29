@@ -79,6 +79,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
               'focus:border-amber-500 dark:focus:border-amber-400',
               className
             )}
+            aria-label={label || props.placeholder}
             {...props}
           />
           

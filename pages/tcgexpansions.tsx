@@ -14,6 +14,7 @@ import { SkeletonCard } from '@/components/ui/Skeleton';
 import { PullToRefresh } from '@/components/ui/gestures/PullToRefresh';
 import { ProgressiveImage } from '@/components/ui/ProgressiveImage';
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
+import { PageHeader } from "../components/ui/BreadcrumbNavigation";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
 import { CardSet } from "../types/api/cards";
 import { PaginationInfo } from "../types/api/api-responses";
@@ -281,22 +282,19 @@ const TcgSetsContent: React.FC = () => {
 
   const mainContent = (
     <FullBleedWrapper gradient="pokedex">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn py-6 md:py-8 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn py-6 overflow-x-hidden">
           <FadeIn>
-            {/* Hero Section - Clean and minimal */}
-            <motion.div
-              className="text-center mb-6 xs:mb-8 sm:mb-10"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
+            {/* PageHeader with Breadcrumbs */}
+            <PageHeader
+              title="Pokémon TCG Collection"
+              description="Discover every Trading Card Game set from Base Set to the latest releases"
+              breadcrumbs={[
+                { title: 'Home', href: '/', icon: '🏠', isActive: false },
+                { title: 'TCG Sets', href: '/tcgexpansions', icon: '🃏', isActive: true },
+              ]}
             >
-              <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-2 xs:mb-3 text-stone-800 dark:text-white">
-                Pokémon TCG Collection
-              </h1>
-              <p className="text-sm xs:text-base sm:text-lg text-stone-500 dark:text-stone-400 max-w-2xl mx-auto">
-                Discover every Trading Card Game set from Base Set to the latest releases
-              </p>
-              <div className="flex flex-wrap justify-center gap-2 xs:gap-3 mt-4">
+              {/* Stats Pills */}
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-900/20 text-xs font-medium text-amber-600 dark:text-amber-400">
                   {sets.length} Sets
                 </span>
@@ -304,7 +302,7 @@ const TcgSetsContent: React.FC = () => {
                   15,000+ Cards
                 </span>
               </div>
-            </motion.div>
+            </PageHeader>
             
             {/* Search and Filters - Clean card */}
             <motion.div

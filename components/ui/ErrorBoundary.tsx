@@ -156,7 +156,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50 via-white to-amber-50">
           <div className="w-full max-w-md">
             {/* Glass morphism error container */}
-            <div className="glass-medium rounded-2xl p-8 shadow-xl border border-white/20 backdrop-blur-md">
+            <div className="bg-white/90 dark:bg-stone-800/90 rounded-xl p-8 shadow-xl border border-stone-200 dark:border-stone-700 backdrop-blur-md">
               {/* Error icon */}
               <div className="text-center mb-6">
                 <div className="text-6xl mb-4 animate-pulse">{icon}</div>

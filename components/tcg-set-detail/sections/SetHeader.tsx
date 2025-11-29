@@ -106,11 +106,11 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
               {setInfo.name}
             </h1>
             <div className="grid grid-cols-2 gap-4">
-              <div className="glass-light rounded-lg p-3">
+              <div className="bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-600 rounded-lg p-3">
                 <p className="text-stone-600 dark:text-stone-400 text-sm">Series</p>
                 <p className="font-semibold">{setInfo.series}</p>
               </div>
-              <div className="glass-light rounded-lg p-3">
+              <div className="bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-600 rounded-lg p-3">
                 <p className="text-stone-600 dark:text-stone-400 text-sm">Release Date</p>
                 <p className="font-semibold">
                   {new Date(setInfo.releaseDate).toLocaleDateString('en-US', {
@@ -120,7 +120,7 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
                   })}
                 </p>
               </div>
-              <div className="glass-light rounded-lg p-3">
+              <div className="bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-600 rounded-lg p-3">
                 <p className="text-stone-600 dark:text-stone-400 text-sm">Total Cards</p>
                 <p className="font-semibold text-lg">
                   <span className="text-amber-600">{setInfo.printedTotal}</span>
@@ -129,7 +129,7 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
                 </p>
               </div>
               {setInfo.ptcgoCode && (
-                <div className="glass-light rounded-lg p-3">
+                <div className="bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-600 rounded-lg p-3">
                   <p className="text-stone-600 dark:text-stone-400 text-sm">PTCGO Code</p>
                   <p className="font-semibold font-mono">{setInfo.ptcgoCode}</p>
                 </div>

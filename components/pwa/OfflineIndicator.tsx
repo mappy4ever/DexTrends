@@ -95,7 +95,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({
 
   return (
     <div className={`fixed ${positionClasses} left-1/2 transform -translate-x-1/2 z-50 ${animationClasses}`}>
-      <div className={`glass-medium rounded-xl shadow-xl border border-white/20 backdrop-blur-md transition-all duration-300 ${
+      <div className={`bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-xl border border-stone-200 dark:border-stone-700 backdrop-blur-md transition-all duration-300 ${
         isMinimized ? 'w-12 h-12' : 'max-w-sm'
       }`}>
         {isMinimized ? (

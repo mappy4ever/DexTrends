@@ -221,7 +221,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
 
         {/* Legendary Trio/Duo Groups (if applicable) */}
         {region.name === 'Kanto' && (
-          <div className="mt-12 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-amber-100/50 to-pink-100/50 dark:from-amber-900/30 dark:to-pink-900/30 border border-amber-200/30 dark:border-amber-700/30">
+          <div className="mt-12 p-6 rounded-xl backdrop-blur-md bg-gradient-to-r from-amber-100/50 to-pink-100/50 dark:from-amber-900/30 dark:to-pink-900/30 border border-amber-200/30 dark:border-amber-700/30">
             <h3 className="text-lg font-bold mb-4 text-center text-amber-700 dark:text-amber-300">
               Legendary Groups
             </h3>
@@ -251,7 +251,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
         >
           <Link 
             href={`/pokemon/legendary`}
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-600 to-pink-600 text-white font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-amber-600 to-pink-600 text-white font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
           >
             <BsShieldFill className="text-xl" />
             <span>Explore All Legendary Pokémon</span>

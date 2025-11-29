@@ -189,7 +189,7 @@ export function UnifiedGrid<T extends GridItem>({
         className={cn(
           'relative group overflow-hidden',
           'bg-white dark:bg-stone-800',
-          'rounded-2xl shadow-md hover:shadow-xl',
+          'rounded-xl shadow-md hover:shadow-xl',
           'transform transition-all duration-200',
           'hover:scale-105 active:scale-95',
           'focus:outline-none focus:ring-2 focus:ring-primary-500',

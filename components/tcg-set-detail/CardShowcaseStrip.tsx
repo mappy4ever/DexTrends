@@ -232,7 +232,7 @@ export const CardShowcaseStrip: React.FC<CardShowcaseStripProps> = ({
   return (
     <div className={cn('relative', className)}>
       <div className={cn(
-        'p-4 rounded-2xl',
+        'p-4 rounded-xl',
         createGlassStyle({
           blur: 'lg',
           opacity: 'subtle',

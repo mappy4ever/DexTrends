@@ -222,7 +222,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
           whileHover={{ scale: 1.03, y: -2 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
-          <div className="h-full bg-white dark:bg-stone-900/50 rounded-2xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
+          <div className="h-full bg-white dark:bg-stone-900/50 rounded-xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center shadow-md shadow-amber-500/10">
                 <FaEgg className="w-5 h-5 text-amber-400" />
@@ -328,7 +328,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
           whileHover={{ scale: 1.03, y: -2 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
-          <div className="h-full bg-white dark:bg-stone-900/50 rounded-2xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
+          <div className="h-full bg-white dark:bg-stone-900/50 rounded-xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center shadow-md shadow-orange-500/10">
                 <FaClock className="w-5 h-5 text-orange-400" />

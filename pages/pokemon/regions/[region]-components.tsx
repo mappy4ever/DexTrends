@@ -171,7 +171,7 @@ const regionsData: Record<string, Region> = {
     routes: 20,
     pokemonRange: "152-251",
     color: "from-yellow-500 to-silver-500",
-    bgColor: "bg-gradient-to-br from-yellow-100 to-gray-100 dark:from-yellow-900 dark:to-gray-900",
+    bgColor: "bg-gradient-to-br from-yellow-100 to-stone-100 dark:from-yellow-900 dark:to-stone-900",
     locations: [
       { name: "New Bark Town", type: "town", description: "The town where the winds of a new beginning blow" },
       { name: "Cherrygrove City", type: "city", description: "The city of cute, fragrant flowers" },
@@ -373,8 +373,8 @@ const regionsData: Record<string, Region> = {
     cities: 17,
     routes: 23,
     pokemonRange: "494-649",
-    color: "from-gray-600 to-black",
-    bgColor: "bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900",
+    color: "from-stone-600 to-black",
+    bgColor: "bg-gradient-to-br from-stone-100 to-stone-300 dark:from-stone-800 dark:to-stone-900",
     locations: [
       { name: "Nuvema Town", type: "town", description: "The Start of Something Big!" },
       { name: "Accumula Town", type: "town", description: "The Fast-Growing Town" },

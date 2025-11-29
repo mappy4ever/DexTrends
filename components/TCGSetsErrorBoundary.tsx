@@ -1,6 +1,7 @@
 import React, { ReactNode, ErrorInfo } from 'react';
 import Router from 'next/router';
 import logger from '@/utils/logger';
+import { Container } from './ui/Container';
 
 interface TCGSetsErrorBoundaryProps {
   children: ReactNode;
@@ -39,7 +40,7 @@ class TCGSetsErrorBoundary extends React.Component<TCGSetsErrorBoundaryProps, TC
     if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-900">
-          <div className="max-w-md w-full p-6 bg-white dark:bg-stone-800 rounded-lg shadow-lg">
+          <Container variant="elevated" className="max-w-md w-full">
             <h2 className="text-2xl font-bold text-stone-900 dark:text-white mb-4">
               Oops! Something went wrong
             </h2>
@@ -70,7 +71,7 @@ class TCGSetsErrorBoundary extends React.Component<TCGSetsErrorBoundaryProps, TC
                 </pre>
               </details>
             )}
-          </div>
+          </Container>
         </div>
       );
     }

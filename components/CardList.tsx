@@ -73,7 +73,7 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
       <motion.div
         className="
           bg-white dark:bg-stone-800/95
-          rounded-2xl p-4
+          rounded-xl p-4
           border border-stone-100 dark:border-stone-700/50
           shadow-lg hover:shadow-2xl
           transform transition-all duration-300

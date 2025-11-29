@@ -235,7 +235,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
               <motion.button
                 key={starter}
                 onClick={() => setSelectedStarter(index)}
-                className={`relative p-6 rounded-2xl transition-all duration-300 ${
+                className={`relative p-6 rounded-xl transition-all duration-300 ${
                   isSelected
                     ? 'ring-4 ring-amber-500 ring-offset-2 ring-offset-white dark:ring-offset-stone-900'
                     : ''

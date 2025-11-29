@@ -7,6 +7,7 @@ import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { createGlassStyle, GradientButton } from '../../components/ui/design-system';
 import { motion } from "framer-motion";
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
+import Button from '@/components/ui/Button';
 import logger from '../../utils/logger';
 import BackToTop from "../../components/ui/BaseBackToTop";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
@@ -129,7 +130,7 @@ const PocketExpansions: NextPage = () => {
         <FadeIn>
           {/* Hero Section */}
           <motion.div
-            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-2xl p-6 border border-white/50 dark:border-stone-700/50 shadow-xl"
+            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-xl p-6 border border-white/50 dark:border-stone-700/50 shadow-xl"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -167,7 +168,7 @@ const PocketExpansions: NextPage = () => {
 
           {/* Search and Filters */}
           <motion.div
-            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-2xl p-4 border border-white/50 dark:border-stone-700/50 shadow-lg"
+            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-xl p-4 border border-white/50 dark:border-stone-700/50 shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -245,7 +246,7 @@ const PocketExpansions: NextPage = () => {
         {loading ? (
           <PageLoader text="Loading Pocket expansions..." />
         ) : error ? (
-          <div className="text-center p-8 bg-white/90 dark:bg-stone-800/90 rounded-2xl shadow-lg">
+          <div className="text-center p-8 bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
             <h2 className="text-xl font-bold text-red-600 mb-4">Failed to Load Expansions</h2>
             <p className="text-stone-600 dark:text-stone-400 mb-4">{error}</p>
             <GradientButton
@@ -263,7 +264,7 @@ const PocketExpansions: NextPage = () => {
                 className="animate-fadeIn group"
                 onClick={() => handleExpansionClick(expansion)}
               >
-                <div className="relative flex flex-col h-full rounded-2xl overflow-hidden bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm border border-stone-200/50 dark:border-stone-700/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-yellow-400">
+                <div className="relative flex flex-col h-full rounded-xl overflow-hidden bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm border border-stone-200/50 dark:border-stone-700/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-yellow-400">
 
                   {/* Expansion Logo */}
                   <div className="relative h-40 w-full flex items-center justify-center p-4 bg-gradient-to-br from-yellow-100 via-orange-50 to-amber-100 dark:from-yellow-900/30 dark:via-orange-900/20 dark:to-amber-900/30">
@@ -304,9 +305,14 @@ const PocketExpansions: NextPage = () => {
                     </div>
 
                     {/* View Cards Button */}
-                    <button className="w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold rounded-xl transition-all duration-300 transform group-hover:scale-[1.02] shadow-md">
+                    <Button
+                      variant="primary"
+                      size="md"
+                      fullWidth
+                      className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 group-hover:scale-[1.02] shadow-md"
+                    >
                       View Cards
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </CardHover>
@@ -337,7 +343,7 @@ const PocketExpansions: NextPage = () => {
         )}
 
         {!loading && !error && sortedExpansions.length === 0 && (
-          <div className="text-center py-20 bg-white/90 dark:bg-stone-800/90 rounded-2xl shadow-lg">
+          <div className="text-center py-20 bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
             <div className="text-6xl mb-4">🔍</div>
             <h2 className="text-xl font-bold text-stone-800 dark:text-stone-200 mb-4">No Expansions Found</h2>
             <p className="text-stone-600 dark:text-stone-400 mb-6">

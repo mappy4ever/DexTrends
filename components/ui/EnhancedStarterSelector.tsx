@@ -865,7 +865,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                   {/* Action Buttons */}
                   <div className="flex gap-2 mt-4">
                     <button
-                      className="flex-1 px-4 py-3 rounded-2xl font-semibold text-sm transition-all duration-300 transform hover:scale-105"
+                      className="flex-1 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 transform hover:scale-105"
                       style={{
                         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                         color: 'white',
@@ -1209,7 +1209,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                               e.stopPropagation();
                               router.push(`/pokedex/${selectedEvolution?.id || starter.id}`);
                             }}
-                            className="w-full px-6 py-4 text-white font-bold rounded-2xl transition-all duration-300 text-center transform hover:scale-105"
+                            className="w-full px-6 py-4 text-white font-bold rounded-xl transition-all duration-300 text-center transform hover:scale-105"
                             style={{
                               background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
                               boxShadow: '0 4px 16px rgba(168, 85, 247, 0.3)'
@@ -1227,7 +1227,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
 
       {/* Comparison Section (if enabled) */}
       {showComparison && selectedStarter && (
-        <div className="mt-8 p-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-2xl border border-stone-200 dark:border-stone-700">
+        <div className="mt-8 p-6 backdrop-blur-xl bg-white/90 dark:bg-stone-800/90 rounded-xl border border-stone-200 dark:border-stone-700">
           <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">
             Your Selected Starter
           </h3>

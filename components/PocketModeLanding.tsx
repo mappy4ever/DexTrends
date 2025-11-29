@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { BsCardList, BsGrid, BsPlay } from 'react-icons/bs';
 import { FiShoppingBag, FiZap, FiTrendingUp } from 'react-icons/fi';
 import { GiCardPickup, GiCardDraw } from 'react-icons/gi';
+import Button from './ui/Button';
 
 interface Feature {
   href: string;
@@ -98,7 +99,7 @@ const PocketModeLanding: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {features.map((feature, index) => (
             <Link key={index} href={feature.href}>
-              <div className="group bg-white/90 dark:bg-stone-800/90 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+              <div className="group bg-white/90 dark:bg-stone-800/90 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
                 {/* Badge */}
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs px-2 py-1 rounded-full font-medium">
                   {feature.badge}
@@ -125,7 +126,7 @@ const PocketModeLanding: React.FC = () => {
         </div>
 
         {/* Key Differences Section */}
-        <div className="bg-white/90 dark:bg-stone-800/90 rounded-2xl shadow-lg p-8 mb-16">
+        <div className="bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg p-8 mb-16">
           <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-8 text-center">
             🎮 What Makes Pocket Different?
           </h2>
@@ -170,7 +171,7 @@ const PocketModeLanding: React.FC = () => {
         </div>
 
         {/* Popular Decks Preview */}
-        <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl p-8 text-white mb-16">
+        <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl p-8 text-white mb-16">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-4">🏆 Explore Meta Decks</h2>
             <p className="text-amber-100 max-w-2xl mx-auto">
@@ -181,14 +182,14 @@ const PocketModeLanding: React.FC = () => {
           
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/pocketmode/decks">
-              <button className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105">
+              <Button variant="ghost" className="bg-white/20 hover:bg-white/30 text-white hover:scale-105">
                 View Top Decks
-              </button>
+              </Button>
             </Link>
             <Link href="/pocketmode/deckbuilder">
-              <button className="bg-white text-amber-600 hover:bg-stone-100 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105">
+              <Button className="bg-white text-amber-600 hover:bg-stone-100 hover:scale-105">
                 Build Your Own
-              </button>
+              </Button>
             </Link>
           </div>
         </div>
@@ -204,9 +205,12 @@ const PocketModeLanding: React.FC = () => {
           </p>
           
           <Link href="/pocketmode/expansions">
-            <button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <Button
+              size="xl"
+              className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold shadow-lg hover:scale-105"
+            >
               🎲 Open Booster Packs
-            </button>
+            </Button>
           </Link>
         </div>
       </div>

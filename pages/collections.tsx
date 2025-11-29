@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { useTheme } from '../context/UnifiedAppContext';
 import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { Container } from '../components/ui/Container';
-import { GradientButton } from '../components/ui/design-system';
-import { CircularCard } from '../components/ui/design-system/CircularCard';
-import { CircularButton, DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
-import { motion } from 'framer-motion';
+import { PageHeader } from '../components/ui/BreadcrumbNavigation';
+import { DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
+import { IoFolderOpen, IoNotifications, IoPieChart } from 'react-icons/io5';
 import type { NextPage } from 'next';
 
 interface Tab {
@@ -45,13 +43,12 @@ interface DistributionItem {
 }
 
 const CollectionsPage: NextPage = () => {
-  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('collections');
 
   const tabs: Tab[] = [
-    { id: 'collections', label: 'My Collections', icon: '📚' },
-    { id: 'alerts', label: 'Price Alerts', icon: '🔔' },
-    { id: 'portfolio', label: 'Portfolio', icon: '📊' }
+    { id: 'collections', label: 'My Collections', icon: '' },
+    { id: 'alerts', label: 'Price Alerts', icon: '' },
+    { id: 'portfolio', label: 'Portfolio', icon: '' }
   ];
 
   return (
@@ -62,48 +59,36 @@ const CollectionsPage: NextPage = () => {
       </Head>
       <PageErrorBoundary pageName="Collections">
         <FullBleedWrapper gradient="pokedex">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header with Gradient */}
-        <div className="text-center mb-12">
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent"
-          >
-            My Collections
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg text-stone-600 dark:text-stone-400"
-          >
-            Manage your Pokemon card collection, track prices, and set alerts
-          </motion.p>
-        </div>
-
-        {/* Tab Navigation with Glass Morphism */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex justify-center mb-8"
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
+        {/* PageHeader with Breadcrumbs */}
+        <PageHeader
+          title="Collections"
+          description="Manage your Pokemon cards, track prices, and set alerts"
+          breadcrumbs={[
+            { title: 'Home', href: '/', icon: '🏠', isActive: false },
+            { title: 'Collections', href: '/collections', icon: '💎', isActive: true },
+          ]}
         >
-          <Container variant="default" rounded="full" padding="none" className="inline-flex">
-            <div className="flex space-x-1 p-1">
-              {tabs.map(tab => (
-                <CircularButton
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  variant={activeTab === tab.id ? 'primary' : 'ghost'}
-                  leftIcon={<span className="text-lg">{tab.icon}</span>}
-                >
-                  {tab.label}
-                </CircularButton>
-              ))}
-            </div>
-          </Container>
-        </motion.div>
+          {/* Tab Navigation as Pills */}
+          <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-amber-600 text-white'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
+                }`}
+              >
+                {tab.id === 'collections' && <IoFolderOpen className="w-4 h-4" />}
+                {tab.id === 'alerts' && <IoNotifications className="w-4 h-4" />}
+                {tab.id === 'portfolio' && <IoPieChart className="w-4 h-4" />}
+                <span className="hidden sm:inline">{tab.label.split(' ').pop()}</span>
+              </button>
+            ))}
+          </div>
+        </PageHeader>
 
         {/* Tab Content */}
         <div className="max-w-7xl mx-auto">
@@ -165,71 +150,47 @@ const PortfolioOverview: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Portfolio Summary with Glass Cards */}
+      {/* Portfolio Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Container variant="gradient" hover className="h-full">
-            <div className="text-sm text-stone-600 dark:text-stone-400">Total Value</div>
-            <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              {formatCurrency(portfolioData.totalValue)}
-            </div>
-            <div className="text-sm text-green-600 mt-1">
-              +12.5% this month
-            </div>
-          </Container>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Container variant="default" hover className="h-full">
-            <div className="text-sm text-stone-600 dark:text-stone-400">Total Cards</div>
-            <div className="text-3xl font-bold text-stone-800 dark:text-white">
-              {portfolioData.totalCards}
-            </div>
-            <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
-              across all collections
-            </div>
-          </Container>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Container variant="default" hover className="h-full">
-            <div className="text-sm text-stone-600 dark:text-stone-400">Unique Cards</div>
-            <div className="text-3xl font-bold text-stone-800 dark:text-white">
-              {portfolioData.uniqueCards}
-            </div>
-            <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
-              different cards
-            </div>
-          </Container>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Container variant="default" hover className="h-full">
-            <div className="text-sm text-stone-600 dark:text-stone-400">Avg Card Value</div>
-            <div className="text-3xl font-bold text-stone-800 dark:text-white">
-              {formatCurrency(portfolioData.totalValue / portfolioData.totalCards)}
-            </div>
-            <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
-              per card
-            </div>
-          </Container>
-        </motion.div>
+        <Container variant="gradient" hover className="h-full">
+          <div className="text-sm text-stone-600 dark:text-stone-400">Total Value</div>
+          <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+            {formatCurrency(portfolioData.totalValue)}
+          </div>
+          <div className="text-sm text-green-600 mt-1">
+            +12.5% this month
+          </div>
+        </Container>
+
+        <Container variant="default" hover className="h-full">
+          <div className="text-sm text-stone-600 dark:text-stone-400">Total Cards</div>
+          <div className="text-3xl font-bold text-stone-800 dark:text-white">
+            {portfolioData.totalCards}
+          </div>
+          <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+            across all collections
+          </div>
+        </Container>
+
+        <Container variant="default" hover className="h-full">
+          <div className="text-sm text-stone-600 dark:text-stone-400">Unique Cards</div>
+          <div className="text-3xl font-bold text-stone-800 dark:text-white">
+            {portfolioData.uniqueCards}
+          </div>
+          <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+            different cards
+          </div>
+        </Container>
+
+        <Container variant="default" hover className="h-full">
+          <div className="text-sm text-stone-600 dark:text-stone-400">Avg Card Value</div>
+          <div className="text-3xl font-bold text-stone-800 dark:text-white">
+            {formatCurrency(portfolioData.totalValue / portfolioData.totalCards)}
+          </div>
+          <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+            per card
+          </div>
+        </Container>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

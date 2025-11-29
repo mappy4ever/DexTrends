@@ -1,3 +1,9 @@
+/**
+ * @deprecated Use PokemonHeroSectionV3 instead.
+ * This component is maintained for backwards compatibility only.
+ * Migration: Import from './PokemonHeroSectionV3' and update props accordingly.
+ */
+
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies } from "../../types/api/pokemon";

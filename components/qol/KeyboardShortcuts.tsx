@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useTheme } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
+import { Container } from '../ui/Container';
 
 // Type definitions
 interface Command {
@@ -259,7 +260,7 @@ export const KeyboardShortcutsManager: React.FC = () => {
       {/* Command Palette */}
       {commandPalette && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-start justify-center pt-32">
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl w-full max-w-lg mx-4">
+          <Container variant="elevated" padding="none" className="w-full max-w-lg mx-4">
             <div className="p-4 border-b border-stone-200 dark:border-stone-700">
               <div className="relative">
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
@@ -307,14 +308,14 @@ export const KeyboardShortcutsManager: React.FC = () => {
             <div className="p-4 border-t border-stone-200 dark:border-stone-700 text-xs text-stone-500 dark:text-stone-400">
               Use ↑↓ to navigate, Enter to select, Esc to close
             </div>
-          </div>
+          </Container>
         </div>
       )}
 
       {/* Keyboard Shortcuts Modal */}
       {showShortcuts && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl max-w-2xl w-full max-h-96 overflow-y-auto">
+          <Container variant="elevated" padding="none" className="max-w-2xl w-full max-h-96 overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
@@ -388,7 +389,7 @@ export const KeyboardShortcutsManager: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </Container>
         </div>
       )}
 

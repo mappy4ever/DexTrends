@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
-import CardList from '../components/CardList';
 import { useTheme } from '../context/UnifiedAppContext';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import logger from '../utils/logger';
 import { getPokemonSDK } from '../utils/pokemonSDK';
-import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+import { Container } from '../components/ui/Container';
+import { PageHeader } from '../components/ui/BreadcrumbNavigation';
 import type { NextPage } from 'next';
 import type { TCGCard } from '../types/api/cards';
 
@@ -247,69 +247,69 @@ const TrendingPage: NextPage = () => {
         <meta name="description" content="Discover rising and falling Pokemon TCG card prices. Track market trends and find the hottest cards in the trading card game market" />
       </Head>
       <FullBleedWrapper gradient="pokedex">
-        <div className="container max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold">Trending Cards</h1>
-          <Link href="/" className="text-amber-600 hover:underline">
-            Back to Home
-          </Link>
-        </div>
-        <p className="text-stone-600 mt-2">Track cards with significant price changes in the market</p>
-      </div>
-      {loading ? (
-        <PageLoader text={isRetrying ? `Retrying... (Attempt ${retryCount + 1})` : "Analyzing market trends..."} />
-      ) : error ? (
-        <div className="bg-red-50 text-red-600 p-6 rounded-lg text-center">
-          <div className="mb-4">
-            <svg className="w-12 h-12 mx-auto text-red-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
-            <h3 className="text-lg font-semibold mb-2">Unable to Load Trending Data</h3>
-            <p className="text-sm">{error}</p>
-          </div>
-          {retryCount > 0 && (
-            <div className="text-xs text-stone-500 mb-4">
-              Attempted {retryCount} time{retryCount !== 1 ? 's' : ''}
-            </div>
-          )}
-          <button 
-            onClick={() => window.location.reload()} 
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors text-sm"
-          >
-            Refresh Page
-          </button>
-        </div>
-      ) : (
+        <div className="container max-w-6xl mx-auto px-4 py-6">
+          {/* PageHeader with Breadcrumbs */}
+          <PageHeader
+            title="Trending Cards"
+            description="Track cards with significant price changes in the market"
+            breadcrumbs={[
+              { title: 'Home', href: '/', icon: '🏠', isActive: false },
+              { title: 'Market', href: '/market', icon: '📈', isActive: false },
+              { title: 'Trending', href: '/trending', icon: '🔥', isActive: true },
+            ]}
+          />
+          {loading ? (
+            <PageLoader text={isRetrying ? `Retrying... (Attempt ${retryCount + 1})` : "Analyzing market trends..."} />
+          ) : error ? (
+            <Container variant="default" padding="lg" className="text-center">
+              <div className="py-6">
+                <svg className="w-12 h-12 mx-auto text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <h3 className="text-lg font-semibold mb-2 text-stone-800 dark:text-stone-200">Unable to Load Trending Data</h3>
+                <p className="text-sm text-stone-500 mb-4">{error}</p>
+                {retryCount > 0 && (
+                  <p className="text-xs text-stone-400 mb-4">
+                    Attempted {retryCount} time{retryCount !== 1 ? 's' : ''}
+                  </p>
+                )}
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors text-sm font-medium"
+                >
+                  Refresh Page
+                </button>
+              </div>
+            </Container>
+          ) : (
         <>
-          <div className="mb-12">
-            <h2 className="text-3xl font-semibold mb-4 flex items-center text-green-600">
-              <span className="mr-2">▲</span> Rising Prices
+          {/* Rising Prices Section */}
+          <div className="mb-10">
+            <h2 className="text-xl md:text-2xl font-semibold mb-4 flex items-center gap-2 text-green-600">
+              <span className="text-lg">↑</span> Rising Prices
             </h2>
-            <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
+            <Container variant="default" padding="lg">
               {trendingData.rising.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {trendingData.rising.map(card => (
                     <Link
                       href={`/cards/${card.id}`}
                       key={card.id}
-                      className={`block p-4 rounded-lg border ${
-                        theme === 'dark' ? 'border-stone-700 hover:bg-stone-700' : 'border-stone-200 hover:bg-stone-50'
-                      } transition-all`}
+                      className="block p-3 rounded-lg border border-stone-100 dark:border-stone-700 hover:border-stone-200 dark:hover:border-stone-600 hover:shadow-md transition-all duration-150 hover:-translate-y-0.5"
                     >
                       <div className="flex flex-col items-center">
                         {card.images?.small && (
-                          <img 
-                            src={card.images.small} 
+                          <img
+                            src={card.images.small}
                             alt={card.name}
-                            className="w-24 h-32 object-contain rounded"
+                            className="w-20 h-28 object-contain rounded"
                           />
                         )}
-                        <p className="font-semibold mt-2 text-center">{card.name}</p>
-                        <p className="text-sm text-stone-500">{card.rarity || 'N/A'} · #{card.number}</p>
-                        <div className="mt-2 flex items-center gap-2">
-                          <span className="text-green-600 font-bold">${card.currentPrice.toFixed(2)}</span>
-                          <span className="text-xs text-green-500 bg-green-100 px-2 py-0.5 rounded-full">
+                        <p className="font-medium mt-2 text-center text-sm text-stone-800 dark:text-stone-200 line-clamp-1">{card.name}</p>
+                        <p className="text-xs text-stone-400">{card.rarity || 'N/A'}</p>
+                        <div className="mt-2 flex items-center gap-1.5">
+                          <span className="text-green-600 font-semibold text-sm">${card.currentPrice.toFixed(2)}</span>
+                          <span className="text-xs text-green-600 bg-green-50 dark:bg-green-900/30 px-1.5 py-0.5 rounded">
                             +{card.percentChange}%
                           </span>
                         </div>
@@ -318,39 +318,38 @@ const TrendingPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-stone-500">No rising price trends available</p>
+                <p className="text-center text-stone-400 py-8">No rising price trends available</p>
               )}
-            </div>
+            </Container>
           </div>
-          
-          <div className="mb-12">
-            <h2 className="text-3xl font-semibold mb-4 flex items-center text-red-600">
-              <span className="mr-2">▼</span> Falling Prices
+
+          {/* Falling Prices Section */}
+          <div className="mb-10">
+            <h2 className="text-xl md:text-2xl font-semibold mb-4 flex items-center gap-2 text-red-600">
+              <span className="text-lg">↓</span> Falling Prices
             </h2>
-            <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
+            <Container variant="default" padding="lg">
               {trendingData.falling.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {trendingData.falling.map(card => (
                     <Link
                       href={`/cards/${card.id}`}
                       key={card.id}
-                      className={`block p-4 rounded-lg border ${
-                        theme === 'dark' ? 'border-stone-700 hover:bg-stone-700' : 'border-stone-200 hover:bg-stone-50'
-                      } transition-all`}
+                      className="block p-3 rounded-lg border border-stone-100 dark:border-stone-700 hover:border-stone-200 dark:hover:border-stone-600 hover:shadow-md transition-all duration-150 hover:-translate-y-0.5"
                     >
                       <div className="flex flex-col items-center">
                         {card.images?.small && (
-                          <img 
-                            src={card.images.small} 
+                          <img
+                            src={card.images.small}
                             alt={card.name}
-                            className="w-24 h-32 object-contain rounded"
+                            className="w-20 h-28 object-contain rounded"
                           />
                         )}
-                        <p className="font-semibold mt-2 text-center">{card.name}</p>
-                        <p className="text-sm text-stone-500">{card.rarity || 'N/A'} · #{card.number}</p>
-                        <div className="mt-2 flex items-center gap-2">
-                          <span className="text-red-600 font-bold">${card.currentPrice.toFixed(2)}</span>
-                          <span className="text-xs text-red-500 bg-red-100 px-2 py-0.5 rounded-full">
+                        <p className="font-medium mt-2 text-center text-sm text-stone-800 dark:text-stone-200 line-clamp-1">{card.name}</p>
+                        <p className="text-xs text-stone-400">{card.rarity || 'N/A'}</p>
+                        <div className="mt-2 flex items-center gap-1.5">
+                          <span className="text-red-600 font-semibold text-sm">${card.currentPrice.toFixed(2)}</span>
+                          <span className="text-xs text-red-600 bg-red-50 dark:bg-red-900/30 px-1.5 py-0.5 rounded">
                             {card.percentChange}%
                           </span>
                         </div>
@@ -359,13 +358,9 @@ const TrendingPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-stone-500">No falling price trends available</p>
+                <p className="text-center text-stone-400 py-8">No falling price trends available</p>
               )}
-            </div>
-          </div>
-          
-          <div className="text-xs text-stone-500 text-center mt-4 mb-8">
-            Note: Trend data is simulated for demonstration purposes. In a production environment, this would use real historical price data.
+            </Container>
           </div>
         </>
       )}

@@ -5,6 +5,7 @@ import pokemon from "pokemontcgsdk";
 import { fetchJSON } from "../utils/unifiedFetch";
 import { useDebounce } from "../hooks/useDebounce";
 import type { TCGCard, CardSet } from "../types/api/cards";
+import { Container } from "./ui/Container";
 
 const POKE_API = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
 
@@ -196,8 +197,11 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm safe-area-padding" 
       onClick={handleBackdropClick}
     >
-      <div
-        className="bg-white dark:bg-stone-900 rounded-xl shadow-2xl p-6 w-full max-w-lg mx-auto relative flex flex-col items-center modal-content"
+      <Container
+        variant="elevated"
+        rounded="xl"
+        padding="lg"
+        className="w-full max-w-lg mx-auto relative flex flex-col items-center modal-content"
         onClick={e => e.stopPropagation()}
         tabIndex={-1}
         style={{
@@ -268,7 +272,7 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
         >
           &times;
         </button>
-      </div>
+      </Container>
     </div>
   ) : null;
 });

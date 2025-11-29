@@ -81,7 +81,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
         }}
       >
         <div className={cn(
-          "relative rounded-2xl overflow-hidden",
+          "relative rounded-xl overflow-hidden",
           createGlassStyle({
             blur: 'xl',
             opacity: 'strong',
@@ -225,7 +225,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   className={cn(
-                    "relative rounded-2xl overflow-hidden",
+                    "relative rounded-xl overflow-hidden",
                     createGlassStyle({
                       blur: '2xl',
                       opacity: 'strong',

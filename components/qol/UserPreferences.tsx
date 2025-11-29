@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext, useContext, ReactNode, useRe
 import { usePreferences } from './UserPreferences.hooks';
 import { useNotifications } from '../../hooks/useNotifications';
 import logger from '../../utils/logger';
+import { Container } from '../ui/Container';
 
 // Type definitions
 interface UserPreferences {
@@ -547,7 +548,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({ isOpen, onCl
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+      <Container variant="elevated" className="w-full max-w-4xl max-h-[90vh] overflow-hidden">
         <div className="flex h-full">
           {/* Sidebar */}
           <div className="w-64 bg-stone-50 dark:bg-stone-900 border-r border-stone-200 dark:border-stone-700">
@@ -611,7 +612,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({ isOpen, onCl
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

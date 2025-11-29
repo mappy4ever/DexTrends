@@ -746,7 +746,7 @@ const SetIdPage: NextPage = () => {
                         <img 
                           src={modalCard.images.large} 
                           alt={modalCard.name}
-                          className="w-full max-w-md h-auto rounded-2xl shadow-2xl"
+                          className="w-full max-w-md h-auto rounded-xl shadow-2xl"
                         />
                         {/* Glow effect behind card */}
                         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-amber-600/20 blur-3xl -z-10" />
@@ -769,7 +769,7 @@ const SetIdPage: NextPage = () => {
                       <div className="grid grid-cols-2 gap-4">
                         {/* Rarity Card */}
                         {modalCard.rarity && (
-                          <div className="bg-amber-50/70 backdrop-blur-md rounded-2xl p-4 border border-amber-300/50">
+                          <div className="bg-amber-50/70 backdrop-blur-md rounded-xl p-4 border border-amber-300/50">
                             <p className="text-xs text-amber-600 mb-1 font-medium">Rarity</p>
                             <div className="flex items-center gap-2">
                               <RarityIcon
@@ -783,7 +783,7 @@ const SetIdPage: NextPage = () => {
                         
                         {/* Artist Card */}
                         {modalCard.artist && (
-                          <div className="bg-amber-50/70 backdrop-blur-md rounded-2xl p-4 border border-amber-300/50">
+                          <div className="bg-amber-50/70 backdrop-blur-md rounded-xl p-4 border border-amber-300/50">
                             <p className="text-xs text-amber-600 mb-1 font-medium">Artist</p>
                             <p className="font-bold text-amber-800">{modalCard.artist}</p>
                           </div>
@@ -792,7 +792,7 @@ const SetIdPage: NextPage = () => {
 
                       {/* Pricing Section */}
                       {modalCard.tcgplayer?.prices && (
-                        <div className="bg-amber-50/70 backdrop-blur-md rounded-2xl p-6 border border-amber-300/50">
+                        <div className="bg-amber-50/70 backdrop-blur-md rounded-xl p-6 border border-amber-300/50">
                           <h3 className="text-lg font-bold text-amber-800 mb-4 flex items-center gap-2">
                             <span className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
                               <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

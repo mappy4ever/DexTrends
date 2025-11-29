@@ -8,6 +8,7 @@ import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { Container } from "../../components/ui/Container";
 import { GradientButton } from "../../components/ui/design-system";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
+import Button from '@/components/ui/Button';
 import { motion } from "framer-motion";
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import StyledBackButton from "../../components/ui/StyledBackButton";
@@ -224,7 +225,7 @@ const PocketDecks: NextPage = () => {
                 <input
                   id="searchInput"
                   type="text"
-                  className="w-full pr-6 py-4 pl-12 glass-light border border-stone-200 dark:border-stone-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  className="w-full pr-6 py-4 pl-12 bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
                   placeholder="Search decks (e.g., Pikachu, Mewtwo, Lightning)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -408,22 +409,22 @@ const PocketDecks: NextPage = () => {
                     </div>
                     
                     {/* Strategy */}
-                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-3 mb-4">
+                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-3 mb-4">
                       <h4 className="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-1">Strategy</h4>
                       <p className="text-xs text-amber-600 dark:text-amber-200 leading-relaxed">{deck.strategy}</p>
                     </div>
                     
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-3">
-                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-800/30 dark:to-emerald-800/30 rounded-2xl p-3 border border-green-200/50 dark:border-green-700/50">
+                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-800/30 dark:to-emerald-800/30 rounded-xl p-3 border border-green-200/50 dark:border-green-700/50">
                         <p className="text-xs text-green-700 dark:text-green-300 font-medium">Win Rate</p>
                         <p className="font-bold text-green-900 dark:text-green-100">{deck.winRate}</p>
                       </div>
-                      <div className="bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-800/30 dark:to-violet-800/30 rounded-2xl p-3 border border-purple-200/50 dark:border-purple-700/50">
+                      <div className="bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-800/30 dark:to-violet-800/30 rounded-xl p-3 border border-purple-200/50 dark:border-purple-700/50">
                         <p className="text-xs text-purple-700 dark:text-purple-300 font-medium">Tournaments</p>
                         <p className="font-bold text-purple-900 dark:text-purple-100">{deck.tournaments}</p>
                       </div>
-                      <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-800/30 dark:to-orange-800/30 rounded-2xl p-3 border border-amber-200/50 dark:border-amber-700/50">
+                      <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-800/30 dark:to-orange-800/30 rounded-xl p-3 border border-amber-200/50 dark:border-amber-700/50">
                         <p className="text-xs text-amber-700 dark:text-amber-300 font-medium">Avg Place</p>
                         <p className="font-bold text-amber-900 dark:text-amber-100">{deck.avgPlacement.toFixed(1)}</p>
                       </div>
@@ -433,9 +434,15 @@ const PocketDecks: NextPage = () => {
                   {/* Action Button */}
                   <div className="p-6 pt-0">
                     <Link href="/pocketmode/deckbuilder">
-                      <button className="w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold rounded-full transition-all duration-300 transform group-hover:scale-105 shadow-md">
+                      <Button
+                        variant="primary"
+                        size="md"
+                        fullWidth
+                        rounded="full"
+                        className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 group-hover:scale-105 shadow-md"
+                      >
                         Build Similar Deck
-                      </button>
+                      </Button>
                     </Link>
                   </div>
                 </div>

@@ -265,7 +265,7 @@ function SetView() {
                 border: 'medium',
                 shadow: 'xl',
                 rounded: 'xl'
-              })} p-6 md:p-8 rounded-3xl`}
+              })} p-6 md:p-8 rounded-xl`}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -356,7 +356,7 @@ function SetView() {
             border: 'medium',
             shadow: 'xl',
             rounded: 'xl'
-          })} p-6 md:p-8 rounded-3xl`}>
+          })} p-6 md:p-8 rounded-xl`}>
             {/* Search Bar with Glass Styling */}
             <motion.div 
               className="mb-6"

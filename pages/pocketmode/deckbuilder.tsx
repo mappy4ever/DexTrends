@@ -9,6 +9,8 @@ import { FadeIn, SlideUp } from '../../components/ui/animations';
 import BackToTop from '../../components/ui/BaseBackToTop';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
+import { PageHeader } from '../../components/ui/BreadcrumbNavigation';
+import Container from '../../components/ui/Container';
 import { validateDeck, getDeckSuggestions, ValidationResult } from '../../utils/deckValidation';
 import { analyzeDeckMeta, getMetaSuggestions, MetaAnalysis } from '../../utils/metaAnalysis';
 import type { PocketCard } from '../../types/api/pocket-cards';
@@ -686,7 +688,7 @@ function DeckBuilder() {
         <Head>
           <title>Deck Builder | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="bg-white dark:bg-stone-800 rounded-2xl p-8 text-center shadow-xl max-w-md">
+        <div className="bg-white dark:bg-stone-800 rounded-xl p-8 text-center shadow-xl max-w-md">
           <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
           <p className="text-stone-600 dark:text-stone-400 mb-6">{error}</p>
           <button 
@@ -707,57 +709,49 @@ function DeckBuilder() {
         <meta name="description" content="Build and customize your Pokemon Pocket decks with our advanced deck builder" />
       </Head>
       <div className="min-h-screen">
-
-      {/* Header */}
-      <div className="sticky top-16 z-40 bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link 
-                href="/pocketmode" 
-                className="flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Back
-              </Link>
-              <div className="w-px h-6 bg-stone-300 dark:bg-stone-600"></div>
-              <h1 className="text-2xl font-bold text-stone-900 dark:text-white">Deck Builder</h1>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowImportModal(true)}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
-              >
-                Import
-              </button>
-              {!deckStats.isEmpty && (
-                <>
-                  <button
-                    onClick={() => setShowExportModal(true)}
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors"
-                  >
-                    Export
-                  </button>
-                  <button
-                    onClick={() => setShowSaveModal(true)}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
-                  >
-                    Save Deck
-                  </button>
-                  <Link
-                    href="/pocketmode/decks"
-                    className="px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white rounded-lg font-medium transition-colors"
-                  >
-                    My Decks
-                  </Link>
-                </>
-              )}
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* PageHeader with Breadcrumbs */}
+        <PageHeader
+          title="Deck Builder"
+          description="Build and customize your Pokémon TCG Pocket decks"
+          breadcrumbs={[
+            { title: 'Home', href: '/', icon: '🏠', isActive: false },
+            { title: 'Pocket Mode', href: '/pocketmode', icon: '📱', isActive: false },
+            { title: 'Deck Builder', href: '/pocketmode/deckbuilder', icon: '🏗️', isActive: true },
+          ]}
+        >
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setShowImportModal(true)}
+              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-sm rounded-lg font-medium transition-colors"
+            >
+              Import
+            </button>
+            {!deckStats.isEmpty && (
+              <>
+                <button
+                  onClick={() => setShowExportModal(true)}
+                  className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-medium transition-colors"
+                >
+                  Export
+                </button>
+                <button
+                  onClick={() => setShowSaveModal(true)}
+                  className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg font-medium transition-colors"
+                >
+                  Save
+                </button>
+                <Link
+                  href="/pocketmode/decks"
+                  className="px-3 py-1.5 bg-stone-600 hover:bg-stone-700 text-white text-sm rounded-lg font-medium transition-colors"
+                >
+                  My Decks
+                </Link>
+              </>
+            )}
           </div>
-        </div>
+        </PageHeader>
       </div>
 
       {/* Sticky Deck View at Top */}
@@ -1336,7 +1330,7 @@ function DeckBuilder() {
       {/* Save Modal */}
       {showSaveModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="bg-white dark:bg-stone-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+          <div className="bg-white dark:bg-stone-800 rounded-xl p-6 max-w-md w-full shadow-2xl">
             <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Save Deck</h3>
             <input
               type="text"
@@ -1367,7 +1361,7 @@ function DeckBuilder() {
       {/* Import Modal */}
       {showImportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="bg-white dark:bg-stone-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
+          <div className="bg-white dark:bg-stone-800 rounded-xl p-6 max-w-2xl w-full shadow-2xl">
             <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Import Deck</h3>
             <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
               Paste your deck list below. Supported formats:
@@ -1413,7 +1407,7 @@ function DeckBuilder() {
       {/* Export Modal */}
       {showExportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="bg-white dark:bg-stone-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
+          <div className="bg-white dark:bg-stone-800 rounded-xl p-6 max-w-2xl w-full shadow-2xl">
             <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Export Deck</h3>
             <div className="bg-stone-50 dark:bg-stone-700 border border-stone-200 dark:border-stone-600 rounded-lg p-4 mb-4">
               <pre className="text-sm font-mono text-stone-900 dark:text-white whitespace-pre-wrap">

@@ -271,7 +271,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
 
         {/* Island Trials Info */}
         <motion.div
-          className="mt-8 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-yellow-100/50 via-pink-100/50 to-amber-100/50 dark:from-yellow-900/20 dark:via-pink-900/20 dark:to-amber-900/20 border border-yellow-200/30 dark:border-yellow-700/30"
+          className="mt-8 p-6 rounded-xl backdrop-blur-md bg-gradient-to-r from-yellow-100/50 via-pink-100/50 to-amber-100/50 dark:from-yellow-900/20 dark:via-pink-900/20 dark:to-amber-900/20 border border-yellow-200/30 dark:border-yellow-700/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}

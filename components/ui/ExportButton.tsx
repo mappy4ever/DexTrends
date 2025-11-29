@@ -111,7 +111,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                   border: 'strong',
                   shadow: 'glow',
                   rounded: 'xl',
-                })} p-6 rounded-3xl max-w-md w-full`}
+                })} p-6 rounded-xl max-w-md w-full`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}

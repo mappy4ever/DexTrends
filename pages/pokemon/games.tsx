@@ -608,7 +608,7 @@ const GamesPage: NextPage = () => {
                           transition: { duration: 0.2 }
                         }}
                         className={cn(
-                          "relative rounded-2xl overflow-hidden group cursor-pointer",
+                          "relative rounded-xl overflow-hidden group cursor-pointer",
                           createGlassStyle({
                             opacity: theme === 'dark' ? 'subtle' : 'medium',
                             blur: 'lg',

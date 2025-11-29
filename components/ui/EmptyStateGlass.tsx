@@ -114,7 +114,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
           shadow: 'xl',
           rounded: 'xl',
         })}
-        p-8 md:p-12 text-center rounded-3xl
+        p-8 md:p-12 text-center rounded-xl
         ${className}
       `}
     >

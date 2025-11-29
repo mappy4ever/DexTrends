@@ -374,9 +374,9 @@ export const TYPE_GRADIENTS = {
   psychic: 'from-pink-400 to-purple-500',
   ice: 'from-cyan-300 to-blue-400',
   dragon: 'from-indigo-500 to-purple-600',
-  dark: 'from-gray-600 to-gray-800',
+  dark: 'from-stone-600 to-stone-800',
   fairy: 'from-pink-300 to-pink-500',
-  normal: 'from-gray-300 to-gray-500',
+  normal: 'from-stone-300 to-stone-500',
   fighting: 'from-red-500 to-red-700',
   flying: 'from-blue-300 to-indigo-400',
   poison: 'from-purple-400 to-purple-600',
@@ -384,7 +384,69 @@ export const TYPE_GRADIENTS = {
   rock: 'from-amber-600 to-amber-800',
   bug: 'from-lime-400 to-green-500',
   ghost: 'from-purple-500 to-indigo-700',
-  steel: 'from-gray-400 to-gray-600',
+  steel: 'from-stone-400 to-stone-600',
+} as const;
+
+// ===========================================
+// TYPOGRAPHY - Consistent text styling
+// ===========================================
+
+export const TYPOGRAPHY = {
+  // Font families
+  font: {
+    sans: 'font-sans', // System font stack
+    mono: 'font-mono', // Monospace for code/stats
+  },
+  // Font sizes with line heights
+  size: {
+    xs: 'text-xs leading-4',        // 12px / 16px
+    sm: 'text-sm leading-5',        // 14px / 20px
+    base: 'text-base leading-6',    // 16px / 24px
+    lg: 'text-lg leading-7',        // 18px / 28px
+    xl: 'text-xl leading-7',        // 20px / 28px
+    '2xl': 'text-2xl leading-8',    // 24px / 32px
+    '3xl': 'text-3xl leading-9',    // 30px / 36px
+    '4xl': 'text-4xl leading-10',   // 36px / 40px
+    '5xl': 'text-5xl leading-none', // 48px
+  },
+  // Font weights
+  weight: {
+    normal: 'font-normal',    // 400
+    medium: 'font-medium',    // 500
+    semibold: 'font-semibold', // 600
+    bold: 'font-bold',        // 700
+  },
+  // Text colors
+  color: {
+    primary: 'text-stone-900 dark:text-white',
+    secondary: 'text-stone-600 dark:text-stone-300',
+    muted: 'text-stone-500 dark:text-stone-400',
+    disabled: 'text-stone-400 dark:text-stone-500',
+    accent: 'text-amber-600 dark:text-amber-400',
+    success: 'text-green-600 dark:text-green-400',
+    error: 'text-red-600 dark:text-red-400',
+    warning: 'text-orange-600 dark:text-orange-400',
+  },
+  // Heading presets
+  heading: {
+    h1: 'text-3xl md:text-4xl font-bold text-stone-900 dark:text-white',
+    h2: 'text-2xl md:text-3xl font-bold text-stone-900 dark:text-white',
+    h3: 'text-xl md:text-2xl font-semibold text-stone-900 dark:text-white',
+    h4: 'text-lg md:text-xl font-semibold text-stone-900 dark:text-white',
+    h5: 'text-base md:text-lg font-medium text-stone-900 dark:text-white',
+    h6: 'text-sm md:text-base font-medium text-stone-900 dark:text-white',
+  },
+  // Body text presets
+  body: {
+    lg: 'text-lg text-stone-600 dark:text-stone-300 leading-relaxed',
+    base: 'text-base text-stone-600 dark:text-stone-300 leading-relaxed',
+    sm: 'text-sm text-stone-500 dark:text-stone-400 leading-relaxed',
+  },
+  // Utility text
+  caption: 'text-xs text-stone-500 dark:text-stone-400',
+  label: 'text-sm font-medium text-stone-700 dark:text-stone-200',
+  stat: 'text-2xl md:text-3xl font-bold tabular-nums',
+  statLabel: 'text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400',
 } as const;
 
 // ===========================================
@@ -443,10 +505,10 @@ export const INPUT_SIZE = {
 
 export const REGION_ACCENTS = {
   kanto: 'from-red-500 to-blue-500',
-  johto: 'from-amber-400 to-gray-500',
+  johto: 'from-amber-400 to-stone-500',
   hoenn: 'from-emerald-500 to-blue-500',
   sinnoh: 'from-indigo-500 to-purple-500',
-  unova: 'from-gray-500 to-gray-800',
+  unova: 'from-stone-500 to-stone-800',
   kalos: 'from-pink-500 to-purple-500',
   alola: 'from-orange-400 to-teal-500',
   galar: 'from-purple-500 to-red-500',
@@ -511,6 +573,8 @@ export default {
   ICON_SIZE,
   ICON_SIZE_PX,
   INPUT_SIZE,
+  // Typography tokens (new)
+  TYPOGRAPHY,
   // Animation tokens (new)
   ANIMATION_DURATION,
   SPRING_PHYSICS,

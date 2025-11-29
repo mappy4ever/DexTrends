@@ -25,8 +25,9 @@ export const CategoryIcon: React.FC<CategoryIconProps> = ({
   };
 
   return (
-    <span 
+    <span
       title={category.charAt(0).toUpperCase() + category.slice(1)}
+      aria-label={`${category.charAt(0).toUpperCase() + category.slice(1)} attack category`}
       className={cn(
         "inline-flex items-center font-bold text-xs",
         colors[category]

@@ -187,6 +187,10 @@ const config = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
         slideUp: {
           '0%': { transform: 'translateY(20px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
@@ -211,15 +215,31 @@ const config = {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
         },
+        // Apple-like pokeball animations
+        'pokeball-bounce': {
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '25%': { transform: 'translateY(-6px) scale(1.02)' },
+          '50%': { transform: 'translateY(0) scale(1)' },
+          '75%': { transform: 'translateY(-3px) scale(1.01)' },
+        },
+        'pokeball-glow': {
+          '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+          '50%': { opacity: '1', transform: 'scale(1.1)' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.5s ease-in-out',
+        fadeOut: 'fadeOut 0.3s ease-out forwards',
         slideUp: 'slideUp 0.5s ease-in-out',
         scale: 'scale 0.5s ease-in-out',
         pulse: 'pulse 2s ease-in-out infinite',
         float: 'float 3s ease-in-out infinite',
         bounce: 'bounce 1s ease-in-out infinite',
         shimmer: 'shimmer 2s infinite',
+        // Apple-like pokeball animations
+        'pokeball-bounce': 'pokeball-bounce 1.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite',
+        'pokeball-glow': 'pokeball-glow 2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite',
+        'fade-out': 'fadeOut 0.3s ease-out forwards',
       },
     },
   },

@@ -611,7 +611,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                       >
                         <div className="relative transform transition-all duration-300 hover:scale-110 hover:-translate-y-2">
                           {/* Glass Card for Each Starter */}
-                          <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 to-white/60 dark:from-stone-800/80 dark:to-stone-900/60 shadow-lg group-hover:shadow-2xl border border-white/30 dark:border-stone-700/30">
+                          <div className="relative rounded-xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 to-white/60 dark:from-stone-800/80 dark:to-stone-900/60 shadow-lg group-hover:shadow-2xl border border-white/30 dark:border-stone-700/30">
                             {/* Type-based Gradient Background */}
                             <div className={`absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity bg-gradient-to-br ${
                               type === 'grass' ? 'from-green-400 to-emerald-600' :

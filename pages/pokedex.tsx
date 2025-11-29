@@ -8,6 +8,9 @@ import { AdaptiveModal, useAdaptiveModal } from '@/components/unified';
 import { PokemonDisplay as PokemonCardRenderer } from '@/components/ui/PokemonDisplay';
 const CompactPokemonCard = (props: any) => <PokemonCardRenderer {...props} variant="compact" />;
 import { TypeBadge } from '@/components/ui/TypeBadge';
+import { PageHeader } from '@/components/ui/BreadcrumbNavigation';
+import { ActiveFilterPills } from '@/components/ui/FilterDrawer';
+import { IoClose } from 'react-icons/io5';
 import { getGeneration } from '@/utils/pokemonutils';
 import { useDebounce } from '@/hooks/useDebounce';
 import logger from '@/utils/logger';
@@ -416,17 +419,17 @@ const UnifiedPokedex: NextPage = () => {
       
       <div className="min-h-screen bg-gradient-to-b from-[#FFFDF7] to-[#FBF8F3] dark:from-stone-900 dark:to-stone-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-          {/* Header */}
-          <div className="text-center mb-4 sm:mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2 text-stone-800 dark:text-white">
-              Pokédex
-            </h1>
-            <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400">
-              {filteredPokemon.length} of {TOTAL_POKEMON} Pokémon
-            </p>
-
+          {/* Page Header with Breadcrumbs */}
+          <PageHeader
+            title="Pokédex"
+            description={`Explore ${TOTAL_POKEMON} Pokémon with detailed stats, abilities, and more`}
+            breadcrumbs={[
+              { title: 'Home', href: '/', icon: '🏠', isActive: false },
+              { title: 'Pokédex', href: '/pokedex', icon: '📚', isActive: true },
+            ]}
+          >
             {/* Stats Pills */}
-            <div className="flex justify-center gap-2 sm:gap-3 mt-3 sm:mt-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-stone-800/80 rounded-full shadow-sm border border-stone-100 dark:border-stone-700">
                 <span className="text-xs sm:text-sm font-semibold text-stone-700 dark:text-stone-300">
                   {filteredPokemon.length} Found
@@ -438,7 +441,7 @@ const UnifiedPokedex: NextPage = () => {
                 </div>
               )}
             </div>
-          </div>
+          </PageHeader>
           
           {/* Search and Filter Bar */}
           <div className="sticky top-0 z-20 bg-white/90 dark:bg-stone-900/90 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-sm border border-stone-100 dark:border-stone-800">
@@ -489,6 +492,85 @@ const UnifiedPokedex: NextPage = () => {
                 </button>
               )}
             </div>
+
+            {/* Quick Type Filters - Desktop Only */}
+            <div className="hidden lg:flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-stone-200/50 dark:border-stone-700/50">
+              {['fire', 'water', 'grass', 'electric', 'psychic', 'dragon', 'dark', 'fairy', 'fighting', 'steel'].map(type => (
+                <button
+                  key={type}
+                  onClick={() => {
+                    setSelectedTypes(prev =>
+                      prev.includes(type)
+                        ? prev.filter(t => t !== type)
+                        : [...prev, type]
+                    );
+                  }}
+                  className={cn(
+                    'px-3 py-1 rounded-full text-xs font-medium transition-all',
+                    selectedTypes.includes(type)
+                      ? 'ring-2 ring-amber-500 ring-offset-1'
+                      : 'opacity-80 hover:opacity-100'
+                  )}
+                >
+                  <TypeBadge type={type} size="sm" />
+                </button>
+              ))}
+              <button
+                onClick={filterModal.open}
+                className="px-3 py-1 rounded-full text-xs font-medium text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors"
+              >
+                + More types
+              </button>
+            </div>
+
+            {/* Active Filter Pills */}
+            {hasActiveFilters && (
+              <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-stone-200/50 dark:border-stone-700/50">
+                {selectedTypes.map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setSelectedTypes(prev => prev.filter(t => t !== type))}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors"
+                  >
+                    <span className="capitalize">{type}</span>
+                    <IoClose className="w-3 h-3" />
+                  </button>
+                ))}
+                {selectedGeneration && (
+                  <button
+                    onClick={() => setSelectedGeneration('')}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                  >
+                    <span>Gen {selectedGeneration}</span>
+                    <IoClose className="w-3 h-3" />
+                  </button>
+                )}
+                {selectedCategory && (
+                  <button
+                    onClick={() => setSelectedCategory('')}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors"
+                  >
+                    <span className="capitalize">{selectedCategory}</span>
+                    <IoClose className="w-3 h-3" />
+                  </button>
+                )}
+                {sortBy !== 'id' && (
+                  <button
+                    onClick={() => setSortBy('id')}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+                  >
+                    <span>Sort: {sortBy === 'name' ? 'Name' : 'Stats'}</span>
+                    <IoClose className="w-3 h-3" />
+                  </button>
+                )}
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 ml-2"
+                >
+                  Clear all
+                </button>
+              </div>
+            )}
           </div>
           
           {/* Unified Grid - The Heart of the System */}

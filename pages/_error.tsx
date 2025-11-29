@@ -59,7 +59,7 @@ function Error({ statusCode }: ErrorProps) {
 
         <div className="relative z-10 w-full max-w-md">
           {/* Glass morphism error container */}
-          <div className="glass-medium rounded-2xl p-8 shadow-xl border border-white/20 backdrop-blur-md">
+          <div className="bg-white/90 dark:bg-stone-800/90 rounded-2xl p-8 shadow-xl border border-stone-200 dark:border-stone-700 backdrop-blur-md">
             {/* Error icon and code */}
             <div className="text-center mb-6">
               <div className="text-6xl mb-4 animate-pulse">{icon}</div>

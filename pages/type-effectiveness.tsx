@@ -2,13 +2,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { createGlassStyle } from '../components/ui/design-system/glass-constants';
+import { createGlassStyle, TYPOGRAPHY } from '../components/ui/design-system/glass-constants';
 import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
 import { GradientButton, CircularButton } from '../components/ui/design-system';
 import { TypeBadge } from '../components/ui/TypeBadge';
-import { 
-  calculateTypeEffectiveness, 
-  getTypeMatchups, 
+import { PageHeader } from '../components/ui/BreadcrumbNavigation';
+import { Container } from '../components/ui/Container';
+import Button from '../components/ui/Button';
+import {
+  calculateTypeEffectiveness,
+  getTypeMatchups,
   analyzeTeamTypeSynergy,
   POKEMON_TYPES,
   getTypeColor,
@@ -19,6 +22,7 @@ import logger from '../utils/logger';
 import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { cn } from '@/utils/cn';
+import { IoCalculator, IoGrid, IoGitNetwork } from 'react-icons/io5';
 
 interface TypeDetails {
   name: string;
@@ -224,7 +228,7 @@ const UnifiedTypeEffectivenessPage = () => {
         <motion.button
           onClick={() => onSelect('')}
           className={cn(
-            'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-2xl transition-all touch-target',
+            'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl transition-all touch-target',
             !selected
               ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-stone-900 ring-stone-400 shadow-lg'
               : 'hover:scale-105 hover:shadow-md bg-stone-100 dark:bg-stone-800'
@@ -240,7 +244,7 @@ const UnifiedTypeEffectivenessPage = () => {
           key={type}
           onClick={() => onSelect(type)}
           className={cn(
-            'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-2xl transition-all touch-target',
+            'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl transition-all touch-target',
             selected === type
               ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-stone-900 shadow-lg scale-105'
               : 'hover:scale-105 hover:shadow-md'
@@ -268,39 +272,58 @@ const UnifiedTypeEffectivenessPage = () => {
         <meta name="description" content="Master Pokemon type matchups with our interactive type effectiveness calculator and team analyzer" />
       </Head>
 
-      {/* Header - Responsive */}
-      <motion.div 
-        className={cn('sticky top-0 z-50', glassStyle)}
-        style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 md:py-6">
-          <div className="flex items-center justify-between">
-            <CircularButton
-              onClick={() => router.push('/pokemon')}
-              variant="secondary"
-              size="sm"
-              className="scale-90 sm:scale-100"
+      {/* Header with PageHeader */}
+      <div className="container mx-auto px-4 py-6">
+        <PageHeader
+          title="Type Effectiveness"
+          description="Calculate type matchups and analyze team coverage"
+          breadcrumbs={[
+            { title: 'Home', href: '/', icon: '🏠', isActive: false },
+            { title: 'Battle Tools', href: '/battle-simulator', icon: '⚔️', isActive: false },
+            { title: 'Type Calculator', href: '/type-effectiveness', icon: '🎯', isActive: true },
+          ]}
+        >
+          {/* View Mode Tabs */}
+          <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full">
+            <button
+              onClick={() => setViewMode('calculator')}
+              className={cn(
+                'px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5',
+                viewMode === 'calculator'
+                  ? 'bg-amber-500 text-white shadow-sm'
+                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              )}
             >
-              Back
-            </CircularButton>
-            
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent">
-              Type Effectiveness
-            </h1>
-
-            <div className={cn(
-              'text-xs sm:text-sm font-medium text-stone-600 dark:text-stone-300',
-              'px-2 sm:px-3 py-1 rounded-full',
-              glassButtonStyle
-            )}>
-              Calculator
-            </div>
+              <IoCalculator className="w-4 h-4" />
+              <span className="hidden sm:inline">Calculator</span>
+            </button>
+            <button
+              onClick={() => setViewMode('chart')}
+              className={cn(
+                'px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5',
+                viewMode === 'chart'
+                  ? 'bg-amber-500 text-white shadow-sm'
+                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              )}
+            >
+              <IoGrid className="w-4 h-4" />
+              <span className="hidden sm:inline">Chart</span>
+            </button>
+            <button
+              onClick={() => setViewMode('team')}
+              className={cn(
+                'px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5',
+                viewMode === 'team'
+                  ? 'bg-amber-500 text-white shadow-sm'
+                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              )}
+            >
+              <IoGitNetwork className="w-4 h-4" />
+              <span className="hidden sm:inline">Team</span>
+            </button>
           </div>
-        </div>
-      </motion.div>
+        </PageHeader>
+      </div>
 
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 max-w-7xl">
         {/* Loading and Error States */}
@@ -313,7 +336,7 @@ const UnifiedTypeEffectivenessPage = () => {
             className="text-center py-12"
           >
             <div className={cn(
-              'max-w-md mx-auto p-6 sm:p-8 rounded-2xl sm:rounded-3xl',
+              'max-w-md mx-auto p-6 sm:p-8 rounded-xl sm:rounded-xl',
               'border border-red-200 dark:border-red-800',
               glassStyle
             )} 
@@ -389,7 +412,7 @@ const UnifiedTypeEffectivenessPage = () => {
                   {/* Attacking Type */}
                   <motion.div
                     className={cn(
-                      'rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8',
+                      'rounded-xl sm:rounded-xl p-4 sm:p-6 md:p-8',
                       'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
@@ -404,14 +427,14 @@ const UnifiedTypeEffectivenessPage = () => {
                         Attacking Type
                       </h3>
                     </div>
-                    
+
                     {renderTypeGrid([...POKEMON_TYPES], selectedAttacker, setSelectedAttacker)}
                   </motion.div>
 
                   {/* Defending Type(s) */}
                   <motion.div
                     className={cn(
-                      'rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8',
+                      'rounded-xl sm:rounded-xl p-4 sm:p-6 md:p-8',
                       'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
@@ -457,7 +480,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     className={cn(
                       'text-center py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8',
-                      'rounded-2xl sm:rounded-3xl',
+                      'rounded-xl sm:rounded-xl',
                       'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
@@ -518,7 +541,7 @@ const UnifiedTypeEffectivenessPage = () => {
                 animate={{ opacity: 1 }}
                 className={cn(
                   'p-4 sm:p-6 lg:p-8',
-                  'rounded-2xl sm:rounded-3xl',
+                  'rounded-xl sm:rounded-xl',
                   'border border-white/20 dark:border-stone-700/50',
                   glassStyle
                 )}
@@ -608,7 +631,7 @@ const UnifiedTypeEffectivenessPage = () => {
                 {/* Team Builder */}
                 <motion.div
                   className={cn(
-                    'rounded-2xl sm:rounded-3xl p-6 sm:p-10',
+                    'rounded-xl sm:rounded-xl p-6 sm:p-10',
                     'border border-white/20 dark:border-stone-700/50',
                     glassStyle
                   )}
@@ -636,7 +659,7 @@ const UnifiedTypeEffectivenessPage = () => {
                       <motion.div
                         key={slot}
                         className={cn(
-                          'rounded-xl sm:rounded-2xl p-4 sm:p-5',
+                          'rounded-xl sm:rounded-xl p-4 sm:p-5',
                           'border border-white/15 dark:border-stone-600/30',
                           glassButtonStyle
                         )}
@@ -702,7 +725,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     initial={{ opacity: 0, y: 30, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     className={cn(
-                      'rounded-2xl sm:rounded-3xl p-6 sm:p-10',
+                      'rounded-xl sm:rounded-xl p-6 sm:p-10',
                       'border border-white/20 dark:border-stone-700/50',
                       glassStyle
                     )}
@@ -715,7 +738,7 @@ const UnifiedTypeEffectivenessPage = () => {
                           {/* Score Cards - Responsive grid */}
                           <div className="grid grid-cols-3 gap-3 sm:gap-4">
                             <motion.div
-                              className="bg-gradient-to-br from-amber-500/10 to-amber-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-amber-200 dark:border-amber-800"
+                              className="bg-gradient-to-br from-amber-500/10 to-amber-500/10 rounded-xl sm:rounded-xl p-3 sm:p-4 border border-amber-200 dark:border-amber-800"
                               whileHover={{ scale: 1.05 }}
                             >
                               <div className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-amber-500 to-amber-500 bg-clip-text text-transparent">
@@ -725,7 +748,7 @@ const UnifiedTypeEffectivenessPage = () => {
                             </motion.div>
 
                             <motion.div
-                              className="bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-red-200 dark:border-red-800"
+                              className="bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-xl sm:rounded-xl p-3 sm:p-4 border border-red-200 dark:border-red-800"
                               whileHover={{ scale: 1.05 }}
                             >
                               <div className="text-xl sm:text-3xl font-bold text-red-500">
@@ -735,7 +758,7 @@ const UnifiedTypeEffectivenessPage = () => {
                             </motion.div>
 
                             <motion.div
-                              className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-green-200 dark:border-green-800"
+                              className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl sm:rounded-xl p-3 sm:p-4 border border-green-200 dark:border-green-800"
                               whileHover={{ scale: 1.05 }}
                             >
                               <div className="text-xl sm:text-3xl font-bold text-green-500">
@@ -748,7 +771,7 @@ const UnifiedTypeEffectivenessPage = () => {
                           {/* Weaknesses and Coverage - Responsive */}
                           {Object.keys(analysis.sharedWeaknesses).length > 0 && (
                             <motion.div
-                              className="bg-red-50 dark:bg-red-900/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-red-200 dark:border-red-800"
+                              className="bg-red-50 dark:bg-red-900/20 rounded-xl sm:rounded-xl p-3 sm:p-4 border border-red-200 dark:border-red-800"
                               whileHover={{ scale: 1.02 }}
                             >
                               <h4 className="text-xs sm:text-sm font-medium text-red-600 dark:text-red-400 mb-2 sm:mb-3 uppercase tracking-wider">

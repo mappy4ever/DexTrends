@@ -42,17 +42,29 @@ npm test             # Playwright tests
   /archive      # Historical documentation
 ```
 
-## Core UI Components
+## Canonical Components (Source of Truth)
 
-Use these components from `/components/ui/`:
+Use these as the single source for each purpose:
 
-| Component | Purpose |
-|-----------|---------|
-| `Button` | All buttons (primary, secondary, ghost, danger, success, glass) |
-| `Modal` | Dialogs and popups |
-| `Container` | Content cards and containers |
-| `Skeleton` | Loading states |
-| `Select`, `Checkbox`, `Radio` | Form inputs |
+| Purpose | Component | Location |
+|---------|-----------|----------|
+| **Buttons** | `Button` | `/components/ui/Button.tsx` |
+| **Containers/Cards** | `Container` | `/components/ui/Container.tsx` |
+| **Modals** | `Modal` | `/components/ui/Modal.tsx` |
+| **Loading (page)** | `PokeballLoader` | `/components/ui/PokeballLoader.tsx` |
+| **Loading (skeleton)** | `SkeletonLoadingSystem` | `/components/ui/SkeletonLoadingSystem.tsx` |
+| **Type Badges** | `EnergyIcon` / `EnergyBadge` | `/components/ui/EnergyIcon.tsx` |
+| **Pokemon Display** | `PokemonDisplay` | `/components/ui/PokemonDisplay.tsx` |
+| **Hero Section** | `PokemonHeroSectionV3` | `/components/pokemon/PokemonHeroSectionV3.tsx` |
+| **Starter Showcase** | `StarterShowcaseComplete` | `/components/regions/StarterShowcaseComplete.tsx` |
+| **Empty States** | `EmptyState` | `/components/ui/EmptyState.tsx` |
+| **Form Inputs** | `Select`, `Checkbox`, `Radio` | `/components/ui/` |
+
+### Deprecated Components (Do Not Use)
+- `PokemonHeroSection` → Use `PokemonHeroSectionV3`
+- `PokemonHeroSectionV2` → Use `PokemonHeroSectionV3`
+- `StarterShowcase` → Use `StarterShowcaseComplete`
+- `GlassContainer` → Use `Container`
 
 ## Design System
 
@@ -118,27 +130,56 @@ fetchJSON(url, { useCache: false, forceRefresh: true })
 - **Pokemon TCG API**: Card data (pokemontcg.io)
 - **TCGDex**: Pokemon Pocket data (tcgdex.net)
 
-## Current Work: UI Standardization
+## Current Work: Comprehensive UI/UX Redesign
 
-**Status:** In Progress
-**Details:** See `docs/UI-PROGRESS-NOTES.md`
+**Status:** 🟡 In Progress
+**Active Plan:** `~/.claude/plans/glistening-pondering-cerf.md`
 
-### Key Rules
+### Overview
+Comprehensive redesign covering all 43 pages with focus on:
+- Premium Index page experience
+- Pro-like stats lookup (easy to read/access)
+- Subtle type accents throughout
+- Missing components (Tabs, Toggle, StatDisplay)
+- Page consistency with unified PageHeader
+
+### Current Sprint: Sprint 1 - Foundation + Quick Wins
+Check plan file for detailed task status. 7 Sprints total:
+1. **Foundation + Quick Wins** ← CURRENT (Components + Critical Fixes)
+2. Premium Experiences (Homepage + Pro Stats)
+3. Pokedex & Pokemon Detail
+4. Battle Tools
+5. Pocket Mode
+6. Market & Collections
+7. Secondary Pages & Polish
+
+### Before Making Changes
+1. Read the plan file: `~/.claude/plans/glistening-pondering-cerf.md`
+2. Check Progress Tracking section for current status
+3. Look for ⬜ (not started) / 🟡 (in progress) / ✅ (complete) markers
+4. Update status markers as you complete tasks
+5. Add entries to Change Log in plan file
+
+### Key Analysis Findings
+- 43 total pages analyzed (17 good, 17 need work, 8 incomplete, 1 critical)
+- 125 UI components (target: reduce to ~60-70)
+- Missing: Tabs, Toggle/Switch, Typography system, StatDisplay
+- Critical: Damage Calculator needs complete redesign
+- Duplicate pages to consolidate: moves, items, abilities
+
+### Design Decisions
+- **Type Theming**: Subtle accents only (not aggressive)
+- **Approach**: Balanced (foundation + pages in parallel)
+- **Focus**: Premium feel, easy-to-read stats
 - **Glass effects** = Modals/sheets ONLY (not content cards)
 - **Container variants**: `default`, `elevated`, `outline`, `ghost`, `gradient`, `featured`, `glass`
-- **Container rounded**: `none`, `sm`, `md`, `lg`, `xl`, `full` (NOT `2xl`/`3xl`)
+- **Animations**: Subtle, Apple-like (150-250ms, ease-out)
+- **Types**: Use EnergyIcon component with official TCG symbols
 
-### Immediate TODOs
-1. ~~Fix Pokedex image "?" placeholders~~ - DONE (removed broken useProgressiveImage, added onError fallback)
-2. ~~Fix search bar text overlap~~ - DONE (pl-14 sm:pl-16)
-3. Migrate 20+ components still using GlassContainer (see docs/UI-PROGRESS-NOTES.md for full list)
-
-### Completed
+### Previous Work Completed (Before This Plan)
 - GlassContainer removed from all 12 page files
 - Type gradients fixed in PokemonDisplay.tsx
-- UnifiedGrid virtualization fixed
-- Pokedex image loading fixed (PokemonDisplay.tsx)
-- Search bar padding fixed (pokedex.tsx)
+- Gray → Stone color migration (51 files)
 - Build passes, TypeScript passes
 
 ## Documentation

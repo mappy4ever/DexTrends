@@ -455,7 +455,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
 
         {/* Regional Adaptation Info */}
         <motion.div 
-          className="mt-10 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-amber-100/50 via-pink-100/50 to-blue-100/50 dark:from-amber-900/20 dark:via-pink-900/20 dark:to-blue-900/20 border border-purple-200/30 dark:border-amber-700/30"
+          className="mt-10 p-6 rounded-xl backdrop-blur-md bg-gradient-to-r from-amber-100/50 via-pink-100/50 to-blue-100/50 dark:from-amber-900/20 dark:via-pink-900/20 dark:to-blue-900/20 border border-purple-200/30 dark:border-amber-700/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}

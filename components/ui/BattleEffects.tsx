@@ -428,7 +428,7 @@ export const VictoryCelebration: React.FC<VictoryCelebrationProps> = ({
         initial={{ scale: 0, rotate: -10 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        className="bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 p-8 rounded-3xl shadow-2xl text-center max-w-md mx-4"
+        className="bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 p-8 rounded-xl shadow-2xl text-center max-w-md mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         <motion.div

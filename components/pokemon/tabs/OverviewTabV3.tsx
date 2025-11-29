@@ -127,7 +127,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                 whileHover={{ scale: 1.03, y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <div className="h-full bg-white dark:bg-stone-900/50 rounded-2xl p-5 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
+                <div className="h-full bg-white dark:bg-stone-900/50 rounded-xl p-5 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center shadow-md shadow-amber-500/10">
                       <FaGraduationCap className="w-5 h-5 text-amber-400" />
@@ -176,7 +176,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                 whileHover={{ scale: 1.03, y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <div className="h-full bg-white dark:bg-stone-900/50 rounded-2xl p-5 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
+                <div className="h-full bg-white dark:bg-stone-900/50 rounded-xl p-5 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-pink-600/10 flex items-center justify-center shadow-md shadow-pink-500/10">
                       <GiEggClutch className="w-5 h-5 text-pink-400" />
@@ -223,7 +223,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                 whileHover={{ scale: 1.03, y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <div className="h-full bg-white dark:bg-stone-900/50 rounded-2xl p-5 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
+                <div className="h-full bg-white dark:bg-stone-900/50 rounded-xl p-5 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center shadow-md shadow-green-500/10">
                       <GiDna2 className="w-5 h-5 text-green-400" />
@@ -317,7 +317,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                     className="group"
                   >
                     <div className={cn(
-                      "relative h-full p-5 rounded-2xl backdrop-blur-md border transition-all duration-300",
+                      "relative h-full p-5 rounded-xl backdrop-blur-md border transition-all duration-300",
                       isHidden
                         ? "bg-gradient-to-br from-amber-500/10 to-amber-600/5 border-amber-500/20 hover:shadow-amber-500/20"
                         : "bg-gradient-to-br from-amber-500/10 to-orange-600/5 border-amber-500/20 hover:shadow-amber-500/20",

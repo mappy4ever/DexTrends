@@ -382,7 +382,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           whileTap={animated ? { scale: 0.98 } : undefined}
           onClick={handleClick}
           className={cn(
-            'relative overflow-hidden rounded-2xl cursor-pointer',
+            'relative overflow-hidden rounded-xl cursor-pointer',
             'bg-gradient-to-br',
             gradient,
             'p-4',

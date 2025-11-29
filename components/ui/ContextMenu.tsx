@@ -147,6 +147,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                 whileHover={!item.disabled ? { scale: 1.1 } : {}}
                 whileTap={!item.disabled ? { scale: 0.95 } : {}}
                 onHoverStart={() => !item.disabled && hapticFeedback.light()}
+                aria-label={item.label}
               >
                 <div className="text-xl">{item.icon}</div>
               </motion.button>
@@ -196,6 +197,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
               whileHover={!item.disabled ? { x: 5 } : {}}
               whileTap={!item.disabled ? { scale: 0.98 } : {}}
               onHoverStart={() => !item.disabled && hapticFeedback.light()}
+              aria-label={item.label}
             >
               <span className={`text-lg ${item.color || ''}`}>{item.icon}</span>
               <span className="text-sm font-medium">{item.label}</span>

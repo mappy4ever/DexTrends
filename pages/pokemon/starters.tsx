@@ -327,7 +327,7 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
+                })} p-6 rounded-xl cursor-pointer group transition-all duration-150`}
               >
                 <FiBook className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">Pokedex</h4>
@@ -346,7 +346,7 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
+                })} p-6 rounded-xl cursor-pointer group transition-all duration-150`}
               >
                 <FiMapPin className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">Regions</h4>
@@ -365,7 +365,7 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
+                })} p-6 rounded-xl cursor-pointer group transition-all duration-150`}
               >
                 <FiLayers className="w-8 h-8 mb-3 text-pink-500 group-hover:text-pink-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Sets</h4>
@@ -384,7 +384,7 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
+                })} p-6 rounded-xl cursor-pointer group transition-all duration-150`}
               >
                 <FiSmartphone className="w-8 h-8 mb-3 text-green-500 group-hover:text-green-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Pocket</h4>

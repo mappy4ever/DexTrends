@@ -2,13 +2,64 @@ import { Variants, Transition, Easing } from 'framer-motion';
 
 /**
  * Unified Animation System
- * 
+ *
  * Consistent, performant animations across the application
  * - Respects user preferences (prefers-reduced-motion)
  * - GPU-accelerated transforms only
  * - Spring physics for natural movement
  * - Stagger effects for lists
+ * - Apple-like smooth, natural motion
  */
+
+// =============================================================================
+// APPLE-LIKE ANIMATION CONSTANTS
+// =============================================================================
+
+/**
+ * Apple's signature smooth easing curve
+ * Natural, not overly bouncy - feels refined and polished
+ */
+export const APPLE_EASE = [0.25, 0.1, 0.25, 1.0] as const;
+export const APPLE_EASE_CSS = 'cubic-bezier(0.25, 0.1, 0.25, 1.0)';
+
+/**
+ * Duration presets in milliseconds (for Tailwind/CSS)
+ */
+export const DURATION_MS = {
+  instant: 75,
+  fast: 150,
+  normal: 200,
+  medium: 250,
+  slow: 300,
+  slower: 400,
+  slowest: 500,
+} as const;
+
+/**
+ * Pre-configured CSS transition strings
+ */
+export const CSS_TRANSITIONS = {
+  default: `all ${DURATION_MS.normal}ms ${APPLE_EASE_CSS}`,
+  hover: `transform ${DURATION_MS.fast}ms ${APPLE_EASE_CSS}, box-shadow ${DURATION_MS.fast}ms ${APPLE_EASE_CSS}`,
+  fade: `opacity ${DURATION_MS.normal}ms ${APPLE_EASE_CSS}`,
+  color: `color ${DURATION_MS.fast}ms ${APPLE_EASE_CSS}, background-color ${DURATION_MS.fast}ms ${APPLE_EASE_CSS}`,
+  transform: `transform ${DURATION_MS.medium}ms ${APPLE_EASE_CSS}`,
+  modal: `opacity ${DURATION_MS.slow}ms ${APPLE_EASE_CSS}, transform ${DURATION_MS.slow}ms ${APPLE_EASE_CSS}`,
+} as const;
+
+/**
+ * Pre-built Tailwind class strings for common transitions
+ */
+export const TAILWIND_TRANSITIONS = {
+  default: 'transition-all duration-200 ease-out',
+  hover: 'transition-transform duration-150 ease-out',
+  cardHover: 'transition-all duration-150 ease-out hover:-translate-y-0.5 hover:shadow-md',
+  buttonPress: 'transition-transform duration-75 ease-out active:scale-[0.98]',
+  fade: 'transition-opacity duration-200 ease-out',
+  scale: 'transition-transform duration-200 ease-out',
+  backdrop: 'transition-opacity duration-300 ease-out',
+  modalContent: 'transition-all duration-300 ease-out',
+} as const;
 
 // Check for reduced motion preference
 export const prefersReducedMotion = () => {
