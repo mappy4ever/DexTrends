@@ -249,10 +249,18 @@ const SetIdPage: NextPage = () => {
         if ((err as Error)?.name === 'AbortError' || !mounted) {
           return;
         }
-        
+
         const errorMessage = err instanceof Error ? err.message : 'Unknown error';
         logger.error("Error fetching set data:", { error: err, setId: setid });
-        setError(`Failed to load set information: ${errorMessage}`);
+
+        // Check for specific error types
+        if (errorMessage.includes('503') || errorMessage.includes('temporarily unavailable')) {
+          setError('The Pokemon TCG API is temporarily unavailable. Please try again in a few minutes.');
+        } else if (errorMessage.includes('404')) {
+          setError(`Set "${setid}" was not found.`);
+        } else {
+          setError(`Failed to load set information: ${errorMessage}`);
+        }
         setLoading(false);
       }
     };

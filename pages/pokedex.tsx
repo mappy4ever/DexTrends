@@ -55,7 +55,7 @@ interface PokemonGridItem {
 }
 
 const TOTAL_POKEMON = 1025;
-const BATCH_SIZE = 50;
+const BATCH_SIZE = 20; // Reduced to avoid rate limiting
 
 const UnifiedPokedex: NextPage = () => {
   const router = useRouter();
@@ -117,7 +117,11 @@ const UnifiedPokedex: NextPage = () => {
           const promises = [];
           for (let id = start; id < start + BATCH_SIZE && id <= TOTAL_POKEMON; id++) {
             promises.push(
-              fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`)
+              fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+                useCache: true,
+                cacheTime: 60 * 60 * 1000, // 1 hour cache
+                timeout: 10000 // 10 second timeout
+              })
                 .then((data) => (data ? {
                   id: typeof data.id === 'string' ? parseInt(data.id, 10) : data.id,
                   name: data.name,
@@ -144,13 +148,17 @@ const UnifiedPokedex: NextPage = () => {
           });
           
           setPokemon([...allPokemon]);
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay between batches
         }
         
         // Load species data for legendary/mythical status
         for (let id = 1; id <= TOTAL_POKEMON; id++) {
           try {
-            const species = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+            const species = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
+              useCache: true,
+              cacheTime: 60 * 60 * 1000, // 1 hour cache
+              timeout: 10000 // 10 second timeout
+            });
             if (species) {
               allPokemon[id - 1].isLegendary = species.is_legendary;
               allPokemon[id - 1].isMythical = species.is_mythical;

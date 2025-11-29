@@ -65,8 +65,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     );
     
-    if (!cardData?.data) {
-      return res.status(404).json({ error: 'Card not found' });
+    if (!cardData) {
+      // API call returned null - likely timeout or API unavailable
+      logger.warn('Pokemon TCG API unavailable for card detail', { cardId: id });
+      return res.status(503).json({
+        error: 'Service temporarily unavailable',
+        message: 'The Pokemon TCG API is currently unavailable. Please try again later.',
+        cardId: id,
+        retryAfter: 60
+      });
+    }
+
+    if (!cardData.data) {
+      return res.status(404).json({ error: 'Card not found', cardId: id });
     }
     
     const card = cardData.data;

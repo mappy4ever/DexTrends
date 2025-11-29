@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { tcgCache } from '../../../lib/tcg-cache';
+import { createSetDetailFallback } from '../../../lib/static-sets-fallback';
 import type { TCGApiResponse, TCGCardListApiResponse } from '../../../types/api/enhanced-responses';
 import type { UnknownError } from '../../../types/common';
 import type { CardSet, TCGCard } from '../../../types/api/cards';
@@ -172,12 +173,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     // Check if set not found
     if (!set) {
-      logger.warn('Set not found in API', { 
-        setId: id, 
+      // Distinguish between "API unavailable" (both null) vs "Set not found" (setInfo returned but no data)
+      if (setInfo === null && cardsData === null) {
+        // Both API calls returned null - likely timeout or API unavailable
+        // Try to use static fallback data
+        const fallback = createSetDetailFallback(id);
+        if (fallback) {
+          logger.info('Pokemon TCG API unavailable, using static fallback for set', { setId: id });
+          res.setHeader('X-Cache-Status', 'static-fallback');
+          res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600');
+          return res.status(200).json(fallback);
+        }
+
+        // No fallback available for this set
+        logger.warn('Pokemon TCG API unavailable and no fallback for set', { setId: id });
+        return res.status(503).json({
+          error: 'Service temporarily unavailable',
+          message: 'The Pokemon TCG API is currently unavailable. Please try again later.',
+          setId: id,
+          retryAfter: 60
+        });
+      }
+
+      logger.warn('Set not found in API', {
+        setId: id,
         setInfoResponse: setInfo,
         setInfoKeys: setInfo ? Object.keys(setInfo) : []
       });
-      return res.status(404).json({ 
+      return res.status(404).json({
         error: 'Set not found',
         message: `Set "${id}" was not found in the Pokemon TCG database.`,
         setId: id,

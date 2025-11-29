@@ -273,11 +273,17 @@ export default function CardDetailPage() {
         }
         
       } catch (err: unknown) {
-        logger.error("Error fetching card:", { 
-          error: err instanceof Error ? err.message : String(err),
-          cardId 
-        });
-        setError("Failed to load card details. Please try again.");
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        logger.error("Error fetching card:", { error: errorMessage, cardId });
+
+        // Check for specific error types
+        if (errorMessage.includes('503') || errorMessage.includes('temporarily unavailable')) {
+          setError('The Pokemon TCG API is temporarily unavailable. Please try again in a few minutes.');
+        } else if (errorMessage.includes('404')) {
+          setError(`Card not found.`);
+        } else {
+          setError("Failed to load card details. Please try again.");
+        }
         setLoading(false);
         if (loadStartTime) {
           performanceMonitor.endTimer('page-load', loadStartTime);

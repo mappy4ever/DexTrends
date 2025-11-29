@@ -434,6 +434,39 @@ export const STATIC_SETS_FALLBACK = {
   lastUpdated: "2025-11-27T00:00:00.000Z"
 };
 
+// Get set info from static data for fallback
+export function getStaticSetInfo(setId: string) {
+  const set = STATIC_SETS_FALLBACK.recentSets.find(s => s.id === setId);
+  if (!set) return null;
+
+  return {
+    ...set,
+    printedTotal: set.total,
+    updatedAt: STATIC_SETS_FALLBACK.lastUpdated,
+    legalities: { standard: 'Legal', expanded: 'Legal' }
+  };
+}
+
+// Create fallback response for set detail when API is unavailable
+export function createSetDetailFallback(setId: string) {
+  const set = getStaticSetInfo(setId);
+  if (!set) return null;
+
+  return {
+    set,
+    cards: [], // No cards available in fallback
+    pagination: {
+      page: 1,
+      pageSize: 250,
+      count: 0,
+      totalCount: set.total,
+      hasMore: false
+    },
+    warning: "The Pokemon TCG API is temporarily unavailable. Set information is shown but cards cannot be loaded. Please try again later.",
+    fallback: true
+  };
+}
+
 export function createFallbackResponse(page: number = 1, pageSize: number = 25) {
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;
