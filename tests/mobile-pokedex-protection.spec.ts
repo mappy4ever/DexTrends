@@ -266,3 +266,4 @@ test.describe('Protected Mobile Pokédex Features', () => {
 // Note: Multi-device testing should be configured via Playwright projects in playwright.config.ts
 // rather than using test.use() inside describe blocks, as that causes worker conflicts.
 // The main tests above run on iPhone 12 Pro and cover mobile functionality.
+// Updated: 2024
