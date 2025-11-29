@@ -63,12 +63,12 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Fixed width classes to match "FIGHTING" (longest type name) - improved sizing
+  // Responsive sizing - smaller for mobile, no min-width constraints
   const sizeClasses = {
-    xs: 'px-2 py-0.5 text-xs min-w-[4.5rem]',
-    sm: 'px-3 py-1 text-sm min-w-[5.5rem]',
-    md: 'px-4 py-2 text-sm min-w-[6rem]',
-    lg: 'px-3 py-1 text-lg min-w-[6.5rem]'
+    xs: 'px-1.5 py-0.5 text-[10px]',
+    sm: 'px-2 py-0.5 text-xs',
+    md: 'px-2.5 py-1 text-xs',
+    lg: 'px-3 py-1 text-sm'
   };
 
   const typeKey = type.toLowerCase();

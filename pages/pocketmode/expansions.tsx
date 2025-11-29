@@ -176,21 +176,21 @@ const PocketExpansions: NextPage = () => {
             {/* Search Bar */}
             <div className="mb-4">
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <svg className="w-5 h-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <input
                   type="text"
-                  className="w-full pl-12 pr-4 py-3 bg-white/80 dark:bg-stone-700/80 border border-stone-200 dark:border-stone-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-white/80 dark:bg-stone-700/80 border border-stone-200 dark:border-stone-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
                   placeholder="Search expansions..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 {search && (
                   <button
-                    className="absolute inset-y-0 right-0 pr-4 text-stone-400 hover:text-stone-600"
+                    className="absolute inset-y-0 right-0 pr-3 text-stone-400 hover:text-stone-600"
                     onClick={() => setSearch('')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

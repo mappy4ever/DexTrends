@@ -695,11 +695,16 @@ const difficultyColors: Record<string, string> = {
   'Champion': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
 };
 
-// Gym Leader Card Component - Expandable
+// Gym Leader Card Component - Expandable with Pokemon avatar
 const GymLeaderCard: React.FC<{ leader: GymLeader; gymNumber: number }> = ({ leader, gymNumber }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const primaryType = leader.type.split('/')[0];
   const weaknesses = typeWeaknesses[primaryType] || [];
+
+  // Get the ace Pokemon (last in team, usually strongest) for the avatar
+  const acePokemon = leader.team && leader.team.length > 0
+    ? leader.team[leader.team.length - 1]
+    : null;
 
   return (
     <Container
@@ -711,8 +716,25 @@ const GymLeaderCard: React.FC<{ leader: GymLeader; gymNumber: number }> = ({ lea
       {/* Header - Always visible */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold">
-            {gymNumber}
+          {/* Gym Leader Avatar with Ace Pokemon */}
+          <div className="relative">
+            <div className={`w-14 h-14 rounded-full bg-gradient-to-br from-${primaryType === 'fire' ? 'orange-400' : primaryType === 'water' ? 'blue-400' : primaryType === 'grass' ? 'green-400' : primaryType === 'electric' ? 'yellow-400' : primaryType === 'psychic' ? 'pink-400' : primaryType === 'fighting' ? 'red-400' : primaryType === 'rock' ? 'amber-600' : primaryType === 'ground' ? 'amber-500' : primaryType === 'poison' ? 'purple-400' : primaryType === 'ghost' ? 'purple-600' : primaryType === 'ice' ? 'cyan-400' : primaryType === 'dragon' ? 'indigo-500' : primaryType === 'dark' ? 'stone-700' : primaryType === 'steel' ? 'slate-400' : primaryType === 'fairy' ? 'pink-400' : primaryType === 'bug' ? 'lime-500' : primaryType === 'flying' ? 'indigo-400' : 'stone-400'} to-white/30 flex items-center justify-center overflow-hidden shadow-md`}>
+              {acePokemon ? (
+                <Image
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${acePokemon.id}.png`}
+                  alt={acePokemon.name}
+                  width={48}
+                  height={48}
+                  className="object-contain"
+                />
+              ) : (
+                <span className="text-white font-bold text-lg">{gymNumber}</span>
+              )}
+            </div>
+            {/* Gym Number Badge */}
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center border-2 border-white dark:border-stone-800">
+              {gymNumber}
+            </div>
           </div>
           <div>
             <h4 className="font-bold text-stone-800 dark:text-stone-100">{leader.name}</h4>
@@ -808,10 +830,15 @@ const GymLeaderCard: React.FC<{ leader: GymLeader; gymNumber: number }> = ({ lea
   );
 };
 
-// Elite Four Card Component - Expandable
+// Elite Four Card Component - Expandable with ace Pokemon image
 const EliteFourCard: React.FC<{ member: EliteFourMember; position: number }> = ({ member, position }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const weaknesses = typeWeaknesses[member.type] || [];
+
+  // Get the ace Pokemon (last in team) for the avatar
+  const acePokemon = member.team && member.team.length > 0
+    ? member.team[member.team.length - 1]
+    : null;
 
   return (
     <Container
@@ -820,12 +847,28 @@ const EliteFourCard: React.FC<{ member: EliteFourMember; position: number }> = (
       className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-md ${isExpanded ? 'ring-2 ring-purple-400 dark:ring-purple-500' : ''}`}
       onClick={() => setIsExpanded(!isExpanded)}
     >
-      {/* Header */}
+      {/* Header with Ace Pokemon Image */}
       <div className="text-center">
         <div className="flex justify-between items-start mb-2">
           <span className="text-xs text-stone-400 dark:text-stone-500">#{position}</span>
           {isExpanded ? <FiChevronUp className="text-stone-400" /> : <FiChevronDown className="text-stone-400" />}
         </div>
+
+        {/* Ace Pokemon Avatar */}
+        {acePokemon && (
+          <div className="flex justify-center mb-3">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center overflow-hidden shadow-lg ring-2 ring-purple-200 dark:ring-purple-700">
+              <Image
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${acePokemon.id}.png`}
+                alt={acePokemon.name}
+                width={56}
+                height={56}
+                className="object-contain"
+              />
+            </div>
+          </div>
+        )}
+
         <TypeBadge type={member.type} size="sm" />
         <h4 className="font-bold text-stone-800 dark:text-stone-100 mt-2">{member.name}</h4>
         {member.title && <p className="text-xs text-purple-600 dark:text-purple-400">{member.title}</p>}
@@ -880,9 +923,14 @@ const EliteFourCard: React.FC<{ member: EliteFourMember; position: number }> = (
   );
 };
 
-// Champion Card Component - Expandable
+// Champion Card Component - Expandable with ace Pokemon image
 const ChampionCard: React.FC<{ champion: Champion }> = ({ champion }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Get the ace Pokemon (last in team) for the avatar
+  const acePokemon = champion.pokemonTeam && champion.pokemonTeam.length > 0
+    ? champion.pokemonTeam[champion.pokemonTeam.length - 1]
+    : null;
 
   return (
     <Container
@@ -896,11 +944,27 @@ const ChampionCard: React.FC<{ champion: Champion }> = ({ champion }) => {
         <FiAward className="text-yellow-300 w-5 h-5" />
         {isExpanded ? <FiChevronUp className="text-white/70" /> : <FiChevronDown className="text-white/70" />}
       </div>
+
+      {/* Ace Pokemon Avatar */}
+      {acePokemon && (
+        <div className="flex justify-center my-3">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center overflow-hidden shadow-xl ring-4 ring-yellow-300/50">
+            <Image
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${acePokemon.id}.png`}
+              alt={acePokemon.name}
+              width={72}
+              height={72}
+              className="object-contain"
+            />
+          </div>
+        </div>
+      )}
+
       <span className="text-xs uppercase tracking-wider text-amber-200">Champion</span>
       <h4 className="font-bold text-white text-lg mt-1">{champion.name}</h4>
       <p className="text-sm text-amber-200 mt-1">Ace: {champion.signature}</p>
       {champion.catchphrase && (
-        <p className="text-xs text-white/70 italic mt-2">"{champion.catchphrase}"</p>
+        <p className="text-xs text-white/70 italic mt-2">&quot;{champion.catchphrase}&quot;</p>
       )}
 
       {/* Expanded Content */}

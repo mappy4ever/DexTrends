@@ -225,16 +225,16 @@ const PocketDecks: NextPage = () => {
                 <input
                   id="searchInput"
                   type="text"
-                  className="w-full pr-6 py-4 pl-12 bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  className="w-full pr-6 py-4 pl-11 bg-stone-50 dark:bg-stone-700/50 border border-stone-200 dark:border-stone-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
                   placeholder="Search decks (e.g., Pikachu, Mewtwo, Lightning)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-stone-400 dark:text-stone-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                  className="h-5 w-5 text-stone-400 dark:text-stone-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

@@ -174,19 +174,19 @@ const SearchPage: NextPage = () => {
           {/* Enhanced Search Input */}
           <div className="mb-8">
             <div className="relative">
-              <IoSearch className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
+              <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search Pokemon, cards..."
-                className="w-full pl-14 pr-12 py-4 text-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+                className="w-full pl-11 pr-12 py-4 text-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
                 autoFocus
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors"
                 >
                   <IoClose className="w-5 h-5 text-stone-400" />
                 </button>
