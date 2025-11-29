@@ -164,12 +164,12 @@ export const GlobalSearch: React.FC = () => {
             onFocus={() => setShowResults(true)}
             onKeyDown={handleKeyDown}
             placeholder="Search Pokémon, cards, moves..."
-            className="w-full h-12 pl-11 pr-10 text-base bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all duration-150 touch-manipulation"
+            className="w-full h-12 pl-12 pr-10 text-base bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all duration-150 touch-manipulation"
             style={{ fontSize: '16px' }}
           />
 
           {/* Search Icon */}
-          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
             <Search className="w-5 h-5 text-stone-400" />
           </div>
 

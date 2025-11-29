@@ -29,51 +29,27 @@ interface PokemonStatBarsProps {
 const STAT_CONFIG = {
   'hp': {
     label: 'HP',
-    color: 'bg-green-500',
-    darkColor: 'dark:bg-green-600',
-    barColor: 'rgb(34, 197, 94)',  // Same as bg-green-500
-    barColorDark: 'rgb(22, 163, 74)',
-    borderColor: 'rgb(34, 197, 94)'
+    barClass: 'bg-green-500 dark:bg-green-400',
   },
   'attack': {
     label: 'Attack',
-    color: 'bg-orange-500',
-    darkColor: 'dark:bg-orange-600',
-    barColor: 'rgb(249, 115, 22)',  // Same as bg-orange-500
-    barColorDark: 'rgb(234, 88, 12)',
-    borderColor: 'rgb(249, 115, 22)'
+    barClass: 'bg-orange-500 dark:bg-orange-400',
   },
   'defense': {
     label: 'Defense',
-    color: 'bg-orange-600',
-    darkColor: 'dark:bg-orange-700',
-    barColor: 'rgb(234, 88, 12)',  // Same as bg-orange-600
-    barColorDark: 'rgb(194, 65, 12)',
-    borderColor: 'rgb(234, 88, 12)'
+    barClass: 'bg-yellow-500 dark:bg-yellow-400',
   },
   'special-attack': {
     label: 'Sp. Atk',
-    color: 'bg-cyan-500',
-    darkColor: 'dark:bg-cyan-600',
-    barColor: 'rgb(6, 182, 212)',  // Same as bg-cyan-500
-    barColorDark: 'rgb(8, 145, 178)',
-    borderColor: 'rgb(6, 182, 212)'
+    barClass: 'bg-cyan-500 dark:bg-cyan-400',
   },
   'special-defense': {
     label: 'Sp. Def',
-    color: 'bg-amber-500',
-    darkColor: 'dark:bg-amber-600',
-    barColor: 'rgb(59, 130, 246)',  // Same as bg-amber-500
-    barColorDark: 'rgb(37, 99, 235)',
-    borderColor: 'rgb(59, 130, 246)'
+    barClass: 'bg-blue-500 dark:bg-blue-400',
   },
   'speed': {
     label: 'Speed',
-    color: 'bg-amber-500',
-    darkColor: 'dark:bg-amber-600',
-    barColor: 'rgb(168, 85, 247)',  // Same as bg-amber-500
-    barColorDark: 'rgb(147, 51, 234)',
-    borderColor: 'rgb(168, 85, 247)'
+    barClass: 'bg-purple-500 dark:bg-purple-400',
   }
 };
 
@@ -163,11 +139,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
         // Fallback config if stat name doesn't match
         const fallbackConfig = {
           label: stat.name.charAt(0).toUpperCase() + stat.name.slice(1),
-          color: 'bg-stone-500',
-          darkColor: 'dark:bg-stone-600',
-          barColor: 'rgb(107, 114, 128)',  // gray-500
-          barColorDark: 'rgb(75, 85, 99)',
-          borderColor: 'rgb(107, 114, 128)'
+          barClass: 'bg-stone-500 dark:bg-stone-400',
         };
 
         const finalConfig = config || fallbackConfig;
@@ -196,11 +168,11 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
           >
-            {/* Stat Label with Glass Morphism */}
+            {/* Stat Label */}
             <div className="col-span-3 relative">
               <div className={cn(
-                "px-2 sm:px-3 py-1.5 sm:py-2 font-bold text-xs sm:text-sm rounded-xl backdrop-blur-md border",
-                "bg-white/20 dark:bg-stone-900/20 border-white/30 dark:border-stone-700/30"
+                "px-2 sm:px-3 py-1.5 sm:py-2 font-bold text-xs sm:text-sm rounded-xl border",
+                "bg-stone-100 dark:bg-stone-800 border-stone-200 dark:border-stone-700"
               )}>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1 text-stone-700 dark:text-stone-300">
@@ -221,27 +193,21 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
               </div>
             </div>
 
-            {/* Stat Bar with Glass Effect */}
+            {/* Stat Bar */}
             <div className="col-span-6 relative">
-              <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 overflow-hidden">
+              <div className="w-full h-6 sm:h-8 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
                 <motion.div
-                  className="h-full relative rounded-full"
-                  style={{
-                    background: `linear-gradient(90deg, ${finalConfig.barColor}, ${finalConfig.barColor}dd)`,
-                    boxShadow: `inset 0 2px 4px rgba(255,255,255,0.3), 0 0 20px ${finalConfig.barColor}40`
-                  }}
+                  className={cn("h-full rounded-full", finalConfig.barClass)}
                   initial={animate ? { width: 0 } : { width: `${percentage}%` }}
                   animate={{ width: `${percentage}%` }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-full" />
-                </motion.div>
+                />
               </div>
             </div>
 
-            {/* Range with Glass Badge */}
+            {/* Range Badge */}
             <div className="col-span-3 flex justify-center">
-              <div className="px-3 py-1 rounded-full bg-white/20 dark:bg-stone-900/20 backdrop-blur-sm border border-white/30 dark:border-stone-700/30">
+              <div className="px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
                 <span className="text-xs text-stone-600 dark:text-stone-400 font-medium">
                   <span className="hidden sm:inline">{range.min} - {range.max}</span>
                   <span className="inline sm:hidden">{range.min}-{range.max}</span>
@@ -289,22 +255,13 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
           {/* Total Bar */}
           <div className="col-span-6 relative">
-            <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 overflow-hidden">
+            <div className="w-full h-6 sm:h-8 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
               <motion.div
-                className="h-full relative rounded-full"
+                className="h-full rounded-full bg-stone-500 dark:bg-stone-400"
                 initial={animate ? { width: 0 } : { width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
                 animate={{ width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                <div
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    background: `linear-gradient(90deg, rgb(107, 114, 128), rgb(75, 85, 99))`,
-                    boxShadow: `inset 0 2px 4px rgba(255,255,255,0.3), 0 0 20px rgba(107, 114, 128, 0.4)`
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-full" />
-              </motion.div>
+              />
             </div>
           </div>
 

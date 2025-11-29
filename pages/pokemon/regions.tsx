@@ -126,11 +126,11 @@ const regions: Region[] = [
     generation: 9,
     description: "An open-world region inspired by Spain with three storylines to explore.",
     mapImage: "/images/scraped/maps/Paldea_artwork.png",
-    color: "violet",
+    color: "scarlet",
     starters: "Sprigatito • Fuecoco • Quaxly",
     starterIds: [906, 909, 912],
-    gradientFrom: "from-violet-500",
-    gradientTo: "to-purple-400"
+    gradientFrom: "from-rose-600",
+    gradientTo: "to-amber-500"
   }
 ];
 
@@ -195,13 +195,13 @@ const RegionCard: React.FC<{ region: Region; index: number }> = ({ region, index
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <p className="text-white/90 text-sm mb-2">{region.description}</p>
-              <p className="text-white/70 text-xs">{region.starters}</p>
+              <p className="text-white text-sm mb-2 drop-shadow-md">{region.description}</p>
+              <p className="text-white/90 text-xs drop-shadow-md">{region.starters}</p>
             </motion.div>
 
             {/* Default subtitle - hides on hover */}
             {!isHovered && (
-              <p className="text-white/80 text-sm">{region.starters}</p>
+              <p className="text-white text-sm drop-shadow-md">{region.starters}</p>
             )}
           </div>
         </Container>

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import Container from "../../../components/ui/Container";
 import { TypeBadge } from "../../../components/ui/TypeBadge";
-import { FiChevronLeft, FiChevronRight, FiMapPin, FiMap, FiUsers, FiStar, FiBook, FiInfo } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiMapPin, FiMap, FiUsers, FiStar, FiBook, FiInfo, FiChevronDown, FiChevronUp, FiTarget, FiZap, FiShield, FiAward } from "react-icons/fi";
 
 // Type definitions
 interface Location {
@@ -19,24 +19,62 @@ interface Landmark {
   description: string;
 }
 
+interface TeamPokemon {
+  id: number;
+  name: string;
+  level?: number;
+}
+
 interface GymLeader {
   name: string;
   city: string;
   type: string;
   badge: string;
+  team?: TeamPokemon[];
+  strategy?: string;
+  difficulty?: 'Easy' | 'Medium' | 'Hard' | 'Very Hard';
+  funFact?: string;
 }
 
 interface EliteFourMember {
   name: string;
   type: string;
   signature: string;
+  team?: TeamPokemon[];
+  strategy?: string;
+  title?: string;
 }
 
 interface Champion {
   name: string;
   team: string;
   signature: string;
+  pokemonTeam?: TeamPokemon[];
+  catchphrase?: string;
+  difficulty?: string;
 }
+
+// Type effectiveness for counter recommendations
+const typeWeaknesses: Record<string, string[]> = {
+  normal: ['fighting'],
+  fire: ['water', 'ground', 'rock'],
+  water: ['electric', 'grass'],
+  electric: ['ground'],
+  grass: ['fire', 'ice', 'poison', 'flying', 'bug'],
+  ice: ['fire', 'fighting', 'rock', 'steel'],
+  fighting: ['flying', 'psychic', 'fairy'],
+  poison: ['ground', 'psychic'],
+  ground: ['water', 'grass', 'ice'],
+  flying: ['electric', 'ice', 'rock'],
+  psychic: ['bug', 'ghost', 'dark'],
+  bug: ['fire', 'flying', 'rock'],
+  rock: ['water', 'grass', 'fighting', 'ground', 'steel'],
+  ghost: ['ghost', 'dark'],
+  dragon: ['ice', 'dragon', 'fairy'],
+  dark: ['fighting', 'bug', 'fairy'],
+  steel: ['fire', 'fighting', 'ground'],
+  fairy: ['poison', 'steel']
+};
 
 interface PageRegionData {
   id: string;
@@ -104,27 +142,65 @@ const regionsData: Record<string, PageRegionData> = {
       { name: "Victory Road", description: "The final test before the Pokémon League" }
     ],
     gymLeaders: [
-      { name: "Brock", city: "Pewter City", type: "rock", badge: "Boulder Badge" },
-      { name: "Misty", city: "Cerulean City", type: "water", badge: "Cascade Badge" },
-      { name: "Lt. Surge", city: "Vermilion City", type: "electric", badge: "Thunder Badge" },
-      { name: "Erika", city: "Celadon City", type: "grass", badge: "Rainbow Badge" },
-      { name: "Koga", city: "Fuchsia City", type: "poison", badge: "Soul Badge" },
-      { name: "Sabrina", city: "Saffron City", type: "psychic", badge: "Marsh Badge" },
-      { name: "Blaine", city: "Cinnabar Island", type: "fire", badge: "Volcano Badge" },
-      { name: "Giovanni", city: "Viridian City", type: "ground", badge: "Earth Badge" }
+      { name: "Brock", city: "Pewter City", type: "rock", badge: "Boulder Badge",
+        team: [{ id: 74, name: "Geodude", level: 12 }, { id: 95, name: "Onix", level: 14 }],
+        strategy: "His Onix has high Defense. Use Water or Grass moves for super effective damage!",
+        difficulty: "Easy", funFact: "Brock dreams of becoming a Pokemon Breeder" },
+      { name: "Misty", city: "Cerulean City", type: "water", badge: "Cascade Badge",
+        team: [{ id: 120, name: "Staryu", level: 18 }, { id: 121, name: "Starmie", level: 21 }],
+        strategy: "Starmie is fast and strong! Electric and Grass types work great here.",
+        difficulty: "Medium", funFact: "Misty is known as 'The Tomboyish Mermaid'" },
+      { name: "Lt. Surge", city: "Vermilion City", type: "electric", badge: "Thunder Badge",
+        team: [{ id: 100, name: "Voltorb", level: 21 }, { id: 25, name: "Pikachu", level: 18 }, { id: 26, name: "Raichu", level: 24 }],
+        strategy: "Ground types are immune to Electric! Diglett from Diglett's Cave works perfectly.",
+        difficulty: "Medium", funFact: "Lt. Surge is a war veteran from America" },
+      { name: "Erika", city: "Celadon City", type: "grass", badge: "Rainbow Badge",
+        team: [{ id: 71, name: "Victreebel", level: 29 }, { id: 114, name: "Tangela", level: 24 }, { id: 45, name: "Vileplume", level: 29 }],
+        strategy: "Fire, Ice, Flying, or Poison moves demolish her team. Watch out for status moves!",
+        difficulty: "Medium", funFact: "Erika often falls asleep during Pokemon battles" },
+      { name: "Koga", city: "Fuchsia City", type: "poison", badge: "Soul Badge",
+        team: [{ id: 109, name: "Koffing", level: 37 }, { id: 89, name: "Muk", level: 39 }, { id: 109, name: "Koffing", level: 37 }, { id: 110, name: "Weezing", level: 43 }],
+        strategy: "Psychic and Ground types are super effective. Bring Antidotes for Toxic!",
+        difficulty: "Hard", funFact: "Koga is a ninja master who later joins the Elite Four" },
+      { name: "Sabrina", city: "Saffron City", type: "psychic", badge: "Marsh Badge",
+        team: [{ id: 64, name: "Kadabra", level: 38 }, { id: 122, name: "Mr. Mime", level: 37 }, { id: 49, name: "Venomoth", level: 38 }, { id: 65, name: "Alakazam", level: 43 }],
+        strategy: "Bug, Ghost, and Dark types are your friends. Her Alakazam hits HARD!",
+        difficulty: "Very Hard", funFact: "Sabrina has powerful psychic abilities and can teleport" },
+      { name: "Blaine", city: "Cinnabar Island", type: "fire", badge: "Volcano Badge",
+        team: [{ id: 58, name: "Growlithe", level: 42 }, { id: 77, name: "Ponyta", level: 40 }, { id: 78, name: "Rapidash", level: 42 }, { id: 59, name: "Arcanine", level: 47 }],
+        strategy: "Water, Ground, and Rock moves are essential. Surf works wonders here!",
+        difficulty: "Hard", funFact: "Blaine is a Pokemon researcher who loves riddles" },
+      { name: "Giovanni", city: "Viridian City", type: "ground", badge: "Earth Badge",
+        team: [{ id: 111, name: "Rhyhorn", level: 45 }, { id: 51, name: "Dugtrio", level: 42 }, { id: 31, name: "Nidoqueen", level: 44 }, { id: 34, name: "Nidoking", level: 45 }, { id: 112, name: "Rhydon", level: 50 }],
+        strategy: "Water and Grass types dominate. His Rhydon is his ace - don't underestimate it!",
+        difficulty: "Very Hard", funFact: "Giovanni is the secret leader of Team Rocket" }
     ],
     eliteFour: [
-      { name: "Lorelei", type: "ice", signature: "Lapras" },
-      { name: "Bruno", type: "fighting", signature: "Machamp" },
-      { name: "Agatha", type: "ghost", signature: "Gengar" },
-      { name: "Lance", type: "dragon", signature: "Dragonite" }
+      { name: "Lorelei", type: "ice", signature: "Lapras", title: "Ice Master",
+        team: [{ id: 87, name: "Dewgong", level: 54 }, { id: 91, name: "Cloyster", level: 53 }, { id: 80, name: "Slowbro", level: 54 }, { id: 124, name: "Jynx", level: 56 }, { id: 131, name: "Lapras", level: 56 }],
+        strategy: "Electric and Fighting moves work well. Watch out for Water moves on your Fire types!" },
+      { name: "Bruno", type: "fighting", signature: "Machamp", title: "Fighting Expert",
+        team: [{ id: 95, name: "Onix", level: 53 }, { id: 107, name: "Hitmonchan", level: 55 }, { id: 106, name: "Hitmonlee", level: 55 }, { id: 95, name: "Onix", level: 56 }, { id: 68, name: "Machamp", level: 58 }],
+        strategy: "Psychic and Flying types are super effective. His Onix are weak to Water and Grass!" },
+      { name: "Agatha", type: "ghost", signature: "Gengar", title: "Ghost Specialist",
+        team: [{ id: 94, name: "Gengar", level: 56 }, { id: 42, name: "Golbat", level: 56 }, { id: 93, name: "Haunter", level: 55 }, { id: 24, name: "Arbok", level: 58 }, { id: 94, name: "Gengar", level: 60 }],
+        strategy: "Ground and Psychic moves are key. Her Gengar can be tricky with Hypnosis!" },
+      { name: "Lance", type: "dragon", signature: "Dragonite", title: "Dragon Master",
+        team: [{ id: 130, name: "Gyarados", level: 58 }, { id: 148, name: "Dragonair", level: 56 }, { id: 148, name: "Dragonair", level: 56 }, { id: 142, name: "Aerodactyl", level: 60 }, { id: 149, name: "Dragonite", level: 62 }],
+        strategy: "Ice moves are 4x effective on Dragonite! Electric works on Gyarados." }
     ],
-    champion: { name: "Blue", team: "Varied", signature: "Varied" },
+    champion: { name: "Blue", team: "Varied", signature: "Varied",
+      pokemonTeam: [{ id: 18, name: "Pidgeot", level: 61 }, { id: 65, name: "Alakazam", level: 59 }, { id: 112, name: "Rhydon", level: 61 }, { id: 130, name: "Gyarados", level: 61 }, { id: 59, name: "Arcanine", level: 63 }, { id: 103, name: "Exeggutor", level: 61 }],
+      catchphrase: "Smell ya later!", difficulty: "Champion" },
     trivia: [
-      "Kanto is based on the real Kantō region of Japan",
-      "It was the first region introduced in the Pokémon series",
-      "The Safari Zone was a unique feature for catching rare Pokémon",
-      "Team Rocket's headquarters is located in Celadon City"
+      "Kanto is based on the real Kantō region of Japan, including Tokyo!",
+      "It was the first region introduced in the Pokémon series in 1996",
+      "The Safari Zone was a unique feature for catching rare Pokémon like Chansey and Tauros",
+      "Team Rocket's headquarters is hidden in the Celadon Game Corner",
+      "Lavender Town's eerie music became a famous urban legend among fans",
+      "Mew was secretly added to the game just two weeks before launch",
+      "The S.S. Anne only appears once - miss it and it's gone forever!",
+      "Mewtwo was created in the Pokémon Mansion on Cinnabar Island"
     ]
   },
   johto: {
@@ -178,10 +254,14 @@ const regionsData: Record<string, PageRegionData> = {
     ],
     champion: { name: "Lance", team: "Dragon", signature: "Dragonite" },
     trivia: [
-      "Johto is based on the Kansai region of Japan",
-      "It was the first region to introduce breeding",
-      "The Legendary Beasts were resurrected by Ho-Oh",
-      "After beating Johto, players can travel to Kanto"
+      "Johto is based on the Kansai region of Japan, including Kyoto and Osaka",
+      "It introduced Pokemon breeding, eggs, and baby Pokemon like Pichu and Togepi!",
+      "The three Legendary Beasts were revived by Ho-Oh after the Brass Tower fire",
+      "After beating Johto, you can travel to Kanto - getting 16 badges total!",
+      "Whitney's Miltank is infamous for being one of the hardest gym battles ever",
+      "The Ruins of Alph contain mysterious Unown - there are 28 different forms!",
+      "The Day/Night cycle was introduced in these games for the first time",
+      "Celebi can only be obtained through special events or glitches"
     ]
   },
   hoenn: {
@@ -288,10 +368,14 @@ const regionsData: Record<string, PageRegionData> = {
     ],
     champion: { name: "Cynthia", team: "Varied", signature: "Garchomp" },
     trivia: [
-      "Sinnoh is based on Hokkaido, Japan",
-      "Mt. Coronet divides the region climatically",
-      "Cynthia is considered one of the strongest Champions",
-      "The Underground introduced a new multiplayer experience"
+      "Sinnoh is based on Hokkaido, Japan's northernmost main island",
+      "Mt. Coronet divides the region - some Pokemon only appear on one side!",
+      "Cynthia is considered one of the strongest and most beloved Champions ever",
+      "The Underground let players dig for fossils and secret treasures together",
+      "Arceus, the 'God of Pokemon', was created in this generation",
+      "Dialga controls time, Palkia controls space, and Giratina rules the Distortion World",
+      "The Sinnoh games introduced online trading with players worldwide via WiFi",
+      "The Great Marsh is Sinnoh's Safari Zone, featuring binoculars to spot rare Pokemon"
     ]
   },
   unova: {
@@ -602,30 +686,254 @@ const LegendaryCard: React.FC<{ id: number; name: string }> = ({ id, name }) => 
   </Link>
 );
 
-// Gym Leader Card Component
-const GymLeaderCard: React.FC<{ leader: GymLeader }> = ({ leader }) => (
-  <Container variant="outline" rounded="lg" className="p-4">
-    <div className="flex items-center justify-between">
-      <div>
-        <h4 className="font-bold text-stone-800 dark:text-stone-100">{leader.name}</h4>
-        <p className="text-sm text-stone-600 dark:text-stone-400">{leader.city}</p>
-      </div>
-      <div className="text-right">
-        <TypeBadge type={leader.type.split('/')[0]} size="sm" />
-        <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">{leader.badge}</p>
-      </div>
-    </div>
-  </Container>
-);
+// Difficulty badge colors
+const difficultyColors: Record<string, string> = {
+  'Easy': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  'Medium': 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  'Hard': 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
+  'Very Hard': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+  'Champion': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+};
 
-// Elite Four Card Component
-const EliteFourCard: React.FC<{ member: EliteFourMember }> = ({ member }) => (
-  <Container variant="elevated" rounded="lg" className="p-4 text-center">
-    <TypeBadge type={member.type} size="sm" />
-    <h4 className="font-bold text-stone-800 dark:text-stone-100 mt-2">{member.name}</h4>
-    <p className="text-sm text-stone-600 dark:text-stone-400">Signature: {member.signature}</p>
-  </Container>
-);
+// Gym Leader Card Component - Expandable
+const GymLeaderCard: React.FC<{ leader: GymLeader; gymNumber: number }> = ({ leader, gymNumber }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const primaryType = leader.type.split('/')[0];
+  const weaknesses = typeWeaknesses[primaryType] || [];
+
+  return (
+    <Container
+      variant="outline"
+      rounded="lg"
+      className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-md ${isExpanded ? 'ring-2 ring-amber-400 dark:ring-amber-500' : ''}`}
+      onClick={() => setIsExpanded(!isExpanded)}
+    >
+      {/* Header - Always visible */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold">
+            {gymNumber}
+          </div>
+          <div>
+            <h4 className="font-bold text-stone-800 dark:text-stone-100">{leader.name}</h4>
+            <p className="text-sm text-stone-600 dark:text-stone-400">{leader.city}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="text-right">
+            <TypeBadge type={primaryType} size="sm" />
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">{leader.badge}</p>
+          </div>
+          {isExpanded ? <FiChevronUp className="text-stone-400" /> : <FiChevronDown className="text-stone-400" />}
+        </div>
+      </div>
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-700 space-y-4" onClick={(e) => e.stopPropagation()}>
+          {/* Difficulty */}
+          {leader.difficulty && (
+            <div className="flex items-center gap-2">
+              <FiTarget className="text-stone-400" />
+              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${difficultyColors[leader.difficulty]}`}>
+                {leader.difficulty}
+              </span>
+            </div>
+          )}
+
+          {/* Pokemon Team */}
+          {leader.team && leader.team.length > 0 && (
+            <div>
+              <h5 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2 flex items-center gap-2">
+                <FiUsers className="text-blue-500" /> Team
+              </h5>
+              <div className="flex flex-wrap gap-2">
+                {leader.team.map((pokemon, idx) => (
+                  <Link key={idx} href={`/pokedex/${pokemon.id}`} className="block">
+                    <div className="flex items-center gap-2 bg-stone-100 dark:bg-stone-700 rounded-lg px-2 py-1 hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors">
+                      <Image
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+                        alt={pokemon.name}
+                        width={32}
+                        height={32}
+                        className="w-8 h-8"
+                      />
+                      <div>
+                        <span className="text-xs font-medium text-stone-800 dark:text-stone-200">{pokemon.name}</span>
+                        {pokemon.level && <span className="text-xs text-stone-500 ml-1">Lv.{pokemon.level}</span>}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Counter Types */}
+          {weaknesses.length > 0 && (
+            <div>
+              <h5 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2 flex items-center gap-2">
+                <FiZap className="text-yellow-500" /> Super Effective Types
+              </h5>
+              <div className="flex flex-wrap gap-1">
+                {weaknesses.map(type => (
+                  <TypeBadge key={type} type={type} size="xs" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Strategy */}
+          {leader.strategy && (
+            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
+              <h5 className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1 flex items-center gap-2">
+                <FiShield className="text-amber-500" /> Battle Strategy
+              </h5>
+              <p className="text-sm text-amber-700 dark:text-amber-400">{leader.strategy}</p>
+            </div>
+          )}
+
+          {/* Fun Fact */}
+          {leader.funFact && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+              <h5 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-1 flex items-center gap-2">
+                <FiInfo className="text-blue-500" /> Did You Know?
+              </h5>
+              <p className="text-sm text-blue-700 dark:text-blue-400">{leader.funFact}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </Container>
+  );
+};
+
+// Elite Four Card Component - Expandable
+const EliteFourCard: React.FC<{ member: EliteFourMember; position: number }> = ({ member, position }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const weaknesses = typeWeaknesses[member.type] || [];
+
+  return (
+    <Container
+      variant="elevated"
+      rounded="lg"
+      className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-md ${isExpanded ? 'ring-2 ring-purple-400 dark:ring-purple-500' : ''}`}
+      onClick={() => setIsExpanded(!isExpanded)}
+    >
+      {/* Header */}
+      <div className="text-center">
+        <div className="flex justify-between items-start mb-2">
+          <span className="text-xs text-stone-400 dark:text-stone-500">#{position}</span>
+          {isExpanded ? <FiChevronUp className="text-stone-400" /> : <FiChevronDown className="text-stone-400" />}
+        </div>
+        <TypeBadge type={member.type} size="sm" />
+        <h4 className="font-bold text-stone-800 dark:text-stone-100 mt-2">{member.name}</h4>
+        {member.title && <p className="text-xs text-purple-600 dark:text-purple-400">{member.title}</p>}
+        <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">Ace: {member.signature}</p>
+      </div>
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-700 space-y-3" onClick={(e) => e.stopPropagation()}>
+          {/* Pokemon Team */}
+          {member.team && member.team.length > 0 && (
+            <div>
+              <h5 className="text-xs font-semibold text-stone-700 dark:text-stone-300 mb-2">Full Team</h5>
+              <div className="grid grid-cols-3 gap-1">
+                {member.team.map((pokemon, idx) => (
+                  <Link key={idx} href={`/pokedex/${pokemon.id}`} className="block text-center">
+                    <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-1 hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors">
+                      <Image
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+                        alt={pokemon.name}
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 mx-auto"
+                      />
+                      <span className="text-[10px] text-stone-600 dark:text-stone-400 block truncate">{pokemon.name}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Counter Types */}
+          {weaknesses.length > 0 && (
+            <div>
+              <h5 className="text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Weak To</h5>
+              <div className="flex flex-wrap gap-1 justify-center">
+                {weaknesses.slice(0, 3).map(type => (
+                  <TypeBadge key={type} type={type} size="xs" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Strategy */}
+          {member.strategy && (
+            <p className="text-xs text-stone-600 dark:text-stone-400 text-center italic">{member.strategy}</p>
+          )}
+        </div>
+      )}
+    </Container>
+  );
+};
+
+// Champion Card Component - Expandable
+const ChampionCard: React.FC<{ champion: Champion }> = ({ champion }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <Container
+      variant="featured"
+      rounded="lg"
+      className={`p-4 text-center cursor-pointer transition-all duration-300 col-span-2 md:col-span-1 ${isExpanded ? 'ring-2 ring-yellow-400' : ''}`}
+      onClick={() => setIsExpanded(!isExpanded)}
+    >
+      {/* Header */}
+      <div className="flex justify-between items-start">
+        <FiAward className="text-yellow-300 w-5 h-5" />
+        {isExpanded ? <FiChevronUp className="text-white/70" /> : <FiChevronDown className="text-white/70" />}
+      </div>
+      <span className="text-xs uppercase tracking-wider text-amber-200">Champion</span>
+      <h4 className="font-bold text-white text-lg mt-1">{champion.name}</h4>
+      <p className="text-sm text-amber-200 mt-1">Ace: {champion.signature}</p>
+      {champion.catchphrase && (
+        <p className="text-xs text-white/70 italic mt-2">"{champion.catchphrase}"</p>
+      )}
+
+      {/* Expanded Content */}
+      {isExpanded && champion.pokemonTeam && (
+        <div className="mt-4 pt-4 border-t border-white/20 space-y-3" onClick={(e) => e.stopPropagation()}>
+          <h5 className="text-xs font-semibold text-amber-200">Champion's Team</h5>
+          <div className="grid grid-cols-3 gap-2">
+            {champion.pokemonTeam.map((pokemon, idx) => (
+              <Link key={idx} href={`/pokedex/${pokemon.id}`} className="block">
+                <div className="bg-white/10 rounded-lg p-2 hover:bg-white/20 transition-colors">
+                  <Image
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+                    alt={pokemon.name}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 mx-auto"
+                  />
+                  <span className="text-[10px] text-white/80 block truncate">{pokemon.name}</span>
+                  {pokemon.level && <span className="text-[9px] text-amber-300">Lv.{pokemon.level}</span>}
+                </div>
+              </Link>
+            ))}
+          </div>
+          {champion.difficulty && (
+            <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${difficultyColors[champion.difficulty]}`}>
+              {champion.difficulty} Difficulty
+            </span>
+          )}
+        </div>
+      )}
+    </Container>
+  );
+};
 
 export default function RegionDetailPage() {
   const router = useRouter();
@@ -794,16 +1102,79 @@ export default function RegionDetailPage() {
             </div>
           </section>
 
+          {/* Region Map Showcase */}
+          <section>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+              <FiMap className="text-emerald-500" />
+              Explore {region.name}
+            </h2>
+            <Container variant="elevated" rounded="xl" className="p-6 overflow-hidden">
+              <div className="grid md:grid-cols-2 gap-6 items-center">
+                {/* Map Image */}
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 shadow-inner">
+                  <Image
+                    src={region.map}
+                    alt={`${region.name} Region Map`}
+                    fill
+                    className="object-contain p-2"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                </div>
+
+                {/* Map Info */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2">
+                      The {region.name} Region
+                    </h3>
+                    <p className="text-stone-600 dark:text-stone-400 leading-relaxed">
+                      {region.description}
+                    </p>
+                  </div>
+
+                  {/* Quick Stats */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
+                      <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{region.cities}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Cities & Towns</div>
+                    </div>
+                    <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
+                      <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{region.routes || 'Open'}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">{region.routes > 0 ? 'Routes' : 'World'}</div>
+                    </div>
+                    <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
+                      <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{region.gymLeaders?.length || 0}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">{region.id === 'alola' ? 'Trials' : 'Gyms'}</div>
+                    </div>
+                    <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
+                      <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{region.legendaries.length}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Legendaries</div>
+                    </div>
+                  </div>
+
+                  {/* Generation Badge */}
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${region.gradientFrom} ${region.gradientTo} text-white font-medium`}>
+                    <FiStar className="w-4 h-4" />
+                    Generation {region.generation} • {region.pokemonRange}
+                  </div>
+                </div>
+              </div>
+            </Container>
+          </section>
+
           {/* Gym Leaders */}
           {region.gymLeaders && region.gymLeaders.length > 0 && (
             <section>
-              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 flex items-center gap-3">
                 <FiUsers className="text-red-500" />
                 {region.id === 'alola' ? 'Trial Captains' : 'Gym Leaders'}
               </h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {region.gymLeaders.map(leader => (
-                  <GymLeaderCard key={leader.name} leader={leader} />
+              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+                Click on any {region.id === 'alola' ? 'Trial Captain' : 'Gym Leader'} to see their team, strategy tips, and fun facts!
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {region.gymLeaders.map((leader, index) => (
+                  <GymLeaderCard key={leader.name} leader={leader} gymNumber={index + 1} />
                 ))}
               </div>
             </section>
@@ -812,21 +1183,36 @@ export default function RegionDetailPage() {
           {/* Elite Four */}
           {region.eliteFour && region.eliteFour.length > 0 && (
             <section>
-              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 flex items-center gap-3">
                 <FiStar className="text-purple-500" />
                 Elite Four & Champion
               </h2>
+              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+                Click to reveal their full teams and battle strategies!
+              </p>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {region.eliteFour.map(member => (
-                  <EliteFourCard key={member.name} member={member} />
+                {region.eliteFour.map((member, index) => (
+                  <EliteFourCard key={member.name} member={member} position={index + 1} />
                 ))}
                 {region.champion && (
-                  <Container variant="featured" rounded="lg" className="p-4 text-center col-span-2 md:col-span-1">
-                    <span className="text-xs uppercase tracking-wider text-amber-200">Champion</span>
-                    <h4 className="font-bold text-white text-lg mt-1">{region.champion.name}</h4>
-                    <p className="text-sm text-amber-200 mt-1">{region.champion.signature}</p>
-                  </Container>
+                  <ChampionCard champion={region.champion} />
                 )}
+              </div>
+            </section>
+          )}
+
+          {/* Region without Elite Four but has Champion */}
+          {(!region.eliteFour || region.eliteFour.length === 0) && region.champion && (
+            <section>
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 flex items-center gap-3">
+                <FiAward className="text-amber-500" />
+                Champion
+              </h2>
+              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+                Click to reveal the Champion's full team!
+              </p>
+              <div className="max-w-sm">
+                <ChampionCard champion={region.champion} />
               </div>
             </section>
           )}
@@ -875,25 +1261,72 @@ export default function RegionDetailPage() {
             </section>
           )}
 
-          {/* Trivia */}
+          {/* Trivia & Fun Facts */}
           {region.trivia && (
             <section>
-              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 flex items-center gap-3">
                 <FiInfo className="text-blue-500" />
-                Did You Know?
+                Fun Facts & Trivia
               </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {region.trivia.map((fact, index) => (
-                  <Container key={index} variant="outline" rounded="lg" className="p-4">
-                    <div className="flex gap-3">
-                      <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">
-                        {index + 1}
-                      </span>
-                      <p className="text-stone-700 dark:text-stone-300">{fact}</p>
+              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+                Interesting facts every {region.name} trainer should know!
+              </p>
+              <Container variant="elevated" rounded="xl" className="p-6">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {region.trivia.map((fact, index) => (
+                    <div
+                      key={index}
+                      className="flex gap-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-100 dark:border-blue-800/30 hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex-shrink-0">
+                        <span className="flex w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 items-center justify-center text-white font-bold shadow-lg">
+                          {index + 1}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-stone-700 dark:text-stone-300 leading-relaxed">{fact}</p>
+                      </div>
                     </div>
-                  </Container>
-                ))}
-              </div>
+                  ))}
+                </div>
+
+                {/* Region Summary Stats */}
+                <div className="mt-6 pt-6 border-t border-stone-200 dark:border-stone-700">
+                  <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4 text-center">
+                    {region.name} at a Glance
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-4">
+                    <div className="text-center px-6 py-3 bg-stone-100 dark:bg-stone-700 rounded-xl">
+                      <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                        <FiBook className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <div className="font-bold text-stone-800 dark:text-stone-100">{region.games.length}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Games</div>
+                    </div>
+                    <div className="text-center px-6 py-3 bg-stone-100 dark:bg-stone-700 rounded-xl">
+                      <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                        <FiUsers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <div className="font-bold text-stone-800 dark:text-stone-100">{region.professor.split(' ')[1]}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Professor</div>
+                    </div>
+                    <div className="text-center px-6 py-3 bg-stone-100 dark:bg-stone-700 rounded-xl">
+                      <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                        <FiAward className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                      </div>
+                      <div className="font-bold text-stone-800 dark:text-stone-100">{region.champion?.name || 'Various'}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Champion</div>
+                    </div>
+                    <div className="text-center px-6 py-3 bg-stone-100 dark:bg-stone-700 rounded-xl">
+                      <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                        <FiStar className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <div className="font-bold text-stone-800 dark:text-stone-100">Gen {region.generation}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-400">Generation</div>
+                    </div>
+                  </div>
+                </div>
+              </Container>
             </section>
           )}
         </div>

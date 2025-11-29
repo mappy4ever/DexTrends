@@ -54,7 +54,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
         
         <div className="relative">
           {icon && (
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 pl-2 pointer-events-none">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
               <div className="text-stone-500 dark:text-stone-400">
                 {icon}
               </div>
@@ -72,7 +72,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
               sizeClasses[inputSize],
               variantClasses[variant],
               glassClasses,
-              icon && 'pl-8',
+              icon && 'pl-11',
               rightIcon && 'pr-10',
               error && 'border-red-500 dark:border-red-400',
               'hover:border-stone-300 dark:hover:border-stone-600',

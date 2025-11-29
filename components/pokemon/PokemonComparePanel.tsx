@@ -320,7 +320,7 @@ export function PokemonComparePanel({
           {comparePokemon ? (
             <>
               {/* Pokemon Headers */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-[1fr_auto_1fr] gap-4 mb-6 items-center">
                 {/* Pokemon 1 */}
                 <div className="flex items-center gap-3">
                   {pokemon1.sprite && (
@@ -341,6 +341,9 @@ export function PokemonComparePanel({
                     </p>
                   </div>
                 </div>
+
+                {/* Dotted Divider */}
+                <div className="h-16 border-l-2 border-dashed border-stone-200 dark:border-stone-700" />
 
                 {/* Pokemon 2 */}
                 <div className="flex items-center gap-3 justify-end text-right">
