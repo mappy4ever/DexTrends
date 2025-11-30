@@ -283,44 +283,46 @@ const UnifiedTypeEffectivenessPage = () => {
             { title: 'Type Calculator', href: '/type-effectiveness', icon: '🎯', isActive: true },
           ]}
         >
-          {/* View Mode Tabs */}
-          <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full">
-            <button
-              onClick={() => setViewMode('calculator')}
-              className={cn(
-                'px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5',
-                viewMode === 'calculator'
-                  ? 'bg-amber-500 text-white shadow-sm'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
-              )}
-            >
-              <IoCalculator className="w-4 h-4" />
-              <span className="hidden sm:inline">Calculator</span>
-            </button>
-            <button
-              onClick={() => setViewMode('chart')}
-              className={cn(
-                'px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5',
-                viewMode === 'chart'
-                  ? 'bg-amber-500 text-white shadow-sm'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
-              )}
-            >
-              <IoGrid className="w-4 h-4" />
-              <span className="hidden sm:inline">Chart</span>
-            </button>
-            <button
-              onClick={() => setViewMode('team')}
-              className={cn(
-                'px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5',
-                viewMode === 'team'
-                  ? 'bg-amber-500 text-white shadow-sm'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
-              )}
-            >
-              <IoGitNetwork className="w-4 h-4" />
-              <span className="hidden sm:inline">Team</span>
-            </button>
+          {/* View Mode Tabs - Mobile optimized with proper touch targets */}
+          <div className="overflow-x-auto -mx-4 px-4 pb-2 scrollbar-hide">
+            <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full w-fit min-w-full sm:min-w-0">
+              <button
+                onClick={() => setViewMode('calculator')}
+                className={cn(
+                  'px-3 sm:px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap',
+                  viewMode === 'calculator'
+                    ? 'bg-amber-500 text-white shadow-sm'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                )}
+              >
+                <IoCalculator className="w-4 h-4 flex-shrink-0" />
+                <span className="hidden xs:inline sm:inline">Calculator</span>
+              </button>
+              <button
+                onClick={() => setViewMode('chart')}
+                className={cn(
+                  'px-3 sm:px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap',
+                  viewMode === 'chart'
+                    ? 'bg-amber-500 text-white shadow-sm'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                )}
+              >
+                <IoGrid className="w-4 h-4 flex-shrink-0" />
+                <span className="hidden xs:inline sm:inline">Chart</span>
+              </button>
+              <button
+                onClick={() => setViewMode('team')}
+                className={cn(
+                  'px-3 sm:px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap',
+                  viewMode === 'team'
+                    ? 'bg-amber-500 text-white shadow-sm'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                )}
+              >
+                <IoGitNetwork className="w-4 h-4 flex-shrink-0" />
+                <span className="hidden xs:inline sm:inline">Team</span>
+              </button>
+            </div>
           </div>
         </PageHeader>
       </div>
@@ -365,41 +367,6 @@ const UnifiedTypeEffectivenessPage = () => {
           </motion.div>
         ) : (
           <>
-            {/* View Mode Selector - Responsive */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              className="flex justify-center mb-6 sm:mb-8"
-            >
-              <motion.div className={cn(
-                'inline-flex gap-1 p-1 sm:p-1.5 rounded-full',
-                glassStyle
-              )}>
-                {[
-                  { key: 'calculator', label: 'Calculator' },
-                  { key: 'chart', label: 'Chart' },
-                  { key: 'team', label: 'Team' }
-                ].map(({ key, label }) => (
-                  <motion.button
-                    key={key}
-                    onClick={() => setViewMode(key as any)}
-                    className={cn(
-                      'min-h-[44px] px-3 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-sm touch-target',
-                      'transition-all duration-200',
-                      viewMode === key
-                        ? 'bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 text-white shadow-xl'
-                        : cn('text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white', glassButtonStyle)
-                    )}
-                    whileHover={{ scale: viewMode === key ? 1.05 : 1.02 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {label}
-                  </motion.button>
-                ))}
-              </motion.div>
-            </motion.div>
-
             {/* Calculator Mode */}
             {viewMode === 'calculator' && (
               <motion.div 

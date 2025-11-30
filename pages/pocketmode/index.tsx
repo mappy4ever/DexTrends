@@ -56,20 +56,21 @@ function MobileFilterDrawer({
 }: MobileFilterDrawerProps) {
   if (!isOpen) return null;
 
+  // Type colors with proper dark mode support
   const typeColors: Record<string, { bg: string; border: string; text: string }> = {
-    'grass': { bg: 'from-green-200 to-green-300', border: 'border-green-500', text: 'text-green-800' },
-    'fire': { bg: 'from-red-200 to-orange-200', border: 'border-red-500', text: 'text-red-800' },
-    'water': { bg: 'from-blue-200 to-cyan-200', border: 'border-blue-500', text: 'text-blue-800' },
-    'lightning': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800' },
-    'psychic': { bg: 'from-purple-200 to-pink-200', border: 'border-purple-500', text: 'text-purple-800' },
-    'fighting': { bg: 'from-orange-200 to-red-200', border: 'border-orange-500', text: 'text-orange-800' },
-    'darkness': { bg: 'from-stone-300 to-stone-400', border: 'border-stone-600', text: 'text-stone-800' },
-    'metal': { bg: 'from-stone-200 to-stone-300', border: 'border-stone-500', text: 'text-stone-800' },
-    'dragon': { bg: 'from-indigo-200 to-violet-200', border: 'border-indigo-500', text: 'text-indigo-800' },
-    'colorless': { bg: 'from-stone-100 to-stone-200', border: 'border-stone-400', text: 'text-stone-700' },
-    'item': { bg: 'from-blue-200 to-blue-300', border: 'border-blue-500', text: 'text-blue-800' },
-    'supporter': { bg: 'from-orange-200 to-orange-300', border: 'border-orange-500', text: 'text-orange-800' },
-    'tool': { bg: 'from-purple-200 to-purple-300', border: 'border-purple-500', text: 'text-purple-800' },
+    'grass': { bg: 'from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/40', border: 'border-green-500 dark:border-green-600', text: 'text-green-800 dark:text-green-300' },
+    'fire': { bg: 'from-red-100 to-orange-100 dark:from-red-900/40 dark:to-orange-900/40', border: 'border-red-500 dark:border-red-600', text: 'text-red-800 dark:text-red-300' },
+    'water': { bg: 'from-blue-100 to-cyan-100 dark:from-blue-900/40 dark:to-cyan-900/40', border: 'border-blue-500 dark:border-blue-600', text: 'text-blue-800 dark:text-blue-300' },
+    'lightning': { bg: 'from-yellow-100 to-amber-100 dark:from-yellow-900/40 dark:to-amber-900/40', border: 'border-yellow-500 dark:border-yellow-600', text: 'text-yellow-800 dark:text-yellow-300' },
+    'psychic': { bg: 'from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/40', border: 'border-purple-500 dark:border-purple-600', text: 'text-purple-800 dark:text-purple-300' },
+    'fighting': { bg: 'from-orange-100 to-red-100 dark:from-orange-900/40 dark:to-red-900/40', border: 'border-orange-500 dark:border-orange-600', text: 'text-orange-800 dark:text-orange-300' },
+    'darkness': { bg: 'from-stone-200 to-stone-300 dark:from-stone-800/60 dark:to-stone-700/60', border: 'border-stone-600 dark:border-stone-500', text: 'text-stone-800 dark:text-stone-200' },
+    'metal': { bg: 'from-slate-100 to-slate-200 dark:from-slate-800/60 dark:to-slate-700/60', border: 'border-slate-500 dark:border-slate-400', text: 'text-slate-800 dark:text-slate-200' },
+    'dragon': { bg: 'from-indigo-100 to-violet-100 dark:from-indigo-900/40 dark:to-violet-900/40', border: 'border-indigo-500 dark:border-indigo-600', text: 'text-indigo-800 dark:text-indigo-300' },
+    'colorless': { bg: 'from-stone-50 to-stone-100 dark:from-stone-800/50 dark:to-stone-700/50', border: 'border-stone-400 dark:border-stone-500', text: 'text-stone-700 dark:text-stone-300' },
+    'item': { bg: 'from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40', border: 'border-blue-500 dark:border-blue-600', text: 'text-blue-800 dark:text-blue-300' },
+    'supporter': { bg: 'from-orange-100 to-orange-200 dark:from-orange-900/40 dark:to-orange-800/40', border: 'border-orange-500 dark:border-orange-600', text: 'text-orange-800 dark:text-orange-300' },
+    'tool': { bg: 'from-purple-100 to-purple-200 dark:from-purple-900/40 dark:to-purple-800/40', border: 'border-purple-500 dark:border-purple-600', text: 'text-purple-800 dark:text-purple-300' },
   };
 
   return (

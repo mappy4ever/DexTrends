@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,6 +13,9 @@ import { PageHeader } from '../components/ui/BreadcrumbNavigation';
 import { NextPage } from 'next';
 import { TCGCard } from '../types/api/cards';
 import Head from 'next/head';
+
+// Batch size for loading favorites - prevents mobile performance issues
+const BATCH_SIZE = 5;
 
 // Type definitions
 import type { Pokemon as APIPokemon } from "../types/pokemon";
@@ -41,191 +44,207 @@ const FavoritesPage: NextPage = () => {
   const [loading, setLoading] = useState(true);
   const [pokemonError, setPokemonError] = useState<string | null>(null);
   const [cardsError, setCardsError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState({ pokemon: 0, cards: 0 });
-  const [isRetrying, setIsRetrying] = useState({ pokemon: false, cards: false });
+  const [loadingProgress, setLoadingProgress] = useState({ pokemon: 0, cards: 0 });
 
-  // Fetch favorite Pokémon data
+  // Track if we've already started loading to prevent double fetches
+  const loadingRef = useRef({ pokemon: false, cards: false });
+
+  // Fetch favorite Pokémon data with batching
   useEffect(() => {
     async function fetchPokemonData() {
       if (!favorites?.pokemon?.length) {
         setPokemonData([]);
         setPokemonError(null);
+        setLoading(false);
         return;
       }
+
+      // Prevent double fetching
+      if (loadingRef.current.pokemon) return;
+      loadingRef.current.pokemon = true;
 
       try {
         setLoading(true);
         setPokemonError(null);
-        setIsRetrying(prev => ({ ...prev, pokemon: false }));
-        
-        const pokemonPromises = favorites.pokemon.map(async (id) => {
-          try {
-            const data = await fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+        setLoadingProgress(prev => ({ ...prev, pokemon: 0 }));
+
+        const allResults: SimplePokemon[] = [];
+        const items = favorites.pokemon;
+        const total = items.length;
+
+        // Process in batches of BATCH_SIZE
+        for (let i = 0; i < items.length; i += BATCH_SIZE) {
+          const batch = items.slice(i, i + BATCH_SIZE);
+          const batchPromises = batch.map(async (item) => {
+            try {
+              const data = await fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${item.id}`, {
                 useCache: true,
-                cacheTime: 10 * 60 * 1000, // Cache for 10 minutes - Pokemon data is stable
+                cacheTime: 10 * 60 * 1000,
                 timeout: 8000,
                 retries: 2
               });
-            if (data && data.types) {
-              return {
-                id: data.id,
-                name: data.name,
-                types: data.types.map((t) => t.type.name),
-                sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`
-              };
+              if (data && data.types) {
+                return {
+                  id: data.id,
+                  name: data.name,
+                  types: data.types.map((t) => t.type.name),
+                  sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`
+                };
+              }
+              return null;
+            } catch (err) {
+              logger.error(`Error fetching Pokémon #${item.id}:`, { error: err, id: item.id });
+              return null;
             }
-            return null;
-          } catch (err) {
-            logger.error(`Error fetching Pokémon #${id}:`, { error: err, id });
-            return null;
-          }
-        });
+          });
 
-        const results = await Promise.all(pokemonPromises);
-        const validPokemon = results.filter((pokemon): pokemon is SimplePokemon => pokemon !== null);
-        setPokemonData(validPokemon);
-        
+          const batchResults = await Promise.all(batchPromises);
+          const validResults = batchResults.filter((p): p is SimplePokemon => p !== null);
+          allResults.push(...validResults);
+
+          // Progressive update - show results as they load
+          setPokemonData([...allResults]);
+          setLoadingProgress(prev => ({
+            ...prev,
+            pokemon: Math.round((Math.min(i + BATCH_SIZE, total) / total) * 100)
+          }));
+
+          // Small delay between batches
+          if (i + BATCH_SIZE < items.length) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+        }
+
         // If we got no valid results but had favorites, show an error
-        if (validPokemon.length === 0 && favorites.pokemon.length > 0) {
+        if (allResults.length === 0 && favorites.pokemon.length > 0) {
           throw new Error('Failed to load any Pokemon data');
         }
-        
+
       } catch (err) {
         let errorMessage = "Failed to load Pokemon data.";
-        let shouldRetry = false;
-        
+
         if (err instanceof TypeError && err.message.includes('fetch')) {
           errorMessage = "Network connection failed. Please check your internet connection.";
-          shouldRetry = true;
         } else if (err instanceof Error) {
           if (err.message.includes('timeout') || err.message.includes('TIMEOUT')) {
             errorMessage = "Request timed out. The Pokemon API is taking too long to respond.";
-            shouldRetry = true;
           } else if (err.message.includes('500') || err.message.includes('502') || err.message.includes('503')) {
             errorMessage = "Pokemon API server error. Please try again in a few minutes.";
-            shouldRetry = true;
           } else if (err.message.includes('rate limit') || err.message.includes('429')) {
             errorMessage = "Rate limit exceeded. Please wait before retrying.";
-            shouldRetry = true;
           }
         }
-        
-        logger.error("Error fetching Pokémon data", { 
-          error: err, 
-          errorMessage, 
-          shouldRetry, 
-          retryCount: retryCount.pokemon,
+
+        logger.error("Error fetching Pokémon data", {
+          error: err,
+          errorMessage,
           favoritesCount: favorites?.pokemon?.length || 0
         });
-        
-        // Attempt retry for network-related errors
-        if (shouldRetry && retryCount.pokemon < 3) {
-          setRetryCount(prev => ({ ...prev, pokemon: prev.pokemon + 1 }));
-          setTimeout(() => {
-            fetchPokemonData();
-          }, 2000 * (retryCount.pokemon + 1));
-          return;
-        }
-        
+
         setPokemonError(errorMessage);
-        setRetryCount(prev => ({ ...prev, pokemon: 0 }));
       } finally {
         setLoading(false);
-        setIsRetrying(prev => ({ ...prev, pokemon: false }));
+        loadingRef.current.pokemon = false;
       }
     }
 
     fetchPokemonData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favorites?.pokemon]);
 
-  // Fetch favorite cards data
+  // Fetch favorite cards data with batching
   useEffect(() => {
     async function fetchCardsData() {
       if (!favorites?.cards?.length) {
         setCardsData([]);
         setCardsError(null);
+        if (!favorites?.pokemon?.length) setLoading(false);
         return;
       }
+
+      // Prevent double fetching
+      if (loadingRef.current.cards) return;
+      loadingRef.current.cards = true;
 
       try {
         setLoading(true);
         setCardsError(null);
-        setIsRetrying(prev => ({ ...prev, cards: false }));
-        
-        const cardsPromises = favorites.cards.map(async (id) => {
-          try {
-            const response = await fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${id}`, {
+        setLoadingProgress(prev => ({ ...prev, cards: 0 }));
+
+        const allResults: TCGCard[] = [];
+        const items = favorites.cards;
+        const total = items.length;
+
+        // Process in batches of BATCH_SIZE
+        for (let i = 0; i < items.length; i += BATCH_SIZE) {
+          const batch = items.slice(i, i + BATCH_SIZE);
+          const batchPromises = batch.map(async (item) => {
+            try {
+              const response = await fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${item.id}`, {
                 useCache: true,
-                cacheTime: 15 * 60 * 1000, // Cache for 15 minutes - card data is very stable
+                cacheTime: 15 * 60 * 1000,
                 timeout: 10000,
                 retries: 2
               });
-            return response?.data || null;
-          } catch (err) {
-            logger.error(`Error fetching card ${id}:`, { error: err, id });
-            return null;
-          }
-        });
+              return response?.data || null;
+            } catch (err) {
+              logger.error(`Error fetching card ${item.id}:`, { error: err, id: item.id });
+              return null;
+            }
+          });
 
-        const results = await Promise.all(cardsPromises);
-        const validCards = results.filter((card): card is TCGCard => card !== null);
-        setCardsData(validCards);
-        
+          const batchResults = await Promise.all(batchPromises);
+          const validResults = batchResults.filter((c): c is TCGCard => c !== null);
+          allResults.push(...validResults);
+
+          // Progressive update - show results as they load
+          setCardsData([...allResults]);
+          setLoadingProgress(prev => ({
+            ...prev,
+            cards: Math.round((Math.min(i + BATCH_SIZE, total) / total) * 100)
+          }));
+
+          // Small delay between batches
+          if (i + BATCH_SIZE < items.length) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+        }
+
         // If we got no valid results but had favorites, show an error
-        if (validCards.length === 0 && favorites.cards.length > 0) {
+        if (allResults.length === 0 && favorites.cards.length > 0) {
           throw new Error('Failed to load any card data');
         }
-        
+
       } catch (err) {
         let errorMessage = "Failed to load TCG card data.";
-        let shouldRetry = false;
-        
+
         if (err instanceof TypeError && err.message.includes('fetch')) {
           errorMessage = "Network connection failed. Please check your internet connection.";
-          shouldRetry = true;
         } else if (err instanceof Error) {
           if (err.message.includes('timeout') || err.message.includes('TIMEOUT')) {
             errorMessage = "Request timed out. The Pokemon TCG API is taking too long to respond.";
-            shouldRetry = true;
           } else if (err.message.includes('500') || err.message.includes('502') || err.message.includes('503')) {
             errorMessage = "Pokemon TCG API server error. Please try again in a few minutes.";
-            shouldRetry = true;
           } else if (err.message.includes('403') || err.message.includes('401')) {
             errorMessage = "Access denied to Pokemon TCG API. API key may be invalid.";
           } else if (err.message.includes('rate limit') || err.message.includes('429')) {
             errorMessage = "Rate limit exceeded. Please wait before retrying.";
-            shouldRetry = true;
           }
         }
-        
-        logger.error("Error fetching cards data", { 
-          error: err, 
-          errorMessage, 
-          shouldRetry, 
-          retryCount: retryCount.cards,
+
+        logger.error("Error fetching cards data", {
+          error: err,
+          errorMessage,
           favoritesCount: favorites?.cards?.length || 0
         });
-        
-        // Attempt retry for network-related errors
-        if (shouldRetry && retryCount.cards < 3) {
-          setRetryCount(prev => ({ ...prev, cards: prev.cards + 1 }));
-          setTimeout(() => {
-            fetchCardsData();
-          }, 2000 * (retryCount.cards + 1));
-          return;
-        }
-        
+
         setCardsError(errorMessage);
-        setRetryCount(prev => ({ ...prev, cards: 0 }));
       } finally {
         setLoading(false);
-        setIsRetrying(prev => ({ ...prev, cards: false }));
+        loadingRef.current.cards = false;
       }
     }
 
     fetchCardsData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favorites?.cards]);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -249,11 +268,11 @@ const FavoritesPage: NextPage = () => {
               { title: 'Favorites', href: '/favorites', icon: '⭐', isActive: true },
             ]}
           >
-            {/* Tab Toggle as Pills */}
+            {/* Tab Toggle as Pills - 44px min touch target */}
             <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full">
               <button
                 onClick={() => setActiveTab('pokemon')}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all ${
                   activeTab === 'pokemon'
                     ? 'bg-amber-600 text-white'
                     : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
@@ -270,7 +289,7 @@ const FavoritesPage: NextPage = () => {
               </button>
               <button
                 onClick={() => setActiveTab('cards')}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all ${
                   activeTab === 'cards'
                     ? 'bg-amber-600 text-white'
                     : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
@@ -315,16 +334,30 @@ const FavoritesPage: NextPage = () => {
           </div>
       
           {/* Tab Content */}
-          {loading ? (
-            <div className="flex items-center justify-center min-h-[300px]">
+          {loading && pokemonData.length === 0 && cardsData.length === 0 ? (
+            <div className="flex flex-col items-center justify-center min-h-[300px] gap-4">
               <PokeballLoader
                 size="large"
                 text={
-                  isRetrying.pokemon && activeTab === 'pokemon' ? `Retrying... (${retryCount.pokemon + 1}/3)` :
-                  isRetrying.cards && activeTab === 'cards' ? `Retrying... (${retryCount.cards + 1}/3)` :
-                  "Loading favorites..."
+                  activeTab === 'pokemon' && loadingProgress.pokemon > 0
+                    ? `Loading Pokemon... ${loadingProgress.pokemon}%`
+                    : activeTab === 'cards' && loadingProgress.cards > 0
+                    ? `Loading Cards... ${loadingProgress.cards}%`
+                    : "Loading favorites..."
                 }
               />
+              {/* Progress bar */}
+              {((activeTab === 'pokemon' && loadingProgress.pokemon > 0) ||
+                (activeTab === 'cards' && loadingProgress.cards > 0)) && (
+                <div className="w-48 h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-amber-500 rounded-full transition-all duration-300"
+                    style={{
+                      width: `${activeTab === 'pokemon' ? loadingProgress.pokemon : loadingProgress.cards}%`
+                    }}
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <>

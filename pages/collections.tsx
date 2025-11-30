@@ -69,24 +69,26 @@ const CollectionsPage: NextPage = () => {
             { title: 'Collections', href: '/collections', icon: '💎', isActive: true },
           ]}
         >
-          {/* Tab Navigation as Pills */}
-          <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full">
-            {tabs.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  activeTab === tab.id
-                    ? 'bg-amber-600 text-white'
-                    : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
-                }`}
-              >
-                {tab.id === 'collections' && <IoFolderOpen className="w-4 h-4" />}
-                {tab.id === 'alerts' && <IoNotifications className="w-4 h-4" />}
-                {tab.id === 'portfolio' && <IoPieChart className="w-4 h-4" />}
-                <span className="hidden sm:inline">{tab.label.split(' ').pop()}</span>
-              </button>
-            ))}
+          {/* Tab Navigation as Pills - Scrollable on mobile */}
+          <div className="overflow-x-auto -mx-4 px-4 pb-2 scrollbar-hide">
+            <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full w-fit min-w-full sm:min-w-0">
+              {tabs.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap min-h-[44px] ${
+                    activeTab === tab.id
+                      ? 'bg-amber-600 text-white'
+                      : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
+                  }`}
+                >
+                  {tab.id === 'collections' && <IoFolderOpen className="w-4 h-4 flex-shrink-0" />}
+                  {tab.id === 'alerts' && <IoNotifications className="w-4 h-4 flex-shrink-0" />}
+                  {tab.id === 'portfolio' && <IoPieChart className="w-4 h-4 flex-shrink-0" />}
+                  <span className="hidden xs:inline sm:inline">{tab.label.split(' ').pop()}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </PageHeader>
 

@@ -451,8 +451,8 @@ const UnifiedPokedex: NextPage = () => {
             </div>
           </PageHeader>
           
-          {/* Search and Filter Bar */}
-          <div className="sticky top-0 z-20 bg-white/90 dark:bg-stone-900/90 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-sm border border-stone-100 dark:border-stone-800">
+          {/* Search and Filter Bar - Only sticky on md+ to save mobile viewport space */}
+          <div className="relative md:sticky md:top-0 z-20 bg-white/95 dark:bg-stone-900/95 backdrop-blur-sm rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-sm border border-stone-100 dark:border-stone-800">
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               {/* Search Input */}
               <div className="flex-1 relative">
