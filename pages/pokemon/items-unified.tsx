@@ -282,9 +282,9 @@ const UnifiedItemsPage: NextPage = () => {
         <meta name="description" content="Browse the complete collection of Pokemon items, berries, and hold items" />
       </Head>
 
-      {/* Header - Responsive */}
-      <motion.div 
-        className={cn('sticky top-0 z-50', glassStyle, 'border-b border-white/20')}
+      {/* Header - Responsive, positioned below navbar */}
+      <motion.div
+        className={cn('sticky top-14 md:top-16 z-20 bg-[#FFFDF7] dark:bg-stone-900 shadow-sm')}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >

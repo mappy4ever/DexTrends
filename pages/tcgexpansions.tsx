@@ -330,11 +330,11 @@ const TcgSetsContent: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch">
 
                   <div className="flex-1">
-                    <label htmlFor="seriesFilter" className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1.5">Series</label>
+                    <label htmlFor="seriesFilter" className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">Series</label>
                     <div className="relative">
                       <select
                         id="seriesFilter"
-                        className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-700/50 rounded-lg text-sm border border-stone-200 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all pr-8 appearance-none"
+                        className="w-full min-h-[44px] px-3 py-2.5 bg-stone-50 dark:bg-stone-700/50 rounded-lg text-sm border border-stone-200 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all pr-8 appearance-none"
                         value={filterSeries}
                         onChange={(e) => setFilterSeries(e.target.value)}
                       >
@@ -352,11 +352,11 @@ const TcgSetsContent: React.FC = () => {
                   </div>
             
                   <div className="flex-1">
-                    <label htmlFor="sortOption" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">Sort By</label>
+                    <label htmlFor="sortOption" className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">Sort By</label>
                     <div className="relative">
                       <select
                         id="sortOption"
-                        className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white dark:bg-stone-800 rounded-full text-xs sm:text-sm font-medium border border-stone-200 dark:border-stone-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all pr-8 sm:pr-10 appearance-none"
+                        className="w-full min-h-[44px] px-3 py-2.5 bg-stone-50 dark:bg-stone-700/50 rounded-lg text-sm font-medium border border-stone-200 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all pr-8 appearance-none"
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                       >
@@ -364,27 +364,27 @@ const TcgSetsContent: React.FC = () => {
                         <option value="name">Name</option>
                         <option value="cardCount">Card Count</option>
                       </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                         <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
                     </div>
                   </div>
-            
+
                   <div className="flex-1">
-                    <label htmlFor="sortDirection" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">Order</label>
+                    <label htmlFor="sortDirection" className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">Order</label>
                     <div className="relative">
                       <select
                         id="sortDirection"
-                        className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white dark:bg-stone-800 rounded-full text-xs sm:text-sm font-medium border border-stone-200 dark:border-stone-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all pr-8 sm:pr-10 appearance-none"
+                        className="w-full min-h-[44px] px-3 py-2.5 bg-stone-50 dark:bg-stone-700/50 rounded-lg text-sm font-medium border border-stone-200 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all pr-8 appearance-none"
                         value={sortDirection}
                         onChange={(e) => setSortDirection(e.target.value as SortDirection)}
                       >
                         <option value="desc">Newest First</option>
                         <option value="asc">Oldest First</option>
                       </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                         <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>

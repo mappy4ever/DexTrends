@@ -1,8 +1,19 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
 
 /**
- * Custom hook for mobile viewport detection with SSR support
- * Returns mobile state and loading state for proper hydration
+ * @deprecated Use `useViewport` from '@/hooks/useViewport' instead.
+ * This hook uses inconsistent breakpoints (430px vs 640px standard).
+ * The useViewport hook provides unified breakpoints matching Tailwind defaults.
+ *
+ * Migration:
+ * ```typescript
+ * // Before
+ * const { isMobile } = useMobileDetection();
+ *
+ * // After
+ * import { useViewport } from '@/hooks/useViewport';
+ * const { isMobile, isMounted } = useViewport();
+ * ```
  */
 export function useMobileDetection(breakpoint: number = 430) {
   // Initialize with media query check if available (client-side)

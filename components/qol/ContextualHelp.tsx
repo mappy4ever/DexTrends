@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useNotifications } from '../../hooks/useNotifications';
 import logger from '../../utils/logger';
 import { Container } from '../ui/Container';
+import { useBottomNavigation } from '../ui/BottomNavigation';
 
 // Type definitions
 interface SmartTooltipProps {
@@ -123,6 +124,7 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
   const [currentHelp, setCurrentHelp] = useState<HelpContent | null>(null);
   const router = useRouter();
   const { notify } = useNotifications();
+  const { bottomOffset } = useBottomNavigation();
 
   // Page-specific help content
   const helpContent: Record<string, HelpContent> = useMemo(() => ({
@@ -305,8 +307,8 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
         </div>
       )}
 
-      {/* Floating help button */}
-      <div className="fixed bottom-20 right-4 z-40">
+      {/* Floating help button - positioned above bottom nav on mobile */}
+      <div className="fixed right-4 z-40" style={{ bottom: bottomOffset }}>
         <div className="flex flex-col space-y-2">
           <SmartTooltip content="Show helpful tips" position="left">
             <button

@@ -352,9 +352,9 @@ export const Modal: React.FC<ModalProps> = ({
                 </div>
               )}
 
-              {/* Pull indicator for mobile sheet */}
+              {/* Pull indicator for mobile sheet - larger for visibility */}
               {shouldRenderAsSheet && (
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-stone-300 dark:bg-stone-600 rounded-full" />
+                <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-10 h-1.5 bg-stone-300 dark:bg-stone-500 rounded-full" />
               )}
             </motion.div>
           </motion.div>

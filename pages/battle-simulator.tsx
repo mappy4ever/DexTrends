@@ -1193,8 +1193,8 @@ const BattleSimulator: NextPage = () => {
           />
         )}
 
-        {/* Sticky Header */}
-        <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-stone-900/70 border-b border-white/20">
+        {/* Sticky Header - positioned below navbar */}
+        <div className="sticky top-14 md:top-16 z-20 bg-[#FFFDF7] dark:bg-stone-900 shadow-sm">
           <div className="container mx-auto px-4 py-3 sm:py-4">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-red-600 mb-2 sm:mb-4 md:mb-6">
               Pokemon Battle Simulator

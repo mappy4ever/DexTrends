@@ -1082,8 +1082,8 @@ export default function RegionDetailPage() {
           </div>
         </div>
 
-        {/* Quick Stats Bar */}
-        <div className="bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 sticky top-0 z-40">
+        {/* Quick Stats Bar - positioned below navbar */}
+        <div className="bg-[#FFFDF7] dark:bg-stone-900 shadow-sm sticky top-14 md:top-16 z-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-sm">
               <div className="text-center">

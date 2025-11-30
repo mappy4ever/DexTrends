@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useBottomNavigation } from './BottomNavigation';
+import { Z_INDEX } from '@/hooks/useViewport';
 
 const BaseBackToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { bottomOffset } = useBottomNavigation();
 
   useEffect(() => {
     setMounted(true);
@@ -39,7 +42,8 @@ const BaseBackToTop: React.FC = () => {
       {mounted && isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-4 right-4 z-50 bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+          className="fixed right-4 bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          style={{ bottom: bottomOffset, zIndex: Z_INDEX.fab }}
           aria-label="Back to top"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

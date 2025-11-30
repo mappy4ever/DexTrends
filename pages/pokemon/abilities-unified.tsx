@@ -313,9 +313,9 @@ const UnifiedAbilitiesPage: NextPage = () => {
         <meta name="description" content="Explore all Pokemon abilities with descriptions, competitive ratings, and Pokemon that have them" />
       </Head>
 
-      {/* Header - Responsive */}
-      <motion.div 
-        className={cn('sticky top-0 z-50', glassStyle, 'border-b border-white/20')}
+      {/* Header - Responsive, positioned below navbar */}
+      <motion.div
+        className={cn('sticky top-14 md:top-16 z-20 bg-[#FFFDF7] dark:bg-stone-900 shadow-sm')}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >

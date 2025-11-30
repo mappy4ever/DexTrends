@@ -8,6 +8,8 @@ try {
   useMobileUtils = () => ({ isMobile: true, isStandalone: false, isDesktopSize: false, utils: { isIOS: false, hapticFeedback: () => {} } });
 }
 import logger from '../../utils/logger';
+import { useBottomNavigation } from '../ui/BottomNavigation';
+import { Z_INDEX } from '@/hooks/useViewport';
 
 // Note: gtag is already declared in PWA types
 
@@ -59,6 +61,7 @@ const PWAFeatures: React.FC<PWAFeaturesProps> = ({ isVisible }) => {
 
 const InstallPrompt: React.FC = () => {
   const { isMobile, isStandalone, utils } = useMobileUtils();
+  const { bottomOffset } = useBottomNavigation();
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isInstallable, setIsInstallable] = useState(false);
@@ -361,7 +364,8 @@ const InstallPrompt: React.FC = () => {
 
 // Floating install button for desktop
 export const DesktopInstallButton: React.FC = () => {
-  const { isDesktopSize, utils } = useMobileUtils();
+  const { isDesktopSize } = useMobileUtils();
+  const { bottomOffset } = useBottomNavigation();
   const [showButton, setShowButton] = useState(false);
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
@@ -402,11 +406,12 @@ export const DesktopInstallButton: React.FC = () => {
   return (
     <button
       onClick={handleInstall}
-      className="fixed bottom-6 right-6 bg-gradient-to-r from-pokemon-blue to-pokemon-red text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 z-40 flex items-center space-x-2"
+      className="fixed right-4 sm:right-6 bg-gradient-to-r from-pokemon-blue to-pokemon-red text-white px-5 sm:px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 min-h-[44px]"
+      style={{ bottom: bottomOffset, zIndex: Z_INDEX.fab }}
       aria-label="Install DexTrends as an app"
     >
       <span>📱</span>
-      <span className="font-medium">Install App</span>
+      <span className="font-medium text-sm sm:text-base">Install App</span>
     </button>
   );
 };

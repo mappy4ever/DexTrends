@@ -5,7 +5,7 @@ import { cn } from '@/utils/cn';
 import { Book, CardList, CrossedSwords, Search } from '@/utils/icons';
 import { BsGrid } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useViewport } from '@/hooks/useViewport';
+import { useViewport, Z_INDEX } from '@/hooks/useViewport';
 
 interface NavItem {
   href: string;
@@ -14,28 +14,27 @@ interface NavItem {
   color: string;
 }
 
+// Height of bottom nav for use by other components
+export const BOTTOM_NAV_HEIGHT = 60;
+
 /**
  * BottomNavigation - Mobile-first bottom navigation bar
- * 
+ *
  * Provides quick access to main app sections on mobile devices.
- * Only renders on mobile viewports (<460px).
+ * Only renders on mobile viewports (<640px).
  * Features:
- * - Fixed to bottom of viewport
- * - Safe area padding for iOS devices
+ * - Fixed to bottom of viewport with z-index 45 (above FAB)
+ * - Safe area padding for iOS devices with notch/home indicator
  * - Active state indicators
  * - Smooth transitions
- * - 60px height for comfortable touch targets
+ * - 60px height for comfortable touch targets (44px minimum)
  */
 export const BottomNavigation: React.FC = () => {
   const router = useRouter();
   const viewport = useViewport();
   const [activeRoute, setActiveRoute] = useState('');
-  const [isMounted, setIsMounted] = useState(false);
 
-  // Fix hydration mismatch - only render on client
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  // Use isMounted from viewport hook for hydration safety
 
   // Navigation items
   const navItems: NavItem[] = [
@@ -77,7 +76,7 @@ export const BottomNavigation: React.FC = () => {
   }, [router.pathname]);
 
   // Don't render on desktop or during SSR (prevents hydration mismatch)
-  if (!isMounted || !viewport.isMobile) return null;
+  if (!viewport.isMounted || !viewport.isMobile) return null;
 
   // Check if current route matches nav item (handle nested routes)
   const isActive = (href: string) => {
@@ -93,13 +92,14 @@ export const BottomNavigation: React.FC = () => {
       <div className="h-[60px] md:hidden" />
       
       {/* Bottom Navigation Bar */}
-      <nav 
+      <nav
         className={cn(
-          "fixed bottom-0 left-0 right-0 z-40 md:hidden",
+          "fixed bottom-0 left-0 right-0 md:hidden",
           "bg-white/95 dark:bg-stone-900/95 backdrop-blur-lg",
           "border-t border-stone-200 dark:border-stone-700",
-          "safe-area-bottom" // For iOS safe area
+          "pb-safe px-safe" // Safe area for iOS home indicator + sides
         )}
+        style={{ zIndex: Z_INDEX.bottomNav }}
       >
         <div className="flex items-center justify-around h-[60px] px-2">
           {navItems.map((item) => {
@@ -148,11 +148,11 @@ export const BottomNavigation: React.FC = () => {
                 </motion.div>
                 
                 {/* Label */}
-                <span 
+                <span
                   className={cn(
-                    "text-[10px] font-medium transition-colors duration-200",
-                    active 
-                      ? "text-stone-900 dark:text-white" 
+                    "text-xs font-medium transition-colors duration-200",
+                    active
+                      ? "text-stone-900 dark:text-white"
                       : "text-stone-500 dark:text-stone-400"
                   )}
                 >
@@ -175,13 +175,19 @@ export const BottomNavigation: React.FC = () => {
 };
 
 /**
- * Hook to detect if bottom navigation is visible
- * Useful for adjusting page layouts
+ * Hook to detect if bottom navigation is visible and get its height
+ * Useful for adjusting page layouts and positioning other fixed elements
  */
 export const useBottomNavigation = () => {
   const viewport = useViewport();
-  
-  return { hasBottomNav: viewport.isMobile };
+  const hasBottomNav = viewport.isMounted && viewport.isMobile;
+
+  return {
+    hasBottomNav,
+    bottomNavHeight: hasBottomNav ? BOTTOM_NAV_HEIGHT : 0,
+    // CSS value for bottom positioning above the nav
+    bottomOffset: hasBottomNav ? `${BOTTOM_NAV_HEIGHT + 16}px` : '16px',
+  };
 };
 
 export default BottomNavigation;

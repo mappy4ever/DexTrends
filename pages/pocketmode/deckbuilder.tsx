@@ -11,6 +11,7 @@ import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
 import { PageHeader } from '../../components/ui/BreadcrumbNavigation';
 import Container from '../../components/ui/Container';
+import { useBottomNavigation, BOTTOM_NAV_HEIGHT } from '../../components/ui/BottomNavigation';
 import { validateDeck, getDeckSuggestions, ValidationResult } from '../../utils/deckValidation';
 import { analyzeDeckMeta, getMetaSuggestions, MetaAnalysis } from '../../utils/metaAnalysis';
 import type { PocketCard } from '../../types/api/pocket-cards';
@@ -67,7 +68,8 @@ const ALL_PACKS = [
 
 function DeckBuilder() {
   const router = useRouter();
-  
+  const { hasBottomNav } = useBottomNavigation();
+
   // Card data state
   const [allCards, setAllCards] = useState<ExtendedPocketCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -1644,8 +1646,11 @@ function DeckBuilder() {
         </div>
       )}
 
-      {/* Mobile Save/View Actions - Fixed at bottom */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700 p-4 z-40">
+      {/* Mobile Save/View Actions - Fixed above BottomNavigation */}
+      <div
+        className="lg:hidden fixed left-0 right-0 bg-white dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700 p-4 z-40"
+        style={{ bottom: hasBottomNav ? BOTTOM_NAV_HEIGHT : 0 }}
+      >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
             <h3 className="font-bold text-stone-900 dark:text-white">Actions</h3>
@@ -1719,8 +1724,11 @@ function DeckBuilder() {
         )}
       </div>
 
-      {/* Add padding to prevent content from being hidden behind mobile deck bar */}
-      <div className="lg:hidden h-32"></div>
+      {/* Add padding to prevent content from being hidden behind mobile deck bar + bottom nav */}
+      <div
+        className="lg:hidden"
+        style={{ height: hasBottomNav ? 180 : 120 }}
+      />
 
       <BackToTop />
       </div>

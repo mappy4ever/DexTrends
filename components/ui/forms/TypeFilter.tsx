@@ -27,24 +27,20 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
   const sortedTypes = ["all", ...types.filter((t: string) => t !== "all")];
 
   return (
-    <div className={`flex ${compact ? 'flex-wrap gap-1.5' : 'gap-2 overflow-x-auto py-2 px-1'}`}>
+    <div className={`flex ${compact ? 'flex-wrap gap-2' : 'gap-2 overflow-x-auto py-2 px-1'}`}>
       {sortedTypes.map((type: string) => (
         <button
           key={type}
           onClick={() => onTypeChange?.(type)}
-          className={`transition-all ${
-            compact ? 'scale-90' : ''
-          } ${
+          className={`transition-all touch-manipulation min-h-[36px] ${
             selectedType === type
               ? 'ring-2 ring-red-500 ring-offset-1 scale-105 shadow-lg shadow-red-500/25'
-              : 'opacity-70 hover:opacity-100 hover:scale-105'
+              : 'opacity-80 hover:opacity-100 hover:scale-105'
           }`}
           title={`Filter by ${type === 'all' ? 'all types' : type + ' type'}`}
         >
           {type === "all" ? (
-            <div className={`px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-xs font-medium flex items-center justify-center ${
-              compact ? 'h-6' : 'h-7'
-            }`}>
+            <div className="px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-sm font-medium flex items-center justify-center min-h-[36px]">
               All Types
             </div>
           ) : (

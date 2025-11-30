@@ -7,6 +7,8 @@ import { useFavorites } from '../../context/UnifiedAppContext';
 import { useToast } from '../providers/ToastProvider';
 import ShareMenu from '../ui/ShareMenu';
 import { sharePokemon } from '../../utils/shareUtils';
+import { useBottomNavigation, BOTTOM_NAV_HEIGHT } from '../ui/BottomNavigation';
+import { Z_INDEX } from '../../hooks/useViewport';
 import type { Pokemon } from "../../types/api/pokemon";
 import type { FavoritePokemon } from "../../context/modules/types";
 
@@ -22,40 +24,44 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const toast = useToast();
   const [showScrollTop, setShowScrollTop] = useState(false);
-  
+  const { hasBottomNav } = useBottomNavigation();
+
   // Check if favorited
   const isFavorite = favorites.pokemon.some((p: FavoritePokemon) => p.id === pokemon.id);
-  
+
   // Handle scroll visibility
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 300);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
+
+  // Calculate bottom position: above BottomNav on mobile, normal on desktop
+  const bottomPosition = hasBottomNav ? BOTTOM_NAV_HEIGHT + 16 : 24;
+
   return (
     <motion.div
       className={cn(
-        "fixed z-40",
+        "fixed",
         "flex flex-col gap-3",
-        // Safe zones: avoid mobile browser UI and other elements
-        "bottom-4 md:bottom-6 right-4 md:right-6",
+        "right-4 md:right-6",
         className
       )}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
-      // Add container boundaries
       style={{
-        maxHeight: 'calc(100vh - 120px)', // Leave space for header/footer
-        maxWidth: 'calc(100vw - 32px)' // Prevent overflow
+        zIndex: Z_INDEX.fab,
+        bottom: bottomPosition,
+        maxHeight: 'calc(100vh - 120px)',
+        maxWidth: 'calc(100vw - 32px)',
       }}
     >
       {/* Scroll to top button */}

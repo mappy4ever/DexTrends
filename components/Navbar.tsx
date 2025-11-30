@@ -199,7 +199,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             id="mobile-menu-button"
-            className="md:hidden p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors duration-150 touch-manipulation active:scale-95"
+            className="md:hidden p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors duration-150 touch-manipulation active:scale-95 min-h-[44px] min-w-[44px] flex items-center justify-center"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -208,7 +208,6 @@ export default function Navbar() {
             }}
             aria-label="Toggle mobile menu"
             aria-expanded={mobileOpen}
-            style={{ minHeight: '40px', minWidth: '40px' }}
           >
             <div className="w-5 h-5 flex flex-col justify-center space-y-1">
               <div className={`w-full h-0.5 bg-current transition-all duration-200${mounted && mobileOpen ? ' rotate-45 translate-y-1.5' : ''}`} />
