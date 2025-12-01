@@ -261,13 +261,13 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
           <div className="flex flex-col items-center space-y-4 relative">
             {/* Action Buttons - Stacked vertically on left */}
             <div className="absolute -top-2 sm:-top-4 left-1 xs:left-2 sm:left-4 flex flex-col gap-1 sm:gap-2 z-30">
-              {/* Favorite Button */}
+              {/* Favorite Button - solid bg for iOS */}
               <motion.button
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   hapticFeedback.medium();
-                  
+
                   if (isFavorited) {
                     removeFromFavorites('pokemon', pokemon.id);
                     dynamicIsland.show({
@@ -312,10 +312,10 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   }
                 }}
                 className={cn(
-                  "p-2 sm:p-3 rounded-full backdrop-blur-md transition-all border cursor-pointer",
-                  isFavorited 
-                    ? "bg-red-500/20 text-red-400 border-red-400/30 hover:bg-red-500/30" 
-                    : "bg-white/10 text-stone-400 border-white/20 hover:bg-red-500/20 hover:text-red-400 hover:border-red-400/30"
+                  "p-2 sm:p-3 rounded-full transition-all border cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center",
+                  isFavorited
+                    ? "bg-red-100 dark:bg-red-900/50 text-red-500 border-red-300 dark:border-red-700 hover:bg-red-200 dark:hover:bg-red-900/70"
+                    : "bg-white/90 dark:bg-stone-800/90 text-stone-500 border-stone-300 dark:border-stone-600 hover:bg-red-100 dark:hover:bg-red-900/50 hover:text-red-500 hover:border-red-300"
                 )}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -324,8 +324,8 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
               >
                 <FaHeart className={cn("w-4 h-4 sm:w-5 sm:h-5 pointer-events-none", isFavorited && "fill-current")} />
               </motion.button>
-              
-              {/* Shiny Toggle */}
+
+              {/* Shiny Toggle - solid bg for iOS */}
               <motion.button
                 onClick={() => {
                   hapticFeedback.light();
@@ -345,26 +345,27 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   });
                 }}
                 className={cn(
-                  "p-2 sm:p-3 rounded-full backdrop-blur-md transition-all",
-                  showShiny 
-                    ? "bg-yellow-500/20 text-yellow-400 border border-yellow-400/30" 
-                    : "bg-white/10 text-stone-400 border border-white/20 hover:bg-white/20"
+                  "p-2 sm:p-3 rounded-full transition-all min-w-[44px] min-h-[44px] flex items-center justify-center",
+                  showShiny
+                    ? "bg-yellow-100 dark:bg-yellow-900/50 text-yellow-500 border border-yellow-300 dark:border-yellow-700"
+                    : "bg-white/90 dark:bg-stone-800/90 text-stone-500 border border-stone-300 dark:border-stone-600 hover:bg-yellow-100 dark:hover:bg-yellow-900/50 hover:text-yellow-500"
                 )}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaStar className={cn("w-4 h-4 sm:w-5 sm:h-5", showShiny && "drop-shadow-glow")} />
+                <FaStar className={cn("w-4 h-4 sm:w-5 sm:h-5", showShiny && "text-yellow-500")} />
               </motion.button>
             </div>
             
             {/* Pokemon Image with Glow */}
-            <motion.div 
-              className="relative w-[340px] h-[340px]"
+            <motion.div
+              className="relative w-[280px] h-[280px] sm:w-[340px] sm:h-[340px]"
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <div 
-                className="absolute inset-0 rounded-full blur-3xl opacity-30 -z-10"
+              {/* Reduced blur for better iOS performance */}
+              <div
+                className="absolute inset-0 rounded-full blur-xl sm:blur-2xl opacity-20 -z-10"
                 style={{ background: typeColors.accent }}
               />
               {/* Pokemon Sprite - Single container for both regular and shiny */}
@@ -372,9 +373,9 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 src={getSpriteUrl()}
                 alt={`${pokemon.name}${showShiny ? ' shiny' : ''}`}
                 fill
-                className="drop-shadow-2xl object-contain"
+                className="drop-shadow-lg object-contain"
                 priority
-                sizes="340px"
+                sizes="(max-width: 640px) 280px, 340px"
               />
             </motion.div>
             
@@ -477,9 +478,9 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             
             {/* Additional Info Row - All in one container */}
             <div className="flex items-center justify-center mt-6">
-              {/* Unified Stats Container */}
+              {/* Unified Stats Container - solid bg for iOS */}
               <motion.div
-                className="relative rounded-xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm border border-white/20 dark:border-stone-700/20 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300"
+                className="relative rounded-xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/95 dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300 shadow-sm"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}

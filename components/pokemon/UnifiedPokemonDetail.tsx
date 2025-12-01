@@ -157,13 +157,13 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
     <UnifiedPullToRefresh onRefresh={handleRefresh}>
       <div ref={mainRef} className="min-h-screen bg-gradient-to-b from-white to-stone-50 dark:from-stone-900 dark:to-black">
       {/* Sticky Navigation Header - Responsive */}
-      <motion.header 
+      <motion.header
         className={cn(
           "sticky top-0 z-50 transition-all duration-300",
           "h-14 md:h-16", // Smaller on mobile
           "px-4 md:px-6",
-          "backdrop-blur-xl",
-          isScrolled ? "bg-white/95 dark:bg-stone-900/95 shadow-premium-md" : "bg-transparent"
+          // Use solid background on mobile to avoid iOS blur issues
+          isScrolled ? "bg-white dark:bg-stone-900 shadow-premium-md" : "bg-transparent"
         )}
         initial={{ y: -100 }}
         animate={{ y: 0 }}

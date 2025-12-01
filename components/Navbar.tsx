@@ -407,12 +407,10 @@ export default function Navbar() {
       {/* Mobile Menu Overlay - Proper z-index and rendering */}
       {mobileOpen && (
         <>
-          {/* Backdrop - single layer with proper z-index */}
-          <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
-            style={{ 
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
+          {/* Backdrop - solid bg for iOS performance */}
+          <div
+            className="fixed inset-0 bg-black/60 z-40 md:hidden"
+            style={{
               pointerEvents: 'auto'
             }}
             onClick={() => setMobileOpen(false)}
@@ -434,29 +432,29 @@ export default function Navbar() {
                     <div key={`mobile-${item.href}`} className="space-y-0.5">
                       <Link
                         href={item.href}
-                        className={`flex items-center gap-x-3 px-3 py-3 rounded-lg font-medium touch-manipulation transition-colors duration-150
+                        className={`flex items-center gap-x-3 px-4 py-3.5 rounded-lg font-medium touch-manipulation transition-colors duration-150 min-h-[48px] active:bg-stone-200 dark:active:bg-stone-700
                           ${isActive
                             ? 'bg-amber-600 text-white'
                             : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                         onClick={() => setMobileOpen(false)}
                       >
-                        <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
+                        <span className={`flex-shrink-0 w-6 h-6 flex items-center justify-center ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                           {item.icon}
                         </span>
-                        <span className="font-medium">{item.label}</span>
+                        <span className="font-medium text-base">{item.label}</span>
                       </Link>
                       {/* Mobile dropdown items */}
-                      <div className="ml-8 space-y-0.5">
+                      <div className="ml-6 space-y-0.5 border-l-2 border-stone-200 dark:border-stone-700 pl-2">
                         {item.dropdownItems!.map((dropdownItem, dropdownIndex) => (
                           <Link key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
                             href={dropdownItem.href}
-                            className={`flex items-center gap-x-3 px-3 py-2.5 rounded-lg font-medium transition-colors duration-150 touch-manipulation
+                            className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-colors duration-150 touch-manipulation min-h-[44px] active:bg-stone-200 dark:active:bg-stone-700
                               ${router.pathname === dropdownItem.href
                                 ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
                                 : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                             onClick={() => setMobileOpen(false)}
                           >
-                            <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-amber-600 dark:text-amber-400' : 'text-stone-400'}`}>
+                            <span className={`flex-shrink-0 w-5 h-5 flex items-center justify-center ${router.pathname === dropdownItem.href ? 'text-amber-600 dark:text-amber-400' : 'text-stone-400'}`}>
                               {dropdownItem.icon}
                             </span>
                             <span className="text-sm">{dropdownItem.label}</span>
@@ -470,16 +468,16 @@ export default function Navbar() {
                 return (
                   <Link key={`mobile-${item.href}`}
                     href={item.href}
-                    className={`flex items-center gap-x-3 px-3 py-3 rounded-lg font-medium transition-colors duration-150 touch-manipulation
+                    className={`flex items-center gap-x-3 px-4 py-3.5 rounded-lg font-medium transition-colors duration-150 touch-manipulation min-h-[48px] active:bg-stone-200 dark:active:bg-stone-700
                       ${isActive
                         ? 'bg-amber-600 text-white'
                         : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                     onClick={() => setMobileOpen(false)}
                   >
-                    <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
+                    <span className={`flex-shrink-0 w-6 h-6 flex items-center justify-center ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                       {item.icon}
                     </span>
-                    <span className="font-medium">{item.label}</span>
+                    <span className="font-medium text-base">{item.label}</span>
                   </Link>
                 );
               })}
