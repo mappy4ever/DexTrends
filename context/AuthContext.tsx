@@ -206,8 +206,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [isClient, fetchProfile, createProfile]);
 
+  // Fix BETA-009: Wrap auth functions in useCallback to prevent unnecessary re-renders
+
   // Sign up with email and password
-  const signUp = async (email: string, password: string, username?: string) => {
+  const signUp = useCallback(async (email: string, password: string, username?: string) => {
     setState(prev => ({ ...prev, loading: true }));
 
     const { data, error } = await supabase.auth.signUp({
@@ -227,10 +229,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setState(prev => ({ ...prev, loading: false }));
     return { error };
-  };
+  }, []);
 
   // Sign in with email and password
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     setState(prev => ({ ...prev, loading: true }));
 
     const { error } = await supabase.auth.signInWithPassword({
@@ -244,10 +246,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setState(prev => ({ ...prev, loading: false }));
     return { error };
-  };
+  }, []);
 
   // Sign in with OAuth provider
-  const signInWithProvider = async (provider: 'google' | 'github' | 'discord') => {
+  const signInWithProvider = useCallback(async (provider: 'google' | 'github' | 'discord') => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
@@ -260,10 +262,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     return { error };
-  };
+  }, []);
 
   // Sign out
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     setState(prev => ({ ...prev, loading: true }));
 
     const { error } = await supabase.auth.signOut();
@@ -279,10 +281,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       loading: false,
       initialized: true
     });
-  };
+  }, []);
 
   // Reset password
-  const resetPassword = async (email: string) => {
+  const resetPassword = useCallback(async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/reset-password`
     });
@@ -292,10 +294,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     return { error };
-  };
+  }, []);
 
   // Update profile
-  const updateProfile = async (updates: Partial<UserProfile>) => {
+  const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
     if (!state.user) {
       return { error: new Error('No user logged in') };
     }
@@ -321,10 +323,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error) {
       return { error: error as Error };
     }
-  };
+  }, [state.user, fetchProfile]);
 
   // Refresh session
-  const refreshSession = async () => {
+  const refreshSession = useCallback(async () => {
     const { data: { session }, error } = await supabase.auth.refreshSession();
 
     if (error) {
@@ -334,7 +336,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (session) {
       setState(prev => ({ ...prev, session }));
     }
-  };
+  }, []);
 
   const value: AuthContextType = {
     ...state,

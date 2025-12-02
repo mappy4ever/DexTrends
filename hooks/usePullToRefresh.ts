@@ -37,6 +37,20 @@ export function usePullToRefresh({
   const containerRef = useRef<HTMLElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
+  // Fix BETA-002: Use refs for state accessed in callbacks to prevent race conditions
+  // and stale closures when state changes during async operations
+  const pullStateRef = useRef(pullState);
+  const onRefreshRef = useRef(onRefresh);
+
+  // Keep refs up to date
+  useEffect(() => {
+    pullStateRef.current = pullState;
+  }, [pullState]);
+
+  useEffect(() => {
+    onRefreshRef.current = onRefresh;
+  }, [onRefresh]);
+
   const calculatePullDistance = useCallback((deltaY: number) => {
     // Apply resistance formula for elastic feel
     const resistance = 2.5;
@@ -45,34 +59,37 @@ export function usePullToRefresh({
   }, [maxPull]);
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
-    if (disabled || pullState.isRefreshing) return;
-    
+    // Use ref to get latest state without causing callback recreation
+    if (disabled || pullStateRef.current.isRefreshing) return;
+
     const touch = e.touches[0];
     startYRef.current = touch.clientY;
     currentYRef.current = touch.clientY;
-    
+
     // Only start pull if at top of scrollable area
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     if (scrollTop === 0) {
       setPullState(prev => ({ ...prev, isPulling: true }));
     }
-  }, [disabled, pullState.isRefreshing]);
+  }, [disabled]); // Removed pullState.isRefreshing from deps
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (!pullState.isPulling || pullState.isRefreshing) return;
-    
+    // Use ref to get latest state
+    const currentState = pullStateRef.current;
+    if (!currentState.isPulling || currentState.isRefreshing) return;
+
     const touch = e.touches[0];
     currentYRef.current = touch.clientY;
     const deltaY = currentYRef.current - startYRef.current;
-    
+
     if (deltaY > 0) {
       // Prevent default to stop bounce scroll
       e.preventDefault();
-      
+
       const pullDistance = calculatePullDistance(deltaY);
       const pullProgress = Math.min(pullDistance / threshold, 1);
       const shouldTrigger = pullDistance >= threshold;
-      
+
       setPullState(prev => ({
         ...prev,
         pullDistance,
@@ -80,12 +97,14 @@ export function usePullToRefresh({
         shouldTrigger
       }));
     }
-  }, [pullState.isPulling, pullState.isRefreshing, calculatePullDistance, threshold]);
+  }, [calculatePullDistance, threshold]); // Removed pullState from deps
 
   const handleTouchEnd = useCallback(async () => {
-    if (!pullState.isPulling || pullState.isRefreshing) return;
-    
-    if (pullState.shouldTrigger) {
+    // Use ref to get latest state - prevents race conditions
+    const currentState = pullStateRef.current;
+    if (!currentState.isPulling || currentState.isRefreshing) return;
+
+    if (currentState.shouldTrigger) {
       // Trigger refresh
       setPullState(prev => ({
         ...prev,
@@ -94,7 +113,7 @@ export function usePullToRefresh({
         pullDistance: threshold, // Keep at threshold during refresh
         pullProgress: 1
       }));
-      
+
       // Add timeout protection
       timeoutRef.current = setTimeout(() => {
         setPullState({
@@ -105,16 +124,17 @@ export function usePullToRefresh({
           pullProgress: 0
         });
       }, refreshTimeout);
-      
+
       try {
-        await onRefresh();
+        // Use ref to get latest onRefresh callback
+        await onRefreshRef.current();
       } catch (error) {
         logger.error('Refresh failed:', { error });
       } finally {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
-        
+
         // Smooth return animation
         setPullState({
           isPulling: false,
@@ -134,7 +154,7 @@ export function usePullToRefresh({
         pullProgress: 0
       });
     }
-  }, [pullState, threshold, refreshTimeout, onRefresh]);
+  }, [threshold, refreshTimeout]); // Removed pullState and onRefresh from deps
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

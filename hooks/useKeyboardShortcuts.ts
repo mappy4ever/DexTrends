@@ -27,6 +27,21 @@ export const useKeyboardShortcuts = ({
   stopPropagation = false,
 }: UseKeyboardShortcutsOptions) => {
   const activeShortcuts = useRef<Map<string, Shortcut>>(new Map());
+  // Fix BETA-004: Use ref for shortcuts to prevent stale closure issues
+  // and avoid infinite re-renders when shortcuts array reference changes
+  const shortcutsRef = useRef(shortcuts);
+
+  // Keep shortcuts ref up to date
+  useEffect(() => {
+    shortcutsRef.current = shortcuts;
+    // Update active shortcuts map when shortcuts change
+    activeShortcuts.current.clear();
+    shortcuts.forEach(shortcut => {
+      if (shortcut.enabled !== false) {
+        activeShortcuts.current.set(generateKey(shortcut), shortcut);
+      }
+    });
+  }, [shortcuts]);
 
   // Generate shortcut key
   const generateKey = useCallback((shortcut: Shortcut): string => {
@@ -43,23 +58,23 @@ export const useKeyboardShortcuts = ({
   const matchesShortcut = useCallback((event: KeyboardEvent, shortcut: Shortcut): boolean => {
     const key = event.key.toLowerCase();
     const code = event.code.toLowerCase();
-    
+
     // Check key or code
-    const keyMatch = key === shortcut.key.toLowerCase() || 
+    const keyMatch = key === shortcut.key.toLowerCase() ||
                      code === shortcut.key.toLowerCase() ||
                      code === `key${shortcut.key.toLowerCase()}`;
-    
+
     if (!keyMatch) return false;
 
     // Check modifiers
     const ctrlMatch = shortcut.ctrl ? (event.ctrlKey || event.metaKey) : !event.ctrlKey && !event.metaKey;
     const altMatch = shortcut.alt ? event.altKey : !event.altKey;
     const shiftMatch = shortcut.shift ? event.shiftKey : !event.shiftKey;
-    
+
     return ctrlMatch && altMatch && shiftMatch;
   }, []);
 
-  // Handle keydown event
+  // Handle keydown event - uses ref to access latest shortcuts
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (!enabled) return;
 
@@ -73,48 +88,40 @@ export const useKeyboardShortcuts = ({
       return;
     }
 
-    // Check all shortcuts
-    for (const shortcut of shortcuts) {
+    // Check all shortcuts using ref for latest values
+    for (const shortcut of shortcutsRef.current) {
       if (shortcut.enabled === false) continue;
-      
+
       if (matchesShortcut(event, shortcut)) {
         if (preventDefault) event.preventDefault();
         if (stopPropagation) event.stopPropagation();
-        
+
         try {
           shortcut.action();
-          logger.debug('Keyboard shortcut triggered', { 
+          logger.debug('Keyboard shortcut triggered', {
             key: generateKey(shortcut),
-            description: shortcut.description 
+            description: shortcut.description
           });
         } catch (error) {
           logger.error('Error executing keyboard shortcut', { error, shortcut });
         }
-        
+
         break;
       }
     }
-  }, [enabled, shortcuts, matchesShortcut, preventDefault, stopPropagation, generateKey]);
+  }, [enabled, matchesShortcut, preventDefault, stopPropagation, generateKey]); // shortcuts removed from deps
 
   // Setup event listeners
   useEffect(() => {
     if (!enabled) return;
 
-    // Update active shortcuts map
-    activeShortcuts.current.clear();
-    shortcuts.forEach(shortcut => {
-      if (shortcut.enabled !== false) {
-        activeShortcuts.current.set(generateKey(shortcut), shortcut);
-      }
-    });
-
     // Add event listener
     window.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [enabled, shortcuts, handleKeyDown, generateKey]);
+  }, [enabled, handleKeyDown]);
 
   // Get all active shortcuts for display
   const getActiveShortcuts = useCallback((): Array<{ key: string; description: string }> => {

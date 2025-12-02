@@ -20,6 +20,14 @@ export function useIntersectionObserver(
   } = options;
 
   const observerRef = useRef<IntersectionObserver | null>(null);
+  // Fix BETA-001: Use ref for callback to prevent infinite re-runs
+  // when callback reference changes between renders
+  const callbackRef = useRef(callback);
+
+  // Keep callback ref up to date
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
 
   useEffect(() => {
     if (!enabled || !elementRef.current) return;
@@ -28,7 +36,8 @@ export function useIntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            callback(entry);
+            // Use ref to always call the latest callback
+            callbackRef.current(entry);
           }
         });
       },
@@ -47,5 +56,5 @@ export function useIntersectionObserver(
         observerRef.current.disconnect();
       }
     };
-  }, [elementRef, callback, threshold, root, rootMargin, enabled]);
+  }, [elementRef, threshold, root, rootMargin, enabled]); // callback removed from deps
 }
