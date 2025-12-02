@@ -500,6 +500,81 @@ export const INPUT_SIZE = {
 } as const;
 
 // ===========================================
+// SPACING - Consistent spacing system
+// ===========================================
+
+export const SPACING = {
+  // Page padding (horizontal) - responsive
+  page: {
+    mobile: 'px-4',         // 16px
+    tablet: 'px-6',         // 24px
+    desktop: 'px-8',        // 32px
+    responsive: 'px-4 sm:px-6 lg:px-8',
+  },
+  // Section spacing (vertical between sections)
+  section: {
+    sm: 'py-4',             // 16px
+    md: 'py-6 md:py-8',     // 24-32px
+    lg: 'py-8 md:py-12',    // 32-48px
+    xl: 'py-12 md:py-16',   // 48-64px
+  },
+  // Grid gaps - mobile-first optimized
+  grid: {
+    xs: 'gap-1.5',          // 6px - tight grids
+    sm: 'gap-2',            // 8px - mobile grids
+    md: 'gap-3',            // 12px - tablet grids
+    lg: 'gap-4',            // 16px - desktop grids
+    responsive: 'gap-2 sm:gap-3 lg:gap-4',
+  },
+  // Card internal padding
+  card: {
+    sm: 'p-3',              // 12px - compact cards
+    md: 'p-4',              // 16px - standard cards
+    lg: 'p-5',              // 20px - larger cards
+    xl: 'p-6',              // 24px - featured cards
+  },
+  // Inline spacing (gaps between elements)
+  inline: {
+    xs: 'gap-1',            // 4px
+    sm: 'gap-1.5',          // 6px
+    md: 'gap-2',            // 8px
+    lg: 'gap-3',            // 12px
+    xl: 'gap-4',            // 16px
+  },
+  // Stack spacing (vertical gaps)
+  stack: {
+    xs: 'space-y-1',        // 4px
+    sm: 'space-y-2',        // 8px
+    md: 'space-y-3',        // 12px
+    lg: 'space-y-4',        // 16px
+    xl: 'space-y-6',        // 24px
+  },
+} as const;
+
+// ===========================================
+// TOUCH TARGETS - Mobile-first accessibility
+// ===========================================
+
+export const TOUCH_TARGET = {
+  // Minimum touch targets per Apple HIG
+  min: 'min-h-[44px] min-w-[44px]',
+  // Comfortable touch targets
+  comfortable: 'min-h-[48px] min-w-[48px]',
+  // Button sizes
+  button: {
+    sm: 'min-h-[36px] px-3 py-2',
+    md: 'min-h-[44px] px-4 py-2.5',
+    lg: 'min-h-[48px] px-5 py-3',
+  },
+  // Touch feedback utilities
+  feedback: {
+    tap: 'active:scale-[0.97] transition-transform duration-100',
+    press: 'active:bg-stone-100 dark:active:bg-stone-800',
+    highlight: 'tap-highlight-transparent touch-manipulation',
+  },
+} as const;
+
+// ===========================================
 // REGION ACCENT COLORS
 // ===========================================
 
@@ -578,6 +653,9 @@ export default {
   // Animation tokens (new)
   ANIMATION_DURATION,
   SPRING_PHYSICS,
+  // Spacing & touch targets (mobile redesign)
+  SPACING,
+  TOUCH_TARGET,
   // Glass morphism (deprecated - use SURFACE instead)
   GLASS_BG,
   GLASS_BLUR,

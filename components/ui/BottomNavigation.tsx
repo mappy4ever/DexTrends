@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { cn } from '@/utils/cn';
-import { Book, CardList, CrossedSwords, Search } from '@/utils/icons';
+import { Book, CardList, Search } from '@/utils/icons';
 import { BsGrid } from 'react-icons/bs';
+import { IoEllipsisHorizontal } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useViewport, Z_INDEX } from '@/hooks/useViewport';
+import { MoreSheet } from './MoreSheet';
 
 interface NavItem {
   href: string;
@@ -15,59 +17,53 @@ interface NavItem {
 }
 
 // Height of bottom nav for use by other components
-export const BOTTOM_NAV_HEIGHT = 60;
+export const BOTTOM_NAV_HEIGHT = 68;
 
 /**
  * BottomNavigation - Mobile-first bottom navigation bar
  *
  * Provides quick access to main app sections on mobile devices.
  * Only renders on mobile viewports (<640px).
+ *
+ * Layout: Home | Pokedex | [SEARCH] | TCG | More
+ *
  * Features:
+ * - 4+1 layout with centered, elevated Search button
+ * - "More" button opens MoreSheet with secondary navigation
  * - Fixed to bottom of viewport with z-index 45 (above FAB)
  * - Safe area padding for iOS devices with notch/home indicator
- * - Active state indicators
- * - Smooth transitions
- * - 60px height for comfortable touch targets (44px minimum)
+ * - Active state indicators with solid pill background
+ * - 68px height for comfortable touch targets (48px minimum)
  */
 export const BottomNavigation: React.FC = () => {
   const router = useRouter();
   const viewport = useViewport();
   const [activeRoute, setActiveRoute] = useState('');
+  const [moreSheetOpen, setMoreSheetOpen] = useState(false);
 
-  // Use isMounted from viewport hook for hydration safety
-
-  // Navigation items
+  // Navigation items (excluding Search and More which are handled separately)
   const navItems: NavItem[] = [
-    { 
-      href: '/', 
-      label: 'Home', 
+    {
+      href: '/',
+      label: 'Home',
       icon: <BsGrid className="w-5 h-5" />,
       color: 'text-purple-600 dark:text-purple-400'
     },
-    { 
-      href: '/pokedex', 
-      label: 'Pokédex', 
+    {
+      href: '/pokedex',
+      label: 'Pokédex',
       icon: <Book className="w-5 h-5" />,
       color: 'text-red-600 dark:text-red-400'
     },
-    { 
-      href: '/tcgexpansions', 
-      label: 'TCG', 
+  ];
+
+  const rightNavItems: NavItem[] = [
+    {
+      href: '/tcgexpansions',
+      label: 'TCG',
       icon: <CardList className="w-5 h-5" />,
       color: 'text-blue-600 dark:text-blue-400'
     },
-    { 
-      href: '/type-effectiveness', 
-      label: 'Battle', 
-      icon: <CrossedSwords className="w-5 h-5" />,
-      color: 'text-orange-600 dark:text-orange-400'
-    },
-    { 
-      href: '/search', 
-      label: 'Search', 
-      icon: <Search className="w-5 h-5" />,
-      color: 'text-stone-600 dark:text-stone-400'
-    }
   ];
 
   // Track active route
@@ -86,11 +82,81 @@ export const BottomNavigation: React.FC = () => {
     return activeRoute.startsWith(href);
   };
 
+  // Check if any "More" sheet item is active
+  const isMoreActive = () => {
+    return activeRoute.startsWith('/type-effectiveness') ||
+           activeRoute.startsWith('/pocketmode') ||
+           activeRoute.startsWith('/favorites') ||
+           activeRoute.startsWith('/fun') ||
+           activeRoute.startsWith('/battle');
+  };
+
+  const renderNavItem = (item: NavItem) => {
+    const active = isActive(item.href);
+
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        className={cn(
+          "flex flex-col items-center justify-center",
+          "flex-1 h-full py-2",
+          "transition-all duration-200",
+          "tap-highlight-transparent touch-manipulation",
+          "relative group",
+          "min-w-[56px]" // Ensure adequate touch target width
+        )}
+      >
+        {/* Active background pill */}
+        <AnimatePresence>
+          {active && (
+            <motion.div
+              layoutId="activeTabBg"
+              className={cn(
+                "absolute inset-x-2 top-1 bottom-1",
+                "bg-stone-100 dark:bg-stone-800",
+                "rounded-xl"
+              )}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Icon with animation */}
+        <motion.div
+          className={cn(
+            "mb-0.5 transition-colors duration-200 relative z-10",
+            active ? item.color : "text-stone-500 dark:text-stone-400"
+          )}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        >
+          {item.icon}
+        </motion.div>
+
+        {/* Label */}
+        <span
+          className={cn(
+            "text-[10px] font-medium transition-colors duration-200 relative z-10",
+            active
+              ? "text-stone-900 dark:text-white"
+              : "text-stone-500 dark:text-stone-400"
+          )}
+        >
+          {item.label}
+        </span>
+      </Link>
+    );
+  };
+
   return (
     <>
       {/* Spacer to prevent content from being hidden under nav */}
-      <div className="h-[60px] md:hidden" />
-      
+      <div className="h-[68px] md:hidden" />
+
       {/* Bottom Navigation Bar - solid bg for iOS performance */}
       <nav
         className={cn(
@@ -101,75 +167,90 @@ export const BottomNavigation: React.FC = () => {
         )}
         style={{ zIndex: Z_INDEX.bottomNav }}
       >
-        <div className="flex items-center justify-around h-[60px] px-2">
-          {navItems.map((item) => {
-            const active = isActive(item.href);
-            
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex flex-col items-center justify-center",
-                  "w-full h-full py-2",
-                  "transition-all duration-200",
-                  "tap-highlight-transparent touch-manipulation",
-                  "relative group"
-                )}
-              >
-                {/* Active indicator */}
-                <AnimatePresence>
-                  {active && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className={cn(
-                        "absolute top-0 left-1/2 -translate-x-1/2",
-                        "w-8 h-0.5 rounded-full",
-                        "bg-gradient-to-r from-purple-500 to-purple-600"
-                      )}
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  )}
-                </AnimatePresence>
-                
-                {/* Icon with animation */}
+        <div className="flex items-center justify-around h-[68px] px-1">
+          {/* Left nav items: Home, Pokedex */}
+          {navItems.map(renderNavItem)}
+
+          {/* Center: Search button (elevated, larger) */}
+          <div className="flex items-center justify-center flex-1">
+            <motion.button
+              onClick={() => router.push('/search')}
+              className={cn(
+                "relative flex items-center justify-center",
+                "w-12 h-12 -mt-3", // Slightly elevated
+                "bg-amber-500 hover:bg-amber-600",
+                "rounded-full shadow-lg shadow-amber-500/30",
+                "transition-colors duration-150",
+                "tap-highlight-transparent touch-manipulation"
+              )}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <Search className="w-5 h-5 text-white" />
+            </motion.button>
+          </div>
+
+          {/* Right nav items: TCG */}
+          {rightNavItems.map(renderNavItem)}
+
+          {/* More button */}
+          <button
+            onClick={() => setMoreSheetOpen(true)}
+            className={cn(
+              "flex flex-col items-center justify-center",
+              "flex-1 h-full py-2",
+              "transition-all duration-200",
+              "tap-highlight-transparent touch-manipulation",
+              "relative group",
+              "min-w-[56px]"
+            )}
+          >
+            {/* Active background pill for More */}
+            <AnimatePresence>
+              {isMoreActive() && (
                 <motion.div
                   className={cn(
-                    "mb-1 transition-colors duration-200",
-                    active ? item.color : "text-stone-500 dark:text-stone-400"
+                    "absolute inset-x-2 top-1 bottom-1",
+                    "bg-stone-100 dark:bg-stone-800",
+                    "rounded-xl"
                   )}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                >
-                  {item.icon}
-                </motion.div>
-                
-                {/* Label */}
-                <span
-                  className={cn(
-                    "text-xs font-medium transition-colors duration-200",
-                    active
-                      ? "text-stone-900 dark:text-white"
-                      : "text-stone-500 dark:text-stone-400"
-                  )}
-                >
-                  {item.label}
-                </span>
-                
-                {/* Touch feedback ripple */}
-                <motion.div
-                  className="absolute inset-0 rounded-lg bg-stone-100 dark:bg-stone-800 opacity-0"
-                  whileTap={{ opacity: 0.1 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 />
-              </Link>
-            );
-          })}
+              )}
+            </AnimatePresence>
+
+            <motion.div
+              className={cn(
+                "mb-0.5 transition-colors duration-200 relative z-10",
+                isMoreActive()
+                  ? "text-amber-600 dark:text-amber-400"
+                  : "text-stone-500 dark:text-stone-400"
+              )}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <IoEllipsisHorizontal className="w-5 h-5" />
+            </motion.div>
+
+            <span
+              className={cn(
+                "text-[10px] font-medium transition-colors duration-200 relative z-10",
+                isMoreActive()
+                  ? "text-stone-900 dark:text-white"
+                  : "text-stone-500 dark:text-stone-400"
+              )}
+            >
+              More
+            </span>
+          </button>
         </div>
       </nav>
+
+      {/* More Sheet */}
+      <MoreSheet isOpen={moreSheetOpen} onClose={() => setMoreSheetOpen(false)} />
     </>
   );
 };

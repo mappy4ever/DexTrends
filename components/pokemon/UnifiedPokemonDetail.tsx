@@ -25,6 +25,7 @@ import { UnifiedPullToRefresh } from '../ui/UnifiedPullToRefresh';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 import hapticFeedback from '@/utils/hapticFeedback';
 import { dynamicIsland } from '../ui/DynamicIsland';
+import { SectionDivider } from '../ui/SectionDivider';
 
 interface UnifiedPokemonDetailProps {
   pokemon: Pokemon;
@@ -248,6 +249,9 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
             onFormChange={onFormChange}
           />
         </motion.section>
+
+        {/* Divider between hero and details */}
+        <SectionDivider variant="fade" spacing="sm" />
 
         {/* Tab System - Responsive */}
         <motion.section

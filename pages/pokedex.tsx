@@ -10,12 +10,14 @@ import { PageHeader } from '@/components/ui/BreadcrumbNavigation';
 import Container from '@/components/ui/Container';
 import Modal from '@/components/ui/Modal';
 import { IoClose, IoFilter, IoSearch } from 'react-icons/io5';
+import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
 import { getGeneration } from '@/utils/pokemonutils';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useViewport } from '@/hooks/useViewport';
 import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
 import { SkeletonPokemonCard } from '@/components/ui/Skeleton';
+import { SectionDivider } from '@/components/ui/SectionDivider';
 import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
 /**
@@ -257,15 +259,16 @@ const UnifiedPokedex: NextPage = () => {
         sprite={item.raw.sprite}
         types={item.raw.types}
         onClick={() => handlePokemonClick(item)}
-        width={dimensions.width}
-        height={dimensions.height}
-        isLegendary={item.raw.isLegendary}
-        isMythical={item.raw.isMythical}
-        isStarter={item.raw.isStarter}
-        variant={viewport.isMobile ? 'compact' : 'card'}
+        width={Math.min(dimensions.width - 24, 80)}
+        height={Math.min(dimensions.height - 60, 80)}
+        // Use listing variant for clean, minimal cards
+        variant="listing"
+        // Don't show stats or badges in listing - those are for detail page
+        showStats={false}
+        showBadges={false}
       />
     );
-  }, [handlePokemonClick, viewport.isMobile]);
+  }, [handlePokemonClick]);
 
   const toggleType = (type: string) => {
     setSelectedTypes(prev =>
@@ -326,63 +329,72 @@ const UnifiedPokedex: NextPage = () => {
             </div>
           </PageHeader>
 
-          {/* Search & Filter Bar - Sticky below navbar with overlap to prevent gaps */}
-          <div className="sticky top-[52px] md:top-[60px] z-20 -mx-3 sm:-mx-4 lg:-mx-6 px-3 sm:px-4 lg:px-6 py-3 bg-[#FFFDF7] dark:bg-stone-900 shadow-sm mb-4">
-            <div className="flex gap-2 sm:gap-3">
-              {/* Search Input */}
-              <div className="flex-1 relative">
-                <IoSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
-                <input
-                  type="text"
-                  placeholder="Search by name or number..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full min-h-[44px] pl-11 pr-4 py-2.5 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
-                  style={{ fontSize: '16px' }}
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full transition-colors"
-                  >
-                    <IoClose className="w-4 h-4 text-stone-400" />
-                  </button>
-                )}
-              </div>
-
-              {/* Filter Button */}
+          {/* Search & Filter Bar - Sticky below navbar */}
+          <div className="sticky top-[48px] md:top-[64px] z-20 -mx-3 sm:-mx-4 lg:-mx-6 px-3 sm:px-4 lg:px-6 py-3 bg-[#FFFDF7] dark:bg-stone-900 shadow-sm mb-4">
+            {/* Search Input - Prominent, full width */}
+            <div className="relative mb-3">
+              <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-amber-500" />
+              <input
+                type="text"
+                placeholder="Search Pokemon by name or number..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full min-h-[52px] pl-12 pr-16 py-3 bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 rounded-2xl text-base focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+                style={{ fontSize: '16px' }}
+              />
+              {searchTerm ? (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-14 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full transition-colors active:scale-95"
+                >
+                  <IoClose className="w-4 h-4 text-stone-400" />
+                </button>
+              ) : null}
+              {/* Filter button inside search bar */}
               <button
                 onClick={() => setFilterModalOpen(true)}
                 className={cn(
-                  'min-h-[44px] min-w-[44px] sm:min-w-0 px-3 sm:px-4 flex items-center justify-center gap-2 rounded-xl font-medium transition-all',
+                  'absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center rounded-xl transition-all touch-manipulation active:scale-95',
                   hasActiveFilters
-                    ? 'bg-amber-500 text-white shadow-md shadow-amber-500/25'
-                    : 'bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-stone-300 dark:hover:border-stone-600'
+                    ? 'bg-amber-500 text-white shadow-md'
+                    : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
                 )}
               >
                 <IoFilter className="w-5 h-5" />
-                <span className="hidden sm:inline">Filters</span>
                 {activeFilterCount > 0 && (
-                  <span className="px-1.5 py-0.5 bg-white/20 rounded-full text-xs font-bold">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-amber-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
                     {activeFilterCount}
                   </span>
                 )}
               </button>
             </div>
 
-            {/* Active Filters - Horizontal scroll */}
-            {hasActiveFilters && (
-              <div className="flex items-center gap-2 mt-3 overflow-x-auto pb-1 -mb-1 scrollbar-hide">
-                {selectedTypes.map(type => (
-                  <button
-                    key={type}
-                    onClick={() => toggleType(type)}
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-full text-sm hover:border-red-300 dark:hover:border-red-700 transition-colors group"
-                  >
-                    <TypeBadge type={type} size="xs" />
-                    <IoClose className="w-3.5 h-3.5 text-stone-400 group-hover:text-red-500" />
-                  </button>
-                ))}
+            {/* Quick Type Filter Pills - Horizontal scroll */}
+            <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-3 px-3 scrollbar-hide">
+              {ALL_TYPES.map(type => (
+                <button
+                  key={type}
+                  onClick={() => toggleType(type)}
+                  className={cn(
+                    'flex-shrink-0 px-3 py-2 rounded-full text-xs font-medium transition-all touch-manipulation min-h-[36px] active:scale-95',
+                    selectedTypes.includes(type)
+                      ? 'text-white shadow-sm'
+                      : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
+                  )}
+                  style={{
+                    backgroundColor: selectedTypes.includes(type)
+                      ? POKEMON_TYPE_COLORS[type]
+                      : undefined
+                  }}
+                >
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            {/* Active Non-Type Filters */}
+            {(selectedGeneration || selectedCategory || sortBy !== 'id') && (
+              <div className="flex items-center gap-2 mt-2 overflow-x-auto pb-1 -mb-1 scrollbar-hide">
                 {selectedGeneration && (
                   <button
                     onClick={() => setSelectedGeneration('')}
@@ -410,15 +422,20 @@ const UnifiedPokedex: NextPage = () => {
                     <IoClose className="w-3.5 h-3.5" />
                   </button>
                 )}
-                <button
-                  onClick={clearFilters}
-                  className="flex-shrink-0 px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
-                >
-                  Clear all
-                </button>
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="flex-shrink-0 px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
+                  >
+                    Clear all
+                  </button>
+                )}
               </div>
             )}
           </div>
+
+          {/* Subtle divider before grid */}
+          <SectionDivider variant="space" spacing="sm" />
 
           {/* Pokemon Grid */}
           {loading && pokemon.length === 0 ? (

@@ -42,10 +42,9 @@ export default function Navbar() {
   const auth = useAuthSafe();
   const user = auth?.user ?? null;
   const authLoading = auth?.loading ?? false;
-  const [mobileOpen, setMobileOpen] = useState(false);
+  // Mobile menu removed - navigation is now via BottomNavigation + MoreSheet
   const [dropdownStates, setDropdownStates] = useState<Record<string, boolean>>({});
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
-  const menuWrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchModalRef = useRef<GlobalSearchModalHandle>(null);
 
@@ -123,47 +122,16 @@ export default function Navbar() {
 
 
 
-  // Close mobile menu on route change - using pathname for reliability
+  // Close dropdowns on route change
   useEffect(() => {
-    setMobileOpen(false);
     setDropdownStates({});
-    // Clean up any stuck states
-    document.body.style.overflow = '';
-    document.body.classList.remove('mobile-menu-open');
   }, [router.pathname]);
 
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileOpen]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      setMobileOpen(false);
-      document.body.style.overflow = '';
-    };
-  }, []);
-
-  // Click outside for mobile menu and dropdowns
+  // Click outside to close dropdowns (desktop only)
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      // Don't close if clicking the mobile menu button
-      const mobileToggle = document.getElementById("mobile-menu-button");
-      if (mobileToggle && mobileToggle.contains(event.target as Node)) {
-        return;
-      }
-
       // Don't close if clicking inside any dropdown
       const clickedInsideDropdown = (event.target as HTMLElement).closest('.absolute.top-full');
       if (clickedInsideDropdown) {
@@ -176,46 +144,25 @@ export default function Navbar() {
         return;
       }
 
-      if (mobileOpen && menuWrapperRef.current && !menuWrapperRef.current.contains(event.target as Node)) {
-        setMobileOpen(false);
-      }
-      
       // Close all dropdowns
       setDropdownStates({});
     };
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [mobileOpen]);
+  }, []);
 
 
 
   return (
     <>
       {/* Clean Navbar - Warm cream background */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 z-30 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)] safe-area-padding-top">
+      {/* Mobile: 48px height, minimal (logo + theme). Desktop: 64px with full nav */}
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-12 md:h-16 z-30 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)] safe-area-padding-top">
         <div className="flex items-center gap-x-2">
-          {/* Mobile Menu Button */}
-          <button
-            id="mobile-menu-button"
-            className="md:hidden p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors duration-150 touch-manipulation active:scale-95 min-h-[44px] min-w-[44px] flex items-center justify-center"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setMobileOpen(prev => !prev);
-              logger.debug('Mobile menu toggled', { newState: !mobileOpen });
-            }}
-            aria-label="Toggle mobile menu"
-            aria-expanded={mobileOpen}
-          >
-            <div className="w-5 h-5 flex flex-col justify-center space-y-1">
-              <div className={`w-full h-0.5 bg-current transition-all duration-200${mounted && mobileOpen ? ' rotate-45 translate-y-1.5' : ''}`} />
-              <div className={`w-full h-0.5 bg-current transition-all duration-200${mounted && mobileOpen ? ' opacity-0' : ''}`} />
-              <div className={`w-full h-0.5 bg-current transition-all duration-200${mounted && mobileOpen ? ' -rotate-45 -translate-y-1.5' : ''}`} />
-            </div>
-          </button>
+          {/* Logo - always visible */}
           <NavbarLogo />
         </div>
         <nav className="hidden md:flex items-center gap-x-1">
@@ -336,22 +283,22 @@ export default function Navbar() {
           })}
         </nav>
         <div className="flex items-center gap-x-1.5 sm:gap-x-2">
-          {/* Search Button - proper touch target */}
+          {/* Search Button - DESKTOP ONLY (mobile uses bottom nav) */}
           <button
             aria-label="Open search"
             title="Search (Cmd+K)"
-            className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="hidden md:flex p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] items-center justify-center"
             onClick={() => searchModalRef.current?.open()}
           >
             <BsSearch className="w-5 h-5" />
           </button>
 
-          {/* Favorites - proper touch target */}
+          {/* Favorites - DESKTOP ONLY (mobile uses More sheet) */}
           <Link
             href="/favorites"
             aria-label="View favorites"
             title="View favorites"
-            className="relative p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="hidden md:flex relative p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] items-center justify-center"
             data-is-navbar="true"
           >
             <BsHeart className="w-5 h-5" />
@@ -364,13 +311,13 @@ export default function Navbar() {
             </ClientOnly>
           </Link>
 
-          {/* User / Login Button - proper touch target */}
+          {/* User / Login Button - DESKTOP ONLY */}
           <ClientOnly>
             <Link
               href={user ? "/profile" : "/auth/login"}
               aria-label={user ? "View profile" : "Sign in"}
               title={user ? "View profile" : "Sign in"}
-              className={`relative p-2.5 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center ${
+              className={`hidden md:flex relative p-2.5 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 touch-manipulation min-w-[44px] min-h-[44px] items-center justify-center ${
                 user
                   ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60 active:bg-amber-300 dark:active:bg-amber-900/80'
                   : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600'
@@ -389,11 +336,11 @@ export default function Navbar() {
             </Link>
           </ClientOnly>
 
-          {/* Theme Toggle - proper touch target */}
+          {/* Theme Toggle - always visible on both mobile and desktop */}
           <button
             aria-label={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             title={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="p-2 md:p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-all duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={toggleTheme}
           >
             <ClientOnly>
@@ -405,89 +352,8 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      {/* Mobile Menu Overlay - Proper z-index and rendering */}
-      {mobileOpen && (
-        <>
-          {/* Backdrop - solid bg for iOS performance */}
-          <div
-            className="fixed inset-0 bg-black/60 z-40 md:hidden"
-            style={{
-              pointerEvents: 'auto'
-            }}
-            onClick={() => setMobileOpen(false)}
-          />
-          
-          {/* Menu panel - slide in from left, above backdrop */}
-          <div
-            ref={menuWrapperRef}
-            className="fixed left-0 top-16 bottom-0 w-80 max-w-[85vw] bg-[#FFFDF7] dark:bg-stone-900 shadow-2xl z-50 md:hidden overflow-y-auto safe-area-padding-x"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <nav className="flex flex-col p-3 space-y-1">
-              {navItems.map(item => {
-                const isActive = router.pathname === item.href ||
-                  (item.dropdownItems && item.dropdownItems.some(subItem => router.pathname === subItem.href));
-
-                if (item.hasDropdown) {
-                  return (
-                    <div key={`mobile-${item.href}`} className="space-y-0.5">
-                      <Link
-                        href={item.href}
-                        className={`flex items-center gap-x-3 px-4 py-3.5 rounded-lg font-medium touch-manipulation transition-colors duration-150 min-h-[48px] active:bg-stone-200 dark:active:bg-stone-700
-                          ${isActive
-                            ? 'bg-amber-600 text-white'
-                            : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        <span className={`flex-shrink-0 w-6 h-6 flex items-center justify-center ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
-                          {item.icon}
-                        </span>
-                        <span className="font-medium text-base">{item.label}</span>
-                      </Link>
-                      {/* Mobile dropdown items */}
-                      <div className="ml-6 space-y-0.5 border-l-2 border-stone-200 dark:border-stone-700 pl-2">
-                        {item.dropdownItems!.map((dropdownItem, dropdownIndex) => (
-                          <Link key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
-                            href={dropdownItem.href}
-                            className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-colors duration-150 touch-manipulation min-h-[44px] active:bg-stone-200 dark:active:bg-stone-700
-                              ${router.pathname === dropdownItem.href
-                                ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
-                                : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            <span className={`flex-shrink-0 w-5 h-5 flex items-center justify-center ${router.pathname === dropdownItem.href ? 'text-amber-600 dark:text-amber-400' : 'text-stone-400'}`}>
-                              {dropdownItem.icon}
-                            </span>
-                            <span className="text-sm">{dropdownItem.label}</span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                }
-
-                return (
-                  <Link key={`mobile-${item.href}`}
-                    href={item.href}
-                    className={`flex items-center gap-x-3 px-4 py-3.5 rounded-lg font-medium transition-colors duration-150 touch-manipulation min-h-[48px] active:bg-stone-200 dark:active:bg-stone-700
-                      ${isActive
-                        ? 'bg-amber-600 text-white'
-                        : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <span className={`flex-shrink-0 w-6 h-6 flex items-center justify-center ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
-                      {item.icon}
-                    </span>
-                    <span className="font-medium text-base">{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-        </>
-      )}
-      {/* Spacer for fixed navbar */}
-      <div className="h-14 md:h-16" />
+      {/* Spacer for fixed navbar - 48px mobile, 64px desktop */}
+      <div className="h-12 md:h-16" />
       <GlobalSearchModal ref={searchModalRef} />
       
       {/* Advanced Search Modal */}

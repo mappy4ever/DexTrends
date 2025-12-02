@@ -1,18 +1,26 @@
 /**
  * PokemonDisplay - Unified Pokemon display component
- * 
+ *
  * Consolidates all Pokemon display functionality from:
  * - PokemonCardRenderer
- * - EnhancedPokemonCard  
+ * - EnhancedPokemonCard
  * - PokemonTile
  * - PokemonAvatar
- * 
+ *
  * Features:
- * - Multiple display variants (card, tile, avatar, compact)
+ * - Multiple display variants (card, tile, avatar, compact, circular, listing)
  * - Type-based gradients and colors
  * - Responsive sizing
  * - Special badges for legendary/mythical/starter
  * - Glass morphism effects
+ *
+ * Variants:
+ * - card: Full card with type gradient background, stats optional
+ * - tile: Horizontal layout with image on left
+ * - avatar: Circular badge-style display
+ * - compact: Minimal inline display for lists
+ * - circular: Same as avatar
+ * - listing: Clean minimal card for Pokedex grids (no stats, no badges, just essentials)
  */
 
 import React, { memo, useState } from 'react';
@@ -62,7 +70,7 @@ export interface PokemonDisplayProps {
   types?: PokemonType[] | string[];
 
   // Display options
-  variant?: 'card' | 'tile' | 'avatar' | 'compact' | 'circular';
+  variant?: 'card' | 'tile' | 'avatar' | 'compact' | 'circular' | 'listing';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
   // Special status
@@ -374,6 +382,56 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
         </motion.div>
       );
       
+    case 'listing':
+      // Clean, minimal card for Pokedex grid listing
+      // Shows: number, image, name, type pills
+      // No stats, no badges, no gradients
+      return (
+        <motion.div
+          whileHover={animated ? { y: -2, boxShadow: '0 8px 25px -5px rgba(0,0,0,0.1)' } : undefined}
+          whileTap={animated ? { scale: 0.97 } : undefined}
+          onClick={handleClick}
+          className={cn(
+            'relative overflow-hidden rounded-xl cursor-pointer',
+            'bg-white dark:bg-stone-800/95',
+            'border border-stone-200 dark:border-stone-700/50',
+            'shadow-sm',
+            'p-3',
+            'transition-shadow duration-150',
+            className
+          )}
+        >
+          {/* Pokemon Number - top left, subtle */}
+          <span className="absolute top-2 left-2 text-[11px] text-stone-400 dark:text-stone-500 font-medium">
+            #{String(id).padStart(3, '0')}
+          </span>
+
+          {/* Pokemon Image - centered, prominent */}
+          <div className="flex justify-center pt-5 pb-2">
+            <Image
+              src={imageSrc}
+              alt={name}
+              width={width || 80}
+              height={height || 80}
+              className="object-contain drop-shadow-sm"
+              onError={() => setImgError(true)}
+            />
+          </div>
+
+          {/* Name - bottom, centered, bold */}
+          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-sm leading-tight">
+            {name}
+          </h3>
+
+          {/* Type pills - small, centered below name */}
+          <div className="flex justify-center gap-1 mt-1.5">
+            {typeNames.map(type => (
+              <TypeBadge key={type} type={type} size="xs" />
+            ))}
+          </div>
+        </motion.div>
+      );
+
     case 'card':
     default:
       return (
@@ -477,11 +535,14 @@ PokemonDisplay.displayName = 'PokemonDisplay';
 
 // Backward compatibility exports
 export const PokemonCard = PokemonDisplay;
-export const PokemonTile = (props: PokemonDisplayProps) => 
+export const PokemonTile = (props: PokemonDisplayProps) =>
   <PokemonDisplay {...props} variant="tile" />;
-export const PokemonAvatar = (props: PokemonDisplayProps) => 
+export const PokemonAvatar = (props: PokemonDisplayProps) =>
   <PokemonDisplay {...props} variant="avatar" />;
-export const EnhancedPokemonCard = (props: PokemonDisplayProps) => 
+export const EnhancedPokemonCard = (props: PokemonDisplayProps) =>
   <PokemonDisplay {...props} variant="card" showStats={true} />;
+// Clean listing card for Pokedex grids - no stats, no badges
+export const PokemonListingCard = (props: PokemonDisplayProps) =>
+  <PokemonDisplay {...props} variant="listing" showStats={false} showBadges={false} />;
 
 export default PokemonDisplay;

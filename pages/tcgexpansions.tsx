@@ -21,6 +21,8 @@ import { PaginationInfo } from "../types/api/api-responses";
 import { NextPage } from "next";
 import logger from "../utils/logger";
 import { getErrorMessage, isObject, hasProperty } from "../utils/typeGuards";
+import { SectionHeader } from "../components/ui/SectionHeader";
+import { SectionDivider } from "../components/ui/SectionDivider";
 
 type SortOption = "releaseDate" | "name" | "cardCount";
 type SortDirection = "asc" | "desc";
@@ -441,7 +443,15 @@ const TcgSetsContent: React.FC = () => {
               </div>
             </motion.div>
           </FadeIn>
-      
+
+          {/* Section Header before grid */}
+          <SectionHeader
+            title="All Sets"
+            subtitle={`${filteredSets.length} ${filterSeries ? `in ${filterSeries}` : 'total'}`}
+            size="sm"
+            className="mb-3"
+          />
+
       {loading && sets.length === 0 ? (
         <motion.div 
           className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 xs:gap-4 sm:gap-5 md:gap-6"

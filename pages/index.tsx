@@ -12,6 +12,8 @@ import { ProgressiveImage } from '../components/ui/ProgressiveImage';
 import { Container } from '../components/ui/Container';
 import { cn } from '../utils/cn';
 import { TYPOGRAPHY, TRANSITION, SPRING_PHYSICS } from '../components/ui/design-system/glass-constants';
+import { SectionHeader } from '../components/ui/SectionHeader';
+import { SectionDivider } from '../components/ui/SectionDivider';
 
 // Icons
 import { Book, CardList, CrossedSwords, Bulb } from '../utils/icons';
@@ -262,7 +264,13 @@ const HomePage: NextPage = () => {
           </section>
 
           {/* Main Features Grid */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+            <SectionHeader
+              title="Explore"
+              subtitle="Jump into any section"
+              size="md"
+              className="mb-4"
+            />
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -283,7 +291,8 @@ const HomePage: NextPage = () => {
           </section>
 
           {/* Quick Access Section */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 md:pb-12">
+          <SectionDivider variant="fade" spacing="md" />
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 md:pb-10">
             <Container variant="outline" className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
@@ -312,8 +321,14 @@ const HomePage: NextPage = () => {
           </section>
 
           {/* What's New Section */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 border-t border-stone-100 dark:border-stone-800">
-            <h2 className={cn(TYPOGRAPHY.heading.h3, 'mb-6')}>What's New</h2>
+          <SectionDivider variant="line" spacing="lg" />
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 md:pb-12">
+            <SectionHeader
+              title="What's New"
+              subtitle="Latest updates and trending"
+              size="md"
+              className="mb-4"
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
               {/* Featured Pokemon */}

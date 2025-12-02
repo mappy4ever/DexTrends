@@ -76,12 +76,12 @@ const AUTO_COLUMNS = {
   wide: 8
 };
 
-// Responsive gap values
+// Responsive gap values (optimized for mobile)
 const RESPONSIVE_GAP = {
-  mobile: 12,
-  tablet: 16,
-  laptop: 20,
-  desktop: 24
+  mobile: 8,    // gap-2 (tighter on mobile)
+  tablet: 12,   // gap-3
+  laptop: 16,   // gap-4
+  desktop: 16   // gap-4
 };
 
 export function UnifiedGrid<T extends GridItem>({
@@ -137,7 +137,7 @@ export function UnifiedGrid<T extends GridItem>({
     const totalGap = gapSize * (columnCount - 1);
     const availableWidth = containerWidth - totalGap - padding;
     const itemWidth = Math.floor(availableWidth / columnCount);
-    const itemHeight = Math.floor(itemWidth * 1.4); // Taller aspect ratio for Pokémon cards
+    const itemHeight = Math.floor(itemWidth * 1.3); // Optimized aspect ratio for cards
     
     return { width: itemWidth, height: itemHeight };
   }, [viewport.width, columnCount, gapSize]);
