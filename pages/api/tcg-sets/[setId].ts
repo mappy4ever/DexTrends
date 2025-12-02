@@ -3,9 +3,10 @@ import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { tcgCache } from '../../../lib/tcg-cache';
 import { createSetDetailFallback } from '../../../lib/static-sets-fallback';
-import type { TCGApiResponse, TCGCardListApiResponse } from '../../../types/api/enhanced-responses';
-import type { UnknownError } from '../../../types/common';
+import type { TCGCardListApiResponse } from '../../../types/api/enhanced-responses';
 import type { CardSet, TCGCard } from '../../../types/api/cards';
+import type { TCGDexSet, TCGDexCard } from '../../../types/api/tcgdex';
+import { transformSet, transformCards, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { setId, page = '1', pageSize = '250' } = req.query; // Increased default
@@ -64,241 +65,143 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json(cachedPage);
     }
     
-    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-    
-    if (apiKey) {
-      headers['X-Api-Key'] = apiKey;
-    }
-
-    // Use full requested page size
-    const effectivePageSize = pageSizeNum;
-    
-    // Fetch set info and cards (with pagination) in parallel
-    let setInfo, cardsData;
-    
-    // Debug: Log the actual URL being called
-    const cardsUrl = `https://api.pokemontcg.io/v2/cards?q=set.id:${id}&page=${pageNum}&pageSize=${effectivePageSize}`;
-    logger.info('Fetching cards from Pokemon TCG API', {
-      url: cardsUrl,
+    // TCGDex API - single call returns set + all cards
+    const apiUrl = TCGDexEndpoints.set(id, 'en');
+    logger.info('Fetching set from TCGDex', {
+      url: apiUrl,
       setId: id,
-      requestedPageSize: effectivePageSize,
-      page: pageNum
-    });
-    
-    try {
-      [setInfo, cardsData] = await Promise.all([
-        // Get set information (always needed)
-        fetchJSON<TCGApiResponse<CardSet>>(`https://api.pokemontcg.io/v2/sets/${id}`, {
-          headers,
-          useCache: true,
-          cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - set info rarely changes
-          retries: apiKey ? 2 : 0, // Retry with API key, no retry without
-          retryDelay: 1000,
-          timeout: apiKey ? 15000 : 8000, // 15s with key, 8s without
-          throwOnError: false // Never throw - return null on error
-        }),
-        // Get cards for this set with pagination
-        fetchJSON<TCGApiResponse<TCGCard[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(
-          cardsUrl,
-          {
-            headers,
-            useCache: true,
-            cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - cards rarely change
-            retries: apiKey ? 2 : 0, // Retry with API key, no retry without
-            retryDelay: 1000,
-            timeout: apiKey ? 15000 : 8000, // 15s with key, 8s without
-            throwOnError: false // Never throw - return null on error
-          }
-        )
-      ]);
-    } catch (fetchError) {
-      logger.error('Failed to fetch from Pokemon TCG API', {
-        setId: id,
-        error: fetchError instanceof Error ? fetchError.message : String(fetchError),
-        type: fetchError instanceof Error ? fetchError.name : typeof fetchError
-      });
-      
-      // Try to provide more specific error messages
-      const errorMessage = fetchError instanceof Error ? fetchError.message : String(fetchError);
-      if (errorMessage?.includes('404')) {
-        return res.status(404).json({ 
-          error: 'Set not found',
-          message: `Set "${id}" does not exist in the Pokemon TCG database.`,
-          setId: id
-        });
-      }
-      
-      // Handle timeout and connection errors
-      if (errorMessage?.includes('timeout') || errorMessage?.includes('ETIMEDOUT')) {
-        return res.status(503).json({
-          error: 'Service temporarily unavailable',
-          message: 'The Pokemon TCG API is currently experiencing issues. Please try again later.',
-          setId: id,
-          retryAfter: 60
-        });
-      }
-      
-      // Handle network errors
-      if (errorMessage?.includes('ECONNREFUSED') || errorMessage?.includes('ENOTFOUND')) {
-        return res.status(503).json({
-          error: 'Service temporarily unavailable',
-          message: 'Unable to connect to the Pokemon TCG API. Please try again later.',
-          setId: id,
-          retryAfter: 120
-        });
-      }
-      
-      throw fetchError; // Re-throw for general error handling
-    }
-    
-    const set = setInfo?.data || null;
-    const cards = cardsData?.data || [];
-    
-    // Log the response data
-    logger.info('API responses received', {
-      setId: id,
-      hasSetInfo: !!setInfo,
-      hasSetData: !!set,
-      hasCardsData: !!cardsData,
-      cardsCount: cards.length,
-      setInfoKeys: setInfo ? Object.keys(setInfo) : [],
-      setName: set?.name || 'N/A',
-      // Log raw responses for debugging
-      rawSetInfo: process.env.NODE_ENV === 'development' ? setInfo : undefined,
-      firstCard: cards[0] || null
-    });
-    
-    // Check if set not found
-    if (!set) {
-      // Distinguish between "API unavailable" (both null) vs "Set not found" (setInfo returned but no data)
-      if (setInfo === null && cardsData === null) {
-        // Both API calls returned null - likely timeout or API unavailable
-        // Try to use static fallback data
-        const fallback = createSetDetailFallback(id);
-        if (fallback) {
-          logger.info('Pokemon TCG API unavailable, using static fallback for set', { setId: id });
-          res.setHeader('X-Cache-Status', 'static-fallback');
-          res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600');
-          return res.status(200).json(fallback);
-        }
-
-        // No fallback available for this set
-        logger.warn('Pokemon TCG API unavailable and no fallback for set', { setId: id });
-        return res.status(503).json({
-          error: 'Service temporarily unavailable',
-          message: 'The Pokemon TCG API is currently unavailable. Please try again later.',
-          setId: id,
-          retryAfter: 60
-        });
-      }
-
-      logger.warn('Set not found in API', {
-        setId: id,
-        setInfoResponse: setInfo,
-        setInfoKeys: setInfo ? Object.keys(setInfo) : []
-      });
-      return res.status(404).json({
-        error: 'Set not found',
-        message: `Set "${id}" was not found in the Pokemon TCG database.`,
-        setId: id,
-        debugInfo: process.env.NODE_ENV === 'development' ? {
-          requestedId: id,
-          apiResponse: setInfo
-        } : undefined
-      });
-    }
-    
-    logger.debug('TCG set API response received', { 
-      setId: id, 
       page: pageNum,
-      pageSize: pageSizeNum,
-      cardCount: cards.length,
-      totalCount: cardsData?.totalCount 
+      pageSize: pageSizeNum
+    });
+
+    // TCGDex returns set info with cards in one call
+    const tcgdexData = await fetchJSON<TCGDexSet>(apiUrl, {
+      useCache: true,
+      cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
+      timeout: 15000,
+      retries: 2,
+      retryDelay: 1000,
+      throwOnError: false
+    });
+
+    // Handle API failure
+    if (!tcgdexData) {
+      logger.info('TCGDex API unavailable, trying static fallback', { setId: id });
+
+      const fallback = createSetDetailFallback(id);
+      if (fallback) {
+        res.setHeader('X-Cache-Status', 'static-fallback');
+        res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600');
+        return res.status(200).json(fallback);
+      }
+
+      return res.status(503).json({
+        error: 'Service temporarily unavailable',
+        message: 'The TCGDex API is currently unavailable. Please try again later.',
+        setId: id,
+        retryAfter: 60
+      });
+    }
+
+    // Transform TCGDex data to app format
+    const set = transformSet(tcgdexData);
+
+    // TCGDex cards in set response are brief - need to fetch full card data
+    // For now, we'll work with the brief data and transform what we have
+    let allCards: TCGCard[] = [];
+
+    if (tcgdexData.cards && tcgdexData.cards.length > 0) {
+      // TCGDex set response has brief card info (id, localId, name, image)
+      // For full card data with pricing, we'd need individual card calls
+      // For performance, we'll use the brief data and construct card objects
+      allCards = tcgdexData.cards.map(briefCard => ({
+        id: briefCard.id,
+        name: briefCard.name,
+        supertype: 'Pokémon' as const, // Brief cards don't have this
+        set: set,
+        number: briefCard.localId,
+        images: {
+          small: briefCard.image ? `${briefCard.image}/low.png` : '',
+          large: briefCard.image ? `${briefCard.image}/high.png` : '',
+        },
+      }));
+    }
+
+    logger.info('TCGDex response transformed', {
+      setId: id,
+      setName: set.name,
+      totalCards: allCards.length
     });
     
+    // Paginate cards (TCGDex returns all cards at once)
+    const startIndex = (pageNum - 1) * pageSizeNum;
+    const paginatedCards = allCards.slice(startIndex, startIndex + pageSizeNum);
+
     // Prepare response
-    const response = { 
-      set, 
-      cards,
+    const response = {
+      set,
+      cards: paginatedCards,
       pagination: {
         page: pageNum,
         pageSize: pageSizeNum,
-        count: cardsData?.count || cards.length,
-        totalCount: cardsData?.totalCount || cards.length,
-        hasMore: (cardsData?.count || cards.length) === pageSizeNum
+        count: paginatedCards.length,
+        totalCount: allCards.length,
+        hasMore: startIndex + pageSizeNum < allCards.length
       }
     };
-    
-    // Cache the response asynchronously (cast to expected type)
+
+    // Cache the response asynchronously
     tcgCache.cacheSetWithCards(id, pageNum, pageSizeNum, response as TCGCardListApiResponse).catch(err => {
       logger.error('Failed to cache set details', { error: err, setId: id });
     });
-    
-    // If this is page 1 and we potentially have all cards, check if we should cache complete set
-    if (pageNum === 1 && cardsData?.totalCount && cards.length === cardsData.totalCount) {
-      logger.info('Caching complete set', { setId: id, cardCount: cards.length });
-      tcgCache.cacheCompleteSet(id, set as CardSet, cards as TCGCard[]).catch(err => {
+
+    // Cache complete set for future requests
+    if (allCards.length > 0) {
+      tcgCache.cacheCompleteSet(id, set as CardSet, allCards as TCGCard[]).catch(err => {
         logger.error('Failed to cache complete set', { error: err, setId: id });
       });
     }
-    
-    // Add cache-control headers for better edge caching
-    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400'); // 1hr cache, 24hr stale
+
+    // Add cache-control headers
+    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
     res.setHeader('X-Cache-Status', 'miss');
-    
+    res.setHeader('X-Data-Source', 'tcgdex');
+
     logger.info('Sending response', {
       setId: id,
-      hasSet: !!response.set,
-      cardsCount: response.cards.length,
-      setName: response.set?.name,
-      requestedPageSize: pageSizeNum,
-      actualDataCount: cardsData?.data?.length || 0,
-      paginationInfo: response.pagination
+      setName: set?.name,
+      cardsCount: paginatedCards.length,
+      totalCards: allCards.length,
+      pagination: response.pagination
     });
-    
+
     res.status(200).json(response);
   } catch (error) {
-    logger.error('Failed to fetch TCG set details', { 
+    logger.error('Failed to fetch TCG set details', {
       setId: id,
       error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack?.substring(0, 500) : undefined, // Limit stack trace size
-      apiUrl: `https://api.pokemontcg.io/v2/sets/${id}`,
+      stack: error instanceof Error ? error.stack?.substring(0, 500) : undefined,
       errorType: error instanceof Error ? error.name : typeof error
     });
-    
+
     // Provide user-friendly error messages
     let userMessage = 'An unexpected error occurred while fetching set details.';
     let statusCode = 500;
-    
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     if (errorMessage?.includes('timeout') || errorMessage?.includes('ETIMEDOUT')) {
-      userMessage = 'Request timed out. The Pokemon TCG API is responding slowly.';
+      userMessage = 'Request timed out. The TCGDex API is responding slowly.';
       statusCode = 504;
     } else if (errorMessage?.includes('ECONNREFUSED') || errorMessage?.includes('ENOTFOUND')) {
-      userMessage = 'Unable to connect to the Pokemon TCG API.';
+      userMessage = 'Unable to connect to the TCGDex API.';
       statusCode = 503;
-    } else if (errorMessage?.includes('429')) {
-      userMessage = 'Rate limit exceeded. Please wait a moment before trying again.';
-      statusCode = 429;
-    } else if (errorMessage?.includes('401') || errorMessage?.includes('403')) {
-      userMessage = 'API authentication failed. Please check configuration.';
-      statusCode = 502;
     }
-    
-    res.status(statusCode).json({ 
+
+    res.status(statusCode).json({
       error: 'Failed to fetch TCG set details',
       message: userMessage,
       setId: id,
-      timestamp: new Date().toISOString(),
-      ...(process.env.NODE_ENV === 'development' && { 
-        debug: {
-          originalError: errorMessage,
-          errorType: error instanceof Error ? error.name : typeof error
-        }
-      })
+      timestamp: new Date().toISOString()
     });
   }
 }

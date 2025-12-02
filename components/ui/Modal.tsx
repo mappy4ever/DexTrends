@@ -282,7 +282,12 @@ export const Modal: React.FC<ModalProps> = ({
               positionStyles[effectivePosition],
               'pointer-events-none'
             )}
-            style={{ zIndex: zIndex + 1 }}
+            style={{
+              zIndex: zIndex + 1,
+              // Fix iOS Safari viewport issues
+              height: '100dvh',
+              minHeight: '-webkit-fill-available',
+            }}
             aria-hidden="true"
           >
             <motion.div

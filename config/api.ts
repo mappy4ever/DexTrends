@@ -63,13 +63,19 @@ export const POKEMON_TCG = {
   rarities: () => `${API_CONFIG.POKEMON_TCG_API_URL}/rarities`,
 } as const;
 
-// TCGDex API Endpoints
+// TCGDex API Endpoints (primary TCG data source - no API key required)
 export const TCGDEX = {
+  // Sets
   sets: (lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/sets`,
   set: (id: string, lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/sets/${id}`,
-  card: (setId: string, cardId: string, lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/sets/${setId}/${cardId}`,
-  serie: (id: string, lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/series/${id}`,
+  // Cards (card ID format: "setId-localId", e.g., "base1-4")
+  cards: (lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/cards`,
+  card: (id: string, lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/cards/${id}`,
+  // Legacy format: card by set and local ID (deprecated, use card() instead)
+  cardInSet: (setId: string, cardId: string, lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/sets/${setId}/${cardId}`,
+  // Series
   series: (lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/series`,
+  serie: (id: string, lang = 'en') => `${API_CONFIG.TCGDEX_API_URL}/${lang}/series/${id}`,
 } as const;
 
 // Application Internal API Endpoints
@@ -79,6 +85,8 @@ export const APP_API = {
   tcgSet: (setId: string) => `${API_CONFIG.APP_API_URL}/api/tcgexpansions/${setId}`,
   tcgCards: () => `${API_CONFIG.APP_API_URL}/api/tcg-cards`,
   tcgCard: (cardId: string) => `${API_CONFIG.APP_API_URL}/api/tcg-cards/${cardId}`,
+  tcgSeries: () => `${API_CONFIG.APP_API_URL}/api/tcg-series`,
+  tcgSerie: (serieId: string) => `${API_CONFIG.APP_API_URL}/api/tcg-series/${serieId}`,
   
   // Price endpoints
   cardPrice: (cardId: string) => `${API_CONFIG.APP_API_URL}/api/cards/${cardId}/price`,

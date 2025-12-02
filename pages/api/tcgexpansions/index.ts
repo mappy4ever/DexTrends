@@ -2,7 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { createFallbackResponse } from '../../../lib/static-sets-fallback';
-import type { TCGApiResponse, TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
+import type { TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
+import type { TCGDexSetBrief } from '../../../types/api/tcgdex';
+import { transformSets, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
 
 // Lazy import tcgCache to avoid module loading errors
 let tcgCacheModule: typeof import('../../../lib/tcg-cache') | null = null;
@@ -37,7 +39,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1;
   const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 25, 50);
   const shouldForceRefresh = (Array.isArray(forceRefresh) ? forceRefresh[0] : forceRefresh) === 'true';
-  const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 
   // Set CORS headers with origin whitelist (security: prevent cross-origin abuse)
   const origin = req.headers.origin;
@@ -77,40 +78,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-
-    if (apiKey) {
-      headers['X-Api-Key'] = apiKey;
-    }
-
-    const apiUrl = `https://api.pokemontcg.io/v2/sets?page=${pageNum}&pageSize=${pageSizeNum}&orderBy=-releaseDate`;
-    logger.info('Fetching TCG sets from API', {
+    // TCGDex API - no API key required, faster responses
+    const apiUrl = TCGDexEndpoints.sets('en');
+    logger.info('Fetching TCG sets from TCGDex', {
       url: apiUrl,
       page: pageNum,
-      pageSize: pageSizeNum,
-      hasApiKey: !!apiKey
+      pageSize: pageSizeNum
     });
 
-    // With API key: should be fast (1-3s), without: very slow (10-30s)
-    // Use throwOnError: false to avoid unhandled rejections
-    const data = await fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(apiUrl, {
-      headers,
+    // TCGDex is fast and free - no API key needed
+    const tcgdexData = await fetchJSON<TCGDexSetBrief[]>(apiUrl, {
       useCache: true,
       cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - sets rarely change
       forceRefresh: shouldForceRefresh,
-      timeout: apiKey ? 15000 : 8000, // 15s with API key, 8s without (increased for reliability)
-      retries: apiKey ? 2 : 1, // More retries for better reliability
+      timeout: 15000,
+      retries: 2,
       retryDelay: 1000,
-      throwOnError: false // NEVER throw - return null on error to avoid unhandled rejections
+      throwOnError: false
     });
 
     // If API failed or timed out, use static fallback immediately
-    if (!data) {
-      logger.info('Pokemon TCG API unavailable, using static fallback', {
-        duration: Date.now() - startTime,
-        hasApiKey: !!apiKey
+    if (!tcgdexData || !Array.isArray(tcgdexData)) {
+      logger.info('TCGDex API unavailable, using static fallback', {
+        duration: Date.now() - startTime
       });
 
       const fallback = createFallbackResponse(pageNum, pageSizeNum);
@@ -122,23 +112,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json(fallback);
     }
 
-    if (!data.data) {
-      logger.warn('API returned invalid data structure, using fallback');
-      const fallback = createFallbackResponse(pageNum, pageSizeNum);
+    // Transform TCGDex sets to existing app format
+    const allSets = transformSets(tcgdexData);
 
-      res.setHeader('X-Cache-Status', 'fallback-invalid-data');
-      res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
-      res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    // Sort by release date (newest first) - TCGDex may not sort by default
+    // Note: transformSetBrief sets releaseDate to empty, so we sort by id which often correlates with release
+    allSets.sort((a, b) => b.id.localeCompare(a.id));
 
-      return res.status(200).json(fallback);
-    }
+    // Paginate the results (TCGDex returns all sets at once)
+    const startIndex = (pageNum - 1) * pageSizeNum;
+    const sets = allSets.slice(startIndex, startIndex + pageSizeNum);
 
-    const sets = data?.data || [];
-    logger.debug('TCG API response received', {
+    logger.debug('TCGDex response transformed', {
       page: pageNum,
       pageSize: pageSizeNum,
       setCount: sets.length,
-      totalCount: data?.totalCount
+      totalCount: allSets.length
     });
 
     const response = {
@@ -146,13 +135,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       pagination: {
         page: pageNum,
         pageSize: pageSizeNum,
-        count: data?.count || sets.length,
-        totalCount: data?.totalCount || sets.length,
-        hasMore: (data?.count || sets.length) === pageSizeNum
+        count: sets.length,
+        totalCount: allSets.length,
+        hasMore: startIndex + pageSizeNum < allSets.length
       },
       meta: {
         responseTime: Date.now() - startTime,
-        cached: false
+        cached: false,
+        source: 'tcgdex'
       }
     };
 

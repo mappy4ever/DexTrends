@@ -125,14 +125,34 @@ fetchJSON(url, { useCache: false, forceRefresh: true })
 |----------|-------------|
 | `/api/tcgexpansions` | TCG card sets (paginated) |
 | `/api/tcgexpansions/[setId]` | Set details with cards |
+| `/api/tcg-cards` | Card search with filters (type, rarity, HP, etc.) |
+| `/api/tcg-cards/[cardId]` | Individual card details |
+| `/api/tcg-series` | Series list (Scarlet & Violet, Sword & Shield, etc.) |
+| `/api/tcg-series/[serieId]` | Series detail with its sets |
 | `/api/pocket-expansions` | Pokemon Pocket sets |
 | `/api/pocket-cards` | Pocket card database |
+
+### Card Search Filters
+`/api/tcg-cards` supports these query parameters:
+- `name` - Card name (required, supports wildcards: `*chu`, `pika*`)
+- `type` - Energy type (Fire, Water, Grass, etc.)
+- `rarity` - Rarity level
+- `hpMin` / `hpMax` - HP range
+- `illustrator` - Artist name
+- `category` - Pokemon | Trainer | Energy
+- `stage` - Basic | Stage1 | Stage2 | V | VMAX | ex
+- `legal` - standard | expanded (tournament legality)
+- `sort` / `order` - Sort field and direction (ASC/DESC)
+- `page` / `pageSize` - Pagination
 
 ## External APIs
 
 - **PokeAPI**: Pokemon data (pokeapi.co)
-- **Pokemon TCG API**: Card data (pokemontcg.io)
-- **TCGDex**: Pokemon Pocket data (tcgdex.net)
+- **TCGDex**: TCG + Pocket card data (api.tcgdex.net) - Primary source for all trading card data
+  - No API key required
+  - Includes pricing data (TCGPlayer + CardMarket)
+  - Adapter: `/utils/tcgdex-adapter.ts`
+  - Types: `/types/api/tcgdex.d.ts`
 
 ## Current Work: QA & Design Audit
 

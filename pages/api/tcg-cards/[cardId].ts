@@ -3,9 +3,9 @@ import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { tcgCache } from '../../../lib/tcg-cache';
 import performanceMonitor from '../../../utils/performanceMonitor';
-import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
-import type { UnknownError } from '../../../types/common';
 import type { TCGCard } from '../../../types/api/cards';
+import type { TCGDexCard } from '../../../types/api/tcgdex';
+import { transformCard, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
 import { isTCGCard } from '../../../utils/typeGuards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -40,47 +40,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
     
-    logger.info('[TCG Card API] Cache miss, fetching from API', { cardId: id });
-    
-    // Not in cache, fetch from API
-    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-    
-    if (apiKey) {
-      headers['X-Api-Key'] = apiKey;
-    }
-    
-    // Fetch card from API
-    const cardData = await fetchJSON<TCGApiResponse<TCGCard>>(
-      `https://api.pokemontcg.io/v2/cards/${id}`,
-      {
-        headers,
-        useCache: true,
-        cacheTime: 60 * 60 * 1000, // 1 hour
-        timeout: 10000,
-        retries: 2,
-        retryDelay: 1000
-      }
-    );
-    
-    if (!cardData) {
+    logger.info('[TCG Card API] Cache miss, fetching from TCGDex', { cardId: id });
+
+    // Fetch card from TCGDex API (no API key required)
+    const apiUrl = TCGDexEndpoints.card(id, 'en');
+    const tcgdexCard = await fetchJSON<TCGDexCard>(apiUrl, {
+      useCache: true,
+      cacheTime: 60 * 60 * 1000, // 1 hour
+      timeout: 10000,
+      retries: 2,
+      retryDelay: 1000,
+      throwOnError: false
+    });
+
+    if (!tcgdexCard) {
       // API call returned null - likely timeout or API unavailable
-      logger.warn('Pokemon TCG API unavailable for card detail', { cardId: id });
+      logger.warn('TCGDex API unavailable for card detail', { cardId: id, apiUrl });
       return res.status(503).json({
         error: 'Service temporarily unavailable',
-        message: 'The Pokemon TCG API is currently unavailable. Please try again later.',
+        message: 'The TCGDex API is currently unavailable. Please try again later.',
         cardId: id,
         retryAfter: 60
       });
     }
 
-    if (!cardData.data) {
+    if (!tcgdexCard.id) {
       return res.status(404).json({ error: 'Card not found', cardId: id });
     }
-    
-    const card = cardData.data;
+
+    // Transform TCGDex card to app format
+    const card = transformCard(tcgdexCard);
     
     // Cache the card for future requests (ensure card exists)
     if (card) {
@@ -133,47 +122,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 // API endpoint for fetching related cards (cards with the same Pokemon name)
-export async function getRelatedCards(pokemonName: string, excludeId?: string): Promise<unknown[]> {
+export async function getRelatedCards(pokemonName: string, excludeId?: string): Promise<TCGCard[]> {
   try {
     // Start performance monitoring
     const timerStart = performanceMonitor.startTimer('api-request-related');
-    
-    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-    
-    if (apiKey) {
-      headers['X-Api-Key'] = apiKey;
-    }
-    
+
     // Extract base Pokemon name (without forms/variants)
     const baseName = pokemonName.split(" ")[0];
-    
-    // Fetch related cards
-    const relatedData = await fetchJSON<TCGApiResponse<unknown[]>>(
-      `https://api.pokemontcg.io/v2/cards?q=name:${encodeURIComponent(baseName)}&pageSize=20`,
-      {
-        headers,
-        useCache: true,
-        cacheTime: 30 * 60 * 1000, // 30 minutes
-        timeout: 10000,
-        retries: 1
-      }
-    );
-    
+
+    // Fetch related cards from TCGDex (no API key required)
+    const apiUrl = `${TCGDexEndpoints.cards('en')}?name=${encodeURIComponent(baseName)}`;
+    const relatedData = await fetchJSON<TCGDexCard[]>(apiUrl, {
+      useCache: true,
+      cacheTime: 30 * 60 * 1000, // 30 minutes
+      timeout: 10000,
+      retries: 1,
+      throwOnError: false
+    });
+
     performanceMonitor.endTimer('api-request-related', timerStart);
-    
-    if (!relatedData?.data) {
+
+    if (!relatedData || !Array.isArray(relatedData)) {
       return [];
     }
-    
+
+    // Transform and filter cards
+    const transformedCards = relatedData.map(transformCard);
+
     // Filter out the current card and limit results
-    return relatedData.data
+    return transformedCards
       .filter(isTCGCard)
       .filter(card => card.id !== excludeId)
       .slice(0, 8);
-      
+
   } catch (error) {
     logger.error('[TCG Card API] Error fetching related cards', {
       pokemonName,

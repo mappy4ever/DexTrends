@@ -193,7 +193,14 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
   const isFavorite = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
 
   return (
-    <div className={`fixed inset-0 z-50 ${isFullscreen ? 'bg-black' : 'bg-black/80'} flex items-center justify-center transition-all duration-300 p-2 md:p-4`}>
+    <div
+      className={`fixed inset-0 z-50 ${isFullscreen ? 'bg-black' : 'bg-black/80'} flex items-center justify-center transition-all duration-300 p-2 md:p-4`}
+      style={{
+        // Fix iOS Safari viewport issues
+        height: '100dvh',
+        minHeight: '-webkit-fill-available',
+      }}
+    >
       {/* Background overlay */}
       <div
         className="absolute inset-0 cursor-pointer"
@@ -202,11 +209,13 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
 
       {/* Modal content - mobile optimized */}
       <div
-        className={`relative ${isFullscreen ? 'w-full h-full' : 'max-w-6xl max-h-[95vh] md:max-h-[90vh] w-full'} bg-white dark:bg-stone-900 rounded-lg overflow-hidden shadow-2xl transform-gpu`}
+        className={`relative ${isFullscreen ? 'w-full h-full' : 'max-w-6xl w-full'} bg-white dark:bg-stone-900 rounded-lg overflow-hidden shadow-2xl transform-gpu`}
         style={{
           // Hardware acceleration for mobile rendering
           WebkitBackfaceVisibility: 'hidden',
           backfaceVisibility: 'hidden',
+          // Proper max height for mobile viewports
+          maxHeight: isFullscreen ? '100%' : 'calc(100dvh - 1rem)',
         }}
       >
         {/* Header with controls */}

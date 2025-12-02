@@ -1,93 +1,209 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
-import type { TCGApiResponse } from '../../types/api/enhanced-responses';
+import type { TCGDexCard } from '../../types/api/tcgdex';
+import { transformCard, TCGDexEndpoints } from '../../utils/tcgdex-adapter';
 
+/**
+ * Enhanced TCG Card Search API
+ *
+ * Query Parameters:
+ * - name: Card name (required, supports wildcards: *chu, pika*)
+ * - type: Energy type filter (Fire, Water, Grass, etc.)
+ * - rarity: Rarity filter (Common, Uncommon, Rare, etc.)
+ * - hpMin: Minimum HP (number)
+ * - hpMax: Maximum HP (number)
+ * - illustrator: Artist name filter
+ * - category: Pokemon | Trainer | Energy
+ * - stage: Basic | Stage1 | Stage2 | V | VMAX | ex | etc.
+ * - legal: standard | expanded (tournament legality)
+ * - sort: Field to sort by (name, hp, rarity)
+ * - order: ASC | DESC
+ * - page: Page number (default 1)
+ * - pageSize: Items per page (default 50, max 100)
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
-  const { name, fields } = req.query;
+
+  // Extract all query params
+  const {
+    name,
+    type,
+    rarity,
+    hpMin,
+    hpMax,
+    illustrator,
+    category,
+    stage,
+    legal,
+    sort,
+    order = 'ASC',
+    page = '1',
+    pageSize = '50'
+  } = req.query;
+
   const pokemonName = Array.isArray(name) ? name[0] : name;
-  const requestedFields = Array.isArray(fields) ? fields[0] : fields;
 
   if (!pokemonName) {
     return res.status(400).json({ error: 'Pokemon name is required' });
   }
 
   try {
-    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-    
-    if (apiKey) {
-      headers['X-Api-Key'] = apiKey;
+    // Build TCGDex query with all filters
+    const queryParams = new URLSearchParams();
+
+    // Name filter (supports wildcards)
+    queryParams.append('name', pokemonName);
+
+    // Type filter (Fire, Water, Grass, etc.)
+    const typeFilter = Array.isArray(type) ? type[0] : type;
+    if (typeFilter) {
+      queryParams.append('types', typeFilter);
     }
 
-    // Use the Pokemon TCG API directly with optional field selection
-    let apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${encodeURIComponent(pokemonName)}`;
-    
-    // Add field selection to reduce response size if requested
-    if (requestedFields) {
-      const fieldsParam = requestedFields.split(',').map((f: string) => f.trim()).join(',');
-      apiUrl += `&select=${encodeURIComponent(fieldsParam)}`;
+    // Rarity filter
+    const rarityFilter = Array.isArray(rarity) ? rarity[0] : rarity;
+    if (rarityFilter) {
+      queryParams.append('rarity', `eq:${rarityFilter}`);
     }
-    
-    logger.debug('Fetching TCG cards from API', { url: apiUrl, pokemonName, fields: requestedFields });
-    
-    const data = await fetchJSON<TCGApiResponse<unknown[]>>(apiUrl, { 
-      headers,
+
+    // HP range filters
+    const minHp = Array.isArray(hpMin) ? hpMin[0] : hpMin;
+    const maxHp = Array.isArray(hpMax) ? hpMax[0] : hpMax;
+    if (minHp) {
+      queryParams.append('hp', `gte:${minHp}`);
+    }
+    if (maxHp) {
+      // TCGDex requires separate params for range, use client-side filtering for max
+    }
+
+    // Illustrator filter
+    const artistFilter = Array.isArray(illustrator) ? illustrator[0] : illustrator;
+    if (artistFilter) {
+      queryParams.append('illustrator', artistFilter);
+    }
+
+    // Category filter (Pokemon, Trainer, Energy)
+    const categoryFilter = Array.isArray(category) ? category[0] : category;
+    if (categoryFilter) {
+      queryParams.append('category', `eq:${categoryFilter}`);
+    }
+
+    // Stage filter (Basic, Stage1, Stage2, V, VMAX, ex, etc.)
+    const stageFilter = Array.isArray(stage) ? stage[0] : stage;
+    if (stageFilter) {
+      queryParams.append('stage', `eq:${stageFilter}`);
+    }
+
+    // Legal status filter
+    const legalFilter = Array.isArray(legal) ? legal[0] : legal;
+    if (legalFilter === 'standard') {
+      queryParams.append('legal.standard', 'true');
+    } else if (legalFilter === 'expanded') {
+      queryParams.append('legal.expanded', 'true');
+    }
+
+    // Sorting
+    const sortField = Array.isArray(sort) ? sort[0] : sort;
+    const sortOrder = Array.isArray(order) ? order[0] : order;
+    if (sortField) {
+      queryParams.append('sort:field', sortField);
+      queryParams.append('sort:order', sortOrder.toUpperCase());
+    }
+
+    // Pagination
+    const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1;
+    const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 50, 100);
+    queryParams.append('pagination:page', String(pageNum));
+    queryParams.append('pagination:itemsPerPage', String(pageSizeNum));
+
+    const apiUrl = `${TCGDexEndpoints.cards('en')}?${queryParams.toString()}`;
+
+    logger.debug('Fetching TCG cards from TCGDex', { url: apiUrl, pokemonName });
+
+    const tcgdexData = await fetchJSON<TCGDexCard[]>(apiUrl, {
       useCache: true,
       cacheTime: 30 * 60 * 1000, // Cache for 30 minutes (cards don't change often)
-      timeout: 15000, // Increased timeout for slow API
+      timeout: 15000,
       retries: 2,
       retryDelay: 500,
       throwOnError: false // Don't throw, handle errors gracefully
     });
-    
+
     // Handle null/undefined response gracefully
-    if (!data) {
-      logger.warn('TCG API returned null/undefined', { pokemonName, apiUrl });
+    if (!tcgdexData || !Array.isArray(tcgdexData)) {
+      logger.warn('TCGDex API returned null/undefined', { pokemonName, apiUrl });
       res.status(200).json({
         data: [],
         meta: {
           responseTime: Date.now() - startTime,
           cardCount: 0,
           pokemonName,
-          fields: requestedFields || 'all',
+          source: 'tcgdex',
           warning: 'API returned no data'
         }
       });
       return;
     }
-    
-    const cards = data?.data || [];
-    logger.debug('TCG API response received', { pokemonName, cardCount: cards.length });
-    
+
+    // Transform TCGDex cards to app format
+    let cards = tcgdexData.map(transformCard);
+
+    // Apply maxHp filter client-side (TCGDex doesn't support multiple HP conditions in one query)
+    if (maxHp) {
+      const maxHpNum = parseInt(maxHp, 10);
+      cards = cards.filter(card => {
+        const cardHp = card.hp ? parseInt(card.hp, 10) : 0;
+        return cardHp <= maxHpNum;
+      });
+    }
+
+    logger.debug('TCGDex API response transformed', {
+      pokemonName,
+      cardCount: cards.length,
+      filters: { type: typeFilter, rarity: rarityFilter, hpMin: minHp, hpMax: maxHp }
+    });
+
     // Add cache-control headers for better edge caching
     res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600'); // 30min cache, 1hr stale
     res.setHeader('Vary', 'Accept-Encoding'); // Support compression
-    
+
     // Add performance headers
     const responseTime = Date.now() - startTime;
     res.setHeader('X-Response-Time', `${responseTime}ms`);
-    
+    res.setHeader('X-Data-Source', 'tcgdex');
+
     // Log slow responses
     if (responseTime > 3000) {
-      logger.warn('Slow TCG cards API response', { 
-        responseTime, 
+      logger.warn('Slow TCG cards API response', {
+        responseTime,
         pokemonName,
-        cardCount: cards.length,
-        fields: requestedFields
+        cardCount: cards.length
       });
     }
-    
+
     res.status(200).json({
       data: cards,
+      pagination: {
+        page: pageNum,
+        pageSize: pageSizeNum,
+        count: cards.length
+      },
+      filters: {
+        name: pokemonName,
+        type: typeFilter || null,
+        rarity: rarityFilter || null,
+        hpMin: minHp ? parseInt(minHp, 10) : null,
+        hpMax: maxHp ? parseInt(maxHp, 10) : null,
+        illustrator: artistFilter || null,
+        category: categoryFilter || null,
+        stage: stageFilter || null,
+        legal: legalFilter || null
+      },
       meta: {
         responseTime,
         cardCount: cards.length,
-        pokemonName,
-        fields: requestedFields || 'all'
+        source: 'tcgdex'
       }
     });
   } catch (error) {

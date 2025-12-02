@@ -248,16 +248,25 @@ export default function PackOpening({
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 overflow-y-auto">
-      <div
-        className="relative w-full max-w-4xl bg-white dark:bg-stone-800 rounded-lg shadow-2xl overflow-visible transform-gpu my-auto"
-        style={{
-          // Hardware acceleration for mobile rendering
-          WebkitBackfaceVisibility: 'hidden',
-          backfaceVisibility: 'hidden',
-          maxHeight: '95vh',
-        }}
-      >
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4"
+      style={{
+        // Fix iOS Safari viewport issues
+        height: '100dvh',
+        minHeight: '-webkit-fill-available',
+      }}
+    >
+      {/* Scrollable container for small screens */}
+      <div className="w-full h-full flex items-center justify-center overflow-y-auto">
+        <div
+          className="relative w-full max-w-4xl bg-white dark:bg-stone-800 rounded-lg shadow-2xl transform-gpu m-auto"
+          style={{
+            // Hardware acceleration for mobile rendering
+            WebkitBackfaceVisibility: 'hidden',
+            backfaceVisibility: 'hidden',
+            maxHeight: 'calc(100dvh - 1rem)',
+          }}
+        >
         {/* Header */}
         <div className="flex items-center justify-between p-4 md:p-6 border-b border-border-color bg-light-grey dark:bg-stone-700">
           <div className="flex items-center gap-3">
@@ -434,8 +443,9 @@ export default function PackOpening({
             </div>
           )}
         </div>
+        </div>
       </div>
-      
+
       {/* Custom shake animation */}
       <style jsx>{`
         @keyframes shake {
