@@ -158,20 +158,33 @@ const UnifiedPokedex: NextPage = () => {
           await new Promise(resolve => setTimeout(resolve, 200));
         }
 
-        // Load species data for legendary/mythical status
-        for (let id = 1; id <= TOTAL_POKEMON; id++) {
-          try {
-            const species = await fetchJSON<{ is_legendary: boolean; is_mythical: boolean }>(
-              `https://pokeapi.co/api/v2/pokemon-species/${id}`,
-              { useCache: true, cacheTime: 60 * 60 * 1000, timeout: 10000 }
+        // Load species data for legendary/mythical status in batches
+        // Performance fix: Batch API calls instead of sequential (GAMMA-001)
+        const SPECIES_BATCH_SIZE = 20;
+        for (let start = 1; start <= TOTAL_POKEMON; start += SPECIES_BATCH_SIZE) {
+          const speciesPromises = [];
+          for (let id = start; id < start + SPECIES_BATCH_SIZE && id <= TOTAL_POKEMON; id++) {
+            speciesPromises.push(
+              fetchJSON<{ is_legendary: boolean; is_mythical: boolean }>(
+                `https://pokeapi.co/api/v2/pokemon-species/${id}`,
+                { useCache: true, cacheTime: 60 * 60 * 1000, timeout: 10000 }
+              )
+                .then(species => species ? { id, isLegendary: species.is_legendary, isMythical: species.is_mythical } : null)
+                .catch(() => null)
             );
-            if (species) {
-              allPokemon[id - 1].isLegendary = species.is_legendary;
-              allPokemon[id - 1].isMythical = species.is_mythical;
-            }
-          } catch {
-            // Continue without species data
           }
+
+          const speciesResults = await Promise.all(speciesPromises);
+          speciesResults.forEach(result => {
+            if (result) {
+              allPokemon[result.id - 1].isLegendary = result.isLegendary;
+              allPokemon[result.id - 1].isMythical = result.isMythical;
+            }
+          });
+
+          // Update UI after each batch and small delay to avoid API rate limits
+          setPokemon([...allPokemon]);
+          await new Promise(resolve => setTimeout(resolve, 200));
         }
 
         setPokemon([...allPokemon]);

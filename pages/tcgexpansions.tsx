@@ -6,6 +6,7 @@ import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/
 import { fetchJSON } from "../utils/unifiedFetch";
 import { useTheme, useViewSettings } from '../context/UnifiedAppContext';
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import { useDebounce } from "../hooks/useDebounce";
 import { createGlassStyle, GradientButton, CircularButton } from '../components/ui/design-system';
 import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
 import { motion } from 'framer-motion';
@@ -46,6 +47,9 @@ const TcgSetsContent: React.FC = () => {
   const [filterSeries, setFilterSeries] = useState<string>("");
   const [sortOption, setSortOption] = useState<SortOption>("releaseDate");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  // Performance fix: Debounce search input (GAMMA-002)
+  const debouncedSearch = useDebounce(search, 300);
 
   const fetchSets = async (page = 1, append = false) => {
       logger.debug(`Fetching TCG sets page ${page}...`);
@@ -231,18 +235,19 @@ const TcgSetsContent: React.FC = () => {
   }, [sets]);
 
   // Filter sets by search query and series
+  // Uses debouncedSearch for better performance (GAMMA-002)
   const filteredSets = useMemo(() => {
     if (!sets || !Array.isArray(sets)) return [];
     return sets.filter((set) => {
-      let matches = set.name.toLowerCase().includes(search.toLowerCase());
-      
+      let matches = set.name.toLowerCase().includes(debouncedSearch.toLowerCase());
+
       if (filterSeries && set.series) {
         matches = matches && set.series === filterSeries;
       }
-      
+
       return matches;
     });
-  }, [sets, search, filterSeries]);
+  }, [sets, debouncedSearch, filterSeries]);
 
   // Sort the filtered sets
   const sortedSets = useMemo(() => {
