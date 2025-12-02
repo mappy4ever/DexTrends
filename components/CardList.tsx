@@ -96,12 +96,12 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             decoding="async"
           />
           
-          {/* Rarity Badge - Floating Glass Orb */}
+          {/* Rarity Badge - Solid bg for iOS */}
           {card.rarity && (
             <div className="absolute top-2 right-2">
               <div className={`
                 w-10 h-10 rounded-full
-                backdrop-blur-md bg-gradient-to-br ${getRarityPillColor(card.rarity)}
+                bg-gradient-to-br ${getRarityPillColor(card.rarity)}
                 flex items-center justify-center
                 shadow-md border border-white/50
                 text-xs font-bold
@@ -110,24 +110,25 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
               </div>
             </div>
           )}
-          
-          {/* Magnify Button */}
+
+          {/* Magnify Button - proper touch target for mobile */}
           <button
             className="
               absolute bottom-2 right-2
-              w-8 h-8 rounded-full
-              bg-white/80 dark:bg-stone-800/80
+              w-11 h-11 rounded-full
+              bg-white dark:bg-stone-800
               flex items-center justify-center
-              shadow-md border border-stone-200/50
-              opacity-0 group-hover:opacity-100
+              shadow-md border border-stone-200 dark:border-stone-700
+              opacity-0 group-hover:opacity-100 active:opacity-100
               transition-opacity duration-200
+              touch-manipulation
             "
             onClick={(e) => {
               e.stopPropagation();
               onMagnifyClick(card);
             }}
           >
-            <svg className="w-4 h-4 text-stone-700 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 text-stone-700 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>

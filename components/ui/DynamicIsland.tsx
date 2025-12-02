@@ -202,12 +202,16 @@ export const DynamicIsland: React.FC<DynamicIslandProps> = ({ className = '' }) 
           <motion.div
             className={cn(
               "pointer-events-auto cursor-pointer",
-              "bg-gradient-to-r backdrop-blur-xl",
-              "border border-white/10 dark:border-white/5",
-              "shadow-premium-lg",
+              "bg-gradient-to-r",
+              "border border-stone-200 dark:border-stone-700",
+              "shadow-lg",
               "overflow-hidden",
               getTypeStyles()
             )}
+            style={{
+              // Solid background color to avoid iOS blur issues
+              backgroundColor: 'rgba(255, 255, 255, 0.98)',
+            }}
             layout
             animate={{
               width: isExpanded ? (isInteractive ? 320 : 280) : 120,

@@ -399,21 +399,21 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
   };
   
   return (
-    <div 
-      className="rounded-lg border border-white/20 dark:border-stone-700/30 shadow-lg overflow-hidden backdrop-blur-sm"
+    <div
+      className="rounded-lg border border-stone-200 dark:border-stone-700 shadow-lg overflow-hidden"
       style={{
-        background: theme === 'dark' 
-          ? `linear-gradient(135deg, 
-              color-mix(in srgb, ${typeColors.accent} 8%, #111827), 
+        background: theme === 'dark'
+          ? `linear-gradient(135deg,
+              color-mix(in srgb, ${typeColors.accent} 8%, #111827),
               color-mix(in srgb, ${typeColors.animationAccent} 8%, #1f2937)
             )`
-          : `linear-gradient(135deg, 
-              color-mix(in srgb, ${typeColors.accent} 10%, #ffffff), 
+          : `linear-gradient(135deg,
+              color-mix(in srgb, ${typeColors.accent} 10%, #ffffff),
               color-mix(in srgb, ${typeColors.animationAccent} 10%, #f9fafb)
             )`
       }}>
-      {/* Tab Header with Mobile-Optimized Design */}
-      <div className="tab-header-mobile backdrop-blur-xl bg-white/95 dark:bg-stone-900/95 border-b border-stone-200 dark:border-stone-700 relative z-50 shadow-md">
+      {/* Tab Header with Mobile-Optimized Design - solid bg for iOS */}
+      <div className="tab-header-mobile bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 relative z-50 shadow-sm">
         <div className="tab-scroll-container flex overflow-x-auto scrollbar-hide px-4 py-3 gap-2 md:gap-3">
           {POKEMON_TABS.map((tab) => (
             <button

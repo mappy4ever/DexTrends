@@ -187,7 +187,7 @@ const PopularItemsList: React.FC<{
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="flex items-center justify-between p-3 rounded-lg bg-white/30 dark:bg-stone-800/30 backdrop-blur-sm"
+          className="flex items-center justify-between p-3 rounded-lg bg-white dark:bg-stone-800 border border-stone-100 dark:border-stone-700"
         >
           <div className="flex-1">
             <p className="font-medium text-stone-900 dark:text-white">

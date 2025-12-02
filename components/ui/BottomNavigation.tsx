@@ -91,11 +91,11 @@ export const BottomNavigation: React.FC = () => {
       {/* Spacer to prevent content from being hidden under nav */}
       <div className="h-[60px] md:hidden" />
       
-      {/* Bottom Navigation Bar */}
+      {/* Bottom Navigation Bar - solid bg for iOS performance */}
       <nav
         className={cn(
           "fixed bottom-0 left-0 right-0 md:hidden",
-          "bg-white/95 dark:bg-stone-900/95 backdrop-blur-lg",
+          "bg-white dark:bg-stone-900",
           "border-t border-stone-200 dark:border-stone-700",
           "pb-safe px-safe" // Safe area for iOS home indicator + sides
         )}

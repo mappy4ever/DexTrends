@@ -228,7 +228,7 @@ const PortfolioOverview: React.FC = () => {
         {/* Recent Activity */}
         <DefaultCard 
           variant="featured"
-          className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm"
+          className="bg-white dark:bg-stone-800"
           padding="none"
         >
           <CardHeader className="p-4">
@@ -261,7 +261,7 @@ const PortfolioOverview: React.FC = () => {
       {/* Portfolio Distribution */}
       <DefaultCard 
         variant="featured"
-        className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm"
+        className="bg-white dark:bg-stone-800"
       >
         <div className="p-4">
           <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
@@ -355,7 +355,7 @@ const PortfolioOverview: React.FC = () => {
       {/* Performance Chart Placeholder */}
       <DefaultCard 
         variant="featured"
-        className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm"
+        className="bg-white dark:bg-stone-800"
       >
         <div className="p-4 flex justify-between items-center">
           <h3 className="text-lg font-semibold text-stone-900 dark:text-white">

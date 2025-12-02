@@ -64,7 +64,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
         maxWidth: 'calc(100vw - 32px)',
       }}
     >
-      {/* Scroll to top button */}
+      {/* Scroll to top button - solid bg for iOS */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.div
@@ -77,7 +77,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
               size="icon"
               variant="secondary"
               onClick={scrollToTop}
-              className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-stone-800/90"
+              className="shadow-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700"
               title="Scroll to top"
             >
               <FaArrowUp />
@@ -85,23 +85,23 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-      
-      {/* Share button */}
+
+      {/* Share button - solid bg for iOS */}
       <ShareMenu
         onShare={(method) => sharePokemon(pokemon, method)}
         trigger={
           <CircularButton
             size="icon"
             variant="secondary"
-            className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-stone-800/90"
+            className="shadow-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700"
             title="Share Pokemon"
           >
             <FaShare />
           </CircularButton>
         }
       />
-      
-      {/* Favorite button */}
+
+      {/* Favorite button - solid bg for iOS */}
       <CircularButton
         size="icon"
         variant={isFavorite ? 'primary' : 'secondary'}
@@ -123,10 +123,10 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
           }
         }}
         className={cn(
-          "shadow-lg backdrop-blur-sm",
-          isFavorite 
-            ? "bg-red-500 hover:bg-red-600" 
-            : "bg-white/90 dark:bg-stone-800/90"
+          "shadow-lg",
+          isFavorite
+            ? "bg-red-500 hover:bg-red-600 border border-red-400"
+            : "bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700"
         )}
         title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       >

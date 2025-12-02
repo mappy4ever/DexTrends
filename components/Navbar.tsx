@@ -334,45 +334,45 @@ export default function Navbar() {
             );
           })}
         </nav>
-        <div className="flex items-center gap-x-2">
-          {/* Search Button */}
+        <div className="flex items-center gap-x-1.5 sm:gap-x-2">
+          {/* Search Button - proper touch target */}
           <button
             aria-label="Open search"
             title="Search (Cmd+K)"
-            className="p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
+            className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={() => searchModalRef.current?.open()}
           >
             <BsSearch className="w-5 h-5" />
           </button>
 
-          {/* Favorites */}
+          {/* Favorites - proper touch target */}
           <Link
             href="/favorites"
             aria-label="View favorites"
             title="View favorites"
-            className="relative p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
+            className="relative p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             data-is-navbar="true"
           >
             <BsHeart className="w-5 h-5" />
             <ClientOnly>
               {totalFavorites > 0 && (
-                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                <span className="absolute -top-0.5 -right-0.5 bg-amber-600 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
                   {totalFavorites > 99 ? '99+' : totalFavorites}
                 </span>
               )}
             </ClientOnly>
           </Link>
 
-          {/* User / Login Button */}
+          {/* User / Login Button - proper touch target */}
           <ClientOnly>
             <Link
               href={user ? "/profile" : "/auth/login"}
               aria-label={user ? "View profile" : "Sign in"}
               title={user ? "View profile" : "Sign in"}
-              className={`relative p-2 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 ${
+              className={`relative p-2.5 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center ${
                 user
-                  ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60'
-                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                  ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60 active:bg-amber-300 dark:active:bg-amber-900/80'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600'
               }`}
             >
               {authLoading ? (
@@ -383,16 +383,16 @@ export default function Navbar() {
                 <BsPerson className="w-5 h-5" />
               )}
               {user && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-stone-900" />
+                <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-stone-900" />
               )}
             </Link>
           </ClientOnly>
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle - proper touch target */}
           <button
             aria-label={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             title={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
+            className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={toggleTheme}
           >
             <ClientOnly>
@@ -407,12 +407,10 @@ export default function Navbar() {
       {/* Mobile Menu Overlay - Proper z-index and rendering */}
       {mobileOpen && (
         <>
-          {/* Backdrop - single layer with proper z-index */}
-          <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
-            style={{ 
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
+          {/* Backdrop - solid bg for iOS performance */}
+          <div
+            className="fixed inset-0 bg-black/60 z-40 md:hidden"
+            style={{
               pointerEvents: 'auto'
             }}
             onClick={() => setMobileOpen(false)}
@@ -434,29 +432,29 @@ export default function Navbar() {
                     <div key={`mobile-${item.href}`} className="space-y-0.5">
                       <Link
                         href={item.href}
-                        className={`flex items-center gap-x-3 px-3 py-3 rounded-lg font-medium touch-manipulation transition-colors duration-150
+                        className={`flex items-center gap-x-3 px-4 py-3.5 rounded-lg font-medium touch-manipulation transition-colors duration-150 min-h-[48px] active:bg-stone-200 dark:active:bg-stone-700
                           ${isActive
                             ? 'bg-amber-600 text-white'
                             : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                         onClick={() => setMobileOpen(false)}
                       >
-                        <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
+                        <span className={`flex-shrink-0 w-6 h-6 flex items-center justify-center ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                           {item.icon}
                         </span>
-                        <span className="font-medium">{item.label}</span>
+                        <span className="font-medium text-base">{item.label}</span>
                       </Link>
                       {/* Mobile dropdown items */}
-                      <div className="ml-8 space-y-0.5">
+                      <div className="ml-6 space-y-0.5 border-l-2 border-stone-200 dark:border-stone-700 pl-2">
                         {item.dropdownItems!.map((dropdownItem, dropdownIndex) => (
                           <Link key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
                             href={dropdownItem.href}
-                            className={`flex items-center gap-x-3 px-3 py-2.5 rounded-lg font-medium transition-colors duration-150 touch-manipulation
+                            className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-colors duration-150 touch-manipulation min-h-[44px] active:bg-stone-200 dark:active:bg-stone-700
                               ${router.pathname === dropdownItem.href
                                 ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
                                 : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                             onClick={() => setMobileOpen(false)}
                           >
-                            <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-amber-600 dark:text-amber-400' : 'text-stone-400'}`}>
+                            <span className={`flex-shrink-0 w-5 h-5 flex items-center justify-center ${router.pathname === dropdownItem.href ? 'text-amber-600 dark:text-amber-400' : 'text-stone-400'}`}>
                               {dropdownItem.icon}
                             </span>
                             <span className="text-sm">{dropdownItem.label}</span>
@@ -470,16 +468,16 @@ export default function Navbar() {
                 return (
                   <Link key={`mobile-${item.href}`}
                     href={item.href}
-                    className={`flex items-center gap-x-3 px-3 py-3 rounded-lg font-medium transition-colors duration-150 touch-manipulation
+                    className={`flex items-center gap-x-3 px-4 py-3.5 rounded-lg font-medium transition-colors duration-150 touch-manipulation min-h-[48px] active:bg-stone-200 dark:active:bg-stone-700
                       ${isActive
                         ? 'bg-amber-600 text-white'
                         : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                     onClick={() => setMobileOpen(false)}
                   >
-                    <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
+                    <span className={`flex-shrink-0 w-6 h-6 flex items-center justify-center ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                       {item.icon}
                     </span>
-                    <span className="font-medium">{item.label}</span>
+                    <span className="font-medium text-base">{item.label}</span>
                   </Link>
                 );
               })}

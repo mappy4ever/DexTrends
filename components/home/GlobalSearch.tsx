@@ -173,17 +173,17 @@ export const GlobalSearch: React.FC = () => {
             <Search className="w-5 h-5 text-stone-400" />
           </div>
 
-          {/* Clear Button / Loading Spinner */}
-          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+          {/* Clear Button / Loading Spinner - proper touch target */}
+          <div className="absolute right-2 top-1/2 -translate-y-1/2">
             {loading ? (
               <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
             ) : searchTerm ? (
               <button
                 type="button"
                 onClick={clearSearch}
-                className="p-0.5 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-md transition-colors duration-150"
+                className="p-2 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors duration-150 touch-manipulation min-w-[36px] min-h-[36px] flex items-center justify-center active:bg-stone-200 dark:active:bg-stone-600"
               >
-                <X className="w-4 h-4 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300" />
+                <X className="w-5 h-5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300" />
               </button>
             ) : null}
           </div>
@@ -200,11 +200,11 @@ export const GlobalSearch: React.FC = () => {
             transition={{ duration: 0.15 }}
             className="absolute top-full mt-2 w-full bg-white dark:bg-stone-800/95 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-stone-100 dark:border-stone-700/50 overflow-hidden z-50"
           >
-            {/* Recent Searches */}
+            {/* Recent Searches - proper touch targets */}
             {searchTerm.length < 2 && recentSearches.length > 0 && (
               <div className="p-3 border-b border-stone-100 dark:border-stone-700/50">
                 <h3 className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-2 px-1">Recent</h3>
-                <div className="space-y-0.5">
+                <div className="space-y-1">
                   {recentSearches.map((search, idx) => (
                     <button
                       key={idx}
@@ -212,7 +212,7 @@ export const GlobalSearch: React.FC = () => {
                         setSearchTerm(search);
                         performSearch(search);
                       }}
-                      className="w-full text-left px-2.5 py-2 hover:bg-stone-50 dark:hover:bg-stone-700/50 rounded-lg transition-colors duration-150 text-sm text-stone-700 dark:text-stone-300"
+                      className="w-full text-left px-3 py-3 hover:bg-stone-50 dark:hover:bg-stone-700/50 active:bg-stone-100 dark:active:bg-stone-600 rounded-lg transition-colors duration-150 text-sm text-stone-700 dark:text-stone-300 touch-manipulation min-h-[44px] flex items-center"
                     >
                       {search}
                     </button>
@@ -221,13 +221,13 @@ export const GlobalSearch: React.FC = () => {
               </div>
             )}
 
-            {/* Search Results */}
+            {/* Search Results - proper touch targets */}
             {results.length > 0 && (
               <div className="max-h-80 overflow-y-auto py-1">
                 {results.map((result, idx) => (
                   <Link href={result.url} key={`${result.category}-${result.id}`}>
                     <div
-                      className={`flex items-center gap-3 px-3 py-2.5 hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors duration-150 cursor-pointer ${
+                      className={`flex items-center gap-3 px-3 py-3 hover:bg-stone-50 dark:hover:bg-stone-700/50 active:bg-stone-100 dark:active:bg-stone-600 transition-colors duration-150 cursor-pointer touch-manipulation min-h-[52px] ${
                         idx === selectedIndex ? 'bg-stone-50 dark:bg-stone-700/50' : ''
                       }`}
                       onMouseEnter={() => setSelectedIndex(idx)}
