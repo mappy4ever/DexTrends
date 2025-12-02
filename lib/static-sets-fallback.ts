@@ -2,6 +2,8 @@
  * Static fallback data for TCG sets when API is unavailable
  * This provides instant loading for the most common requests
  * SORTED BY RELEASE DATE (newest first) to match API default order
+ *
+ * Note: Image URLs use pokemontcg.io CDN (works independently of API)
  */
 
 export const STATIC_SETS_FALLBACK = {

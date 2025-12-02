@@ -8,7 +8,7 @@ export const API_CONFIG = {
   // PokeAPI Configuration
   POKEAPI_BASE_URL: process.env.NEXT_PUBLIC_POKEAPI_URL || 'https://pokeapi.co/api/v2',
   
-  // Pokemon TCG API Configuration  
+  // Pokemon TCG API Configuration (deprecated - use TCGDex instead)
   POKEMON_TCG_API_URL: process.env.NEXT_PUBLIC_POKEMON_TCG_API_URL || 'https://api.pokemontcg.io/v2',
   
   // TCGDex API Configuration
@@ -45,7 +45,11 @@ export const POKEAPI = {
   itemList: (limit = 20, offset = 0) => `${API_CONFIG.POKEAPI_BASE_URL}/item?limit=${limit}&offset=${offset}`,
 } as const;
 
-// Pokemon TCG API Endpoints
+/**
+ * @deprecated Use TCGDEX instead - pokemontcg.io requires API key and has rate limits.
+ * TCGDex (api.tcgdex.net) is now the primary source for all TCG card data.
+ * Keeping this for reference/fallback only.
+ */
 export const POKEMON_TCG = {
   cards: (query?: string) => {
     const baseUrl = `${API_CONFIG.POKEMON_TCG_API_URL}/cards`;

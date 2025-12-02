@@ -1,12 +1,16 @@
 /**
  * Enhanced Price Data Collection System
  * Provides improved frequency, accuracy, and market trend analysis
+ *
+ * Uses TCGDex API for card data (no API key required)
  */
 
 import { supabase } from '../lib/supabase';
 import logger from './logger';
 import cacheManager from './UnifiedCacheManager';
 import type { TCGCard, PriceData } from '../types/api/cards';
+import type { TCGDexCard, TCGDexSet } from '../types/api/tcgdex';
+import { transformCard, TCGDexEndpoints } from './tcgdex-adapter';
 
 // Type definitions
 interface CollectionStats {
@@ -144,23 +148,17 @@ class EnhancedPriceCollector {
 
   /**
    * Enhanced card data fetching with retry logic and error handling
+   * Uses TCGDex API (no API key required)
    */
   async fetchCardDataWithRetry(cardId: string, retryCount: number = 0): Promise<TCGCard | null> {
     try {
-      const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-      
-      if (apiKey) {
-        headers['X-Api-Key'] = apiKey;
-      }
-
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
-      const response = await fetch(`https://api.pokemontcg.io/v2/cards/${cardId}`, {
-        headers,
+      // Use TCGDex API - no API key required
+      const apiUrl = TCGDexEndpoints.card(cardId, 'en');
+      const response = await fetch(apiUrl, {
+        headers: { 'Content-Type': 'application/json' },
         signal: controller.signal
       });
 
@@ -177,79 +175,87 @@ class EnhancedPriceCollector {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      return data.data as TCGCard;
-    } catch (error) {
-      if (retryCount < this.maxRetries && error.name !== 'AbortError') {
-        logger.warn(`Error fetching card ${cardId}, retry ${retryCount + 1}:`, { error: error.message });
+      const tcgdexCard = await response.json() as TCGDexCard;
+
+      // Transform TCGDex card to app format
+      return transformCard(tcgdexCard);
+    } catch (error: unknown) {
+      const err = error as Error;
+      if (retryCount < this.maxRetries && err.name !== 'AbortError') {
+        logger.warn(`Error fetching card ${cardId}, retry ${retryCount + 1}:`, { error: err.message });
         await this.delay(1000 * (retryCount + 1));
         return this.fetchCardDataWithRetry(cardId, retryCount + 1);
       }
-      logger.error(`Failed to fetch card ${cardId} after ${retryCount + 1} attempts:`, error);
+      logger.error(`Failed to fetch card ${cardId} after ${retryCount + 1} attempts:`, { error: err.message });
       return null;
     }
   }
 
   /**
    * Get trending and popular cards for collection
+   * Uses TCGDex API (no API key required)
    */
   async getTrendingCards(limit: number = 100): Promise<TCGCard[]> {
     try {
-      const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-      
-      if (apiKey) {
-        headers['X-Api-Key'] = apiKey;
-      }
-
-      // Get cards from multiple popular sets with price data
-      const queries = [
-        'set.id:base1 OR set.id:base2 OR set.id:base3',
-        'set.id:neo1 OR set.id:neo2 OR set.id:neo3',
-        'set.id:ex1 OR set.id:ex2 OR set.id:ex3',
-        'set.id:dp1 OR set.id:dp2 OR set.id:dp3',
-        'set.id:hgss1 OR set.id:hgss2 OR set.id:hgss3',
-        'set.id:bw1 OR set.id:bw2 OR set.id:bw3',
-        'set.id:xy1 OR set.id:xy2 OR set.id:xy3',
-        'set.id:sm1 OR set.id:sm2 OR set.id:sm3',
-        'set.id:swsh1 OR set.id:swsh2 OR set.id:swsh3',
-        'set.id:sv1 OR set.id:sv2 OR set.id:sv3'
+      // Popular sets to fetch cards from (TCGDex set IDs)
+      const popularSetIds = [
+        // Classic sets
+        'base1', 'base2', 'base3',
+        // Neo series
+        'neo1', 'neo2', 'neo3',
+        // Modern popular sets
+        'sv1', 'sv2', 'sv3', 'sv4', 'sv5',
+        'swsh1', 'swsh12pt5', // Crown Zenith
+        'xy12', // Evolutions
       ];
 
       const allCards: TCGCard[] = [];
-      const cardsPerQuery = Math.ceil(limit / queries.length);
+      const cardsPerSet = Math.ceil(limit / popularSetIds.length);
 
-      for (const query of queries) {
+      for (const setId of popularSetIds) {
         try {
-          const response = await fetch(
-            `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(query)}&pageSize=${cardsPerQuery}&orderBy=-tcgplayer.prices.holofoil.market`,
-            { headers }
-          );
+          // Fetch set with cards from TCGDex
+          const apiUrl = TCGDexEndpoints.set(setId, 'en');
+          const response = await fetch(apiUrl, {
+            headers: { 'Content-Type': 'application/json' }
+          });
 
           if (response.ok) {
-            const data = await response.json();
-            allCards.push(...(data.data || []));
+            const setData = await response.json() as TCGDexSet;
+
+            if (setData.cards && setData.cards.length > 0) {
+              // Fetch full card details for cards in this set (limited)
+              const cardIds = setData.cards.slice(0, cardsPerSet).map(c => c.id);
+
+              for (const cardId of cardIds) {
+                const card = await this.fetchCardDataWithRetry(cardId);
+                if (card) {
+                  allCards.push(card);
+                }
+                // Small delay between card fetches
+                await this.delay(50);
+              }
+            }
           }
-          
-          // Small delay between queries
+
+          // Small delay between sets
           await this.delay(200);
-        } catch (error) {
-          logger.warn(`Error fetching cards for query ${query}:`, { error: error.message });
+        } catch (error: unknown) {
+          const err = error as Error;
+          logger.warn(`Error fetching cards for set ${setId}:`, { error: err.message });
         }
       }
 
       // Remove duplicates and sort by market price
-      const uniqueCards = allCards.filter((card, index, self) => 
+      const uniqueCards = allCards.filter((card, index, self) =>
         index === self.findIndex(c => c.id === card.id)
       );
 
       return uniqueCards
         .filter(card => card.tcgplayer?.prices)
         .sort((a, b) => {
-          const aPrice = a.tcgplayer?.prices?.holofoil?.market || 0;
-          const bPrice = b.tcgplayer?.prices?.holofoil?.market || 0;
+          const aPrice = a.tcgplayer?.prices?.holofoil?.market || a.tcgplayer?.prices?.normal?.market || 0;
+          const bPrice = b.tcgplayer?.prices?.holofoil?.market || b.tcgplayer?.prices?.normal?.market || 0;
           return bPrice - aPrice;
         })
         .slice(0, limit);
@@ -678,13 +684,14 @@ class EnhancedPriceCollector {
         stats: this.collectionStats
       };
 
-    } catch (error) {
-      logger.error('Enhanced price collection failed:', error);
+    } catch (error: unknown) {
+      const err = error as Error;
+      logger.error('Enhanced price collection failed:', { error: err.message });
       this.collectionStats.endTime = new Date();
-      
+
       return {
         success: false,
-        error: error.message,
+        error: err.message,
         stats: this.collectionStats
       };
     } finally {
