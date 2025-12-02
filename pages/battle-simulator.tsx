@@ -1903,7 +1903,7 @@ const BattleSimulator: NextPage = () => {
           {battleLog.length > 0 && (
             <Container variant="default" className="mb-8">
               <h3 className="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">Battle Log</h3>
-              <div className="bg-white/50 dark:bg-stone-800/50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2 backdrop-blur-sm border border-white/20">
+              <div className="bg-white dark:bg-stone-800 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2 border border-stone-200 dark:border-stone-700">
                 {battleLog.map((log, index) => {
                   // Handle string logs from Quick Battle
                   if (typeof log === 'string') {

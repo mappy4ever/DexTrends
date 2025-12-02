@@ -334,45 +334,45 @@ export default function Navbar() {
             );
           })}
         </nav>
-        <div className="flex items-center gap-x-2">
-          {/* Search Button */}
+        <div className="flex items-center gap-x-1.5 sm:gap-x-2">
+          {/* Search Button - proper touch target */}
           <button
             aria-label="Open search"
             title="Search (Cmd+K)"
-            className="p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
+            className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={() => searchModalRef.current?.open()}
           >
             <BsSearch className="w-5 h-5" />
           </button>
 
-          {/* Favorites */}
+          {/* Favorites - proper touch target */}
           <Link
             href="/favorites"
             aria-label="View favorites"
             title="View favorites"
-            className="relative p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
+            className="relative p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             data-is-navbar="true"
           >
             <BsHeart className="w-5 h-5" />
             <ClientOnly>
               {totalFavorites > 0 && (
-                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                <span className="absolute -top-0.5 -right-0.5 bg-amber-600 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
                   {totalFavorites > 99 ? '99+' : totalFavorites}
                 </span>
               )}
             </ClientOnly>
           </Link>
 
-          {/* User / Login Button */}
+          {/* User / Login Button - proper touch target */}
           <ClientOnly>
             <Link
               href={user ? "/profile" : "/auth/login"}
               aria-label={user ? "View profile" : "Sign in"}
               title={user ? "View profile" : "Sign in"}
-              className={`relative p-2 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 ${
+              className={`relative p-2.5 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center ${
                 user
-                  ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60'
-                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                  ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60 active:bg-amber-300 dark:active:bg-amber-900/80'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600'
               }`}
             >
               {authLoading ? (
@@ -383,16 +383,16 @@ export default function Navbar() {
                 <BsPerson className="w-5 h-5" />
               )}
               {user && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-stone-900" />
+                <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-stone-900" />
               )}
             </Link>
           </ClientOnly>
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle - proper touch target */}
           <button
             aria-label={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             title={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
+            className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={toggleTheme}
           >
             <ClientOnly>
