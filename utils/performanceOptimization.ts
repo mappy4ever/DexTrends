@@ -318,10 +318,10 @@ export const CodeSplitBoundaries = {
 export const resourceHints = {
   // DNS prefetch for external APIs
   dnsPrefetch: [
-    'https://api.pokemontcg.io',
+    'https://api.tcgdex.net',
     'https://pokeapi.co',
     'https://raw.githubusercontent.com',
-    'https://images.pokemontcg.io',
+    'https://assets.tcgdex.net',
   ],
   
   // Preconnect for critical origins
