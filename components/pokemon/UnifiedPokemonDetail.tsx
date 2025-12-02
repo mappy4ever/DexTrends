@@ -85,34 +85,12 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
   
-  // Handle refresh
+  // Handle refresh - simplified to avoid stuck states
   const handleRefresh = useCallback(async () => {
     hapticFeedback.success();
-    dynamicIsland.show({
-      type: 'loading',
-      title: 'Refreshing Pokemon data...',
-      duration: 0
-    });
-    
-    // Simulate refresh (in real app, refetch data)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    dynamicIsland.show({
-      type: 'success',
-      title: 'Data refreshed',
-      message: `${pokemon.name} data updated`,
-      metadata: {
-        pokemon: {
-          id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
-          name: pokemon.name,
-          sprite: pokemon.sprites?.front_default || undefined
-        }
-      }
-    });
-    
-    // Reload the page or refetch data
+    // Just reload the page directly - no overlay needed
     window.location.reload();
-  }, [pokemon]);
+  }, []);
   
   // Add swipe gestures for navigation
   useSwipeGesture(mainRef, {
