@@ -101,8 +101,14 @@ const TrendingPage: NextPage = () => {
           'gyarados', 'dragonite', 'alakazam', 'snorlax', 'jigglypuff'
         ];
         
-        // Choose some random popular Pokémon
-        const selectedPokemon = popularPokemon.sort(() => 0.5 - Math.random()).slice(0, 5);
+        // Choose some random popular Pokémon using Fisher-Yates shuffle
+        // Fix DELTA-001: Math.random() sort comparator is biased - use proper shuffle
+        const shuffled = [...popularPokemon];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        const selectedPokemon = shuffled.slice(0, 5);
         
         // Fetch cards for these Pokémon
         const promises = selectedPokemon.map(async (name) => {

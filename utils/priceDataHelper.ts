@@ -117,15 +117,22 @@ export function calculatePriceStats(priceData: PriceDataPoint[]): PriceHistoryDa
   const average = prices.reduce((sum, price) => sum + price, 0) / prices.length;
   
   // Determine trend based on first and last 25% of data
-  const quarterLength = Math.floor(priceData.length / 4);
+  // Fix DELTA-012: Handle edge case when priceData.length < 4 (quarterLength = 0)
+  const quarterLength = Math.max(1, Math.floor(priceData.length / 4));
   const firstQuarter = priceData.slice(0, quarterLength);
   const lastQuarter = priceData.slice(-quarterLength);
-  
-  const firstAvg = firstQuarter.reduce((sum, d) => sum + d.price, 0) / firstQuarter.length;
-  const lastAvg = lastQuarter.reduce((sum, d) => sum + d.price, 0) / lastQuarter.length;
-  
+
+  // Safe division - check array length before dividing
+  const firstAvg = firstQuarter.length > 0
+    ? firstQuarter.reduce((sum, d) => sum + d.price, 0) / firstQuarter.length
+    : 0;
+  const lastAvg = lastQuarter.length > 0
+    ? lastQuarter.reduce((sum, d) => sum + d.price, 0) / lastQuarter.length
+    : 0;
+
   let trend: 'up' | 'down' | 'stable' = 'stable';
-  const changePercent = ((lastAvg - firstAvg) / firstAvg) * 100;
+  // Safe division - check firstAvg is not zero before calculating percent change
+  const changePercent = firstAvg > 0 ? ((lastAvg - firstAvg) / firstAvg) * 100 : 0;
   
   if (changePercent > 5) trend = 'up';
   else if (changePercent < -5) trend = 'down';
