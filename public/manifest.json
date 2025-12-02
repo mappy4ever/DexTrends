@@ -13,7 +13,7 @@
   "dir": "ltr",
   "categories": ["games", "entertainment", "productivity", "utilities"],
   "prefer_related_applications": false,
-  "display_override": ["window-controls-overlay", "standalone"],
+  "display_override": ["standalone"],
   "icons": [
     {
       "src": "/favicon.ico",

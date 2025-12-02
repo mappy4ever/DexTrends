@@ -145,11 +145,11 @@ export default function EnhancedSearchBox({
     <div className={`relative ${className}`}>
       <div className="relative">
         {/* Search Icon */}
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
           <svg
-            className={`w-4 h-4 transition-colors ${isSearching ? 'text-pokemon-blue animate-pulse' : 'text-stone-400'}`} 
-            fill="none" 
-            viewBox="0 0 24 24" 
+            className={`w-4 h-4 transition-colors ${isSearching ? 'text-pokemon-blue animate-pulse' : 'text-stone-400'}`}
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -168,7 +168,7 @@ export default function EnhancedSearchBox({
           placeholder={placeholder}
           disabled={disabled}
           className={`
-            w-full pl-10 pr-10 py-3
+            w-full pl-11 pr-10 py-3
             border border-stone-300 rounded-lg
             focus:ring-2 focus:ring-pokemon-blue/20 focus:border-pokemon-blue
             disabled:bg-stone-100 disabled:cursor-not-allowed

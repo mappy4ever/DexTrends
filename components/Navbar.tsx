@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
-import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown, BsPerson, BsPersonFill } from "react-icons/bs";
+import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown, BsPerson, BsPersonFill, BsQuestionCircle } from "react-icons/bs";
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
@@ -117,6 +117,7 @@ export default function Navbar() {
       ]
     },
     { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={18} />, color: "text-poke-psychic" },
+    { href: "/support", label: "Support", icon: <BsQuestionCircle size={18} />, color: "text-stone-500" },
   ];
 
 

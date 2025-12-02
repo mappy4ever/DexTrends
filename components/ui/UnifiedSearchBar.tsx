@@ -163,11 +163,11 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
     }
   };
 
-  // Size configurations - consistent with design system, tighter icon spacing
+  // Size configurations - consistent with design system, proper icon spacing to not block placeholder
   const sizeConfig = {
-    sm: { height: 'h-9', padding: 'pl-9 pr-9', text: 'text-sm', iconSize: 'w-4 h-4', iconLeft: 'left-2.5' },
-    md: { height: 'h-11', padding: 'pl-10 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-3' },
-    lg: { height: 'h-12', padding: 'pl-11 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-3.5' },
+    sm: { height: 'h-9', padding: 'pl-10 pr-9', text: 'text-sm', iconSize: 'w-4 h-4', iconLeft: 'left-3' },
+    md: { height: 'h-11', padding: 'pl-11 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-3.5' },
+    lg: { height: 'h-12', padding: 'pl-12 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-4' },
   };
 
   // Variant configurations - clean, consistent styling

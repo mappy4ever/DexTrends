@@ -8,11 +8,25 @@
    ======================================== */
 @media (max-width: 768px) {
   /* Force ALL elements to show their full content */
-  *:not(html):not(body) {
+  /* IMPORTANT: Exclude sr-only and visually-hidden elements to keep accessibility text hidden */
+  *:not(html):not(body):not(.sr-only):not(.visually-hidden):not([class*="sr-only"]) {
     overflow: visible !important;
     min-height: auto !important;
-    clip: auto !important;
-    clip-path: none !important;
+  }
+
+  /* Keep screen reader text hidden - DO NOT override clip on these */
+  .sr-only,
+  .visually-hidden,
+  [class*="sr-only"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
   }
   
   /* Only body and html can have scroll */
@@ -68,8 +82,8 @@
   }
   
   /* Move displays - CRITICAL FIX */
-  [class*="move"],
-  [class*="Move"],
+  [class*="move"]:not(.sr-only),
+  [class*="Move"]:not(.sr-only),
   .move-display,
   .move-container,
   .moves-tab,
@@ -79,8 +93,6 @@
     overflow: visible !important;
     min-height: fit-content !important;
     height: auto !important;
-    clip: unset !important;
-    clip-path: none !important;
   }
   
   /* Specific fix for move item containers */
@@ -115,17 +127,16 @@
   }
   
   /* Rounded corners must NEVER clip content on mobile */
-  .rounded,
-  .rounded-sm,
-  .rounded-md,
-  .rounded-lg,
-  .rounded-xl,
-  .rounded-2xl,
-  .rounded-3xl,
-  [class*="rounded"] {
+  /* Exclude sr-only to keep accessibility text hidden */
+  .rounded:not(.sr-only),
+  .rounded-sm:not(.sr-only),
+  .rounded-md:not(.sr-only),
+  .rounded-lg:not(.sr-only),
+  .rounded-xl:not(.sr-only),
+  .rounded-2xl:not(.sr-only),
+  .rounded-3xl:not(.sr-only),
+  [class*="rounded"]:not(.sr-only):not(.visually-hidden) {
     overflow: visible !important;
-    clip: unset !important;
-    clip-path: none !important;
   }
   
   /* Exception: Avatar images and icons can clip */
