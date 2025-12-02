@@ -1,0 +1,81 @@
+/**
+ * Ability descriptions mapping for Pokemon
+ */
+
+export const abilityDescriptions: Record<string, string> = {
+  'overgrow': 'Powers up Grass-type moves when HP is low.',
+  'chlorophyll': 'Boosts Speed stat in sunshine.',
+  'blaze': 'Powers up Fire-type moves when HP is low.',
+  'solar-power': 'Boosts Special Attack in sunshine, but HP decreases.',
+  'torrent': 'Powers up Water-type moves when HP is low.',
+  'rain-dish': 'The Pokemon gradually regains HP in rain.',
+  'swarm': 'Powers up Bug-type moves when HP is low.',
+  'shed-skin': 'The Pokemon may heal its own status problems.',
+  'compound-eyes': 'Increases accuracy of moves.',
+  'shield-dust': 'Blocks additional effects of attacks.',
+  'run-away': 'Enables a sure getaway from wild Pokemon.',
+  'guts': 'Boosts Attack if there is a status problem.',
+  'hustle': 'Boosts Attack, but lowers accuracy.',
+  'intimidate': "Lowers the opposing Pokemon's Attack stat.",
+  'unnerve': 'Makes the foe nervous and unable to eat berries.',
+  'static': 'Contact with the Pokemon may cause paralysis.',
+  'lightning-rod': 'Draws in all Electric-type moves to up Special Attack.',
+  'adaptability': 'Powers up moves of the same type.',
+  'anticipation': "Senses a foe's dangerous moves.",
+  'synchronize': 'Passes a burn, poison, or paralysis to the foe.',
+  'inner-focus': 'Protects from flinching.',
+  'magic-guard': 'Protects from indirect damage.',
+  'bulletproof': 'Protects from ball and bomb moves.',
+  'soundproof': 'Gives immunity to sound-based moves.',
+  'thick-fat': 'Ups resistance to Fire and Ice-type moves.',
+  'sap-sipper': 'Boosts Attack when hit by a Grass-type move.',
+  'hydration': 'Heals status problems if it is raining.',
+  'ice-body': 'HP is gradually restored in a hailstorm.',
+  'snow-cloak': 'Raises evasion in a hailstorm.',
+  'sand-veil': 'Boosts evasion in a sandstorm.',
+  'sand-rush': 'Boosts Speed in a sandstorm.',
+  'pickup': 'The Pokemon may pick up items.',
+  'technician': 'Powers up weaker moves.',
+  'skill-link': 'Increases the frequency of multi-strike moves.',
+  'sniper': 'Powers up critical hits.',
+  'super-luck': 'Heightens critical-hit ratios.',
+  'damp': 'Prevents the use of self-destructing moves.',
+  'cloud-nine': 'Eliminates effects of weather.',
+  'vital-spirit': 'Prevents the Pokemon from falling asleep.',
+  'insomnia': 'Prevents the Pokemon from falling asleep.',
+  'early-bird': 'Awakens quickly from sleep.',
+  'flash-fire': 'Powers up if hit by Fire-type moves.',
+  'drought': 'Turns the sunlight harsh when entering battle.',
+  'drizzle': 'Makes it rain when entering battle.',
+  'sand-stream': 'Summons a sandstorm when entering battle.',
+  'snow-warning': 'Summons a hailstorm when entering battle.',
+  'tangled-feet': 'Raises evasion if confused.',
+  'motor-drive': 'Raises Speed if hit by Electric-type moves.',
+  'rivalry': 'Deals more damage to Pokemon of same gender.',
+  'steadfast': 'Raises Speed when flinched.',
+  'gluttony': 'Uses held berries earlier.',
+  'anger-point': 'Maxes Attack after taking a critical hit.',
+  'unburden': 'Raises Speed if a held item is used.',
+  'simple': 'Doubles stat changes.',
+  'unaware': 'Ignores stat changes in the opponent.',
+  'moody': 'Raises one stat and lowers another.',
+  'overcoat': 'Protects from weather damage and powder moves.',
+  'poison-touch': 'May poison targets when making contact.',
+  'regenerator': 'Restores HP when switching out.',
+  'big-pecks': 'Protects from Defense drops.',
+  'keen-eye': 'Prevents accuracy loss.',
+  'defiant': 'Attack sharply rises when stats are lowered.',
+  'competitive': 'Sharply raises Sp. Atk when stats are lowered.',
+  'libero': 'Changes type to match the move being used.',
+  'protean': 'Changes type to match the move being used.',
+  'grassy-surge': 'Turns the ground into Grassy Terrain when entering battle.',
+  'liquid-voice': 'All sound-based moves become Water-type moves.'
+};
+
+/**
+ * Get ability description by name
+ */
+export const getAbilityDescription = (abilityName: string): string => {
+  const key = abilityName.toLowerCase();
+  return abilityDescriptions[key] || 'This ability has a unique effect in battle.';
+};

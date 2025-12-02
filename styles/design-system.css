@@ -441,6 +441,30 @@
   opacity: 1;
 }
 
+/* iOS zoom prevention - ensure 16px minimum on ALL form elements */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* Tabular numbers for stats and prices */
+.tabular-nums,
+[data-tabular-nums],
+.stat-value,
+.price-value {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
 /* Hover Effects - Subtle & Elegant */
 .hover-lift {
   transition: all 0.2s ease-out;

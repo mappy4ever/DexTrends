@@ -619,6 +619,43 @@ export const TOUCH_TARGET = {
 } as const;
 
 // ===========================================
+// DISABLED - Consistent disabled state styling
+// ===========================================
+
+export const DISABLED = {
+  // Opacity reduction for disabled elements
+  opacity: 'opacity-50',
+  // Cursor style
+  cursor: 'cursor-not-allowed',
+  // Combined styles for interactive elements
+  interactive: 'opacity-50 cursor-not-allowed pointer-events-none',
+  // Softer version (for less prominent elements)
+  soft: 'opacity-40 cursor-not-allowed',
+  // Button specific
+  button: 'opacity-50 cursor-not-allowed hover:opacity-50 active:opacity-50',
+  // Input specific
+  input: 'opacity-60 cursor-not-allowed bg-stone-100 dark:bg-stone-800',
+  // Colors for disabled text
+  text: {
+    light: 'text-stone-400',
+    dark: 'dark:text-stone-500',
+    combined: 'text-stone-400 dark:text-stone-500',
+  },
+  // Background for disabled elements
+  bg: {
+    light: 'bg-stone-100',
+    dark: 'dark:bg-stone-800',
+    combined: 'bg-stone-100 dark:bg-stone-800',
+  },
+  // Border for disabled elements
+  border: {
+    light: 'border-stone-200',
+    dark: 'dark:border-stone-700',
+    combined: 'border-stone-200 dark:border-stone-700',
+  },
+} as const;
+
+// ===========================================
 // FOCUS - WCAG 2.1 AA Compliant Focus Styles
 // ===========================================
 
@@ -726,6 +763,8 @@ export default {
   TOUCH_TARGET,
   // Focus (WCAG 2.1 AA)
   FOCUS,
+  // Disabled state tokens
+  DISABLED,
   // Glass morphism (deprecated - use SURFACE instead)
   GLASS_BG,
   GLASS_BLUR,
