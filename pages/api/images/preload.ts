@@ -18,8 +18,25 @@ export default async function handler(req: PreloadImagesRequest, res: NextApiRes
   }
 
   const { setId, cardIds, limit = '20', quality = '75', size = 'small' } = req.query;
-  const limitNum = parseInt(limit as string) || 20;
-  
+
+  // ALPHA-005: Input validation
+  const limitNum = Math.min(Math.max(1, parseInt(limit as string) || 20), 100); // Cap at 100
+  const qualityNum = Math.min(Math.max(1, parseInt(quality as string) || 75), 100); // 1-100
+
+  // Validate size parameter
+  const validSizes = ['small', 'large', 'both'];
+  const sizeParam = validSizes.includes(size as string) ? size : 'small';
+
+  // Validate setId format (alphanumeric with hyphens)
+  if (setId && !/^[a-zA-Z0-9-]+$/.test(setId as string)) {
+    return res.status(400).json({ error: 'Invalid setId format' });
+  }
+
+  // Validate cardIds format (comma-separated alphanumeric with hyphens)
+  if (cardIds && !/^[a-zA-Z0-9-,\s]+$/.test(cardIds as string)) {
+    return res.status(400).json({ error: 'Invalid cardIds format' });
+  }
+
   try {
     let imageUrls: string[] = [];
     
@@ -31,10 +48,10 @@ export default async function handler(req: PreloadImagesRequest, res: NextApiRes
         
         for (const card of cards) {
           if (card.images) {
-            if (size === 'both') {
+            if (sizeParam === 'both') {
               if (card.images.small) imageUrls.push(card.images.small);
               if (card.images.large) imageUrls.push(card.images.large);
-            } else if (size === 'large') {
+            } else if (sizeParam === 'large') {
               imageUrls.push(card.images.large || card.images.small);
             } else {
               imageUrls.push(card.images.small || card.images.large);
@@ -55,10 +72,10 @@ export default async function handler(req: PreloadImagesRequest, res: NextApiRes
       for (const cardId of cardIdArray) {
         const cachedImages = await tcgCache.getImageUrls(cardId.trim());
         if (cachedImages) {
-          if (size === 'both') {
+          if (sizeParam === 'both') {
             if (cachedImages.small) imageUrls.push(cachedImages.small);
             if (cachedImages.large) imageUrls.push(cachedImages.large);
-          } else if (size === 'large') {
+          } else if (sizeParam === 'large') {
             imageUrls.push(cachedImages.large || cachedImages.small || '');
           } else {
             imageUrls.push(cachedImages.small || cachedImages.large || '');
@@ -86,17 +103,17 @@ export default async function handler(req: PreloadImagesRequest, res: NextApiRes
     const preloadLinks = imageUrls.map(url => {
       const params = new URLSearchParams();
       params.set('url', url);
-      params.set('q', quality);
-      
+      params.set('q', String(qualityNum));
+
       // Set standard card dimensions for better caching
-      if (size === 'small' || (size === 'both' && url.includes('small'))) {
+      if (sizeParam === 'small' || (sizeParam === 'both' && url.includes('small'))) {
         params.set('w', '245');
         params.set('h', '342');
       } else {
         params.set('w', '734');
         params.set('h', '1024');
       }
-      
+
       return `/_next/image?${params.toString()}`;
     });
     
@@ -109,8 +126,8 @@ export default async function handler(req: PreloadImagesRequest, res: NextApiRes
       originalUrls: imageUrls,
       count: imageUrls.length,
       settings: {
-        quality,
-        size,
+        quality: qualityNum,
+        size: sizeParam,
         limit: limitNum
       },
       timestamp: new Date().toISOString()

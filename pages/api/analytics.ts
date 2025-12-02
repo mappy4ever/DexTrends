@@ -8,6 +8,7 @@ import analyticsEngine from '../../utils/analyticsEngine';
 import logger from '../../utils/logger';
 import { ErrorResponse } from '@/types/api/api-responses';
 import type { UnknownError, AnyObject } from '../../types/common';
+import { validateAdminAuth } from '../../lib/admin-auth';
 
 interface QueryAnalysis {
   topQueries?: [string, number][];
@@ -126,6 +127,10 @@ async function handleGetAnalytics(
     // Handle different response formats
     const formatStr = Array.isArray(format) ? format[0] : format;
     if (formatStr === 'csv' && type === 'search') {
+      // ALPHA-006: CSV export requires admin authentication
+      if (!validateAdminAuth(req, res, 'analytics-csv-export')) {
+        return; // Response already sent by validateAdminAuth
+      }
       return handleCSVResponse(res as NextApiResponse<string | ErrorResponse>, analyticsData as unknown as AnyObject, type);
     }
 
