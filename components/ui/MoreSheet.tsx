@@ -61,13 +61,13 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - no blur on mobile for better rendering */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50"
             style={{ zIndex: Z_INDEX.modal - 1 }}
             onClick={onClose}
           />
@@ -83,9 +83,15 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
               'bg-white dark:bg-stone-900',
               'rounded-t-2xl',
               'pb-safe px-safe',
-              'shadow-2xl'
+              'shadow-2xl',
+              'transform-gpu'
             )}
-            style={{ zIndex: Z_INDEX.modal }}
+            style={{
+              zIndex: Z_INDEX.modal,
+              // Hardware acceleration for mobile rendering
+              WebkitBackfaceVisibility: 'hidden',
+              backfaceVisibility: 'hidden',
+            }}
           >
             {/* Handle */}
             <div className="flex justify-center pt-3 pb-2">

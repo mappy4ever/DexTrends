@@ -487,15 +487,20 @@ export function GlobalSearchModal() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-black/60 z-40"
               onClick={() => setIsOpen(false)}
             />
-            
+
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed inset-x-4 top-20 max-w-2xl mx-auto z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-x-4 top-20 max-w-2xl mx-auto z-50 transform-gpu"
+              style={{
+                // Hardware acceleration for mobile
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden',
+              }}
             >
               <UnifiedSearch
                 variant="full"

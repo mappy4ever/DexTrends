@@ -85,21 +85,21 @@ const ExportButton: React.FC<ExportButtonProps> = ({
       <AnimatePresence>
         {showModal && (
           <>
-            {/* Backdrop */}
+            {/* Backdrop - no blur for mobile performance */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/60 z-50"
               onClick={() => setShowModal(false)}
             />
 
-            {/* Modal */}
+            {/* Modal - opacity animation only for mobile compatibility */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ type: 'spring', duration: 0.3 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               className="fixed inset-0 flex items-center justify-center z-50 p-4"
               onClick={() => setShowModal(false)}
             >
@@ -111,7 +111,12 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                   border: 'strong',
                   shadow: 'glow',
                   rounded: 'xl',
-                })} p-6 rounded-xl max-w-md w-full`}
+                })} p-6 rounded-xl max-w-md w-full transform-gpu`}
+                style={{
+                  // Hardware acceleration for mobile rendering
+                  WebkitBackfaceVisibility: 'hidden',
+                  backfaceVisibility: 'hidden',
+                }}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}

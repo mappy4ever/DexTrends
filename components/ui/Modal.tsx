@@ -200,9 +200,16 @@ export const Modal: React.FC<ModalProps> = ({
     right: 'items-center justify-end pr-16'
   };
 
-  // Animation variants
+  // Animation variants - use simpler animations on mobile to avoid blur/rendering issues
+  const isMobile = viewport.isMobile;
+
   const animationVariants = {
-    scale: {
+    scale: isMobile ? {
+      // On mobile, use fade only to prevent blur from scale transforms
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 }
+    } : {
       initial: { opacity: 0, scale: 0.95 },
       animate: { opacity: 1, scale: 1 },
       exit: { opacity: 0, scale: 0.95 }
@@ -250,12 +257,13 @@ export const Modal: React.FC<ModalProps> = ({
     <AnimatePresence mode="wait">
       {isOpen && (
         <>
-          {/* Overlay - backdrop with selective blur (modals/sheets only per design) */}
+          {/* Overlay - backdrop with selective blur (desktop only - causes rendering issues on mobile) */}
           {backdrop && (
             <motion.div
               className={cn(
-                'fixed inset-0 bg-black/40',
-                backdrop === 'blur' && 'backdrop-blur-sm',
+                'fixed inset-0 bg-black/50',
+                // Only apply blur on desktop - mobile has rendering issues with backdrop-blur
+                backdrop === 'blur' && !isMobile && 'backdrop-blur-sm',
                 overlayClassName
               )}
               style={{ zIndex }}
@@ -290,8 +298,15 @@ export const Modal: React.FC<ModalProps> = ({
                 'w-full',
                 sizeStyles[size],
                 shouldRenderAsSheet && 'rounded-b-none rounded-t-3xl max-w-full',
+                // Hardware acceleration for mobile rendering
+                'transform-gpu',
                 className
               )}
+              style={{
+                // Force GPU layer for smoother mobile rendering
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden',
+              }}
               variants={animationVariants[effectiveAnimation]}
               initial="initial"
               animate="animate"

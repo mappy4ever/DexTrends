@@ -193,21 +193,24 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
   );
 
   return open ? (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm safe-area-padding" 
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 safe-area-padding"
       onClick={handleBackdropClick}
     >
       <Container
         variant="elevated"
         rounded="xl"
         padding="lg"
-        className="w-full max-w-lg mx-auto relative flex flex-col items-center modal-content"
+        className="w-full max-w-lg mx-auto relative flex flex-col items-center modal-content transform-gpu"
         onClick={e => e.stopPropagation()}
         tabIndex={-1}
         style={{
           outline: 'none',
-          maxHeight: 'calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
-        }}
+          maxHeight: 'calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
+          // Hardware acceleration for mobile rendering
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+        } as React.CSSProperties}
       >
         <div className="w-full flex flex-col items-center mb-2">
           <input

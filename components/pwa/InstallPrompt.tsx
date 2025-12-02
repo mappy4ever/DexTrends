@@ -214,8 +214,15 @@ const InstallPrompt: React.FC = () => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-end justify-center p-4">
-      <div className="bg-white/95 dark:bg-stone-800/95 rounded-t-3xl w-full max-w-md mx-auto shadow-2xl border border-stone-200 dark:border-stone-700 backdrop-blur-md animate-slide-up">
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center p-4">
+      <div
+        className="bg-white dark:bg-stone-800 rounded-t-3xl w-full max-w-md mx-auto shadow-2xl border border-stone-200 dark:border-stone-700 animate-slide-up transform-gpu"
+        style={{
+          // Hardware acceleration for mobile rendering
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+        }}
+      >
         {/* Header */}
         <div className="p-6 text-center border-b border-white/10">
           <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">

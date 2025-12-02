@@ -193,15 +193,22 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
   const isFavorite = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
 
   return (
-    <div className={`fixed inset-0 z-50 ${isFullscreen ? 'bg-black' : 'bg-black bg-opacity-75'} flex items-center justify-center transition-all duration-300`}>
+    <div className={`fixed inset-0 z-50 ${isFullscreen ? 'bg-black' : 'bg-black/80'} flex items-center justify-center transition-all duration-300 p-2 md:p-4`}>
       {/* Background overlay */}
-      <div 
-        className="absolute inset-0 cursor-pointer" 
+      <div
+        className="absolute inset-0 cursor-pointer"
         onClick={onClose}
       />
-      
-      {/* Modal content */}
-      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'max-w-6xl max-h-[90vh] w-full mx-4'} bg-white dark:bg-stone-900 rounded-lg overflow-hidden shadow-2xl`}>
+
+      {/* Modal content - mobile optimized */}
+      <div
+        className={`relative ${isFullscreen ? 'w-full h-full' : 'max-w-6xl max-h-[95vh] md:max-h-[90vh] w-full'} bg-white dark:bg-stone-900 rounded-lg overflow-hidden shadow-2xl transform-gpu`}
+        style={{
+          // Hardware acceleration for mobile rendering
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+        }}
+      >
         {/* Header with controls */}
         <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/50 to-transparent p-4">
           <div className="flex justify-between items-center text-white">
@@ -290,8 +297,8 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
           </div>
         </div>
 
-        {/* Image container */}
-        <div 
+        {/* Image container - mobile responsive */}
+        <div
           ref={containerRef}
           className="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing"
           onWheel={handleWheel}
@@ -304,7 +311,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
           onTouchEnd={handleMouseUp}
           onDoubleClick={handleDoubleClick}
         >
-          <div className="flex items-center justify-center h-full min-h-[400px]">
+          <div className="flex items-center justify-center h-full min-h-[250px] md:min-h-[400px]">
             <img
               ref={imageRef}
               src={card.images.large}

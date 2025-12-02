@@ -244,11 +244,22 @@ export default function PackOpening({
 
   if (!isOpen) return null;
 
+  // Check if mobile for conditional styling
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-4xl mx-4 bg-white rounded-lg shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 overflow-y-auto">
+      <div
+        className="relative w-full max-w-4xl bg-white dark:bg-stone-800 rounded-lg shadow-2xl overflow-visible transform-gpu my-auto"
+        style={{
+          // Hardware acceleration for mobile rendering
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+          maxHeight: '95vh',
+        }}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border-color bg-light-grey">
+        <div className="flex items-center justify-between p-4 md:p-6 border-b border-border-color bg-light-grey dark:bg-stone-700">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -269,12 +280,12 @@ export default function PackOpening({
           </button>
         </div>
 
-        {/* Pack Opening Area */}
-        <div className="p-8 text-center min-h-[600px] flex flex-col justify-center">
+        {/* Pack Opening Area - Mobile responsive */}
+        <div className="p-4 md:p-8 text-center min-h-[300px] md:min-h-[500px] flex flex-col justify-center overflow-y-auto">
           {packState === 'closed' && (
-            <div className="space-y-6">
-              {/* Pack Image - Vertical Orientation - Larger Size */}
-              <div className="relative mx-auto w-80 h-96 mb-6">
+            <div className="space-y-4 md:space-y-6">
+              {/* Pack Image - Responsive sizing */}
+              <div className="relative mx-auto w-48 h-64 md:w-80 md:h-96 mb-4 md:mb-6">
                 {packImage ? (
                   <Image
                     src={packImage}
@@ -286,7 +297,7 @@ export default function PackOpening({
                 ) : (
                   // Placeholder pack with rainbow indicator
                   <div className="w-full h-full bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 rounded-lg flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
+                    <div className="absolute inset-0 bg-white/30"></div>
                     <div className="relative z-10 text-center">
                       <div className="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mb-3 mx-auto">
                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -320,8 +331,8 @@ export default function PackOpening({
           )}
 
           {packState === 'shaking' && (
-            <div className="space-y-6">
-              <div className="relative mx-auto w-80 h-96 animate-pulse">
+            <div className="space-y-4 md:space-y-6">
+              <div className="relative mx-auto w-48 h-64 md:w-80 md:h-96 animate-pulse">
                 <div className={`w-full h-full ${packImage ? '' : 'bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400'} rounded-lg flex items-center justify-center animate-bounce`}>
                   {packImage ? (
                     <Image
@@ -329,14 +340,14 @@ export default function PackOpening({
                       alt="Opening pack"
                       fill
                       className="object-contain rounded-lg animate-shake drop-shadow-2xl"
-                      unoptimized={true} // Pack images are small and decorative
+                      unoptimized={true}
                     />
                   ) : (
                     <div className="text-white font-bold">OPENING...</div>
                   )}
                 </div>
               </div>
-              <p className="text-lg font-semibold text-dark-text animate-pulse">
+              <p className="text-base md:text-lg font-semibold text-dark-text dark:text-stone-100 animate-pulse">
                 Opening pack...
               </p>
             </div>
@@ -352,13 +363,13 @@ export default function PackOpening({
           )}
 
           {(packState === 'revealing' || packState === 'complete') && (
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-dark-text">
+            <div className="space-y-4 md:space-y-6">
+              <h3 className="text-xl md:text-2xl font-bold text-dark-text dark:text-stone-100">
                 Your Cards!
                 {hasRareCard && <span className="text-pokemon-yellow ml-2">⭐</span>}
               </h3>
-              
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 md:gap-4">
                 {revealedCards.map((card: PackCard, index: number) => {
                   const isRevealed = index <= currentCardIndex || packState === 'complete';
                   const holographicClass = getHolographicEffect(card.rarity);

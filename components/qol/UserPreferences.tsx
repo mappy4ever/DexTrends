@@ -547,8 +547,15 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({ isOpen, onCl
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <Container variant="elevated" className="w-full max-w-4xl max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-2 md:p-4 overflow-y-auto">
+      <Container
+        variant="elevated"
+        className="w-full max-w-4xl max-h-[95vh] md:max-h-[90vh] overflow-hidden transform-gpu my-auto"
+        style={{
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+        } as React.CSSProperties}
+      >
         <div className="flex h-full">
           {/* Sidebar */}
           <div className="w-64 bg-stone-50 dark:bg-stone-900 border-r border-stone-200 dark:border-stone-700">

@@ -155,15 +155,20 @@ export function PokemonSearchModal({ onSelect, onClose, excludeId }: PokemonSear
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        transition={SPRING_PHYSICS.gentle}
-        className="w-full max-w-md bg-white dark:bg-stone-900 rounded-2xl shadow-xl overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="w-full max-w-md bg-white dark:bg-stone-900 rounded-2xl shadow-xl overflow-hidden transform-gpu"
+        style={{
+          // Hardware acceleration for mobile rendering
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

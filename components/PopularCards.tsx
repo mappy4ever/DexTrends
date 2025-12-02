@@ -102,8 +102,15 @@ export default function PopularCards() {
         ))}
       </div>
       {modalCard && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" onClick={() => setModalCard(null)}>
-          <div className="bg-white rounded-lg p-6 relative max-w-md w-full" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setModalCard(null)}>
+          <div
+            className="bg-white dark:bg-stone-800 rounded-lg p-4 md:p-6 relative max-w-md w-full transform-gpu"
+            style={{
+              WebkitBackfaceVisibility: 'hidden',
+              backfaceVisibility: 'hidden',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
             <button
               className="absolute top-2 right-2 text-stone-600 hover:text-black text-2xl font-bold"
               onClick={() => setModalCard(null)}

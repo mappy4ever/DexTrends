@@ -421,14 +421,19 @@ export const VictoryCelebration: React.FC<VictoryCelebrationProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0, rotate: -10 }}
-        animate={{ scale: 1, rotate: 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        className="bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 p-8 rounded-xl shadow-2xl text-center max-w-md mx-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+        className="bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 p-8 rounded-xl shadow-2xl text-center max-w-md mx-4 transform-gpu"
+        style={{
+          // Hardware acceleration for mobile rendering
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <motion.div

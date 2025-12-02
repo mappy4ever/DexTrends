@@ -119,8 +119,14 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
 
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-2 md:p-4">
+      <div
+        className="bg-white dark:bg-stone-800 rounded-2xl max-w-4xl w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto transform-gpu"
+        style={{
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+        }}
+      >
         {/* Header */}
         <div className="bg-gradient-to-r from-amber-600 to-amber-600 text-white p-6 rounded-t-2xl">
           <div className="flex justify-between items-center">

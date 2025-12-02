@@ -278,6 +278,77 @@
 }
 
 /* ========================================
+   MODAL RENDERING FIXES FOR MOBILE
+   Prevents blur/invisible content on modals and popups
+   ======================================== */
+@media (max-width: 768px) {
+  /* Disable backdrop blur on mobile - causes rendering issues */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    --tw-backdrop-blur: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Ensure modal overlays are visible with solid backgrounds */
+  [role="dialog"],
+  [aria-modal="true"],
+  .modal-overlay,
+  .fixed.inset-0.z-50,
+  .fixed.inset-0.bg-black {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Hardware acceleration for all modal content */
+  [role="dialog"] > div,
+  [aria-modal="true"] > div,
+  .modal-content,
+  .fixed.inset-0 > div:not([aria-hidden="true"]) {
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    will-change: transform, opacity !important;
+  }
+
+  /* Prevent scale transforms on modal enter - causes subpixel blur */
+  .modal-content,
+  [role="dialog"] > div {
+    animation-name: modalFadeIn !important;
+  }
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Ensure modal content is always visible */
+  .modal-content,
+  [role="dialog"],
+  [aria-modal="true"] {
+    min-height: fit-content !important;
+    overflow: visible !important;
+  }
+
+  /* Fix for scrollable modal bodies */
+  .modal-body,
+  [role="dialog"] .overflow-y-auto {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ========================================
    DEBUGGING - Remove in production
    ======================================== */
 @media (max-width: 768px) and (prefers-color-scheme: light) {
@@ -285,7 +356,7 @@
   .debug-overflow [style*="overflow: hidden"] {
     border: 2px solid red !important;
   }
-  
+
   .debug-overflow [style*="overflow: clip"] {
     border: 2px solid orange !important;
   }

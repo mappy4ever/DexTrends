@@ -257,10 +257,17 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
         </div>
       )}
 
-      {/* Help modal */}
+      {/* Help modal - mobile optimized */}
       {helpMode && currentHelp && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <Container variant="elevated" className="max-w-lg w-full max-h-80 overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-2 md:p-4">
+          <Container
+            variant="elevated"
+            className="max-w-lg w-full max-h-[80vh] md:max-h-80 overflow-y-auto transform-gpu"
+            style={{
+              WebkitBackfaceVisibility: 'hidden',
+              backfaceVisibility: 'hidden',
+            } as React.CSSProperties}
+          >
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
