@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { fetchJSON } from '../utils/unifiedFetch';
 import { requestCache } from '../utils/UnifiedCacheManager';
 import logger from '../utils/logger';
@@ -45,6 +45,13 @@ export const SearchSuggestionsProvider: React.FC<SearchSuggestionsProviderProps>
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Fix BETA-010: Use ref for recentSearches in getSuggestions callback
+  // to prevent stale closure issues when state changes during async operations
+  const recentSearchesRef = useRef<string[]>(recentSearches);
+  useEffect(() => {
+    recentSearchesRef.current = recentSearches;
+  }, [recentSearches]);
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
@@ -108,7 +115,8 @@ export const SearchSuggestionsProvider: React.FC<SearchSuggestionsProviderProps>
 
     try {
       // Add recent searches that match
-      const matchingRecent = recentSearches
+      // Use ref to get latest recentSearches without causing callback recreation
+      const matchingRecent = recentSearchesRef.current
         .filter(s => s.toLowerCase().includes(lowerQuery))
         .slice(0, 3)
         .map(s => ({
@@ -265,7 +273,7 @@ export const SearchSuggestionsProvider: React.FC<SearchSuggestionsProviderProps>
     } finally {
       setLoading(false);
     }
-  }, [recentSearches, maxSuggestions]);
+  }, [maxSuggestions]); // Removed recentSearches - using ref instead to prevent stale closure
 
   const value: SearchSuggestionsContextType = {
     suggestions,

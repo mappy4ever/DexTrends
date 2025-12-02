@@ -65,6 +65,15 @@ export const useInfiniteScroll = <T = any>(
 
   const hasMore = visibleCount < Math.min(items.length, maxItems);
 
+  // Fix BETA-006: Use refs for values accessed in observer callback
+  // to prevent race conditions and avoid recreating observer on every state change
+  const stateRef = useRef({ hasMore: false, isLoading: false, visibleCount: 0, itemsLength: 0 });
+
+  // Keep state ref up to date
+  useEffect(() => {
+    stateRef.current = { hasMore, isLoading, visibleCount, itemsLength: items.length };
+  }, [hasMore, isLoading, visibleCount, items.length]);
+
   // Optimized load more function
   const loadMore = useCallback(() => {
     const now = Date.now();
@@ -111,6 +120,7 @@ export const useInfiniteScroll = <T = any>(
   }, [isLoading, hasMore, itemsPerLoad, items.length, visibleCount, maxItems, onLoadMore, debounceMs]);
 
   // Intersection Observer for better performance
+  // Uses stateRef to avoid recreating observer on every state change (BETA-006 fix)
   useEffect(() => {
     if (!useIntersectionObserver || !sentinelRef.current) {
       return;
@@ -119,11 +129,14 @@ export const useInfiniteScroll = <T = any>(
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
+        // Use ref to get latest state without causing observer recreation
+        const { hasMore: currentHasMore, isLoading: currentIsLoading, visibleCount: currentVisible, itemsLength } = stateRef.current;
         // Add additional check to prevent shaking at the end
-        if (entry.isIntersecting && hasMore && !isLoading && visibleCount < items.length) {
+        if (entry.isIntersecting && currentHasMore && !currentIsLoading && currentVisible < itemsLength) {
           // Small delay to prevent rapid triggering
           setTimeout(() => {
-            if (hasMore && !isLoading) {
+            const state = stateRef.current;
+            if (state.hasMore && !state.isLoading) {
               loadMore();
             }
           }, 50);
@@ -143,7 +156,7 @@ export const useInfiniteScroll = <T = any>(
         observerRef.current.disconnect();
       }
     };
-  }, [hasMore, isLoading, loadMore, rootMargin, useIntersectionObserver, visibleCount, items.length]);
+  }, [loadMore, rootMargin, useIntersectionObserver]); // Removed state values from deps
 
   // Fallback scroll listener with throttling
   useEffect(() => {
