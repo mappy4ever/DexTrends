@@ -145,7 +145,21 @@
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
   }
-  
+
+  /* Margin safe area utilities */
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mt-safe {
+    margin-top: env(safe-area-inset-top);
+  }
+
+  /* Height utilities with safe area */
+  .min-h-screen-safe {
+    min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
   /* Micro-interaction animations */
   @keyframes fadeIn {
     from { opacity: 0; }

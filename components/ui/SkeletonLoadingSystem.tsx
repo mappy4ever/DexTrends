@@ -74,6 +74,8 @@ interface SkeletonProps {
   children?: ReactNode;
   loading?: boolean;
   delay?: number;
+  /** Animation stagger index for sequential animations (50ms per index) */
+  staggerIndex?: number;
 }
 
 export const Skeleton: React.FC<SkeletonProps> = ({
@@ -86,13 +88,14 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   children,
   loading = true,
   delay = 0,
+  staggerIndex,
   ...props
 }) => {
   const [showSkeleton, setShowSkeleton] = useState(delay === 0 ? loading : false);
-  
+
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
-    
+
     if (delay > 0) {
       timer = setTimeout(() => {
         setShowSkeleton(loading);
@@ -100,16 +103,16 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     } else {
       setShowSkeleton(loading);
     }
-    
+
     return () => {
       if (timer) clearTimeout(timer);
     };
   }, [loading, delay]);
-  
+
   if (!showSkeleton) {
     return <>{children || null}</>;
   }
-  
+
   const getVariantClasses = (): string => {
     const variants: Record<SkeletonVariant, string> = {
       rectangular: 'rounded',
@@ -119,7 +122,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     };
     return variants[variant] || variants.rectangular;
   };
-  
+
   const getAnimationClasses = (): string => {
     const animations: Record<SkeletonAnimation, string> = {
       pulse: 'animate-pulse',
@@ -129,13 +132,17 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     };
     return animations[animation] || animations.pulse;
   };
-  
+
+  // Calculate stagger delay (50ms per index)
+  const staggerDelay = typeof staggerIndex === 'number' ? `${staggerIndex * 50}ms` : undefined;
+
   const skeletonStyle: CSSProperties = {
     width,
     height,
+    animationDelay: staggerDelay,
     ...style
   };
-  
+
   return (
     <div
       className={`
@@ -362,6 +369,8 @@ interface ListSkeletonProps {
   showAction?: boolean;
   avatarSize?: string;
   className?: string;
+  /** Enable staggered animations (50ms delay per item) */
+  stagger?: boolean;
 }
 
 export const ListSkeleton: React.FC<ListSkeletonProps> = ({
@@ -371,6 +380,7 @@ export const ListSkeleton: React.FC<ListSkeletonProps> = ({
   showAction = true,
   avatarSize = '3rem',
   className = '',
+  stagger = true,
   ...props
 }) => {
   return (
@@ -383,32 +393,39 @@ export const ListSkeleton: React.FC<ListSkeletonProps> = ({
               width={avatarSize}
               height={avatarSize}
               variant="circular"
-              className="mr-4 flex-shrink-0" />
+              className="mr-4 flex-shrink-0"
+              staggerIndex={stagger ? index : undefined}
+            />
           )}
-          
+
           {/* Content */}
           <div className="flex-1 min-w-0">
             <Skeleton
               height="1.25rem"
               width="60%"
               variant="text"
-              className="mb-1" />
+              className="mb-1"
+              staggerIndex={stagger ? index : undefined}
+            />
             {showSecondaryText && (
               <Skeleton
                 height="1rem"
                 width="40%"
                 variant="text"
+                staggerIndex={stagger ? index : undefined}
               />
             )}
           </div>
-          
+
           {/* Action */}
           {showAction && (
             <Skeleton
               width="2rem"
               height="2rem"
               variant="circular"
-              className="ml-4 flex-shrink-0" />
+              className="ml-4 flex-shrink-0"
+              staggerIndex={stagger ? index : undefined}
+            />
           )}
         </div>
       ))}

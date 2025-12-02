@@ -40,6 +40,12 @@ interface PokeballLoaderProps {
   isComplete?: boolean;
   minimal?: boolean;
   className?: string;
+  /** Progress percentage (0-100) - shows progress bar when provided */
+  progress?: number;
+  /** Show percentage text alongside progress bar */
+  showPercentage?: boolean;
+  /** Current step in a multi-step process (e.g., "2 of 5") */
+  step?: { current: number; total: number };
 }
 
 const sizeConfig: Record<Size, { container: string; centerButton: string; borderWidth: number }> = {
@@ -55,6 +61,9 @@ export const PokeballLoader = memo(function PokeballLoader({
   isComplete = false,
   minimal = false,
   className,
+  progress,
+  showPercentage = false,
+  step,
 }: PokeballLoaderProps) {
   const [selectedBall, setSelectedBall] = useState<PokeballType>(pokeballTypes[0]);
   const [mounted, setMounted] = useState(false);
@@ -86,11 +95,14 @@ export const PokeballLoader = memo(function PokeballLoader({
           fadeOut && 'animate-fade-out',
           className
         )}
+        role="status"
+        aria-live="polite"
+        aria-busy={!isComplete}
       >
+        <span className="sr-only">{isComplete ? 'Loading complete' : 'Loading'}</span>
         <div
           className={cn(config.container, 'relative animate-pokeball-bounce')}
-          role="status"
-          aria-label="Loading"
+          aria-hidden="true"
         >
           {/* Pokeball body */}
           <div
@@ -137,8 +149,12 @@ export const PokeballLoader = memo(function PokeballLoader({
         fadeOut && 'opacity-0',
         className
       )}
+      role="status"
+      aria-live="polite"
+      aria-busy={!isComplete}
     >
-      <div className="relative">
+      <span className="sr-only">{isComplete ? 'Loading complete' : text}</span>
+      <div className="relative" aria-hidden="true">
         {/* Pokeball with bounce animation */}
         <div className={cn(config.container, 'mx-auto mb-4 relative animate-pokeball-bounce')}>
           {/* Pokeball body */}
@@ -177,10 +193,36 @@ export const PokeballLoader = memo(function PokeballLoader({
         </div>
 
         {text && (
-          <div className="space-y-1">
-            <p className="text-lg font-medium text-stone-700">{text}</p>
-            {mounted && (
-              <p className="text-sm text-stone-500">
+          <div className="space-y-2">
+            <p className="text-lg font-medium text-stone-700 dark:text-stone-200">{text}</p>
+
+            {/* Progress bar */}
+            {typeof progress === 'number' && (
+              <div className="w-48 mx-auto">
+                <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-amber-500 rounded-full transition-all duration-300 ease-out"
+                    style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+                  />
+                </div>
+                {showPercentage && (
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 tabular-nums">
+                    {Math.round(progress)}%
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Step indicator */}
+            {step && (
+              <p className="text-sm text-stone-500 dark:text-stone-400 tabular-nums">
+                Step {step.current} of {step.total}
+              </p>
+            )}
+
+            {/* Fun flavor text (only show if no progress/step) */}
+            {mounted && !progress && !step && (
+              <p className="text-sm text-stone-500 dark:text-stone-400">
                 {selectedBall.name === 'pokeball' && 'Catching wild Pokémon...'}
                 {selectedBall.name === 'greatball' && 'Better chance of catching...'}
                 {selectedBall.name === 'ultraball' && 'Even better success rate...'}

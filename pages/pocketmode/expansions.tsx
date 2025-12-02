@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { FadeIn, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
@@ -12,6 +12,7 @@ import logger from '../../utils/logger';
 import BackToTop from "../../components/ui/BaseBackToTop";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
+import { ErrorState, NoSearchResults } from "../../components/ui/EmptyState";
 import { fetchJSON } from "../../utils/unifiedFetch";
 import type { NextPage } from "next";
 
@@ -41,47 +42,59 @@ const PocketExpansions: NextPage = () => {
   // Filter options
   const [sortOption, setSortOption] = useState<SortOption>("releaseDate");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
+  // Debounce search input (300ms)
   useEffect(() => {
-    async function fetchExpansions() {
-      setLoading(true);
-      setError(null);
-      try {
-        logger.info('Fetching Pocket expansions from API');
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
 
-        const data = await fetchJSON<PocketExpansion[]>('/api/pocket-expansions', {
-          useCache: false, // Disable cache to ensure fresh data
-          forceRefresh: true,
-          timeout: 15000,
-          retries: 2,
-          throwOnError: true
-        });
+  // Fetch expansions function - moved outside useEffect for retry access
+  const fetchExpansions = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      logger.info('Fetching Pocket expansions from API');
 
-        if (!data || !Array.isArray(data)) {
-          throw new Error('Invalid response from API');
-        }
+      const data = await fetchJSON<PocketExpansion[]>('/api/pocket-expansions', {
+        useCache: false,
+        forceRefresh: true,
+        timeout: 15000,
+        retries: 2,
+        throwOnError: true
+      });
 
-        logger.info('Pocket expansions loaded', { count: data.length });
-        setExpansions(data);
-      } catch (err) {
-        logger.error('Failed to load Pocket expansions', {
-          error: err instanceof Error ? err.message : String(err)
-        });
-        setError("Failed to load Pocket expansions. Please try again later.");
-        setExpansions([]);
+      if (!data || !Array.isArray(data)) {
+        throw new Error('Invalid response from API');
       }
-      setLoading(false);
+
+      logger.info('Pocket expansions loaded', { count: data.length });
+      setExpansions(data);
+    } catch (err) {
+      logger.error('Failed to load Pocket expansions', {
+        error: err instanceof Error ? err.message : String(err)
+      });
+      setError("Failed to load Pocket expansions. Please try again later.");
+      setExpansions([]);
     }
-    fetchExpansions();
+    setLoading(false);
   }, []);
 
-  // Filter expansions by search query
+  // Initial fetch
+  useEffect(() => {
+    fetchExpansions();
+  }, [fetchExpansions]);
+
+  // Filter expansions by debounced search query
   const filteredExpansions = useMemo(() => {
     return expansions.filter((expansion) =>
-      expansion.name.toLowerCase().includes(search.toLowerCase()) ||
-      expansion.code.toLowerCase().includes(search.toLowerCase())
+      expansion.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      expansion.code.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
-  }, [expansions, search]);
+  }, [expansions, debouncedSearch]);
 
   // Sort the filtered expansions
   const sortedExpansions = useMemo(() => {
@@ -192,6 +205,7 @@ const PocketExpansions: NextPage = () => {
                   <button
                     className="absolute inset-y-0 right-0 pr-3 text-stone-400 hover:text-stone-600"
                     onClick={() => setSearch('')}
+                    aria-label="Clear search"
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -204,28 +218,44 @@ const PocketExpansions: NextPage = () => {
             {/* Sort Controls */}
             <div className="flex flex-wrap gap-3 items-end">
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-sm font-semibold text-amber-700 dark:text-amber-300 mb-1">Sort By</label>
-                <select
-                  className="w-full px-3 py-2 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-xl text-sm"
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value as SortOption)}
-                >
-                  <option value="releaseDate">Release Date</option>
-                  <option value="name">Name</option>
-                  <option value="cardCount">Card Count</option>
-                </select>
+                <label htmlFor="pocketSortOption" className="block text-sm font-medium text-stone-600 dark:text-stone-300 mb-1.5">Sort By</label>
+                <div className="relative">
+                  <select
+                    id="pocketSortOption"
+                    className="w-full min-h-[44px] px-3 py-2.5 bg-stone-50 dark:bg-stone-700/50 rounded-lg text-sm border border-stone-200 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all pr-8 appearance-none"
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value as SortOption)}
+                  >
+                    <option value="releaseDate">Release Date</option>
+                    <option value="name">Name</option>
+                    <option value="cardCount">Card Count</option>
+                  </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
               </div>
 
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-sm font-semibold text-amber-700 dark:text-amber-300 mb-1">Order</label>
-                <select
-                  className="w-full px-3 py-2 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-xl text-sm"
-                  value={sortDirection}
-                  onChange={(e) => setSortDirection(e.target.value as SortDirection)}
-                >
-                  <option value="desc">Newest First</option>
-                  <option value="asc">Oldest First</option>
-                </select>
+                <label htmlFor="pocketSortDirection" className="block text-sm font-medium text-stone-600 dark:text-stone-300 mb-1.5">Order</label>
+                <div className="relative">
+                  <select
+                    id="pocketSortDirection"
+                    className="w-full min-h-[44px] px-3 py-2.5 bg-stone-50 dark:bg-stone-700/50 rounded-lg text-sm border border-stone-200 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all pr-8 appearance-none"
+                    value={sortDirection}
+                    onChange={(e) => setSortDirection(e.target.value as SortDirection)}
+                  >
+                    <option value="desc">Newest First</option>
+                    <option value="asc">Oldest First</option>
+                  </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
               </div>
 
               <GradientButton
@@ -246,15 +276,14 @@ const PocketExpansions: NextPage = () => {
         {loading ? (
           <PageLoader text="Loading Pocket expansions..." />
         ) : error ? (
-          <div className="text-center p-8 bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
-            <h2 className="text-xl font-bold text-red-600 mb-4">Failed to Load Expansions</h2>
-            <p className="text-stone-600 dark:text-stone-300 mb-4">{error}</p>
-            <GradientButton
-              variant="primary"
-              onClick={() => window.location.reload()}
-            >
-              Retry
-            </GradientButton>
+          <div className="bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
+            <ErrorState
+              error={error}
+              onRetry={() => {
+                setError(null);
+                fetchExpansions();
+              }}
+            />
           </div>
         ) : (
           <StaggeredChildren className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -317,18 +346,35 @@ const PocketExpansions: NextPage = () => {
                 </div>
               </CardHover>
             ))}
+
+            {/* Skeleton cards during batch loading */}
+            {scrollLoading && Array.from({ length: 4 }).map((_, index) => (
+              <div
+                key={`skeleton-${index}`}
+                className="rounded-xl overflow-hidden bg-white/90 dark:bg-stone-800/90 border border-stone-200/50 dark:border-stone-700/50 shadow-lg animate-pulse"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {/* Skeleton image area */}
+                <div className="h-40 w-full bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-600" />
+                {/* Skeleton content */}
+                <div className="p-5 space-y-3">
+                  <div className="h-5 bg-stone-200 dark:bg-stone-600 rounded w-3/4" />
+                  <div className="h-4 bg-stone-100 dark:bg-stone-700 rounded w-full" />
+                  <div className="h-4 bg-stone-100 dark:bg-stone-700 rounded w-2/3" />
+                  <div className="space-y-2 mt-4">
+                    <div className="h-3 bg-stone-100 dark:bg-stone-700 rounded w-1/2" />
+                    <div className="h-3 bg-stone-100 dark:bg-stone-700 rounded w-1/3" />
+                  </div>
+                  <div className="h-10 bg-stone-200 dark:bg-stone-600 rounded mt-4" />
+                </div>
+              </div>
+            ))}
           </StaggeredChildren>
         )}
 
-        {/* Infinite scroll loading indicator */}
+        {/* Infinite scroll sentinel */}
         {hasMore && (
-          <div ref={sentinelRef} className="h-4 w-full flex items-center justify-center mt-12">
-            {scrollLoading && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg">
-                <InlineLoader text="Loading more expansions..." />
-              </div>
-            )}
-          </div>
+          <div ref={sentinelRef} className="h-4 w-full mt-8" />
         )}
 
         {/* Results info */}
@@ -343,17 +389,11 @@ const PocketExpansions: NextPage = () => {
         )}
 
         {!loading && !error && sortedExpansions.length === 0 && (
-          <div className="text-center py-20 bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
-            <div className="text-6xl mb-4">🔍</div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-200 mb-4">No Expansions Found</h2>
-            <p className="text-stone-600 dark:text-stone-300 mb-6">
-              {search ? `No expansions match "${search}".` : "No Pocket expansions available."}
-            </p>
-            {search && (
-              <GradientButton onClick={() => setSearch('')} variant="secondary">
-                Clear Search
-              </GradientButton>
-            )}
+          <div className="bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
+            <NoSearchResults
+              searchTerm={search || undefined}
+              onClear={search ? () => setSearch('') : undefined}
+            />
           </div>
         )}
         </div>

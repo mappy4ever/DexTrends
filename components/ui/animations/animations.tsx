@@ -108,23 +108,35 @@ interface CardHoverProps {
 }
 
 export const CardHover = ({ children, className = '', onClick }: CardHoverProps) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (onClick) {
+        onClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+      }
+    }
+  };
+
   return (
-    <div 
-      className={`transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer ${className}`}
+    <div
+      className={`transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none rounded-xl ${className}`}
       onClick={(e: React.MouseEvent<HTMLDivElement>) => {
         // Handle click events
-        
+
         // Check if this is a navigation card
         const isCardNav = e.currentTarget.closest('[data-pokemon-card="true"]');
         if (isCardNav) {
           // Pokemon card navigation
         }
-        
+
         // Always call the onClick prop to maintain expected behavior
         if (onClick) {
           onClick(e);
         }
       }}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
       data-card-hover="true"
     >
       {children}

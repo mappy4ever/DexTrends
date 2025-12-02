@@ -18,6 +18,7 @@ import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
 import { SkeletonPokemonCard } from '@/components/ui/Skeleton';
 import { SectionDivider } from '@/components/ui/SectionDivider';
+import { NoSearchResults } from '@/components/ui/EmptyState';
 import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
 /**
@@ -458,20 +459,12 @@ const UnifiedPokedex: NextPage = () => {
               ))}
             </div>
           ) : filteredPokemon.length === 0 ? (
-            <Container variant="default" padding="lg" className="text-center py-16">
-              <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold text-stone-700 dark:text-stone-300 mb-2">
-                No Pokémon found
-              </h3>
-              <p className="text-stone-500 dark:text-stone-300 mb-4">
-                Try adjusting your search or filters
-              </p>
-              <button
-                onClick={clearFilters}
-                className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-medium transition-colors"
-              >
-                Clear Filters
-              </button>
+            <Container variant="default" padding="lg">
+              <NoSearchResults
+                searchTerm={searchTerm || undefined}
+                filterCount={activeFilterCount}
+                onClear={clearFilters}
+              />
             </Container>
           ) : (
             <UnifiedGrid

@@ -154,8 +154,11 @@ export const BottomNavigation: React.FC = () => {
 
   return (
     <>
-      {/* Spacer to prevent content from being hidden under nav */}
-      <div className="h-[68px] md:hidden" />
+      {/* Spacer to prevent content from being hidden under nav - includes safe area */}
+      <div
+        className="md:hidden"
+        style={{ height: 'calc(68px + env(safe-area-inset-bottom, 0px))' }}
+      />
 
       {/* Bottom Navigation Bar - solid bg for iOS performance */}
       <nav
@@ -175,6 +178,7 @@ export const BottomNavigation: React.FC = () => {
           <div className="flex items-center justify-center flex-1">
             <motion.button
               onClick={() => router.push('/search')}
+              aria-label="Search"
               className={cn(
                 "relative flex items-center justify-center",
                 "w-12 h-12 -mt-3", // Slightly elevated

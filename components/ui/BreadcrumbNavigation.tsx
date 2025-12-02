@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaChevronRight, FaHome } from 'react-icons/fa';
@@ -17,6 +17,8 @@ interface BreadcrumbNavigationProps {
   className?: string;
   maxItems?: number;
   showPageTitle?: boolean;
+  /** On mobile, collapse to "Home > Current" only (default: true) */
+  collapseOnMobile?: boolean;
 }
 
 interface RouteInfo {
@@ -28,14 +30,24 @@ interface RouteInfo {
  * Dynamic Breadcrumb Navigation Component
  * Provides contextual navigation path for better UX
  */
-const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({ 
+const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
   customBreadcrumbs = null,
   showHome = true,
   className = '',
   maxItems = 5,
-  showPageTitle = true
+  showPageTitle = true,
+  collapseOnMobile = true
 }) => {
   const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Route mapping for breadcrumb generation - wrapped in useMemo to prevent recreation
   const routeMap: Record<string, RouteInfo> = useMemo(() => ({
@@ -144,6 +156,17 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
     return breadcrumbs;
   }, [router.pathname, router.asPath, router.query, customBreadcrumbs, showHome, maxItems, routeMap]);
 
+  // Mobile-optimized breadcrumbs: show only "Home > Current"
+  const displayBreadcrumbs = useMemo(() => {
+    if (!collapseOnMobile || !isMobile || breadcrumbs.length <= 2) {
+      return breadcrumbs;
+    }
+    // On mobile, show first (Home) and last (current) only
+    const first = breadcrumbs[0];
+    const last = breadcrumbs[breadcrumbs.length - 1];
+    return [first, last];
+  }, [breadcrumbs, collapseOnMobile, isMobile]);
+
   // Don't render if no breadcrumbs or only home
   if (breadcrumbs.length <= 1 && !showPageTitle) {
     return null;
@@ -151,29 +174,29 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
 
   return (
     <nav className={`breadcrumb-navigation ${className}`} aria-label="Breadcrumb">
-      <div className="flex items-center space-x-2 text-sm">
-        {breadcrumbs.map((crumb, index) => (
+      <div className="flex items-center space-x-1 sm:space-x-2 text-sm overflow-x-auto scrollbar-hide">
+        {displayBreadcrumbs.map((crumb, index) => (
           <React.Fragment key={index}>
             {index > 0 && (
-              <FaChevronRight className="h-4 w-4 text-stone-400 dark:text-stone-500 flex-shrink-0" />
+              <FaChevronRight className="h-3 w-3 sm:h-4 sm:w-4 text-stone-400 dark:text-stone-500 flex-shrink-0" />
             )}
-            
+
             {crumb.isEllipsis ? (
-              <span className="text-stone-400 dark:text-stone-500 px-2">
+              <span className="text-stone-400 dark:text-stone-500 px-1 sm:px-2">
                 {crumb.icon}
               </span>
             ) : crumb.isActive ? (
-              <span className="flex items-center space-x-1 text-stone-900 dark:text-stone-100 font-medium">
-                <span role="img" aria-hidden="true">{crumb.icon}</span>
-                <span>{crumb.title}</span>
+              <span className="flex items-center space-x-1 text-stone-900 dark:text-stone-100 font-medium truncate max-w-[150px] sm:max-w-none">
+                <span role="img" aria-hidden="true" className="flex-shrink-0">{crumb.icon}</span>
+                <span className="truncate">{crumb.title}</span>
               </span>
             ) : (
-              <Link 
+              <Link
                 href={crumb.href!}
-                className="flex items-center space-x-1 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-200"
+                className="flex items-center space-x-1 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-200 flex-shrink-0"
               >
                 <span role="img" aria-hidden="true">{crumb.icon}</span>
-                <span className="hover:underline">{crumb.title}</span>
+                <span className="hover:underline hidden sm:inline">{crumb.title}</span>
               </Link>
             )}
           </React.Fragment>

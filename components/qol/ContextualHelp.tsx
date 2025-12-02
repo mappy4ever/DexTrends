@@ -249,8 +249,9 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
             <span>Help Mode Active - Click elements to learn more</span>
             <button
               onClick={() => setHelpMode(false)}
-              className="ml-2 text-white hover:text-stone-200">
-
+              className="ml-2 text-white hover:text-stone-200"
+              aria-label="Close help mode"
+            >
               ×
             </button>
           </div>
@@ -275,8 +276,9 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
                 </h2>
                 <button
                   onClick={() => setHelpMode(false)}
-                  className="text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200">
-
+                  className="text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200"
+                  aria-label="Close help"
+                >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>

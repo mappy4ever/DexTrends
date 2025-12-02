@@ -224,6 +224,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
                   onClick={zoomOut}
                   className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded transition-colors"
                   title="Zoom Out (-)"
+                  aria-label="Zoom out"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
@@ -236,6 +237,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
                   onClick={zoomIn}
                   className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded transition-colors"
                   title="Zoom In (+)"
+                  aria-label="Zoom in"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -246,6 +248,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
                   onClick={resetZoom}
                   className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded transition-colors ml-1"
                   title="Reset Zoom (0)"
+                  aria-label="Reset zoom"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -257,11 +260,12 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
               <button
                 onClick={handleFavoriteToggle}
                 className={`w-8 h-8 flex items-center justify-center rounded transition-colors ${
-                  isFavorite 
-                    ? 'bg-red-500 hover:bg-red-600' 
+                  isFavorite
+                    ? 'bg-red-500 hover:bg-red-600'
                     : 'bg-white/20 hover:bg-white/30'
                 }`}
                 title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
                 <svg className="w-4 h-4" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -272,6 +276,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
                 onClick={toggleFullscreen}
                 className="w-8 h-8 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded transition-colors"
                 title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen (F)'}
+                aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
               >
                 {isFullscreen ? (
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -288,6 +293,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
                 onClick={onClose}
                 className="w-8 h-8 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded transition-colors"
                 title="Close (Esc)"
+                aria-label="Close"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

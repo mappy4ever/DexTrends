@@ -185,7 +185,15 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
       router.push(`/pokemon/${id}`);
     }
   };
-  
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   // Special badge
   const specialStatus = isLegendary ? 'Legendary' : 
                        isMythical ? 'Mythical' : 
@@ -200,8 +208,13 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           whileHover={animated ? { scale: 1.05 } : undefined}
           whileTap={animated ? { scale: 0.95 } : undefined}
           onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          role="button"
+          aria-label={`View ${name}`}
           className={cn(
             'relative cursor-pointer',
+            'focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none focus-visible:rounded-full',
             sizeConfig[size].container,
             className
           )}
@@ -391,6 +404,10 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           whileHover={animated ? { y: -2, boxShadow: '0 8px 25px -5px rgba(0,0,0,0.1)' } : undefined}
           whileTap={animated ? { scale: 0.97 } : undefined}
           onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          role="button"
+          aria-label={`View ${name}`}
           className={cn(
             'relative overflow-hidden rounded-xl cursor-pointer',
             'bg-white dark:bg-stone-800/95',
@@ -400,6 +417,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             'h-full w-full', // Fill container
             'flex flex-col', // Enable flex layout
             'transition-shadow duration-150',
+            'focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none',
             className
           )}
         >
@@ -441,11 +459,16 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           whileHover={animated ? cardHover : undefined}
           whileTap={animated ? { scale: 0.98 } : undefined}
           onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          role="button"
+          aria-label={`View ${name}`}
           className={cn(
             'relative overflow-hidden rounded-xl cursor-pointer',
             'bg-gradient-to-br',
             gradient,
             'p-4',
+            'focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none',
             className
           )}
         >

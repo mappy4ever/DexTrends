@@ -425,16 +425,31 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
  */
 export const NoSearchResults: React.FC<{
   searchTerm?: string;
+  filterCount?: number;
   onClear?: () => void;
   suggestions?: string[];
   className?: string;
-}> = ({ searchTerm, onClear, suggestions, className }) => {
+}> = ({ searchTerm, filterCount, onClear, suggestions, className }) => {
+  // Build contextual description
+  let description = "Try adjusting your search or filters to find what you're looking for.";
+  if (filterCount && filterCount > 0) {
+    description = `${filterCount} filter${filterCount !== 1 ? 's' : ''} applied. Try adjusting or clearing filters.`;
+  }
+
+  // Build action button label
+  let actionLabel = "Clear Search";
+  if (filterCount && filterCount > 0 && !searchTerm) {
+    actionLabel = "Clear Filters";
+  } else if (filterCount && filterCount > 0 && searchTerm) {
+    actionLabel = "Clear All";
+  }
+
   return (
     <EmptyState
       illustration="search"
       title={searchTerm ? `No results for "${searchTerm}"` : "No results found"}
-      description="Try adjusting your search or filters to find what you're looking for."
-      action={onClear ? { label: "Clear Search", onClick: onClear, variant: "secondary" } : undefined}
+      description={description}
+      action={onClear ? { label: actionLabel, onClick: onClear, variant: "secondary" } : undefined}
       className={className}
     />
   );

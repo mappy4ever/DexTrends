@@ -17,6 +17,7 @@ import { ProgressiveImage } from '@/components/ui/ProgressiveImage';
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import { PageHeader } from "../components/ui/BreadcrumbNavigation";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
+import { NoSearchResults } from "../components/ui/EmptyState";
 import { CardSet } from "../types/api/cards";
 import { PaginationInfo } from "../types/api/api-responses";
 import { NextPage } from "next";
@@ -595,44 +596,34 @@ const TcgSetsContent: React.FC = () => {
                   </motion.div>
                 </motion.div>
               ))}
+
+              {/* Skeleton cards during batch loading */}
+              {scrollLoading && Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  key={`skeleton-${index}`}
+                  className="rounded-xl sm:rounded-2xl overflow-hidden bg-white dark:bg-stone-800/95 border border-stone-100 dark:border-stone-700/50 animate-pulse"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  {/* Skeleton image area */}
+                  <div className="h-32 xs:h-36 sm:h-44 w-full bg-stone-100 dark:bg-stone-700/50" />
+                  {/* Skeleton content */}
+                  <div className="p-3 xs:p-4 sm:p-5 space-y-3">
+                    <div className="h-4 bg-stone-200 dark:bg-stone-600 rounded w-3/4" />
+                    <div className="h-3 bg-stone-100 dark:bg-stone-700 rounded w-1/2" />
+                    <div className="flex justify-between">
+                      <div className="h-3 bg-stone-100 dark:bg-stone-700 rounded w-1/4" />
+                      <div className="h-3 bg-stone-100 dark:bg-stone-700 rounded w-1/4" />
+                    </div>
+                    <div className="h-8 bg-stone-100 dark:bg-stone-700 rounded mt-3" />
+                  </div>
+                </div>
+              ))}
             </motion.div>
           )}
 
           {/* Infinite scroll sentinel */}
           {hasMore && (
-            <div 
-              ref={sentinelRef} 
-              className="h-4 w-full flex items-center justify-center mt-12"
-            >
-              {scrollLoading && (
-                <div className="bg-white/80 dark:bg-stone-800/80 rounded-full px-6 py-3 shadow-lg">
-                  <InlineLoader text="Loading more sets..." />
-                </div>
-              )}
-            </div>
-          )}
-          
-          {/* Load More Button */}
-          {!loading && hasMorePages && sets.length > 0 && (
-            <div className="text-center mt-8">
-              <GradientButton
-                variant="primary"
-                size="lg"
-                onClick={loadMoreSets}
-                disabled={loadingMore}
-                icon={loadingMore ? undefined : 
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                  </svg>
-                }
-              >
-                {loadingMore ? (
-                  'Loading...'
-                ) : (
-                  `Load More Sets (${sets.length} of ${totalSetsCount || '?'} loaded)`
-                )}
-              </GradientButton>
-            </div>
+            <div ref={sentinelRef} className="h-4 w-full mt-8" />
           )}
 
           {/* Show scroll hint with Glass Effect */}
@@ -686,28 +677,18 @@ const TcgSetsContent: React.FC = () => {
           )}
       
           {!loading && !error && sortedSets.length === 0 && (
-            <motion.div 
-              className="text-center py-20"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <EmptyStateGlass
-                title="No Sets Found"
-                message="Try adjusting your search criteria or clear all filters"
-                iconText="🃏"
-                actionButton={{
-                  text: "Clear All Filters",
-                  onClick: () => {
-                    setSearch("");
-                    setFilterSeries("");
-                    setSortOption("releaseDate");
-                    setSortDirection("desc");
-                  },
-                  variant: "primary"
+            <div className="bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
+              <NoSearchResults
+                searchTerm={search || undefined}
+                filterCount={(filterSeries ? 1 : 0) + (sortOption !== "releaseDate" || sortDirection !== "desc" ? 1 : 0)}
+                onClear={() => {
+                  setSearch("");
+                  setFilterSeries("");
+                  setSortOption("releaseDate");
+                  setSortDirection("desc");
                 }}
               />
-            </motion.div>
+            </div>
           )}
         </div>
       </FullBleedWrapper>

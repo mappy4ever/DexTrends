@@ -8,6 +8,7 @@ import { getPokemonSDK } from '../utils/pokemonSDK';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { Container } from '../components/ui/Container';
 import { PageHeader } from '../components/ui/BreadcrumbNavigation';
+import { EmptyState, ErrorState } from '../components/ui/EmptyState';
 import type { NextPage } from 'next';
 import type { TCGCard } from '../types/api/cards';
 
@@ -267,25 +268,14 @@ const TrendingPage: NextPage = () => {
           {loading ? (
             <PageLoader text={isRetrying ? `Retrying... (Attempt ${retryCount + 1})` : "Analyzing market trends..."} />
           ) : error ? (
-            <Container variant="default" padding="lg" className="text-center">
-              <div className="py-6">
-                <svg className="w-12 h-12 mx-auto text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-                <h3 className="text-lg font-semibold mb-2 text-stone-800 dark:text-stone-200">Unable to Load Trending Data</h3>
-                <p className="text-sm text-stone-500 mb-4">{error}</p>
-                {retryCount > 0 && (
-                  <p className="text-xs text-stone-400 mb-4">
-                    Attempted {retryCount} time{retryCount !== 1 ? 's' : ''}
-                  </p>
-                )}
-                <button
-                  onClick={() => window.location.reload()}
-                  className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors text-sm font-medium"
-                >
-                  Refresh Page
-                </button>
-              </div>
+            <Container variant="default" padding="lg">
+              <ErrorState
+                error={`${error}${retryCount > 0 ? ` (${retryCount} ${retryCount === 1 ? 'attempt' : 'attempts'})` : ''}`}
+                onRetry={() => {
+                  setError(null);
+                  fetchTrendingCards();
+                }}
+              />
             </Container>
           ) : (
         <>
@@ -301,7 +291,7 @@ const TrendingPage: NextPage = () => {
                     <Link
                       href={`/cards/${card.id}`}
                       key={card.id}
-                      className="block p-3 rounded-lg border border-stone-100 dark:border-stone-700 hover:border-stone-200 dark:hover:border-stone-600 hover:shadow-md transition-all duration-150 hover:-translate-y-0.5"
+                      className="block p-3 rounded-xl border border-stone-100 dark:border-stone-700 hover:border-stone-200 dark:hover:border-stone-600 hover:shadow-lg transition-all duration-200 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none"
                     >
                       <div className="flex flex-col items-center">
                         {card.images?.small && (
@@ -324,7 +314,12 @@ const TrendingPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-stone-400 py-8">No rising price trends available</p>
+                <EmptyState
+                  illustration="card"
+                  title="No rising trends"
+                  description="No cards are showing rising prices right now."
+                  size="sm"
+                />
               )}
             </Container>
           </div>
@@ -341,7 +336,7 @@ const TrendingPage: NextPage = () => {
                     <Link
                       href={`/cards/${card.id}`}
                       key={card.id}
-                      className="block p-3 rounded-lg border border-stone-100 dark:border-stone-700 hover:border-stone-200 dark:hover:border-stone-600 hover:shadow-md transition-all duration-150 hover:-translate-y-0.5"
+                      className="block p-3 rounded-xl border border-stone-100 dark:border-stone-700 hover:border-stone-200 dark:hover:border-stone-600 hover:shadow-lg transition-all duration-200 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none"
                     >
                       <div className="flex flex-col items-center">
                         {card.images?.small && (
@@ -364,7 +359,12 @@ const TrendingPage: NextPage = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-stone-400 py-8">No falling price trends available</p>
+                <EmptyState
+                  illustration="card"
+                  title="No falling trends"
+                  description="No cards are showing falling prices right now."
+                  size="sm"
+                />
               )}
             </Container>
           </div>

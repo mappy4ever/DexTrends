@@ -680,6 +680,125 @@ export const FOCUS = {
 } as const;
 
 // ===========================================
+// CARD INTERACTIONS - Unified interactive card patterns
+// ===========================================
+
+export const CARD_INTERACTIONS = {
+  // Standard hover effect for cards
+  hover: {
+    classes: 'hover:-translate-y-1 hover:shadow-lg transition-all duration-200',
+    framer: { y: -4, transition: { duration: 0.2, ease: 'easeOut' } },
+  },
+  // Tap/press effect for touch
+  tap: {
+    classes: 'active:scale-[0.98] transition-transform duration-100',
+    framer: { scale: 0.98, transition: { duration: 0.1 } },
+  },
+  // Focus visible for keyboard navigation
+  focus: {
+    classes: 'focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none',
+    ringColor: '#f59e0b', // amber-500
+  },
+  // Combined - use for all interactive cards
+  combined: 'hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none transition-all duration-200',
+  // Link-style cards
+  link: 'hover:shadow-md hover:border-amber-400 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none transition-all duration-150',
+} as const;
+
+// ===========================================
+// LOADING MESSAGES - Consistent loading text
+// ===========================================
+
+export const LOADING_MESSAGES = {
+  // Page-level loading
+  pokemon: 'Loading Pokémon...',
+  pokedex: 'Loading Pokédex...',
+  tcgSets: 'Loading TCG sets...',
+  tcgCards: 'Loading cards...',
+  pocketExpansions: 'Loading Pocket expansions...',
+  pocketCards: 'Loading Pocket cards...',
+  // Feature-specific
+  trends: 'Analyzing market trends...',
+  favorites: 'Loading your favorites...',
+  search: 'Searching...',
+  // Infinite scroll
+  loadingMore: 'Loading more...',
+  loadingMoreSets: 'Loading more sets...',
+  loadingMoreCards: 'Loading more cards...',
+  loadingMorePokemon: 'Loading more Pokémon...',
+  // Actions
+  saving: 'Saving...',
+  updating: 'Updating...',
+  deleting: 'Deleting...',
+  // Retry states
+  retrying: 'Retrying...',
+  retryingWithCount: (count: number) => `Retrying... (Attempt ${count})`,
+} as const;
+
+// ===========================================
+// EMPTY STATE PRESETS - Type presets for EmptyState
+// ===========================================
+
+export const EMPTY_STATE_PRESETS = {
+  noResults: {
+    illustration: 'search' as const,
+    title: 'No results found',
+    description: 'Try adjusting your search or filters to find what you\'re looking for.',
+  },
+  apiError: {
+    illustration: 'error' as const,
+    title: 'Failed to load',
+    description: 'We encountered an error while loading this content. Please try again.',
+  },
+  noData: {
+    illustration: 'empty' as const,
+    title: 'No data available',
+    description: 'There\'s nothing here yet.',
+  },
+  filteredEmpty: {
+    illustration: 'search' as const,
+    title: 'No matches for filters',
+    description: 'Try adjusting or clearing your filters.',
+  },
+  emptyCollection: {
+    illustration: 'collection' as const,
+    title: 'Your collection is empty',
+    description: 'Start adding items to build your collection.',
+  },
+  noPokemon: {
+    illustration: 'pokemon' as const,
+    title: 'No Pokémon found',
+    description: 'Try searching for a different Pokémon or adjusting your filters.',
+  },
+  noCards: {
+    illustration: 'card' as const,
+    title: 'No cards found',
+    description: 'Try searching for a different card or adjusting your filters.',
+  },
+} as const;
+
+// ===========================================
+// TEXT TRUNCATION - Consistent text clipping
+// ===========================================
+
+export const TEXT_TRUNCATE = {
+  /** Single line truncation with ellipsis */
+  single: 'truncate',
+  /** Two line clamp */
+  double: 'line-clamp-2',
+  /** Three line clamp */
+  triple: 'line-clamp-3',
+  /** Four line clamp */
+  quad: 'line-clamp-4',
+  /** No truncation */
+  none: '',
+  /** Word break for long words */
+  breakWord: 'break-words',
+  /** Break anywhere (for URLs, hashes) */
+  breakAll: 'break-all',
+} as const;
+
+// ===========================================
 // REGION ACCENT COLORS
 // ===========================================
 
@@ -778,6 +897,12 @@ export default {
   GLASS_STYLES,
   TYPE_GRADIENTS,
   REGION_ACCENTS,
+  // Card interactions (Sprint 3)
+  CARD_INTERACTIONS,
+  LOADING_MESSAGES,
+  EMPTY_STATE_PRESETS,
+  // Text utilities
+  TEXT_TRUNCATE,
   // Functions
   glassClasses,
   createGlassStyle,

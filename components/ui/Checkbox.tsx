@@ -1,4 +1,4 @@
-import React, { forwardRef, InputHTMLAttributes } from 'react';
+import React, { forwardRef, InputHTMLAttributes, useId } from 'react';
 import { IoCheckmark, IoRemove } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
@@ -212,37 +212,56 @@ export const CheckboxGroup: React.FC<{
   error?: string;
   orientation?: 'vertical' | 'horizontal';
   className?: string;
-}> = ({ 
-  children, 
-  label, 
-  description, 
+  id?: string;
+}> = ({
+  children,
+  label,
+  description,
   error,
   orientation = 'vertical',
-  className 
+  className,
+  id
 }) => {
+  const generatedId = useId();
+  const groupId = id || generatedId;
+  const labelId = `${groupId}-label`;
+  const descriptionId = `${groupId}-description`;
+  const errorId = `${groupId}-error`;
+
   return (
-    <div className={cn('space-y-2', className)} role="group" aria-labelledby={label ? 'group-label' : undefined}>
+    <div
+      className={cn('space-y-2', className)}
+      role="group"
+      aria-labelledby={label ? labelId : undefined}
+      aria-describedby={description ? descriptionId : undefined}
+    >
       {label && (
-        <div id="group-label" className="mb-2">
-          <h3 className="text-base font-medium text-stone-900 dark:text-white">
+        <div className="mb-2">
+          <h3
+            id={labelId}
+            className="text-base font-medium text-stone-900 dark:text-white"
+          >
             {label}
           </h3>
           {description && (
-            <p className="mt-0.5 text-sm text-stone-600 dark:text-stone-300">
+            <p
+              id={descriptionId}
+              className="mt-0.5 text-sm text-stone-600 dark:text-stone-300"
+            >
               {description}
             </p>
           )}
         </div>
       )}
       <div className={cn(
-        orientation === 'horizontal' 
-          ? 'flex flex-wrap gap-4' 
+        orientation === 'horizontal'
+          ? 'flex flex-wrap gap-4'
           : 'space-y-2'
       )}>
         {children}
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-500 dark:text-red-400">
+        <p id={errorId} className="mt-2 text-sm text-red-500 dark:text-red-400" role="alert">
           {error}
         </p>
       )}

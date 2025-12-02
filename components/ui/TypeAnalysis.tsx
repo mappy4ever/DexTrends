@@ -139,6 +139,7 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
             <button
               onClick={onClose}
               className="text-white hover:text-stone-300 text-2xl font-bold"
+              aria-label="Close type analysis"
             >
               ×
             </button>

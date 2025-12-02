@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useId } from 'react';
 import { cn } from '@/utils/cn';
 import { createGlassStyle } from './design-system/glass-constants';
 
@@ -9,6 +9,8 @@ interface StandardInputProps extends React.InputHTMLAttributes<HTMLInputElement>
   rightIcon?: React.ReactNode;
   variant?: 'default' | 'glass' | 'minimal';
   inputSize?: 'sm' | 'md' | 'lg';
+  /** Explicit aria-label for screen readers (required if no visible label) */
+  'aria-label'?: string;
 }
 
 const sizeClasses = {
@@ -24,17 +26,24 @@ const variantClasses = {
 };
 
 export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
-  ({ 
-    label, 
-    error, 
-    icon, 
-    rightIcon, 
-    variant = 'default', 
+  ({
+    label,
+    error,
+    icon,
+    rightIcon,
+    variant = 'default',
     inputSize = 'md',
     className,
-    ...props 
+    'aria-label': ariaLabel,
+    ...props
   }, ref) => {
-    const glassClasses = variant === 'glass' 
+    // Generate unique IDs for accessibility
+    const generatedId = useId();
+    const inputId = props.id || generatedId;
+    const labelId = `${inputId}-label`;
+    const errorId = `${inputId}-error`;
+
+    const glassClasses = variant === 'glass'
       ? createGlassStyle({
           blur: 'sm',
           opacity: 'subtle',
@@ -44,14 +53,30 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
         })
       : '';
 
+    // Determine ARIA attributes - prioritize explicit aria-label, then use labelledby
+    const ariaAttributes: Record<string, string> = {};
+    if (ariaLabel) {
+      ariaAttributes['aria-label'] = ariaLabel;
+    } else if (label) {
+      ariaAttributes['aria-labelledby'] = labelId;
+    }
+    if (error) {
+      ariaAttributes['aria-describedby'] = errorId;
+      ariaAttributes['aria-invalid'] = 'true';
+    }
+
     return (
       <div className="w-full">
         {label && (
-          <label className="block mb-2 text-sm font-medium text-stone-700 dark:text-stone-300">
+          <label
+            id={labelId}
+            htmlFor={inputId}
+            className="block mb-2 text-sm font-medium text-stone-700 dark:text-stone-300"
+          >
             {label}
           </label>
         )}
-        
+
         <div className="relative">
           {icon && (
             <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -60,9 +85,10 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
               </div>
             </div>
           )}
-          
+
           <input
             ref={ref}
+            id={inputId}
             className={cn(
               'w-full rounded-xl transition-all duration-200',
               'focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:rounded-xl',
@@ -79,19 +105,19 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
               'focus:border-amber-500 dark:focus:border-amber-400',
               className
             )}
-            aria-label={label || props.placeholder}
+            {...ariaAttributes}
             {...props}
           />
-          
+
           {rightIcon && (
             <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-3">
               {rightIcon}
             </div>
           )}
         </div>
-        
+
         {error && (
-          <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+          <p id={errorId} className="mt-1 text-sm text-red-500 dark:text-red-400" role="alert">
             {error}
           </p>
         )}
@@ -104,12 +130,13 @@ StandardInput.displayName = 'StandardInput';
 
 // Search Input Component with glass effect
 export const SearchInput = forwardRef<HTMLInputElement, Omit<StandardInputProps, 'variant'>>(
-  ({ className, ...props }, ref) => {
+  ({ className, 'aria-label': ariaLabel, ...props }, ref) => {
     return (
       <StandardInput
         ref={ref}
         variant="glass"
         placeholder="Search..."
+        aria-label={ariaLabel || 'Search'}
         className={cn(
           'bg-white/80 dark:bg-stone-800/80',
           'backdrop-blur-xl',
