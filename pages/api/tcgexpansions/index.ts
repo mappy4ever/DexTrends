@@ -18,6 +18,16 @@ async function getTcgCache() {
   return tcgCacheModule.tcgCache;
 }
 
+// Allowed origins for CORS - security: prevent cross-origin abuse
+const ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  process.env.NEXT_PUBLIC_APP_URL,
+  'https://dextrends.vercel.app',
+  'https://dextrends.com',
+  'https://www.dextrends.com',
+].filter(Boolean) as string[];
+
 // TCG Sets list endpoint - /api/tcgexpansions
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
@@ -29,8 +39,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const shouldForceRefresh = (Array.isArray(forceRefresh) ? forceRefresh[0] : forceRefresh) === 'true';
   const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 
-  // Set CORS headers for browser requests
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Set CORS headers with origin whitelist (security: prevent cross-origin abuse)
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
   if (req.method === 'OPTIONS') {

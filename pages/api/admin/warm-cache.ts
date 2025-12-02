@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { POPULAR_SETS, tcgCache } from '../../../lib/tcg-cache';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
+import { validateAdminAuth } from '../../../lib/admin-auth';
 import type { TCGCard, CardSet } from '../../../types/api/cards';
 
 // Function to fetch ALL TCG sets from Pokemon TCG API
@@ -122,7 +123,6 @@ const FALLBACK_RECENT_SETS = [
 
 interface WarmCacheRequest extends NextApiRequest {
   query: {
-    token?: string;
     sets?: string;
     limit?: string;
     all?: string;        // Cache ALL sets
@@ -133,21 +133,11 @@ interface WarmCacheRequest extends NextApiRequest {
 
 // Cache warming endpoint - should be called periodically or on deploy
 export default async function handler(req: WarmCacheRequest, res: NextApiResponse) {
-  // Enhanced auth check - accept token via query param or header
-  const authHeader = req.headers.authorization;
-  const queryToken = req.query.token;
-  const expectedToken = process.env.CACHE_WARM_TOKEN;
-  
-  const providedToken = authHeader?.replace('Bearer ', '') || queryToken;
-  
-  if (expectedToken && providedToken !== expectedToken) {
-    logger.warn('[Cache Warm] Unauthorized access attempt', { 
-      providedToken: providedToken ? 'provided' : 'missing',
-      ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    });
-    return res.status(401).json({ error: 'Unauthorized' });
+  // Security: Only accept Bearer token from Authorization header
+  if (!validateAdminAuth(req, res, 'Cache Warm')) {
+    return; // Response already sent by validateAdminAuth
   }
-  
+
   if (req.method !== 'POST' && req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

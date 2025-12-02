@@ -269,13 +269,24 @@ export class SupabaseCache {
 
 // Favorites management
 export class FavoritesManager {
+  /**
+   * Generate cryptographically secure random string
+   * Uses crypto.getRandomValues() for secure randomness
+   */
+  private static generateSecureId(length: number = 32): string {
+    const array = new Uint8Array(length);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+
   // Get session ID for non-authenticated users
   static getSessionId(): string | null {
     if (typeof window === 'undefined') return null;
-    
+
     let sessionId = localStorage.getItem('dextrends_session_id');
     if (!sessionId) {
-      sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + Date.now();
+      // Security: Use cryptographically secure random ID instead of Math.random()
+      sessionId = 'session_' + this.generateSecureId(16) + '_' + Date.now();
       localStorage.setItem('dextrends_session_id', sessionId);
     }
     return sessionId;

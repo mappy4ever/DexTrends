@@ -2,6 +2,43 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { tcgCache } from '../../../lib/tcg-cache';
 import logger from '../../../utils/logger';
 
+// Allowed domains for image redirects (security: prevent open redirect attacks)
+const ALLOWED_IMAGE_DOMAINS = [
+  'images.pokemontcg.io',
+  'assets.tcgdex.net',
+  'cdn.tcgdex.net',
+  'raw.githubusercontent.com',
+  'pokeapi.co',
+  'assets.pokemon.com',
+  'pokeres.bastionbot.org',
+];
+
+/**
+ * Validates that a URL is safe to redirect to
+ * Only allows local paths or URLs from trusted image CDNs
+ */
+function isAllowedRedirectUrl(url: string): boolean {
+  // Allow local Next.js image optimization paths
+  if (url.startsWith('/_next/image')) {
+    return true;
+  }
+
+  // Allow data URLs (already checked before redirect)
+  if (url.startsWith('data:')) {
+    return true;
+  }
+
+  try {
+    const parsed = new URL(url);
+    return ALLOWED_IMAGE_DOMAINS.some(domain =>
+      parsed.hostname === domain || parsed.hostname.endsWith(`.${domain}`)
+    );
+  } catch {
+    // Invalid URL - reject
+    return false;
+  }
+}
+
 interface OptimizeImageRequest extends NextApiRequest {
   query: {
     cardId?: string;
@@ -40,7 +77,13 @@ export default async function handler(req: OptimizeImageRequest, res: NextApiRes
     if (!imageUrl) {
       return res.status(400).json({ error: 'No image URL found. Provide either cardId or url parameter.' });
     }
-    
+
+    // Security: Validate the image URL is from an allowed domain
+    if (!isAllowedRedirectUrl(imageUrl)) {
+      logger.warn('[Image Optimize] Blocked redirect to untrusted URL', { imageUrl });
+      return res.status(400).json({ error: 'Image URL is not from a trusted domain.' });
+    }
+
     // Skip optimization for data URLs or already optimized URLs
     if (imageUrl.startsWith('data:') || imageUrl.includes('/_next/image')) {
       return res.redirect(302, imageUrl);

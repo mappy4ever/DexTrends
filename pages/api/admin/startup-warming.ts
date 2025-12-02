@@ -1,26 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cacheWarmer } from '../../../lib/background-cache-warmer';
 import logger from '../../../utils/logger';
+import { validateAdminAuth } from '../../../lib/admin-auth';
 
-interface StartupWarmingRequest extends NextApiRequest {
-  query: {
-    token?: string;
-  };
-}
-
-export default async function handler(req: StartupWarmingRequest, res: NextApiResponse) {
-  // Enhanced auth check
-  const authHeader = req.headers.authorization;
-  const queryToken = req.query.token;
-  const expectedToken = process.env.CACHE_WARM_TOKEN;
-  
-  const providedToken = authHeader?.replace('Bearer ', '') || queryToken;
-  
-  if (expectedToken && providedToken !== expectedToken) {
-    logger.warn('[Startup Warming] Unauthorized access attempt');
-    return res.status(401).json({ error: 'Unauthorized' });
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Security: Only accept Bearer token from Authorization header
+  if (!validateAdminAuth(req, res, 'Startup Warming')) {
+    return; // Response already sent by validateAdminAuth
   }
-  
+
   if (req.method !== 'POST' && req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

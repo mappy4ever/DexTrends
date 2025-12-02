@@ -17,12 +17,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Create client only if variables are present
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
-// Initialize Supabase client
-/*const supabase = createClient(
-  "https://opvdrtdwkcdmiskxpnal.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wdmRydGR3a2NkbWlza3hwbmFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNDYzMjcsImV4cCI6MjA1NjcyMjMyN30.1eeSkKboKB4DGKND5It8mdAo4OQuW6cWrLdVNS8uFmI"
-);*/
-
 interface MapData {
   location_id: number;
   lat: number;
