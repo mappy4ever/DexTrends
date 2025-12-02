@@ -70,7 +70,7 @@ export const ProfessionalFilterSection: React.FC<ProfessionalFilterSectionProps>
                 onSupertypeChange('');
                 onSubtypeChange('');
               }}
-              className="text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors"
+              className="text-sm text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200 transition-colors"
             >
               Clear all
             </button>
@@ -152,7 +152,7 @@ export const ProfessionalFilterSection: React.FC<ProfessionalFilterSectionProps>
           <div className="p-4 space-y-4">
             {/* Supertype */}
             <div>
-              <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-medium text-stone-600 dark:text-stone-300 mb-2 uppercase tracking-wider">
                 Primary Type
               </label>
               <div className="flex flex-wrap gap-2">
@@ -175,7 +175,7 @@ export const ProfessionalFilterSection: React.FC<ProfessionalFilterSectionProps>
             {/* Subtype */}
             {availableSubtypes.length > 0 && (
               <div>
-                <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">
+                <label className="block text-xs font-medium text-stone-600 dark:text-stone-300 mb-2 uppercase tracking-wider">
                   Subtype
                 </label>
                 <select
@@ -204,7 +204,7 @@ export const ProfessionalFilterSection: React.FC<ProfessionalFilterSectionProps>
       {hasActiveFilters && (
         <div className="px-6 py-3 bg-stone-50 dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-stone-500 dark:text-stone-400">Active:</span>
+            <span className="text-xs text-stone-500 dark:text-stone-300">Active:</span>
             
             {searchQuery && (
               <FilterChip

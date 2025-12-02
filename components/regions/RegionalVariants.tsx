@@ -617,7 +617,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
               <BsArrowRepeat className="text-amber-500" />
               {variantData.title}
             </h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400 max-w-3xl mx-auto">
+            <p className="text-xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto">
               {variantData.description}
             </p>
           </div>
@@ -746,7 +746,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                       </div>
 
                       {/* Quick Description */}
-                      <p className="text-xs text-stone-600 dark:text-stone-400 text-center line-clamp-2">
+                      <p className="text-xs text-stone-600 dark:text-stone-300 text-center line-clamp-2">
                         {variant.description}
                       </p>
                     </div>

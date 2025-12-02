@@ -271,11 +271,11 @@ const PokemonComparePage: NextPage = () => {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div className="bg-stone-50 dark:bg-stone-700 rounded-lg p-2">
-              <div className="text-stone-500 dark:text-stone-400 text-xs">Height</div>
+              <div className="text-stone-500 dark:text-stone-300 text-xs">Height</div>
               <div className="font-semibold">{(pokemon.height / 10).toFixed(1)}m</div>
             </div>
             <div className="bg-stone-50 dark:bg-stone-700 rounded-lg p-2">
-              <div className="text-stone-500 dark:text-stone-400 text-xs">Weight</div>
+              <div className="text-stone-500 dark:text-stone-300 text-xs">Weight</div>
               <div className="font-semibold">{(pokemon.weight / 10).toFixed(1)}kg</div>
             </div>
           </div>
@@ -336,7 +336,7 @@ const PokemonComparePage: NextPage = () => {
 
           {/* Popular Pokemon Quick Select */}
           <div className="mt-6">
-            <p className="text-sm text-stone-500 dark:text-stone-400 mb-3">Popular choices:</p>
+            <p className="text-sm text-stone-500 dark:text-stone-300 mb-3">Popular choices:</p>
             <div className="flex flex-wrap justify-center gap-2">
               {['pikachu', 'charizard', 'mewtwo', 'garchomp', 'dragonite', 'tyranitar'].map(name => (
                 <button
@@ -378,7 +378,7 @@ const PokemonComparePage: NextPage = () => {
                 <div className="flex justify-between items-center text-sm">
                   <span className={cn(
                     'font-medium',
-                    winner === 1 ? 'text-green-600 dark:text-green-400' : 'text-stone-600 dark:text-stone-400'
+                    winner === 1 ? 'text-green-600 dark:text-green-400' : 'text-stone-600 dark:text-stone-300'
                   )}>
                     {val1}
                     {winner === 1 && <FaTrophy className="inline ml-1 text-amber-500 w-3 h-3" />}
@@ -388,7 +388,7 @@ const PokemonComparePage: NextPage = () => {
                   </span>
                   <span className={cn(
                     'font-medium',
-                    winner === 2 ? 'text-green-600 dark:text-green-400' : 'text-stone-600 dark:text-stone-400'
+                    winner === 2 ? 'text-green-600 dark:text-green-400' : 'text-stone-600 dark:text-stone-300'
                   )}>
                     {winner === 2 && <FaTrophy className="inline mr-1 text-amber-500 w-3 h-3" />}
                     {val2}
@@ -548,7 +548,7 @@ const PokemonComparePage: NextPage = () => {
             animate={{ opacity: 1, x: 0 }}
           >
             <div className="text-center mb-2">
-              <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Pokemon 1</span>
+              <span className="text-sm font-medium text-stone-500 dark:text-stone-300">Pokemon 1</span>
             </div>
             {renderPokemonSelector(
               1, pokemon1, search1, setSearch1, suggestions1, showSuggestions1, setShowSuggestions1, loading1
@@ -577,7 +577,7 @@ const PokemonComparePage: NextPage = () => {
             animate={{ opacity: 1, x: 0 }}
           >
             <div className="text-center mb-2">
-              <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Pokemon 2</span>
+              <span className="text-sm font-medium text-stone-500 dark:text-stone-300">Pokemon 2</span>
             </div>
             {renderPokemonSelector(
               2, pokemon2, search2, setSearch2, suggestions2, showSuggestions2, setShowSuggestions2, loading2
@@ -653,7 +653,7 @@ const PokemonComparePage: NextPage = () => {
               <h3 className="text-xl font-bold text-stone-800 dark:text-white mb-2">
                 Select Pokemon to Compare
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 Choose two Pokemon above to see a detailed side-by-side comparison of their stats, abilities, and more.
               </p>
             </Container>

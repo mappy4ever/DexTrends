@@ -58,15 +58,15 @@ const PokemonTCGLanding: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
             <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg">
               <div className="text-3xl font-bold text-amber-600 mb-2">1000+</div>
-              <div className="text-stone-600 dark:text-stone-400">TCG Sets</div>
+              <div className="text-stone-600 dark:text-stone-300">TCG Sets</div>
             </div>
             <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg">
               <div className="text-3xl font-bold text-green-600 mb-2">Live</div>
-              <div className="text-stone-600 dark:text-stone-400">Price Tracking</div>
+              <div className="text-stone-600 dark:text-stone-300">Price Tracking</div>
             </div>
             <div className="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-lg">
               <div className="text-3xl font-bold text-amber-600 mb-2">Smart</div>
-              <div className="text-stone-600 dark:text-stone-400">Collections</div>
+              <div className="text-stone-600 dark:text-stone-300">Collections</div>
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@ const PokemonTCGLanding: React.FC = () => {
                 <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-4">
                   {feature.title}
                 </h3>
-                <p className="text-stone-600 dark:text-stone-400 leading-relaxed">
+                <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
                   {feature.description}
                 </p>
                 <div className="mt-6 flex items-center text-amber-600 font-medium group-hover:text-amber-700 transition-colors">
@@ -104,7 +104,7 @@ const PokemonTCGLanding: React.FC = () => {
               <h3 className="text-xl font-semibold text-stone-900 dark:text-white">
                 📈 Trending Cards
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 Stay updated with the hottest cards in the market. Track price movements, 
                 identify investment opportunities, and never miss a trend.
               </p>
@@ -119,7 +119,7 @@ const PokemonTCGLanding: React.FC = () => {
               <h3 className="text-xl font-semibold text-stone-900 dark:text-white">
                 🎯 Smart Collection Management
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 Organize your collection like never before. Track values, set alerts, 
                 and get insights into your portfolio's performance.
               </p>

@@ -161,7 +161,7 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             <div className="
               px-2 py-1 rounded-full
               bg-stone-100/80 dark:bg-stone-700/80
-              text-xs text-stone-600 dark:text-stone-400
+              text-xs text-stone-600 dark:text-stone-300
               font-medium
             ">
               {setId} #{setNumber}

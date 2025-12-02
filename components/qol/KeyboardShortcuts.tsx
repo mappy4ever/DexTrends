@@ -292,20 +292,20 @@ export const KeyboardShortcutsManager: React.FC = () => {
                       <div className="font-medium text-stone-900 dark:text-stone-100">
                         {command.title}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">
+                      <div className="text-sm text-stone-500 dark:text-stone-300">
                         {command.description}
                       </div>
                     </div>
                   </button>
                 ))
               ) : (
-                <div className="px-4 py-8 text-center text-stone-500 dark:text-stone-400">
+                <div className="px-4 py-8 text-center text-stone-500 dark:text-stone-300">
                   No commands found
                 </div>
               )}
             </div>
 
-            <div className="p-4 border-t border-stone-200 dark:border-stone-700 text-xs text-stone-500 dark:text-stone-400">
+            <div className="p-4 border-t border-stone-200 dark:border-stone-700 text-xs text-stone-500 dark:text-stone-300">
               Use ↑↓ to navigate, Enter to select, Esc to close
             </div>
           </Container>
@@ -323,7 +323,7 @@ export const KeyboardShortcutsManager: React.FC = () => {
                 </h2>
                 <button
                   onClick={() => setShowShortcuts(false)}
-                  className="text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                  className="text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200"
                 >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -384,7 +384,7 @@ export const KeyboardShortcutsManager: React.FC = () => {
               </div>
 
               <div className="mt-6 pt-4 border-t border-stone-200 dark:border-stone-700">
-                <p className="text-sm text-stone-500 dark:text-stone-400 text-center">
+                <p className="text-sm text-stone-500 dark:text-stone-300 text-center">
                   Press <kbd className="px-1 py-0.5 bg-stone-100 dark:bg-stone-700 rounded text-xs">Ctrl+K</kbd> to open the command palette
                 </p>
               </div>

@@ -107,7 +107,7 @@ const Custom500: NextPage = () => {
             Critical Hit! Server Error!
           </h2>
           
-          <p className="text-base text-stone-600 dark:text-stone-400 mb-8">
+          <p className="text-base text-stone-600 dark:text-stone-300 mb-8">
             The server used Self-Destruct!
             <br />
             It's super effective... at breaking things.

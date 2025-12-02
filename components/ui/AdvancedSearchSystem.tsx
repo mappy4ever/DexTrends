@@ -623,7 +623,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
       {/* Sorting Controls */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-4">
-          <span className="text-sm text-stone-600 dark:text-stone-400">Sort by:</span>
+          <span className="text-sm text-stone-600 dark:text-stone-300">Sort by:</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -649,7 +649,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
       {searchHistory.length > 0 && (
         <div className="mb-4">
           <details className="group">
-            <summary className="cursor-pointer text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white">
+            <summary className="cursor-pointer text-sm text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white">
               Recent Searches ({searchHistory.length})
             </summary>
             <div className="mt-2 space-y-1 max-h-32 overflow-y-auto">

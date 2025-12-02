@@ -110,7 +110,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
               </h2>
               <BsShieldFill className="text-3xl text-pink-500" />
             </div>
-            <p className="text-xl text-stone-600 dark:text-stone-400">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               The mythical guardians and legendary beings of {region.name}
             </p>
           </div>
@@ -190,11 +190,11 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                         <div className="hidden sm:flex items-center justify-center gap-2 sm:gap-4 mb-2 sm:mb-3">
                           <div className="flex items-center gap-1">
                             <BsLightningFill className="text-yellow-500 text-xs sm:text-sm" />
-                            <span className="text-xs text-stone-600 dark:text-stone-400">Legendary</span>
+                            <span className="text-xs text-stone-600 dark:text-stone-300">Legendary</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <BsGem className="text-amber-500 text-xs sm:text-sm" />
-                            <span className="text-xs text-stone-600 dark:text-stone-400">Rare</span>
+                            <span className="text-xs text-stone-600 dark:text-stone-300">Rare</span>
                           </div>
                         </div>
 

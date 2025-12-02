@@ -129,7 +129,7 @@ export const AnimatedHPBar: React.FC<AnimatedHPBarProps> = ({
     <div className="w-full">
       {showNumbers && (
         <div className="flex justify-between text-sm mb-1">
-          <span className="font-medium text-stone-600 dark:text-stone-400">HP</span>
+          <span className="font-medium text-stone-600 dark:text-stone-300">HP</span>
           <motion.span
             key={current}
             initial={{ scale: 1.2, color: '#ef4444' }}

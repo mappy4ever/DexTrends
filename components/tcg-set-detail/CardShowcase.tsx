@@ -124,13 +124,13 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                 {/* Compact Info */}
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1">
-                    <span className="text-stone-500 dark:text-stone-400">Set:</span>
+                    <span className="text-stone-500 dark:text-stone-300">Set:</span>
                     <span className="font-medium text-stone-700 dark:text-stone-300">
                       {activeCard.set?.name?.split(' ').slice(0, 2).join(' ')}
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="text-stone-500 dark:text-stone-400">#</span>
+                    <span className="text-stone-500 dark:text-stone-300">#</span>
                     <span className="font-medium text-stone-700 dark:text-stone-300">
                       {activeCard.number}/{activeCard.set?.printedTotal}
                     </span>
@@ -159,7 +159,7 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                 
                 {/* Artist - Compact */}
                 {activeCard.artist && (
-                  <div className="text-xs text-stone-500 dark:text-stone-400 truncate">
+                  <div className="text-xs text-stone-500 dark:text-stone-300 truncate">
                     Artist: {activeCard.artist}
                   </div>
                 )}

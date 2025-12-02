@@ -381,7 +381,7 @@ const GamesPage: NextPage = () => {
         >
           <div className="text-center mb-8">
             <h2 className="text-4xl font-bold mb-4">Discover Pokémon Games</h2>
-            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
+            <p className="text-lg text-stone-600 dark:text-stone-300 max-w-2xl mx-auto">
               Search and filter through the complete collection of Pokémon games
             </p>
           </div>
@@ -491,7 +491,7 @@ const GamesPage: NextPage = () => {
         >
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6">Game Timeline</h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400 max-w-3xl mx-auto">
+            <p className="text-xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto">
               Journey through the evolution of Pokémon games, from the iconic originals to the latest open-world adventures
             </p>
           </div>
@@ -691,7 +691,7 @@ const GamesPage: NextPage = () => {
                             {game.name}
                           </motion.h4>
                           <motion.div
-                            className="flex items-center gap-4 text-sm text-stone-600 dark:text-stone-400 mb-3"
+                            className="flex items-center gap-4 text-sm text-stone-600 dark:text-stone-300 mb-3"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: gameIndex * 0.1 + 0.3 }}
@@ -706,7 +706,7 @@ const GamesPage: NextPage = () => {
                             </div>
                           </motion.div>
                           <motion.p
-                            className="text-stone-600 dark:text-stone-400 mb-4"
+                            className="text-stone-600 dark:text-stone-300 mb-4"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: gameIndex * 0.1 + 0.4 }}

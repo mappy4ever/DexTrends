@@ -68,11 +68,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         {icon}
       </div>
       <div>
-        <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+        <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
           {title}
         </h3>
         {subtitle && (
-          <p className="text-xs text-stone-500 dark:text-stone-400">
+          <p className="text-xs text-stone-500 dark:text-stone-300">
             {subtitle}
           </p>
         )}

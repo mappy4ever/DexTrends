@@ -365,10 +365,10 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
               <h3 className="font-semibold text-stone-900 dark:text-white">
                 {listing.card.name}
               </h3>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 {listing.card.set} • {listing.card.rarity}
               </p>
-              <p className="text-sm text-stone-500 dark:text-stone-400">
+              <p className="text-sm text-stone-500 dark:text-stone-300">
                 Condition: {listing.card.condition}
               </p>
             </div>
@@ -398,13 +398,13 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
             )}
             <div className="flex items-center space-x-1">
               <BsStar className="text-yellow-500 w-3 h-3" />
-              <span className="text-xs text-stone-600 dark:text-stone-400">
+              <span className="text-xs text-stone-600 dark:text-stone-300">
                 {listing.seller.rating} ({listing.seller.totalTrades})
               </span>
             </div>
           </div>
 
-          <p className="text-sm text-stone-600 dark:text-stone-400 mb-3 line-clamp-2">
+          <p className="text-sm text-stone-600 dark:text-stone-300 mb-3 line-clamp-2">
             {listing.description}
           </p>
 
@@ -415,7 +415,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                   ${listing.price.toFixed(2)}
                 </span>
                 {listing.negotiable && (
-                  <span className="text-sm text-stone-500 dark:text-stone-400 ml-2">
+                  <span className="text-sm text-stone-500 dark:text-stone-300 ml-2">
                     (negotiable)
                   </span>
                 )}
@@ -432,7 +432,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
           {listing.type === 'trade' && (
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-sm text-stone-600 dark:text-stone-400">Wants: </span>
+                <span className="text-sm text-stone-600 dark:text-stone-300">Wants: </span>
                 <span className="text-sm font-medium text-stone-900 dark:text-white">
                   {listing.wantedCards?.join(', ')}
                 </span>
@@ -457,7 +457,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                 <div className="text-lg font-bold text-stone-900 dark:text-white">
                   ${listing.currentBid.toFixed(2)}
                 </div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">
+                <div className="text-sm text-stone-500 dark:text-stone-300">
                   {listing.bidders} bidders • {formatTimeRemaining(listing.endsAt)} left
                 </div>
               </div>
@@ -478,7 +478,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
           )}
 
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-stone-200 dark:border-stone-600">
-            <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-400">
+            <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-300">
               <div className="flex items-center space-x-1">
                 <FaEye />
                 <span>{listing.views}</span>
@@ -488,7 +488,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                 <span>{listing.watchers}</span>
               </div>
             </div>
-            <span className="text-sm text-stone-500 dark:text-stone-400">
+            <span className="text-sm text-stone-500 dark:text-stone-300">
               Listed {formatTimeAgo(listing.listedAt)}
             </span>
           </div>
@@ -531,7 +531,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${
               activeTab === tab.id
                 ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             {tab.icon}
@@ -583,7 +583,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                 </select>
 
                 <button className="p-2 border border-stone-300 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700">
-                  <FaFilter className="text-stone-600 dark:text-stone-400" />
+                  <FaFilter className="text-stone-600 dark:text-stone-300" />
                 </button>
               </div>
             </div>
@@ -619,7 +619,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                         <div className="font-medium text-stone-900 dark:text-white">
                           Trade with {trade.otherUser.username}
                         </div>
-                        <div className="text-sm text-stone-500 dark:text-stone-400">
+                        <div className="text-sm text-stone-500 dark:text-stone-300">
                           {formatTimeAgo(trade.createdAt)}
                         </div>
                       </div>

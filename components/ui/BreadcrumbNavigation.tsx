@@ -170,7 +170,7 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
             ) : (
               <Link 
                 href={crumb.href!}
-                className="flex items-center space-x-1 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-200"
+                className="flex items-center space-x-1 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-200"
               >
                 <span role="img" aria-hidden="true">{crumb.icon}</span>
                 <span className="hover:underline">{crumb.title}</span>
@@ -257,7 +257,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
             {title}
           </h1>
           {description && (
-            <p className="mt-1 text-sm text-stone-600 dark:text-stone-400 sm:text-base">
+            <p className="mt-1 text-sm text-stone-600 dark:text-stone-300 sm:text-base">
               {description}
             </p>
           )}
@@ -332,7 +332,7 @@ const QuickNavigation: React.FC<QuickNavigationProps> = ({
 
   return (
     <div className={`quick-navigation ${className}`}>
-      <h3 className="text-sm font-medium text-stone-500 dark:text-stone-400 mb-3">
+      <h3 className="text-sm font-medium text-stone-500 dark:text-stone-300 mb-3">
         Related Pages
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -350,7 +350,7 @@ const QuickNavigation: React.FC<QuickNavigationProps> = ({
                 {page.title}
               </div>
               {page.description && (
-                <div className="text-xs text-stone-500 dark:text-stone-400">
+                <div className="text-xs text-stone-500 dark:text-stone-300">
                   {page.description}
                 </div>
               )}

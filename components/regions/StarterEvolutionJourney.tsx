@@ -186,7 +186,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
-          <p className="text-stone-600 dark:text-stone-400">Loading evolution journey...</p>
+          <p className="text-stone-600 dark:text-stone-300">Loading evolution journey...</p>
         </div>
       </div>
     );
@@ -208,7 +208,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
           <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 bg-clip-text text-transparent mb-4">
             Evolution Journey
           </h2>
-          <p className="text-lg text-stone-600 dark:text-stone-400">
+          <p className="text-lg text-stone-600 dark:text-stone-300">
             Choose your starter and explore their growth potential
           </p>
         </div>
@@ -280,7 +280,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                <div className="text-xs text-stone-600 dark:text-stone-400 mb-2">
+                <div className="text-xs text-stone-600 dark:text-stone-300 mb-2">
                   Lv. {currentChain.stage2.evolutionLevel}
                 </div>
                 <div className="relative">
@@ -321,7 +321,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <div className="text-xs text-stone-600 dark:text-stone-400 mb-2">
+                <div className="text-xs text-stone-600 dark:text-stone-300 mb-2">
                   Lv. {currentChain.stage3.evolutionLevel}
                 </div>
                 <div className="relative">
@@ -574,24 +574,24 @@ const EvolutionStage: React.FC<{
             <div className="grid grid-cols-3 gap-2 text-center">
               <div className="p-2 rounded-lg bg-white/50 dark:bg-stone-800/50">
                 <GiSwordWound className="text-red-500 mx-auto mb-1" />
-                <div className="text-xs text-stone-600 dark:text-stone-400">ATK</div>
+                <div className="text-xs text-stone-600 dark:text-stone-300">ATK</div>
                 <div className="text-sm font-bold text-stone-800 dark:text-white">{pokemon.stats.attack}</div>
               </div>
               <div className="p-2 rounded-lg bg-white/50 dark:bg-stone-800/50">
                 <GiShield className="text-amber-500 mx-auto mb-1" />
-                <div className="text-xs text-stone-600 dark:text-stone-400">DEF</div>
+                <div className="text-xs text-stone-600 dark:text-stone-300">DEF</div>
                 <div className="text-sm font-bold text-stone-800 dark:text-white">{pokemon.stats.defense}</div>
               </div>
               <div className="p-2 rounded-lg bg-white/50 dark:bg-stone-800/50">
                 <GiRunningNinja className="text-green-500 mx-auto mb-1" />
-                <div className="text-xs text-stone-600 dark:text-stone-400">SPD</div>
+                <div className="text-xs text-stone-600 dark:text-stone-300">SPD</div>
                 <div className="text-sm font-bold text-stone-800 dark:text-white">{pokemon.stats.speed}</div>
               </div>
             </div>
 
             {/* Abilities */}
             <div className="mt-3 pt-3 border-t border-stone-200/30 dark:border-stone-700/30">
-              <div className="text-xs text-stone-600 dark:text-stone-400 mb-1">Abilities</div>
+              <div className="text-xs text-stone-600 dark:text-stone-300 mb-1">Abilities</div>
               <div className="flex flex-wrap gap-1">
                 {pokemon.abilities.slice(0, 2).map((ability) => (
                   <span key={ability} className="text-xs px-2 py-1 rounded-full bg-amber-100/50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 capitalize">

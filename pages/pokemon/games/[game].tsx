@@ -970,7 +970,7 @@ export default function GameDetailPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Game Not Found</h1>
-          <p className="text-stone-600 dark:text-stone-400 mb-8">
+          <p className="text-stone-600 dark:text-stone-300 mb-8">
             The game "{gameId}" does not exist.
           </p>
           <StyledBackButton 
@@ -1086,7 +1086,7 @@ export default function GameDetailPage() {
                   theme === 'dark' ? 'bg-stone-800' : 'bg-stone-100'
                 }`}>
                   <h2 className="text-3xl font-bold mb-4">About {game.names.join(" & ")}</h2>
-                  <p className="text-lg text-stone-600 dark:text-stone-400 mb-6">
+                  <p className="text-lg text-stone-600 dark:text-stone-300 mb-6">
                     {game.longDescription}
                   </p>
                   
@@ -1094,22 +1094,22 @@ export default function GameDetailPage() {
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <BsCalendar className="text-2xl mb-2 text-pokemon-blue" />
-                      <p className="text-sm text-stone-500 dark:text-stone-400">Release Date</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-300">Release Date</p>
                       <p className="font-bold">{new Date(game.releaseDate).toLocaleDateString()}</p>
                     </div>
                     <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <BsController className="text-2xl mb-2 text-pokemon-red" />
-                      <p className="text-sm text-stone-500 dark:text-stone-400">Platform</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-300">Platform</p>
                       <p className="font-bold">{game.platform}</p>
                     </div>
                     <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <BsGlobe className="text-2xl mb-2 text-pokemon-green" />
-                      <p className="text-sm text-stone-500 dark:text-stone-400">Region</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-300">Region</p>
                       <p className="font-bold">{game.region}</p>
                     </div>
                     <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                       <GiCrystalBall className="text-2xl mb-2 text-pokemon-purple" />
-                      <p className="text-sm text-stone-500 dark:text-stone-400">Pokédex Size</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-300">Pokédex Size</p>
                       <p className="font-bold">{game.pokedexSize} Pokémon</p>
                     </div>
                   </div>
@@ -1169,7 +1169,7 @@ export default function GameDetailPage() {
                       <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
                         <BsGraphUp className="text-4xl mb-3 text-pokemon-green" />
                         <p className="text-3xl font-bold text-pokemon-green">{game.sales}</p>
-                        <p className="text-stone-600 dark:text-stone-400">Units Sold Worldwide</p>
+                        <p className="text-stone-600 dark:text-stone-300">Units Sold Worldwide</p>
                       </div>
                     </div>
                     <div>
@@ -1179,7 +1179,7 @@ export default function GameDetailPage() {
                           {renderStars(game.rating)}
                         </div>
                         <p className="text-3xl font-bold text-center">{game.rating}/5</p>
-                        <p className="text-sm text-stone-600 dark:text-stone-400 mt-3">
+                        <p className="text-sm text-stone-600 dark:text-stone-300 mt-3">
                           {game.reception}
                         </p>
                       </div>
@@ -1241,7 +1241,7 @@ export default function GameDetailPage() {
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.gymLeaders || game.trialCaptains || game.wardens || 0}
                       </div>
-                      <div className="text-stone-600 dark:text-stone-400">
+                      <div className="text-stone-600 dark:text-stone-300">
                         {game.gymLeaders ? "Gym Leaders" : game.trialCaptains ? "Trial Captains" : "Wardens"}
                       </div>
                     </div>
@@ -1249,19 +1249,19 @@ export default function GameDetailPage() {
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.pokedexSize}
                       </div>
-                      <div className="text-stone-600 dark:text-stone-400">Pokédex Size</div>
+                      <div className="text-stone-600 dark:text-stone-300">Pokédex Size</div>
                     </div>
                     <div>
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.legendaries.length}
                       </div>
-                      <div className="text-stone-600 dark:text-stone-400">Legendaries</div>
+                      <div className="text-stone-600 dark:text-stone-300">Legendaries</div>
                     </div>
                     <div>
                       <div className={`text-4xl font-bold bg-gradient-to-r ${game.color} bg-clip-text text-transparent`}>
                         {game.starters.length}
                       </div>
-                      <div className="text-stone-600 dark:text-stone-400">Starters</div>
+                      <div className="text-stone-600 dark:text-stone-300">Starters</div>
                     </div>
                   </div>
                 </div>
@@ -1302,12 +1302,12 @@ export default function GameDetailPage() {
                   <h3 className="text-2xl font-bold mb-4">Release Information</h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
-                      <p className="text-sm text-stone-500 dark:text-stone-400">Japan Release</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-300">Japan Release</p>
                       <p className="font-bold">{new Date(game.releaseDate).toLocaleDateString()}</p>
                     </div>
                     {game.releaseDateUS && (
                       <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-white'}`}>
-                        <p className="text-sm text-stone-500 dark:text-stone-400">US Release</p>
+                        <p className="text-sm text-stone-500 dark:text-stone-300">US Release</p>
                         <p className="font-bold">{new Date(game.releaseDateUS).toLocaleDateString()}</p>
                       </div>
                     )}
@@ -1352,7 +1352,7 @@ export default function GameDetailPage() {
                       <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${game.color} flex items-center justify-center text-white font-bold flex-shrink-0`}>
                         {idx + 1}
                       </div>
-                      <p className="text-lg text-stone-600 dark:text-stone-400 pt-2">
+                      <p className="text-lg text-stone-600 dark:text-stone-300 pt-2">
                         {fact}
                       </p>
                     </div>

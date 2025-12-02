@@ -281,7 +281,7 @@ export function UnifiedSearch({
             {/* Recent Searches */}
             {!query && recentSearches.length > 0 && (
               <div className="p-4 border-b border-stone-200 dark:border-stone-700">
-                <h3 className="text-sm font-medium text-stone-600 dark:text-stone-400 mb-2">
+                <h3 className="text-sm font-medium text-stone-600 dark:text-stone-300 mb-2">
                   Recent Searches
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -318,7 +318,7 @@ export function UnifiedSearch({
                 ))}
               </div>
             ) : query && !isLoading ? (
-              <div className="p-8 text-center text-stone-500 dark:text-stone-400">
+              <div className="p-8 text-center text-stone-500 dark:text-stone-300">
                 No results found for "{query}"
               </div>
             ) : null}
@@ -388,7 +388,7 @@ function SearchResultItem({
           </span>
         </div>
         {result.subtitle && (
-          <p className="text-sm text-stone-500 dark:text-stone-400 truncate">
+          <p className="text-sm text-stone-500 dark:text-stone-300 truncate">
             {result.subtitle}
           </p>
         )}
@@ -473,7 +473,7 @@ export function GlobalSearchModal() {
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <span className="text-stone-600 dark:text-stone-400">Search</span>
+        <span className="text-stone-600 dark:text-stone-300">Search</span>
         <kbd className="px-2 py-1 text-xs bg-white dark:bg-stone-900 rounded border border-stone-300 dark:border-stone-600">
           ⌘K
         </kbd>

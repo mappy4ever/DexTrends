@@ -196,11 +196,11 @@ const CollectionDashboard = () => {
                 }}
                 title={`${item.date}: $${item.value}`}
               ></div>
-              <span className="text-xs text-stone-600 dark:text-stone-400 mt-2">{item.date}</span>
+              <span className="text-xs text-stone-600 dark:text-stone-300 mt-2">{item.date}</span>
             </div>
           ))}
         </div>
-        <div className="text-center text-sm text-stone-600 dark:text-stone-400">
+        <div className="text-center text-sm text-stone-600 dark:text-stone-300">
           Collection Value Over Time
         </div>
       </div>
@@ -256,7 +256,7 @@ const CollectionDashboard = () => {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
               <div className="text-2xl font-bold text-stone-900 dark:text-white">{total}</div>
-              <div className="text-xs text-stone-600 dark:text-stone-400">Cards</div>
+              <div className="text-xs text-stone-600 dark:text-stone-300">Cards</div>
             </div>
           </div>
         </div>
@@ -332,7 +332,7 @@ const CollectionDashboard = () => {
           </svg>
         </div>
         <h3 className="text-xl font-semibold text-stone-600 dark:text-stone-300 mb-2">Start Your Collection</h3>
-        <p className="text-stone-500 dark:text-stone-400">Add cards and Pokémon to your favorites to see detailed analytics and insights!</p>
+        <p className="text-stone-500 dark:text-stone-300">Add cards and Pokémon to your favorites to see detailed analytics and insights!</p>
       </div>
     );
   }
@@ -355,7 +355,7 @@ const CollectionDashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Total Cards</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-300">Total Cards</p>
               <p className="text-2xl font-semibold text-stone-900 dark:text-white">{collectionStats.totalCards}</p>
             </div>
           </div>
@@ -369,7 +369,7 @@ const CollectionDashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Total Value</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-300">Total Value</p>
               <p className="text-2xl font-semibold text-stone-900 dark:text-white">${Math.round(collectionStats.totalValue)}</p>
             </div>
           </div>
@@ -383,7 +383,7 @@ const CollectionDashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Avg Value</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-300">Avg Value</p>
               <p className="text-2xl font-semibold text-stone-900 dark:text-white">${Math.round(collectionStats.averageValue)}</p>
             </div>
           </div>
@@ -397,7 +397,7 @@ const CollectionDashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-stone-600 dark:text-stone-400">Completion</p>
+              <p className="text-sm font-medium text-stone-600 dark:text-stone-300">Completion</p>
               <p className="text-2xl font-semibold text-stone-900 dark:text-white">{Math.round(collectionStats.completionPercentage)}%</p>
             </div>
           </div>
@@ -445,7 +445,7 @@ const CollectionDashboard = () => {
             </div>
             <div>
               <h4 className="text-xl font-bold text-stone-900 dark:text-white">{collectionStats.mostValuableCard.name}</h4>
-              <p className="text-stone-600 dark:text-stone-400">${collectionStats.mostValuableCard.value}</p>
+              <p className="text-stone-600 dark:text-stone-300">${collectionStats.mostValuableCard.value}</p>
               <p className="text-sm text-stone-500 dark:text-stone-500">Rare Holo</p>
             </div>
           </div>

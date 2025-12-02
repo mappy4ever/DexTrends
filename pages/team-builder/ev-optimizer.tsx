@@ -425,7 +425,7 @@ const EVOptimizer: NextPage = () => {
                   <h3 className="text-2xl font-bold text-stone-800 dark:text-white mb-2">
                     Select a Pokemon
                   </h3>
-                  <p className="text-stone-600 dark:text-stone-400">
+                  <p className="text-stone-600 dark:text-stone-300">
                     Choose a Pokemon to start optimizing its EVs
                   </p>
                 </div>
@@ -441,7 +441,7 @@ const EVOptimizer: NextPage = () => {
                         <div className="text-2xl font-bold text-stone-900 dark:text-white">
                           {value}
                         </div>
-                        <div className="text-xs text-stone-600 dark:text-stone-400">
+                        <div className="text-xs text-stone-600 dark:text-stone-300">
                           {STAT_NAMES[stat]}
                         </div>
                       </div>

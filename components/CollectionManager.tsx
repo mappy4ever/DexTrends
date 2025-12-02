@@ -562,19 +562,19 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
           {/* Collection Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-              <div className="text-sm text-stone-500 dark:text-stone-400">Total Cards</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Total Cards</div>
               <div className="text-2xl font-bold text-stone-900 dark:text-white">
                 {stats.totalCards}
               </div>
             </div>
             <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-              <div className="text-sm text-stone-500 dark:text-stone-400">Unique Cards</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Unique Cards</div>
               <div className="text-2xl font-bold text-stone-900 dark:text-white">
                 {stats.uniqueCards}
               </div>
             </div>
             <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-              <div className="text-sm text-stone-500 dark:text-stone-400">Estimated Value</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Estimated Value</div>
               <div className="text-2xl font-bold text-green-600">
                 ${stats.totalValue.toFixed(2)}
               </div>
@@ -582,7 +582,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
             <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4 flex items-center justify-center">
               <button
                 onClick={() => setShowAddCardModal(true)}
-                className="w-full h-full flex items-center justify-center border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md hover:border-amber-500 text-stone-500 dark:text-stone-400 hover:text-amber-500"
+                className="w-full h-full flex items-center justify-center border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md hover:border-amber-500 text-stone-500 dark:text-stone-300 hover:text-amber-500"
               >
                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -600,7 +600,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                     {selectedCollection.name}
                   </h3>
                   {selectedCollection.description && (
-                    <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+                    <p className="text-sm text-stone-500 dark:text-stone-300 mt-1">
                       {selectedCollection.description}
                     </p>
                   )}
@@ -664,12 +664,12 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                           >
                             {card.card_name}
                           </Link>
-                          <div className="text-xs text-stone-500 dark:text-stone-400 truncate">
+                          <div className="text-xs text-stone-500 dark:text-stone-300 truncate">
                             {card.set_name}
                           </div>
                           <div className="flex items-center justify-between mt-2">
                             <div>
-                              <div className="text-xs text-stone-500 dark:text-stone-400">
+                              <div className="text-xs text-stone-500 dark:text-stone-300">
                                 Qty: {card.quantity} • {card.condition}
                               </div>
                               <CompactPriceIndicator
@@ -689,7 +689,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                             </button>
                           </div>
                           {card.notes && (
-                            <div className="text-xs text-stone-500 dark:text-stone-400 mt-1 italic">
+                            <div className="text-xs text-stone-500 dark:text-stone-300 mt-1 italic">
                               {card.notes}
                             </div>
                           )}
@@ -700,7 +700,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <div className="text-stone-500 dark:text-stone-400 mb-4">
+                  <div className="text-stone-500 dark:text-stone-300 mb-4">
                     No cards in this collection yet
                   </div>
                   <button
@@ -716,7 +716,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
         </>
       ) : (
         <div className="text-center py-12">
-          <div className="text-stone-500 dark:text-stone-400 mb-4">
+          <div className="text-stone-500 dark:text-stone-300 mb-4">
             No collections found. Create your first collection to start tracking your cards!
           </div>
           <button
@@ -756,7 +756,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
         title="Import Collection"
       >
         <div className="space-y-4">
-          <p className="text-sm text-stone-600 dark:text-stone-400">
+          <p className="text-sm text-stone-600 dark:text-stone-300">
             Import your collection from a JSON or CSV file. CSV files should include columns for Card ID, Card Name, Set Name, and Quantity.
           </p>
 
@@ -786,7 +786,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
               <svg className="w-12 h-12 text-stone-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
+              <p className="text-sm text-stone-600 dark:text-stone-300 mb-2">
                 Click to select a file or drag and drop
               </p>
               <p className="text-xs text-stone-500 dark:text-stone-500">
@@ -797,7 +797,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
 
           <div className="bg-stone-50 dark:bg-stone-800 rounded-md p-3">
             <h4 className="text-sm font-medium text-stone-900 dark:text-white mb-2">CSV Format Example:</h4>
-            <pre className="text-xs text-stone-600 dark:text-stone-400 overflow-x-auto">
+            <pre className="text-xs text-stone-600 dark:text-stone-300 overflow-x-auto">
 Card ID,Card Name,Set Name,Quantity
 sm1-1,Bulbasaur,Sun & Moon,2
 xy1-54,Charizard,XY Base,1
@@ -960,7 +960,7 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
                     <div className="font-medium text-stone-900 dark:text-white">
                       {card.name}
                     </div>
-                    <div className="text-sm text-stone-500 dark:text-stone-400">
+                    <div className="text-sm text-stone-500 dark:text-stone-300">
                       {card.set?.name}
                     </div>
                   </div>
@@ -983,7 +983,7 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
               <div className="font-medium text-stone-900 dark:text-white">
                 {selectedCard.name}
               </div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">
+              <div className="text-sm text-stone-500 dark:text-stone-300">
                 {selectedCard.set?.name}
               </div>
             </div>

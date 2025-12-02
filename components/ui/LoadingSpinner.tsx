@@ -50,7 +50,7 @@ export const PageLoadingSpinner: React.FC<{ message?: string }> = ({ message }) 
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
       <LoadingSpinner size="xl" />
       {message && (
-        <p className="text-sm text-stone-600 dark:text-stone-400">{message}</p>
+        <p className="text-sm text-stone-600 dark:text-stone-300">{message}</p>
       )}
     </div>
   );

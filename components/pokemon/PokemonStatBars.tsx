@@ -124,7 +124,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
   return (
     <div className="w-full space-y-1">
       {/* Header */}
-      <div className="grid grid-cols-12 gap-2 mb-2 text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-400">
+      <div className="grid grid-cols-12 gap-2 mb-2 text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-300">
         <div className="col-span-3 text-center">Stat</div>
         <div className="col-span-6"></div>
         <div className="col-span-3 text-center hidden sm:block">Range</div>
@@ -208,7 +208,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
             {/* Range Badge */}
             <div className="col-span-3 flex justify-center">
               <div className="px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-                <span className="text-xs text-stone-600 dark:text-stone-400 font-medium">
+                <span className="text-xs text-stone-600 dark:text-stone-300 font-medium">
                   <span className="hidden sm:inline">{range.min} - {range.max}</span>
                   <span className="inline sm:hidden">{range.min}-{range.max}</span>
                 </span>
@@ -266,7 +266,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
           </div>
 
           {/* Total Range */}
-          <div className="col-span-3 text-xs text-center text-stone-600 dark:text-stone-400 font-medium">
+          <div className="col-span-3 text-xs text-center text-stone-600 dark:text-stone-300 font-medium">
             {(() => {
               const totalRange = calculateTotalRange();
               return (
@@ -282,7 +282,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
       {/* Notes */}
       {showNotes && (
-        <div className="mt-8 space-y-1 text-[10px] sm:text-xs text-amber-500 dark:text-stone-400">
+        <div className="mt-8 space-y-1 text-[10px] sm:text-xs text-amber-500 dark:text-stone-300">
           <div className="flex items-start gap-2">
             <span className="text-purple-500">•</span>
             <span>Minimum stats are calculated with 0 EVs, IVs of 0, and (if applicable) a hindering nature.</span>

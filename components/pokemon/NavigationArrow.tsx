@@ -77,7 +77,7 @@ const NavigationArrow: React.FC<NavigationArrowProps> = ({ direction, pokemon, o
           </div>
           
           {/* Direction hint */}
-          <div className="mt-2 text-xs text-stone-500 dark:text-stone-400 text-center">
+          <div className="mt-2 text-xs text-stone-500 dark:text-stone-300 text-center">
             {isPrev ? '← Previous' : 'Next →'}
           </div>
         </div>

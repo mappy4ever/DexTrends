@@ -144,7 +144,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
             <h2 className="text-5xl font-black mb-3 bg-gradient-to-r from-stone-800 to-stone-600 dark:from-white dark:to-stone-300 bg-clip-text text-transparent">
               {region.name} Region
             </h2>
-            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl">
+            <p className="text-lg text-stone-600 dark:text-stone-300 max-w-2xl">
               {region.description}
             </p>
           </div>
@@ -242,7 +242,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
                   <div className="backdrop-blur-xl bg-white/80 dark:bg-stone-800/80 rounded-xl px-6 py-3 shadow-lg border border-white/30 dark:border-stone-700/30 overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-br ${genColor} opacity-10 group-hover:opacity-20 transition-opacity duration-300`} />
                     <div className="relative flex items-center gap-2">
-                      <BsController className="text-lg text-stone-600 dark:text-stone-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
+                      <BsController className="text-lg text-stone-600 dark:text-stone-300 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
                       <span className="font-semibold text-stone-800 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">{game}</span>
                     </div>
                     {/* Shimmer effect */}

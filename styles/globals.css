@@ -23,6 +23,9 @@
 /* Import touch target utilities for mobile optimization */
 @import './touch-targets.css';
 
+/* Import reduced motion support for accessibility */
+@import './reduced-motion.css';
+
 /* GPU Acceleration for Animations */
 @layer utilities {
   .transform-gpu {

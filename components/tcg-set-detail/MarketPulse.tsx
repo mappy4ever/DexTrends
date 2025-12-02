@@ -139,7 +139,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
           <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
             Market Pulse
           </h3>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+          <p className="text-sm text-stone-500 dark:text-stone-300 mt-1">
             Real-time market analytics and trends
           </p>
         </div>
@@ -162,7 +162,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
                 "px-4 py-2 rounded-full text-sm font-medium transition-all",
                 timeRange === range
                   ? "bg-gradient-to-r from-amber-500 to-cyan-500 text-white"
-                  : "text-stone-600 dark:text-stone-400"
+                  : "text-stone-600 dark:text-stone-300"
               )}
             >
               {range}
@@ -195,7 +195,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
               {/* Metric Value and Change */}
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">
+                  <p className="text-xs text-stone-500 dark:text-stone-300 mb-1">
                     {metric.label}
                   </p>
                   <p className="text-2xl font-bold text-stone-800 dark:text-stone-200">
@@ -208,7 +208,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
                   "px-2 py-1 rounded-full text-xs font-semibold",
                   metric.trend === 'up' && "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400",
                   metric.trend === 'down' && "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400",
-                  metric.trend === 'stable' && "bg-stone-100 text-stone-700 dark:bg-stone-900/50 dark:text-stone-400"
+                  metric.trend === 'stable' && "bg-stone-100 text-stone-700 dark:bg-stone-900/50 dark:text-stone-300"
                 )}>
                   {metric.trend === 'up' && '↑'}
                   {metric.trend === 'down' && '↓'}
@@ -270,7 +270,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
                     <p className="text-sm font-medium text-stone-800 dark:text-stone-200">
                       {item.card.name}
                     </p>
-                    <p className="text-xs text-stone-500 dark:text-stone-400">
+                    <p className="text-xs text-stone-500 dark:text-stone-300">
                       #{item.card.number}
                     </p>
                   </div>
@@ -317,7 +317,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
                     <p className="text-sm font-medium text-stone-800 dark:text-stone-200">
                       {item.card.name}
                     </p>
-                    <p className="text-xs text-stone-500 dark:text-stone-400">
+                    <p className="text-xs text-stone-500 dark:text-stone-300">
                       #{item.card.number}
                     </p>
                   </div>
@@ -341,7 +341,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
         <h4 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
           Market Insights
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-stone-600 dark:text-stone-400">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-stone-600 dark:text-stone-300">
           <div>
             <span className="font-medium">Trading Volume:</span> High
           </div>

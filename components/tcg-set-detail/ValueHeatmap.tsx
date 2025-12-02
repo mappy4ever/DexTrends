@@ -118,7 +118,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
           <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
             Value Distribution
           </h3>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+          <p className="text-sm text-stone-500 dark:text-stone-300 mt-1">
             Visual price analysis across all cards
           </p>
         </div>
@@ -139,7 +139,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
               "px-4 py-2 rounded-full text-sm font-medium transition-all",
               viewMode === 'grid'
                 ? "bg-gradient-to-r from-amber-500 to-pink-500 text-white"
-                : "text-stone-600 dark:text-stone-400"
+                : "text-stone-600 dark:text-stone-300"
             )}
           >
             Grid
@@ -150,7 +150,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
               "px-4 py-2 rounded-full text-sm font-medium transition-all",
               viewMode === 'treemap'
                 ? "bg-gradient-to-r from-amber-500 to-cyan-500 text-white"
-                : "text-stone-600 dark:text-stone-400"
+                : "text-stone-600 dark:text-stone-300"
             )}
           >
             Treemap
@@ -189,7 +189,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
                 <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
                   {range.label}
                 </span>
-                <span className="text-xs text-stone-500 dark:text-stone-400">
+                <span className="text-xs text-stone-500 dark:text-stone-300">
                   ({stats?.count || 0})
                 </span>
               </motion.button>
@@ -203,7 +203,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
             animate={{ opacity: 1, y: 0 }}
             className="mt-3 p-3 rounded-lg bg-white/50 dark:bg-stone-800/50 backdrop-blur-md"
           >
-            <p className="text-sm text-stone-600 dark:text-stone-400">
+            <p className="text-sm text-stone-600 dark:text-stone-300">
               <span className="font-semibold">{selectedRange.label}:</span>{' '}
               {rangeStats.get(selectedRange.label)?.count || 0} cards worth{' '}
               ${rangeStats.get(selectedRange.label)?.total.toFixed(2) || 0} total
@@ -244,7 +244,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
                       <p className="text-xs font-semibold text-stone-800 dark:text-stone-200">
                         {item.card.name}
                       </p>
-                      <p className="text-xs text-stone-600 dark:text-stone-400">
+                      <p className="text-xs text-stone-600 dark:text-stone-300">
                         ${item.price.toFixed(2)}
                       </p>
                     </div>
@@ -336,14 +336,14 @@ const StatCard: React.FC<{
   gradient: string;
 }> = ({ label, value, subValue, gradient }) => (
   <div className="text-center">
-    <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">{label}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-300 mb-1">{label}</p>
     <p className={cn(
       "text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent",
       gradient
     )}>
       {value}
     </p>
-    <p className="text-xs text-stone-500 dark:text-stone-400 truncate">{subValue}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-300 truncate">{subValue}</p>
   </div>
 );
 

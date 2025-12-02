@@ -92,7 +92,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice,
       },
       STABLE: {
         icon: '→',
-        color: 'text-stone-600 dark:text-stone-400',
+        color: 'text-stone-600 dark:text-stone-300',
         bgColor: 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700'
       }
     };

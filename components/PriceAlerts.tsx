@@ -288,7 +288,7 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
                         >
                           {alert.card_name}
                         </Link>
-                        <div className="text-sm text-stone-500 dark:text-stone-400">
+                        <div className="text-sm text-stone-500 dark:text-stone-300">
                           <span className={typeDisplay.color}>{typeDisplay.label}</span>
                           {alert.target_price && ` - Target: $${alert.target_price}`}
                           {alert.percentage_change && ` - ${alert.percentage_change > 0 ? '+' : ''}${alert.percentage_change}%`}
@@ -319,7 +319,7 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
             </div>
           ) : (
             <div className="text-center py-8">
-              <div className="text-stone-500 dark:text-stone-400 mb-4">
+              <div className="text-stone-500 dark:text-stone-300 mb-4">
                 No active alerts. Create your first alert to get notified of price changes!
               </div>
               <button
@@ -351,7 +351,7 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
                       <div className="font-medium text-stone-900 dark:text-white">
                         {alert.card_name}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">
+                      <div className="text-sm text-stone-500 dark:text-stone-300">
                         Alert triggered {alert.triggered_at ? new Date(alert.triggered_at).toLocaleDateString() : 'Not yet'}
                       </div>
                     </div>
@@ -443,7 +443,7 @@ function CreateAlertForm({
                     <div className="font-medium text-stone-900 dark:text-white">
                       {card.name}
                     </div>
-                    <div className="text-sm text-stone-500 dark:text-stone-400">
+                    <div className="text-sm text-stone-500 dark:text-stone-300">
                       {card.set?.name} • Current: ${card.currentPrice?.toFixed(2)}
                     </div>
                   </div>
@@ -466,7 +466,7 @@ function CreateAlertForm({
               <div className="font-medium text-stone-900 dark:text-white">
                 {selectedCard.name}
               </div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">
+              <div className="text-sm text-stone-500 dark:text-stone-300">
                 {selectedCard.set?.name}
               </div>
               <div className="text-sm font-medium text-green-600">
@@ -529,7 +529,7 @@ function CreateAlertForm({
                 step="0.1"
                 required
               />
-              <div className="text-xs text-stone-500 dark:text-stone-400 mt-1">
+              <div className="text-xs text-stone-500 dark:text-stone-300 mt-1">
                 Positive for price increases, negative for decreases
               </div>
             </div>

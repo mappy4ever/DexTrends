@@ -419,7 +419,7 @@ export function PokemonLearnset({
 
   if (moves.length === 0) {
     return (
-      <div className={cn('text-center py-8 text-stone-500 dark:text-stone-400', className)}>
+      <div className={cn('text-center py-8 text-stone-500 dark:text-stone-300', className)}>
         No moves found for this Pokémon
       </div>
     );
@@ -597,7 +597,7 @@ export function PokemonLearnset({
       ) : (
         // Single method view with count
         <div>
-          <div className="mb-4 text-sm text-stone-600 dark:text-stone-400">
+          <div className="mb-4 text-sm text-stone-600 dark:text-stone-300">
             Showing {filteredMoves.length} {learnMethodLabels[selectedMethod]?.toLowerCase() || selectedMethod} moves
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 overflow-visible">
@@ -658,7 +658,7 @@ function MoveItem({ move, moveData }: MoveItemProps) {
             <TypeBadge type={moveType} size="sm" />
             {moveData && (
               <>
-                <span className="text-xs text-stone-600 dark:text-stone-400">
+                <span className="text-xs text-stone-600 dark:text-stone-300">
                   {moveData.power ? `Power: ${moveData.power}` : 'Power: —'} / 
                   {moveData.accuracy ? `Acc: ${moveData.accuracy}%` : 'Acc: —'}
                 </span>
@@ -670,10 +670,10 @@ function MoveItem({ move, moveData }: MoveItemProps) {
           {/* Learn method info with generation indicators */}
           <div className="flex items-center gap-2 mt-1">
             {move.learn_method === 'level-up' && move.level && (
-              <div className="text-sm text-stone-500 dark:text-stone-400">Level {move.level}</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Level {move.level}</div>
             )}
             {move.learn_method === 'machine' && (
-              <div className="text-sm text-stone-500 dark:text-stone-400">TM/HM</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">TM/HM</div>
             )}
             {/* Show all generations this move is available in */}
             {(move as any).generations && (move as any).generations.length > 1 && (

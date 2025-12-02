@@ -389,7 +389,7 @@ export function PokemonComparePanel({
                       'text-2xl font-bold',
                       comparison && comparison.wins.pokemon1 > comparison.wins.pokemon2
                         ? 'text-green-600 dark:text-green-400'
-                        : 'text-stone-600 dark:text-stone-400'
+                        : 'text-stone-600 dark:text-stone-300'
                     )}>
                       {comparison?.wins.pokemon1}
                     </div>
@@ -410,7 +410,7 @@ export function PokemonComparePanel({
                       'text-2xl font-bold',
                       comparison && comparison.wins.pokemon2 > comparison.wins.pokemon1
                         ? 'text-green-600 dark:text-green-400'
-                        : 'text-stone-600 dark:text-stone-400'
+                        : 'text-stone-600 dark:text-stone-300'
                     )}>
                       {comparison?.wins.pokemon2}
                     </div>

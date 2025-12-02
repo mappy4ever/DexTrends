@@ -252,7 +252,7 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
             {description && (
               <p
                 id={`${toggleId}-description`}
-                className={cn(sizes.description, 'text-stone-500 dark:text-stone-400 mt-0.5')}
+                className={cn(sizes.description, 'text-stone-500 dark:text-stone-300 mt-0.5')}
               >
                 {description}
               </p>
@@ -285,7 +285,7 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
             {description && (
               <p
                 id={`${toggleId}-description`}
-                className={cn(sizes.description, 'text-stone-500 dark:text-stone-400 mt-0.5')}
+                className={cn(sizes.description, 'text-stone-500 dark:text-stone-300 mt-0.5')}
               >
                 {description}
               </p>

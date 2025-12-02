@@ -60,7 +60,7 @@ export const PokemonListItem: React.FC<PokemonListItemProps> = ({
       {/* Name and Stats */}
       <div className="flex-1">
         <h4 className="font-semibold text-stone-900 dark:text-white capitalize">{name.replace('-', ' ')}</h4>
-        <p className="text-sm text-stone-600 dark:text-stone-400 font-mono">
+        <p className="text-sm text-stone-600 dark:text-stone-300 font-mono">
           {pokemonId ? formatPokedexNumber(pokemonId) : '#???'}
         </p>
       </div>

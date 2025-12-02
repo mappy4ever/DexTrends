@@ -73,39 +73,39 @@ const GlobalKeyboardShortcuts: React.FC = () => {
           <h3 class="text-lg font-bold mb-4 text-stone-900 dark:text-white">Keyboard Shortcuts</h3>
           <div class="space-y-2 text-sm">
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Search</span>
+              <span class="text-stone-600 dark:text-stone-300">Search</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">Ctrl+K</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Home</span>
+              <span class="text-stone-600 dark:text-stone-300">Home</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">H</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Pokedex</span>
+              <span class="text-stone-600 dark:text-stone-300">Pokedex</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">P</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">TCG Sets</span>
+              <span class="text-stone-600 dark:text-stone-300">TCG Sets</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">T</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Pocket Mode</span>
+              <span class="text-stone-600 dark:text-stone-300">Pocket Mode</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">K</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Favorites</span>
+              <span class="text-stone-600 dark:text-stone-300">Favorites</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">F</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Leaderboard</span>
+              <span class="text-stone-600 dark:text-stone-300">Leaderboard</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">L</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Help</span>
+              <span class="text-stone-600 dark:text-stone-300">Help</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">?</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-stone-600 dark:text-stone-400">Close Modal</span>
+              <span class="text-stone-600 dark:text-stone-300">Close Modal</span>
               <span class="font-mono bg-stone-100 dark:bg-stone-700 px-2 py-1 rounded">Esc</span>
             </div>
           </div>

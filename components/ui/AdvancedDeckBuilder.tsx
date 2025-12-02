@@ -374,7 +374,7 @@ export default function AdvancedDeckBuilder({
               value={deck.description}
               onChange={(e) => setDeck(prev => ({ ...prev, description: e.target.value }))}
               placeholder="Deck description..."
-              className="text-stone-600 dark:text-stone-400 bg-transparent border-none outline-none w-full mt-1" />
+              className="text-stone-600 dark:text-stone-300 bg-transparent border-none outline-none w-full mt-1" />
           </div>
           <div className="flex items-center space-x-3">
             <select
@@ -411,7 +411,7 @@ export default function AdvancedDeckBuilder({
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'builder'
               ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <BsCardList className="inline mr-2" />
@@ -422,7 +422,7 @@ export default function AdvancedDeckBuilder({
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'analysis'
               ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <FaChartBar className="inline mr-2" />
@@ -433,7 +433,7 @@ export default function AdvancedDeckBuilder({
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'validation'
               ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           {validation.isValid ? (
@@ -481,7 +481,7 @@ export default function AdvancedDeckBuilder({
                             <div className="font-medium text-stone-900 dark:text-white text-sm">
                               {card.name}
                             </div>
-                            <div className="text-xs text-stone-500 dark:text-stone-400">
+                            <div className="text-xs text-stone-500 dark:text-stone-300">
                               {card.set.name} • {card.rarity}
                             </div>
                             <div className="flex items-center space-x-1 mt-1">
@@ -557,19 +557,19 @@ export default function AdvancedDeckBuilder({
                     <div className="text-2xl font-bold text-stone-900 dark:text-white">
                       {metaAnalysis.score}
                     </div>
-                    <div className="text-sm text-stone-500 dark:text-stone-400">Meta Score</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-300">Meta Score</div>
                   </div>
                   <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
                     <div className="text-2xl font-bold text-stone-900 dark:text-white">
                       {metaAnalysis.tier}
                     </div>
-                    <div className="text-sm text-stone-500 dark:text-stone-400">Tier Rating</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-300">Tier Rating</div>
                   </div>
                   <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
                     <div className="text-2xl font-bold text-stone-900 dark:text-white">
                       {metaAnalysis.popularity}%
                     </div>
-                    <div className="text-sm text-stone-500 dark:text-stone-400">Popularity</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-300">Popularity</div>
                   </div>
                 </div>
 
@@ -592,7 +592,7 @@ export default function AdvancedDeckBuilder({
                               style={{ width: `${matchup.winRate}%` }}
                             />
                           </div>
-                          <span className="text-sm text-stone-600 dark:text-stone-400 w-12">
+                          <span className="text-sm text-stone-600 dark:text-stone-300 w-12">
                             {matchup.winRate}%
                           </span>
                         </div>
@@ -618,7 +618,7 @@ export default function AdvancedDeckBuilder({
                               style={{ width: `${(count / Math.max(...Object.values(metaAnalysis.typeDistribution))) * 100}%` }}
                             />
                           </div>
-                          <span className="text-sm text-stone-600 dark:text-stone-400">{count}</span>
+                          <span className="text-sm text-stone-600 dark:text-stone-300">{count}</span>
                         </div>
                       ))}
                     </div>
@@ -693,25 +693,25 @@ export default function AdvancedDeckBuilder({
                       <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.totalCards}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Total Cards</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Total Cards</div>
                     </div>
                     <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded">
                       <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.pokemon}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Pokémon</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Pokémon</div>
                     </div>
                     <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded">
                       <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.trainers}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Trainers</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Trainers</div>
                     </div>
                     <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded">
                       <div className="text-xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.energy}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Energy</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Energy</div>
                     </div>
                   </div>
                 </div>
@@ -726,7 +726,7 @@ export default function AdvancedDeckBuilder({
             <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
               Deck List
             </h3>
-            <div className="text-sm text-stone-500 dark:text-stone-400">
+            <div className="text-sm text-stone-500 dark:text-stone-300">
               {deck.cards.reduce((sum, card) => sum + card.quantity, 0)}/60
             </div>
           </div>
@@ -748,7 +748,7 @@ export default function AdvancedDeckBuilder({
                           <div className="text-sm font-medium text-stone-900 dark:text-white">
                             {card.quantity}x {card.name}
                           </div>
-                          <div className="text-xs text-stone-500 dark:text-stone-400">
+                          <div className="text-xs text-stone-500 dark:text-stone-300">
                             {card.set?.name}
                           </div>
                         </div>
@@ -775,7 +775,7 @@ export default function AdvancedDeckBuilder({
           </div>
 
           {deck.cards.length === 0 && (
-            <div className="text-center py-8 text-stone-500 dark:text-stone-400">
+            <div className="text-center py-8 text-stone-500 dark:text-stone-300">
               <BsCardList className="w-12 h-12 mx-auto mb-4" />
               <p>Your deck is empty</p>
               <p className="text-sm">Search and add cards to get started</p>

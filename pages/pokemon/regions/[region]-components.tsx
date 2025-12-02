@@ -14,7 +14,7 @@ import RegionHero from "../../../components/regions/RegionHero";
 import RegionInfo from "../../../components/regions/RegionInfo";
 import GymLeaderCarousel from "../../../components/regions/GymLeaderCarousel";
 import EliteFourGallery from "../../../components/regions/EliteFourGallery";
-import StarterShowcase from "../../../components/regions/StarterShowcase";
+import StarterShowcaseComplete from "../../../components/regions/StarterShowcaseComplete";
 import GameShowcase from "../../../components/regions/GameShowcase";
 import BadgeCollection from "../../../components/regions/BadgeCollection";
 
@@ -725,7 +725,7 @@ const RegionDetailPage: NextPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Region Not Found</h1>
-          <p className="text-stone-600 dark:text-stone-400 mb-8">
+          <p className="text-stone-600 dark:text-stone-300 mb-8">
             The region "{regionId}" does not exist.
           </p>
           <StyledBackButton 
@@ -788,19 +788,12 @@ const RegionDetailPage: NextPage = () => {
       />
 
       {/* Starter Pokémon Section */}
-      <StarterShowcase region={{
-        name: region.name,
-        color: region.color,
-        games: region.games,
-        starters: region.starters,
-        starterIds: region.starterIds,
-        starterTypes: region.starterTypes,
-        professor: region.professor,
-        generation: region.generation,
-        pokemonRange: region.pokemonRange,
-        cities: region.cities,
-        routes: typeof region.routes === 'string' ? parseInt(region.routes, 10) : region.routes
-      }} theme={theme} />
+      <StarterShowcaseComplete
+        region={region.name}
+        starters={region.starters}
+        starterIds={region.starterIds}
+        theme={theme as 'light' | 'dark'}
+      />
 
       {/* Gym Leaders Section */}
       {region.gymLeaders && (
@@ -837,7 +830,7 @@ const RegionDetailPage: NextPage = () => {
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-5xl font-bold mb-4">Explore {region.name}</h2>
-              <p className="text-xl text-stone-600 dark:text-stone-400">
+              <p className="text-xl text-stone-600 dark:text-stone-300">
                 Discover the cities, towns, and landmarks of the region
               </p>
             </div>
@@ -858,7 +851,7 @@ const RegionDetailPage: NextPage = () => {
                       <BsGeoAlt className="text-pokemon-blue mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold">{city.name}</h4>
-                        <p className="text-sm text-stone-600 dark:text-stone-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-300">
                           {city.description}
                         </p>
                       </div>
@@ -883,7 +876,7 @@ const RegionDetailPage: NextPage = () => {
                       <BsMap className="text-pokemon-red mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold">{landmark.name}</h4>
-                        <p className="text-sm text-stone-600 dark:text-stone-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-300">
                           {landmark.description}
                         </p>
                       </div>
@@ -905,7 +898,7 @@ const RegionDetailPage: NextPage = () => {
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-5xl font-bold mb-4">Legendary Pokémon</h2>
-              <p className="text-xl text-stone-600 dark:text-stone-400">
+              <p className="text-xl text-stone-600 dark:text-stone-300">
                 The mythical creatures that shape {region.name}'s legends
               </p>
             </div>
@@ -932,7 +925,7 @@ const RegionDetailPage: NextPage = () => {
                         <h3 className="font-bold text-sm">
                           {region.legendaries[idx]}
                         </h3>
-                        <p className="text-xs text-stone-500 dark:text-stone-400">
+                        <p className="text-xs text-stone-500 dark:text-stone-300">
                           #{String(id).padStart(3, '0')}
                         </p>
                       </div>
@@ -951,7 +944,7 @@ const RegionDetailPage: NextPage = () => {
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-5xl font-bold mb-4">Did You Know?</h2>
-              <p className="text-xl text-stone-600 dark:text-stone-400">
+              <p className="text-xl text-stone-600 dark:text-stone-300">
                 Fascinating facts about {region.name}
               </p>
             </div>
@@ -984,7 +977,7 @@ const RegionDetailPage: NextPage = () => {
             <h2 className="text-4xl font-bold mb-4">
               Ready to explore {region.name}?
             </h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400 mb-8">
+            <p className="text-xl text-stone-600 dark:text-stone-300 mb-8">
               Start your journey in the world of Pokémon
             </p>
             <div className="flex flex-wrap gap-4 justify-center">

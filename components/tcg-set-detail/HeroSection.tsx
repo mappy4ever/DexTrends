@@ -93,7 +93,7 @@ const CircularMetric: React.FC<{
           {formatValue()}
         </motion.span>
         <motion.span
-          className="text-xs text-stone-500 dark:text-stone-400 mt-1"
+          className="text-xs text-stone-500 dark:text-stone-300 mt-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
@@ -226,7 +226,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   {setInfo.name}
                 </motion.h1>
                 <motion.p
-                  className="text-lg text-stone-600 dark:text-stone-400 mb-1"
+                  className="text-lg text-stone-600 dark:text-stone-300 mb-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
@@ -402,7 +402,7 @@ const StatPill: React.FC<{
     animate={{ scale: 1 }}
     transition={{ type: "spring", stiffness: 200 }}
   >
-    <span className="text-xs text-stone-500 dark:text-stone-400 mr-2">{label}:</span>
+    <span className="text-xs text-stone-500 dark:text-stone-300 mr-2">{label}:</span>
     <span className={cn(
       "text-sm font-bold bg-gradient-to-r bg-clip-text text-transparent",
       gradient

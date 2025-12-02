@@ -212,7 +212,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               className={cn(
                 'absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none',
                 sizeStyles[size].icon,
-                'text-stone-500 dark:text-stone-400'
+                'text-stone-500 dark:text-stone-300'
               )}
             />
           </div>
@@ -220,7 +220,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             <p className="mt-1 text-sm text-red-500 dark:text-red-400">{error}</p>
           )}
           {helperText && !error && (
-            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{helperText}</p>
+            <p className="mt-1 text-sm text-stone-500 dark:text-stone-300">{helperText}</p>
           )}
         </div>
       );
@@ -262,7 +262,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         >
           <span className={cn(
             'flex-1 text-left truncate',
-            !selectedOption && !multiple && 'text-stone-500 dark:text-stone-400'
+            !selectedOption && !multiple && 'text-stone-500 dark:text-stone-300'
           )}>
             {loading ? (
               <span className="flex items-center gap-2">
@@ -287,7 +287,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             <IoChevronDown
               className={cn(
                 sizeStyles[size].icon,
-                'text-stone-500 dark:text-stone-400 transition-transform',
+                'text-stone-500 dark:text-stone-300 transition-transform',
                 isOpen && 'rotate-180'
               )}
             />
@@ -331,7 +331,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
               <div className="overflow-y-auto" style={{ maxHeight: maxHeight - (searchable ? 60 : 0) }}>
                 {filteredOptions.length === 0 ? (
-                  <div className="py-8 text-center text-stone-500 dark:text-stone-400">
+                  <div className="py-8 text-center text-stone-500 dark:text-stone-300">
                     No options found
                   </div>
                 ) : (
@@ -368,7 +368,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                               {option.label}
                             </div>
                             {option.description && (
-                              <div className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+                              <div className="text-sm text-stone-500 dark:text-stone-300 mt-0.5">
                                 {option.description}
                               </div>
                             )}
@@ -393,7 +393,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <p className="mt-1 text-sm text-red-500 dark:text-red-400">{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{helperText}</p>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-300">{helperText}</p>
         )}
       </div>
     );

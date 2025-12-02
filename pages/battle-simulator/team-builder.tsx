@@ -267,7 +267,7 @@ function TeamAnalysis({ team }: TeamAnalysisProps) {
         ))}
       </div>
       {team.length < 6 && (
-        <p className="mt-3 text-xs text-stone-500 dark:text-stone-400">
+        <p className="mt-3 text-xs text-stone-500 dark:text-stone-300">
           Add {6 - team.length} more Pokemon to complete your team
         </p>
       )}

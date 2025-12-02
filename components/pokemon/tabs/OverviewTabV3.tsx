@@ -74,7 +74,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
 
   const StatRow = ({ label, value, icon: Icon }: { label: string, value: string | number, icon: React.ComponentType<{ className?: string }> }) => (
     <div className="flex items-center justify-between py-2 border-b border-stone-800/50 last:border-0">
-      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
         {Icon && <Icon className="w-3 h-3" />}
         {label}
       </span>
@@ -136,31 +136,31 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaSmile className="w-4 h-4 text-amber-400/70" />
                         Base Happiness
                       </span>
                       <span className="font-semibold text-stone-700 dark:text-stone-200">{species.base_happiness || 0}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaPercent className="w-4 h-4 opacity-70" />
                         Catch Rate
                       </span>
                       <div className="text-right">
                         <span className="font-semibold text-stone-700 dark:text-stone-200">{Math.round((species.capture_rate / 255) * 100)}%</span>
-                        <span className="text-xs text-stone-500 dark:text-stone-400 ml-1">({species.capture_rate})</span>
+                        <span className="text-xs text-stone-500 dark:text-stone-300 ml-1">({species.capture_rate})</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaChartLine className="w-4 h-4 opacity-70" />
                         Growth Rate
                       </span>
                       <span className="font-semibold capitalize text-stone-700 dark:text-stone-200">{species.growth_rate?.name.replace('-', ' ') || 'Unknown'}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaStar className="w-4 h-4 opacity-70" />
                         Base EXP
                       </span>
@@ -185,21 +185,21 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaEgg className="w-4 h-4 opacity-70" />
                         Egg Groups
                       </span>
                       <span className="font-semibold text-right text-stone-700 dark:text-stone-200">{formatEggGroups(species.egg_groups).join(', ')}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaClock className="w-4 h-4 opacity-70" />
                         Hatch Time
                       </span>
                       <span className="font-semibold text-stone-700 dark:text-stone-200">{(species.hatch_counter || 0) * 256} steps</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaHeart className="w-4 h-4 opacity-70" />
                         Gender
                       </span>
@@ -232,28 +232,28 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaDna className="w-4 h-4 opacity-70" />
                         Species
                       </span>
                       <span className="font-semibold text-stone-700 dark:text-stone-200">{species.genera?.find(g => g.language.name === 'en')?.genus || 'Unknown'}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaMapMarkerAlt className="w-4 h-4 opacity-70" />
                         Habitat
                       </span>
                       <span className="font-semibold capitalize text-stone-700 dark:text-stone-200">{species.habitat?.name.replace('-', ' ') || 'Unknown'}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaShapes className="w-4 h-4 opacity-70" />
                         Shape
                       </span>
                       <span className="font-semibold capitalize text-stone-700 dark:text-stone-200">{species.shape?.name || 'Unknown'}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                      <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                         <FaPalette className="w-4 h-4 opacity-70" />
                         Color
                       </span>
@@ -277,7 +277,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
          
         >
           <div className="p-6 md:p-8">
-            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400 mb-6">
+            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300 mb-6">
               Type Matchups
             </h2>
             <CompactTypeEffectiveness types={pokemon.types || []} competitiveTiers={competitiveTiers} />
@@ -299,7 +299,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
          
         >
           <div className="p-6 md:p-8">
-            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400 mb-6">
+            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300 mb-6">
               Abilities
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -52,7 +52,7 @@ const DefaultErrorFallbackContent = ({
           </svg>
         </div>
         <h2 className="text-2xl font-bold text-stone-900 dark:text-white mb-2">Oops! Something went wrong</h2>
-        <p className="text-stone-600 dark:text-stone-400 mb-6">
+        <p className="text-stone-600 dark:text-stone-300 mb-6">
           We encountered an unexpected error. The issue has been logged and we'll look into it.
         </p>
         <div className="space-y-3">
@@ -71,7 +71,7 @@ const DefaultErrorFallbackContent = ({
         </div>
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-6 text-left">
-            <summary className="cursor-pointer text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200">
+            <summary className="cursor-pointer text-sm text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200">
               Error Details (Development Only)
             </summary>
             <pre className="mt-2 text-xs bg-stone-100 dark:bg-stone-900 p-3 rounded overflow-auto max-h-40">

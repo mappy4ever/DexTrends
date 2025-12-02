@@ -135,7 +135,7 @@ const PokemonIndexPage: NextPage = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-stone-900 dark:text-white mb-4">
               Pokémon Database
             </h1>
-            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
+            <p className="text-lg text-stone-600 dark:text-stone-300 max-w-2xl mx-auto">
               Your comprehensive resource for all things Pokémon. Explore detailed information on every Pokémon, move, ability, and more.
             </p>
           </motion.div>
@@ -180,7 +180,7 @@ const PokemonIndexPage: NextPage = () => {
                     </h2>
 
                     {/* Description */}
-                    <p className="text-sm text-stone-600 dark:text-stone-400">
+                    <p className="text-sm text-stone-600 dark:text-stone-300">
                       {section.description}
                     </p>
                   </Container>
@@ -206,7 +206,7 @@ const PokemonIndexPage: NextPage = () => {
                     <h2 className="text-2xl font-bold text-stone-900 dark:text-white mb-2">
                       Start Exploring the Pokédex
                     </h2>
-                    <p className="text-stone-600 dark:text-stone-400">
+                    <p className="text-stone-600 dark:text-stone-300">
                       Browse through 1000+ Pokémon with comprehensive stats, evolution chains, competitive analysis, and more.
                     </p>
                   </div>

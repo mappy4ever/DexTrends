@@ -216,7 +216,7 @@ const PokemonEmptyState = ({
 
       {/* Rotating Messages */}
       <div className="mb-8 h-8 flex items-center">
-        <p className="text-lg text-stone-600 dark:text-stone-400 animate-fadeIn" key={currentMessage}>
+        <p className="text-lg text-stone-600 dark:text-stone-300 animate-fadeIn" key={currentMessage}>
           {currentData.messages[currentMessage]}
         </p>
       </div>
@@ -227,7 +227,7 @@ const PokemonEmptyState = ({
           <span className="mr-2">{currentData.emoji}</span>
           Try These Instead:
         </h3>
-        <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+        <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-300">
           {currentData.suggestions.map((suggestion, index) => (
             <li key={index} className="flex items-center">
               <span className="mr-2 text-pokemon-red">•</span>
@@ -277,7 +277,7 @@ const PokemonEmptyState = ({
       </div>
 
       {/* Fun Footer Message */}
-      <div className="mt-8 text-xs text-stone-500 dark:text-stone-400 max-w-sm">
+      <div className="mt-8 text-xs text-stone-500 dark:text-stone-300 max-w-sm">
         <p className="italic">
           "Even the best Trainers face challenges. The real victory is getting back up!" 
           <span className="block mt-1 text-right">- Professor Oak (probably)</span>

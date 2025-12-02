@@ -65,7 +65,7 @@ export const FeaturedCardsGrid: React.FC<FeaturedCardsGridProps> = ({
                   />
                 </div>
               </div>
-              <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 truncate">
+              <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 truncate">
                 {card.name}
               </p>
             </div>

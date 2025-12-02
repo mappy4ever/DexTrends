@@ -85,7 +85,7 @@ class RouteErrorBoundary extends Component<Props, State> {
               Oops! Something went wrong
             </h2>
 
-            <p className="text-stone-600 dark:text-stone-400 mb-6">
+            <p className="text-stone-600 dark:text-stone-300 mb-6">
               We encountered an error while loading this page.
               {this.props.routeName && (
                 <span className="block mt-2 text-sm">
@@ -103,7 +103,7 @@ class RouteErrorBoundary extends Component<Props, State> {
                   <div className="font-semibold text-red-600 mb-1">
                     {this.state.error.message}
                   </div>
-                  <pre className="text-stone-600 dark:text-stone-400 whitespace-pre-wrap">
+                  <pre className="text-stone-600 dark:text-stone-300 whitespace-pre-wrap">
                     {this.state.error.stack}
                   </pre>
                 </div>

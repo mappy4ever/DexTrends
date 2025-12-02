@@ -102,7 +102,7 @@ const Custom404: NextPage = () => {
             Oops! This Pokemon has fled!
           </h2>
           
-          <p className="text-base text-stone-600 dark:text-stone-400 mb-8">
+          <p className="text-base text-stone-600 dark:text-stone-300 mb-8">
             The page you're looking for has escaped into the tall grass.
             <br />
             Maybe it used Teleport?

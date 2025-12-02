@@ -35,7 +35,7 @@ const StatItem: React.FC<{
         </div>
       )}
       <div>
-        <p className="text-xs text-stone-500 dark:text-stone-400">{label}</p>
+        <p className="text-xs text-stone-500 dark:text-stone-300">{label}</p>
         <p className="text-lg font-bold text-stone-900 dark:text-white">{value}</p>
       </div>
     </motion.div>
@@ -135,7 +135,7 @@ export const CompactStatsBar: React.FC<CompactStatsBarProps> = ({
                 <h1 className="text-2xl font-bold text-stone-900 dark:text-white">
                   {setInfo.name}
                 </h1>
-                <p className="text-sm text-stone-600 dark:text-stone-400">
+                <p className="text-sm text-stone-600 dark:text-stone-300">
                   {setInfo.series} • {releaseYear}
                 </p>
               </div>

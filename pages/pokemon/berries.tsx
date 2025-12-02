@@ -228,7 +228,7 @@ const BerriesPage: NextPage = () => {
               {berry.natural_gift_type && (
                 <div className="flex items-center gap-2 mt-1">
                   <TypeBadge type={berry.natural_gift_type.name} size="xs" />
-                  <span className="text-xs text-stone-500 dark:text-stone-400">
+                  <span className="text-xs text-stone-500 dark:text-stone-300">
                     Power: {berry.natural_gift_power}
                   </span>
                 </div>
@@ -253,21 +253,21 @@ const BerriesPage: NextPage = () => {
           <div className="grid grid-cols-3 gap-2 mt-4 text-center">
             <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
               <FaClock className="w-3 h-3 mx-auto text-stone-400 mb-1" />
-              <div className="text-xs text-stone-500 dark:text-stone-400">Growth</div>
+              <div className="text-xs text-stone-500 dark:text-stone-300">Growth</div>
               <div className="font-semibold text-stone-800 dark:text-white text-sm">
                 {berry.growth_time}h
               </div>
             </div>
             <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
               <FaAppleAlt className="w-3 h-3 mx-auto text-stone-400 mb-1" />
-              <div className="text-xs text-stone-500 dark:text-stone-400">Harvest</div>
+              <div className="text-xs text-stone-500 dark:text-stone-300">Harvest</div>
               <div className="font-semibold text-stone-800 dark:text-white text-sm">
                 {berry.max_harvest}
               </div>
             </div>
             <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
               <FaLeaf className="w-3 h-3 mx-auto text-stone-400 mb-1" />
-              <div className="text-xs text-stone-500 dark:text-stone-400">Size</div>
+              <div className="text-xs text-stone-500 dark:text-stone-300">Size</div>
               <div className="font-semibold text-stone-800 dark:text-white text-sm">
                 {berry.size}mm
               </div>
@@ -368,7 +368,7 @@ const BerriesPage: NextPage = () => {
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-3 text-sm text-stone-500 dark:text-stone-400"
+              className="mt-3 text-sm text-stone-500 dark:text-stone-300"
             >
               {BERRY_CATEGORIES.find(c => c.name === selectedCategory)?.description}
             </motion.p>
@@ -432,7 +432,7 @@ const BerriesPage: NextPage = () => {
             <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-2">
               No berries found
             </h3>
-            <p className="text-stone-500 dark:text-stone-400">
+            <p className="text-stone-500 dark:text-stone-300">
               Try adjusting your search or filter criteria
             </p>
           </Container>
@@ -443,7 +443,7 @@ const BerriesPage: NextPage = () => {
           <h3 className="font-semibold text-stone-800 dark:text-white mb-3">
             Flavor Legend
           </h3>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mb-3">
+          <p className="text-sm text-stone-500 dark:text-stone-300 mb-3">
             Flavors affect which Pokemon like or dislike a berry based on their Nature
           </p>
           <div className="flex flex-wrap gap-3">
@@ -455,7 +455,7 @@ const BerriesPage: NextPage = () => {
                 )}>
                   {flavor}
                 </span>
-                <span className="text-xs text-stone-500 dark:text-stone-400">
+                <span className="text-xs text-stone-500 dark:text-stone-300">
                   {flavor === 'spicy' ? '→ Attack' :
                    flavor === 'dry' ? '→ Sp. Atk' :
                    flavor === 'sweet' ? '→ Speed' :

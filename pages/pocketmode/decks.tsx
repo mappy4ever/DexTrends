@@ -211,7 +211,7 @@ const PocketDecks: NextPage = () => {
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
               Top Pocket Decks
             </h1>
-            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
+            <p className="text-lg text-stone-600 dark:text-stone-300 max-w-2xl mx-auto">
               Discover winning deck strategies and meta builds from top Pokémon TCG Pocket players
             </p>
           </div>
@@ -370,7 +370,7 @@ const PocketDecks: NextPage = () => {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h2 className="font-bold text-xl text-stone-800 dark:text-stone-100 mb-1">{deck.name}</h2>
-                        <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">by {deck.creator}</p>
+                        <p className="text-sm text-stone-600 dark:text-stone-300 mb-2">by {deck.creator}</p>
                       </div>
                       
                       {/* Tier Badge */}
@@ -391,7 +391,7 @@ const PocketDecks: NextPage = () => {
                       ))}
                     </div>
                     
-                    <p className="text-sm text-stone-600 dark:text-stone-400 line-clamp-2">
+                    <p className="text-sm text-stone-600 dark:text-stone-300 line-clamp-2">
                       {deck.description}
                     </p>
                   </div>
@@ -403,7 +403,7 @@ const PocketDecks: NextPage = () => {
                       {deck.keyCards.slice(0, 4).map((card) => (
                         <div key={card.id} className="bg-stone-100 dark:bg-stone-700 rounded-lg p-2 text-center">
                           <div className="text-xs font-medium text-stone-700 dark:text-stone-300 mb-1">{card.name}</div>
-                          <div className="text-xs text-stone-500 dark:text-stone-400">×{card.count}</div>
+                          <div className="text-xs text-stone-500 dark:text-stone-300">×{card.count}</div>
                         </div>
                       ))}
                     </div>
@@ -464,7 +464,7 @@ const PocketDecks: NextPage = () => {
 
         {/* Show scroll hint */}
         {!loading && !error && hasMore && (
-          <div className="text-center mt-8 text-stone-600 dark:text-stone-400">
+          <div className="text-center mt-8 text-stone-600 dark:text-stone-300">
             <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-full px-6 py-3 shadow-md">
               <span className="text-sm font-medium">Showing {visibleDecks.length} of {sortedDecks.length} decks</span>
             </div>

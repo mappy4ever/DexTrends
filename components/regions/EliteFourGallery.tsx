@@ -486,7 +486,7 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
           <h3 className="text-3xl font-bold mb-3 text-stone-900 dark:text-white">
             Elite Four & Champion
           </h3>
-          <p className="text-lg text-stone-600 dark:text-stone-400">
+          <p className="text-lg text-stone-600 dark:text-stone-300">
             The ultimate challenge awaits at the Pokémon League
           </p>
         </div>

@@ -59,11 +59,15 @@ Use these as the single source for each purpose:
 | **Starter Showcase** | `StarterShowcaseComplete` | `/components/regions/StarterShowcaseComplete.tsx` |
 | **Empty States** | `EmptyState` | `/components/ui/EmptyState.tsx` |
 | **Form Inputs** | `Select`, `Checkbox`, `Radio` | `/components/ui/` |
+| **Pagination** | `Pagination`, `PageInfo` | `/components/ui/Pagination.tsx` |
 
-### Deprecated Components (Do Not Use)
-- `PokemonHeroSection` → Use `PokemonHeroSectionV3`
-- `PokemonHeroSectionV2` → Use `PokemonHeroSectionV3`
-- `StarterShowcase` → Use `StarterShowcaseComplete`
+### Deprecated Components (Deleted)
+All deprecated components have been removed:
+- ~~`PokemonHeroSection`~~ (deleted)
+- ~~`PokemonHeroSectionV2`~~ (deleted)
+- ~~`StarterShowcase`~~ (deleted)
+- ~~`StarterShowcaseEnhanced`~~ (deleted)
+- ~~`StarterPokemonShowcaseGlass`~~ (deleted)
 - `GlassContainer` → Use `Container`
 
 ## Design System
@@ -130,47 +134,60 @@ fetchJSON(url, { useCache: false, forceRefresh: true })
 - **Pokemon TCG API**: Card data (pokemontcg.io)
 - **TCGDex**: Pokemon Pocket data (tcgdex.net)
 
-## Current Work: Mobile Experience Redesign
+## Current Work: QA & Design Audit
 
 **Status:** ✅ Complete
 **Active Plan:** `~/.claude/plans/swift-greeting-hedgehog.md`
 
 ### Overview
-Comprehensive mobile redesign inspired by Pokemon.com and Serebii:
-- Simplified navigation (4+1 bottom nav with "More" sheet)
-- Cleaner Pokedex cards (number, image, name, type pills - no stats)
-- Better section separation and visual hierarchy
-- Prominent search with quick type filter pills
-- Touch target fixes and visual consistency
+Comprehensive site audit covering 45+ pages, 130+ components, and design system improvements.
 
 ### Progress Status
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| 1. Navigation | ✅ Complete | BottomNav + MoreSheet + Navbar simplify |
-| 2. Pokedex Cards | ✅ Complete | "listing" variant in PokemonDisplay |
-| 3. Search/Filters | ✅ Complete | Prominent search + type pills |
-| 4. Section Components | ✅ Complete | SectionDivider + SectionHeader |
-| 5. Spacing | ✅ Complete | SPACING + TOUCH_TARGET tokens + grid optimization |
-| 6. Visual Consistency | ✅ Complete | Colors, radius, shadows standardized |
-| 7. Touch Fixes | ✅ Complete | 44px+ targets, tap feedback on all buttons |
+| 1. Delete Deprecated | ✅ Complete | Removed PokemonHeroSection V1/V2, StarterShowcase variants |
+| 1b. Fix Mobile Grid | ✅ Complete | Fixed card overlap in UnifiedGrid + PokemonDisplay |
+| 2. Fix Focus States | ✅ Complete | WCAG compliance - focus-visible with amber rings |
+| 3. Dark Mode Contrast | ✅ Complete | Changed stone-400 → stone-300 (6.3:1 contrast) |
+| 4. Reduced Motion | ✅ Complete | CSS + useReducedMotion hook for accessibility |
+| 5. Pagination Component | ✅ Complete | /components/ui/Pagination.tsx with PageInfo |
+| 6. Design Polish | ✅ Complete | Added COLORS.status (success/warning/error/info) |
 
-### Completed Files
-- ✅ `/components/ui/MoreSheet.tsx` - NEW (bottom sheet with secondary nav)
-- ✅ `/components/ui/BottomNavigation.tsx` - 4+1 layout with centered Search
-- ✅ `/components/Navbar.tsx` - Simplified mobile (logo + theme only)
-- ✅ `/components/ui/PokemonDisplay.tsx` - Added "listing" variant
-- ✅ `/pages/pokedex.tsx` - New search bar, type pills, listing variant
-- ✅ `/components/ui/SectionDivider.tsx` - NEW (section separator)
-- ✅ `/components/ui/SectionHeader.tsx` - NEW (section title)
-- ✅ `/components/ui/design-system/glass-constants.ts` - SPACING + TOUCH_TARGET tokens
-- ✅ `/components/unified/UnifiedGrid.tsx` - Optimized gaps (8/12/16px)
+### Critical Issues (FIXED)
+- ✅ **Focus States**: Now uses focus-visible with amber rings
+- ✅ **Dark Mode Contrast**: Changed stone-400 → stone-300 (6.3:1 contrast)
+- ✅ **Reduced Motion**: Added prefers-reduced-motion CSS + React hook
 
-### All Phases Complete
-All mobile redesign phases have been implemented:
-- Section components applied to Homepage, Pokedex, TCG Expansions, Pokemon Detail
-- Touch targets verified at 44px+ minimum
-- Design tokens (SPACING, TOUCH_TARGET) available for future use
+### Files Deleted (Phase 1 Complete)
+- ✅ `/components/pokemon/PokemonHeroSection.tsx`
+- ✅ `/components/pokemon/PokemonHeroSectionV2.tsx`
+- ✅ `/components/regions/StarterShowcase.tsx`
+- ✅ `/components/regions/StarterPokemonShowcaseGlass.tsx`
+- ✅ `/components/regions/StarterShowcaseEnhanced.tsx`
+
+### Files to Modify
+- `/styles/focus-overrides.css` - Remove blanket focus override
+- `/styles/design-system.css` - Add accessible focus ring styles
+- `/components/ui/design-system/glass-constants.ts` - Add focus tokens
+
+### New Components
+- `/components/ui/Pagination.tsx` - Page navigation for large lists
+
+---
+
+## Previous Work: Mobile Experience Redesign
+
+**Status:** ✅ Complete
+
+### Completed Phases
+- ✅ Navigation (BottomNav + MoreSheet + Navbar)
+- ✅ Pokedex Cards ("listing" variant)
+- ✅ Search/Filters (prominent search + type pills)
+- ✅ Section Components (SectionDivider + SectionHeader)
+- ✅ Spacing (SPACING + TOUCH_TARGET tokens)
+- ✅ Visual Consistency (colors, radius, shadows)
+- ✅ Touch Fixes (44px+ targets)
 
 ---
 

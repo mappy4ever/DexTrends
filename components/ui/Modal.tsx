@@ -315,7 +315,7 @@ export const Modal: React.FC<ModalProps> = ({
                         <div id="modal-title">{title}</div>
                       )}
                       {description && (
-                        <p id="modal-description" className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                        <p id="modal-description" className="mt-1 text-sm text-stone-500 dark:text-stone-300">
                           {description}
                         </p>
                       )}

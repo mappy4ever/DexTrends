@@ -162,7 +162,7 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
             {value}
           </div>
           {showLabel && (
-            <div className={cn("text-stone-600 dark:text-stone-400",
+            <div className={cn("text-stone-600 dark:text-stone-300",
               size === 'sm' ? 'text-xs' : 'text-sm'
             )}>
               {statLabel}

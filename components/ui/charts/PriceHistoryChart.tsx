@@ -341,7 +341,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
         <p className="text-stone-600 dark:text-stone-300 font-medium">No price history available</p>
-        <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+        <p className="text-sm text-stone-500 dark:text-stone-300 mt-1">
           Price data will appear here once collected
         </p>
         <button
@@ -505,7 +505,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
         </div>
       </div>
       
-      <div className="text-xs text-stone-500 dark:text-stone-400 text-center mt-2 space-y-1">
+      <div className="text-xs text-stone-500 dark:text-stone-300 text-center mt-2 space-y-1">
         <div>
           {dataSource === 'supabase' && 'Live price data from Pokemon TCG API'}
           {dataSource === 'sample' && 'Sample price data for demonstration'}

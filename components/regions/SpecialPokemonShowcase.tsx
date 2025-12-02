@@ -289,7 +289,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Special Pokémon</h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               Unique and legendary Pokémon of {region.name}
             </p>
           </div>
@@ -340,7 +340,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                 {activeTab === 'variants' ? <BsArrowRepeat className="text-amber-500" /> : <GiCrown className="text-yellow-500" />}
                 {activeData?.title}
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 {activeData?.description}
               </p>
             </div>
@@ -403,7 +403,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                         <div className="text-center mb-2">
                           <h3 className="font-bold text-sm mb-1">{pokemon.name}</h3>
                           {activeTab === 'legendaries' && (
-                            <p className="text-xs text-stone-500 dark:text-stone-400">
+                            <p className="text-xs text-stone-500 dark:text-stone-300">
                               {(pokemon as Legendary).title}
                             </p>
                           )}
@@ -419,7 +419,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                         {/* Location for legendaries */}
                         {activeTab === 'legendaries' && (
                           <div className="text-center">
-                            <p className="text-xs text-stone-600 dark:text-stone-400 truncate">
+                            <p className="text-xs text-stone-600 dark:text-stone-300 truncate">
                               {(pokemon as Legendary).location}
                             </p>
                           </div>

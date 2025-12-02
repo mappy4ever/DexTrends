@@ -311,11 +311,11 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
                 <span className="text-white text-xs">✓</span>
               </div>
             )}
-            <span className="text-sm text-stone-500 dark:text-stone-400">
+            <span className="text-sm text-stone-500 dark:text-stone-300">
               {post.user.title}
             </span>
           </div>
-          <div className="text-sm text-stone-500 dark:text-stone-400">
+          <div className="text-sm text-stone-500 dark:text-stone-300">
             {formatTimeAgo(post.timestamp)}
           </div>
         </div>
@@ -357,7 +357,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
             <span className="font-medium text-stone-900 dark:text-white">
               {post.cardData.name}
             </span>
-            <span className="text-sm text-stone-500 dark:text-stone-400">
+            <span className="text-sm text-stone-500 dark:text-stone-300">
               • {post.cardData.set}
             </span>
             <span className="text-sm text-amber-600 dark:text-amber-400">
@@ -375,19 +375,19 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
             className={`flex items-center space-x-2 transition-colors ${
               post.isLiked
                 ? 'text-red-500 hover:text-red-600'
-                : 'text-stone-500 dark:text-stone-400 hover:text-red-500'
+                : 'text-stone-500 dark:text-stone-300 hover:text-red-500'
             }`}
           >
             <FaHeart className={post.isLiked ? 'fill-current' : ''} />
             <span>{post.likes}</span>
           </button>
 
-          <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-400 hover:text-amber-500 transition-colors">
+          <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-300 hover:text-amber-500 transition-colors">
             <FaComment />
             <span>{post.comments}</span>
           </button>
 
-          <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-400 hover:text-green-500 transition-colors">
+          <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-300 hover:text-green-500 transition-colors">
             <FaShare />
             <span>{post.shares}</span>
           </button>
@@ -418,14 +418,14 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
               </div>
             )}
           </div>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mb-1">
+          <p className="text-sm text-stone-500 dark:text-stone-300 mb-1">
             @{user.username} • {user.title}
           </p>
           <p className="text-sm text-stone-600 dark:text-stone-300 mb-3">
             {user.bio}
           </p>
 
-          <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-400 mb-3">
+          <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-300 mb-3">
             <span><strong>{user.followers}</strong> followers</span>
             <span><strong>{user.following}</strong> following</span>
             <span><strong>{user.totalCards}</strong> cards</span>
@@ -483,7 +483,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'feed'
               ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <BsFire className="inline mr-2" />
@@ -494,7 +494,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'discover'
               ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <FaUsers className="inline mr-2" />
@@ -505,7 +505,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'leaderboard'
               ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <FaTrophy className="inline mr-2" />
@@ -564,7 +564,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
               <button className="px-3 py-1 bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200 rounded-full text-sm">
                 Suggested
               </button>
-              <button className="px-3 py-1 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full text-sm">
+              <button className="px-3 py-1 text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full text-sm">
                 All Users
               </button>
             </div>
@@ -614,7 +614,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
                           {user.username}
                         </div>
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">
+                      <div className="text-sm text-stone-500 dark:text-stone-300">
                         {user.totalCards} cards
                       </div>
                     </div>
@@ -640,7 +640,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
                         <p className="text-sm text-stone-900 dark:text-white line-clamp-2">
                           {post.content}
                         </p>
-                        <div className="text-xs text-stone-500 dark:text-stone-400 mt-1">
+                        <div className="text-xs text-stone-500 dark:text-stone-300 mt-1">
                           by @{post.user.username} • {post.likes} likes
                         </div>
                       </div>

@@ -63,7 +63,7 @@ const AnimationShowcase: React.FC = () => {
             <h1 className="text-4xl font-bold text-stone-900 dark:text-white mb-4">
               DexTrends Animation System
             </h1>
-            <p className="text-stone-600 dark:text-stone-400">
+            <p className="text-stone-600 dark:text-stone-300">
               Comprehensive animation showcase with performance optimizations
             </p>
           </ScrollReveal>
@@ -107,7 +107,7 @@ const AnimationShowcase: React.FC = () => {
                 <ScrollReveal key={variant} direction="up" delay={index * 0.1}>
                   <div className="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-lg">
                     <h3 className="font-medium capitalize mb-2">{variant} Transition</h3>
-                    <p className="text-sm text-stone-600 dark:text-stone-400">
+                    <p className="text-sm text-stone-600 dark:text-stone-300">
                       Used for {variant === 'fade' ? 'subtle' : variant === 'slideUp' ? 'content reveal' : 'emphasis'} transitions
                     </p>
                   </div>
@@ -135,7 +135,7 @@ const AnimationShowcase: React.FC = () => {
                       }
                     >
                       <h3 className="font-bold text-lg mb-2">{card.name}</h3>
-                      <p className="text-sm text-stone-600 dark:text-stone-400 capitalize">
+                      <p className="text-sm text-stone-600 dark:text-stone-300 capitalize">
                         {card.rarity} Card
                       </p>
                     </InteractiveCard>
@@ -339,7 +339,7 @@ const AnimationShowcase: React.FC = () => {
               {['First Item', 'Second Item', 'Third Item', 'Fourth Item', 'Fifth Item'].map((item, index) => (
                 <div key={index} className="bg-white dark:bg-stone-800 p-4 rounded-lg shadow-lg">
                   <h3 className="font-medium">{item}</h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400">
+                  <p className="text-sm text-stone-600 dark:text-stone-300">
                     This item appears with a staggered delay
                   </p>
                 </div>

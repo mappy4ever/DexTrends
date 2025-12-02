@@ -140,7 +140,7 @@ function NumberInput({ label, value, onChange, min = 1, max = 999, icon, helpTex
         )}
       />
       {helpText && (
-        <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">{helpText}</p>
+        <p className="text-xs text-stone-500 dark:text-stone-300 mt-1">{helpText}</p>
       )}
     </div>
   );
@@ -192,7 +192,7 @@ const DamageCalcPage: NextPage = () => {
             </Link>
             <div>
               <h1 className={TYPOGRAPHY.heading.h2}>Damage Calculator</h1>
-              <p className="text-stone-500 dark:text-stone-400 text-sm">
+              <p className="text-stone-500 dark:text-stone-300 text-sm">
                 Calculate attack damage with all modifiers
               </p>
             </div>
@@ -254,7 +254,7 @@ const DamageCalcPage: NextPage = () => {
                           TRANSITION.fast,
                           state.movePower === value
                             ? 'bg-amber-600 text-white'
-                            : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
+                            : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                         )}
                       >
                         {value}
@@ -281,7 +281,7 @@ const DamageCalcPage: NextPage = () => {
                           TRANSITION.fast,
                           state.moveCategory === cat
                             ? 'bg-amber-600 text-white'
-                            : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
+                            : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                         )}
                       >
                         {cat === 'physical' ? '⚔️ Physical' : '✨ Special'}
@@ -349,7 +349,7 @@ const DamageCalcPage: NextPage = () => {
                   <div className="text-5xl md:text-6xl font-bold text-amber-600 dark:text-amber-400 tabular-nums">
                     {damage.average}
                   </div>
-                  <div className="text-stone-500 dark:text-stone-400 text-sm mt-1">
+                  <div className="text-stone-500 dark:text-stone-300 text-sm mt-1">
                     Average Damage
                   </div>
                 </div>
@@ -404,7 +404,7 @@ const DamageCalcPage: NextPage = () => {
                       💪 3HKO range
                     </span>
                   ) : (
-                    <span className="text-stone-500 dark:text-stone-400">
+                    <span className="text-stone-500 dark:text-stone-300">
                       Low damage - may need boosts
                     </span>
                   )}
@@ -415,7 +415,7 @@ const DamageCalcPage: NextPage = () => {
               <Container variant="outline" className="p-4">
                 <div className="flex items-start gap-2">
                   <IoInformationCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-stone-600 dark:text-stone-400">
+                  <div className="text-sm text-stone-600 dark:text-stone-300">
                     <p className="font-medium mb-1">Damage Formula:</p>
                     <code className="text-xs bg-stone-100 dark:bg-stone-800 px-2 py-1 rounded block">
                       ((2×Lv/5+2) × Power × Atk/Def / 50 + 2) × Modifiers × Random(0.85-1.0)
@@ -459,7 +459,7 @@ const DamageCalcPage: NextPage = () => {
                     </span>
                   )}
                   {!state.stab && state.typeEffectiveness === 1 && !state.critical && state.weather === 'none' && (
-                    <span className="text-stone-500 dark:text-stone-400 text-xs">
+                    <span className="text-stone-500 dark:text-stone-300 text-xs">
                       No modifiers active
                     </span>
                   )}

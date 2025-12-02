@@ -550,7 +550,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                 <div className="bg-stone-50 dark:bg-stone-800 p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 mr-3">
-                      <p className="text-sm text-stone-600 dark:text-stone-400 mb-1">Share Link</p>
+                      <p className="text-sm text-stone-600 dark:text-stone-300 mb-1">Share Link</p>
                       <p className="text-sm font-mono bg-white dark:bg-stone-700 p-2 rounded border break-all">
                         {generatedLink}
                       </p>
@@ -567,7 +567,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
 
               {generatedQR && shareFormat === 'qr' && (
                 <div className="bg-stone-50 dark:bg-stone-800 p-4 rounded-lg text-center">
-                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-3">QR Code</p>
+                  <p className="text-sm text-stone-600 dark:text-stone-300 mb-3">QR Code</p>
                   <img src={generatedQR} alt="QR Code" className="mx-auto" />
                   <p className="text-xs text-stone-500 mt-2">
                     Scan with any QR code scanner to view the cards

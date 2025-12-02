@@ -40,7 +40,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
       <div className="w-full">
         <div className="relative overflow-hidden p-6 md:p-8 bg-stone-100/80 dark:bg-stone-900/40 rounded-lg">
           <div className="text-center py-8">
-            <p className="text-stone-500 dark:text-stone-400">Loading Pokémon data...</p>
+            <p className="text-stone-500 dark:text-stone-300">Loading Pokémon data...</p>
           </div>
         </div>
       </div>
@@ -396,7 +396,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 >
                   {formatPokemonDisplayName(pokemon.name, species?.name)}
                 </motion.h1>
-                <p className="text-stone-500 dark:text-stone-400 mt-2">
+                <p className="text-stone-500 dark:text-stone-300 mt-2">
                   {species.genera?.find(g => g.language.name === 'en')?.genus || 'Pokemon'}
                 </p>
               </div>
@@ -426,7 +426,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             
             {/* Base Stats - Compact Bars */}
             <div className="space-y-3">
-              <h3 className="text-sm font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wider">Base Stats</h3>
+              <h3 className="text-sm font-medium text-stone-500 dark:text-stone-300 uppercase tracking-wider">Base Stats</h3>
               <div className="space-y-2">
                 {stats.map((stat, index) => {
                   const percentage = (stat.base_stat / 255) * 100;
@@ -470,7 +470,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 
                 {/* Total */}
                 <div className="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-700">
-                  <span className="text-sm font-medium text-stone-600 dark:text-stone-400">Total</span>
+                  <span className="text-sm font-medium text-stone-600 dark:text-stone-300">Total</span>
                   <span className="text-lg font-bold" style={{ color: typeColors.accent }}>{totalStats}</span>
                 </div>
               </div>
@@ -487,7 +487,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
               >
                 {/* Pokédex Number */}
                 <div className="flex flex-col items-center justify-between min-w-[60px] sm:min-w-[80px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Pokédex #</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Pokédex #</span>
                   <div className="flex-1 flex items-center justify-center">
                     <span className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
                       {String(pokemon.id).padStart(3, '0')}
@@ -500,7 +500,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 
                 {/* Height and Weight - Stacked with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[50px] sm:min-w-[60px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Size</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Size</span>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="flex flex-col items-center">
                       <div className="flex items-center gap-1">
@@ -520,7 +520,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 
                 {/* Capture Rate with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[60px] sm:min-w-[80px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Capture</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Capture</span>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="flex items-center gap-1 sm:gap-2">
                       <div className="relative w-8 h-8 sm:w-10 sm:h-10">
@@ -549,7 +549,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 
                 {/* Gender Ratio with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[70px] sm:min-w-[100px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Gender</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Gender</span>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="flex items-center gap-1">
                       {genderRatio.genderless ? (
@@ -572,7 +572,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 
                 {/* Generation Badge with Label */}
                 <div className="flex flex-col items-center justify-between min-w-[80px] sm:min-w-[120px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1 sm:mb-2">Region</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Region</span>
                   <div className="flex-1 flex items-center justify-center">
                     <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-xs sm:text-sm font-bold shadow-sm">
                       {regionName} (Gen {generation})

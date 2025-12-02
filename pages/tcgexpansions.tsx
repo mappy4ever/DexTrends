@@ -300,7 +300,7 @@ const TcgSetsContent: React.FC = () => {
                 <span className="px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-900/20 text-xs font-medium text-amber-600 dark:text-amber-400">
                   {sets.length} Sets
                 </span>
-                <span className="px-3 py-1.5 rounded-full bg-stone-100 dark:bg-stone-800 text-xs font-medium text-stone-600 dark:text-stone-400">
+                <span className="px-3 py-1.5 rounded-full bg-stone-100 dark:bg-stone-800 text-xs font-medium text-stone-600 dark:text-stone-300">
                   15,000+ Cards
                 </span>
               </div>
@@ -332,7 +332,7 @@ const TcgSetsContent: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch">
 
                   <div className="flex-1">
-                    <label htmlFor="seriesFilter" className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">Series</label>
+                    <label htmlFor="seriesFilter" className="block text-sm font-medium text-stone-600 dark:text-stone-300 mb-1.5">Series</label>
                     <div className="relative">
                       <select
                         id="seriesFilter"
@@ -354,7 +354,7 @@ const TcgSetsContent: React.FC = () => {
                   </div>
             
                   <div className="flex-1">
-                    <label htmlFor="sortOption" className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">Sort By</label>
+                    <label htmlFor="sortOption" className="block text-sm font-medium text-stone-600 dark:text-stone-300 mb-1.5">Sort By</label>
                     <div className="relative">
                       <select
                         id="sortOption"
@@ -375,7 +375,7 @@ const TcgSetsContent: React.FC = () => {
                   </div>
 
                   <div className="flex-1">
-                    <label htmlFor="sortDirection" className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">Order</label>
+                    <label htmlFor="sortDirection" className="block text-sm font-medium text-stone-600 dark:text-stone-300 mb-1.5">Order</label>
                     <div className="relative">
                       <select
                         id="sortDirection"
@@ -562,19 +562,19 @@ const TcgSetsContent: React.FC = () => {
                       <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-stone-800 dark:text-white mb-0.5 xs:mb-1 line-clamp-2">{set.name}</h3>
 
                       {set.series && (
-                        <p className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-3 xs:mb-4">{set.series}</p>
+                        <p className="text-xs font-medium text-stone-500 dark:text-stone-300 mb-3 xs:mb-4">{set.series}</p>
                       )}
 
                       <div className="mt-auto space-y-2">
                         {/* Release Date - Simple badge */}
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-stone-500 dark:text-stone-400">Released</span>
+                          <span className="text-stone-500 dark:text-stone-300">Released</span>
                           <span className="font-medium text-stone-700 dark:text-stone-300">{set.releaseDate || "Unknown"}</span>
                         </div>
 
                         {/* Card Count */}
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-stone-500 dark:text-stone-400">Cards</span>
+                          <span className="text-stone-500 dark:text-stone-300">Cards</span>
                           <span className="font-semibold text-amber-600 dark:text-amber-400">{set.total || "?"}</span>
                         </div>
                       </div>
@@ -643,7 +643,7 @@ const TcgSetsContent: React.FC = () => {
                   <span className="text-sm font-bold text-stone-700 dark:text-stone-300">
                     Showing {visibleSets.length} of {sortedSets.length} filtered sets
                   </span>
-                  <span className="text-xs text-stone-500 dark:text-stone-400">
+                  <span className="text-xs text-stone-500 dark:text-stone-300">
                     ({sets.length} sets loaded{totalSetsCount ? ` out of ${totalSetsCount} available` : ''})
                   </span>
                 </div>

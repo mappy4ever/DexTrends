@@ -367,7 +367,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
           <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
             {tournament.name}
           </h3>
-          <div className="flex items-center space-x-4 text-sm text-stone-600 dark:text-stone-400 mt-1">
+          <div className="flex items-center space-x-4 text-sm text-stone-600 dark:text-stone-300 mt-1">
             <span className="flex items-center space-x-1">
               <BsShield />
               <span>{tournament.format}</span>
@@ -437,13 +437,13 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       {/* Tournament Info */}
       <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
         <div>
-          <span className="text-stone-600 dark:text-stone-400">Start Time:</span>
+          <span className="text-stone-600 dark:text-stone-300">Start Time:</span>
           <div className="font-medium text-stone-900 dark:text-white">
             {tournament.startTime.toLocaleDateString()} {tournament.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
         <div>
-          <span className="text-stone-600 dark:text-stone-400">Entry Fee:</span>
+          <span className="text-stone-600 dark:text-stone-300">Entry Fee:</span>
           <div className="font-medium text-stone-900 dark:text-white">
             {tournament.entryFee === 0 ? 'Free' : `$${tournament.entryFee}`}
           </div>
@@ -479,7 +479,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       </div>
 
       {tournament.status === 'registration' && (
-        <div className="mt-3 text-center text-sm text-stone-600 dark:text-stone-400">
+        <div className="mt-3 text-center text-sm text-stone-600 dark:text-stone-300">
           Starts in {formatTimeToStart(tournament.startTime)}
         </div>
       )}
@@ -519,16 +519,16 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                           : 'bg-stone-100 dark:bg-stone-600'
                       }`}>
                         <div className="font-medium">{match.player1.name}</div>
-                        <div className="text-xs text-stone-600 dark:text-stone-400">{match.player1.deck}</div>
+                        <div className="text-xs text-stone-600 dark:text-stone-300">{match.player1.deck}</div>
                       </div>
-                      <div className="text-center text-xs text-stone-500 dark:text-stone-400 mb-2">VS</div>
+                      <div className="text-center text-xs text-stone-500 dark:text-stone-300 mb-2">VS</div>
                       <div className={`p-2 rounded ${
                         match.winner?.id === match.player2.id
                           ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
                           : 'bg-stone-100 dark:bg-stone-600'
                       }`}>
                         <div className="font-medium">{match.player2.name}</div>
-                        <div className="text-xs text-stone-600 dark:text-stone-400">{match.player2.deck}</div>
+                        <div className="text-xs text-stone-600 dark:text-stone-300">{match.player2.deck}</div>
                       </div>
                     </div>
                   ))}
@@ -578,7 +578,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${
               activeTab === tab.id
                 ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             {tab.icon}
@@ -617,7 +617,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                       <h4 className="font-medium text-stone-900 dark:text-white">
                         {tournament.name}
                       </h4>
-                      <div className="text-sm text-stone-600 dark:text-stone-400">
+                      <div className="text-sm text-stone-600 dark:text-stone-300">
                         {tournament.date.toLocaleDateString()} • {tournament.format}
                       </div>
                     </div>
@@ -629,7 +629,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                       }`}>
                         #{tournament.placement}
                       </div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">
+                      <div className="text-xs text-stone-500 dark:text-stone-300">
                         of {tournament.totalPlayers}
                       </div>
                     </div>
@@ -640,7 +640,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                       <div className="font-medium text-stone-900 dark:text-white">
                         {tournament.record.wins}-{tournament.record.losses}
                       </div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Record</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Record</div>
                     </div>
 
                     <div className="text-center p-2 bg-stone-50 dark:bg-stone-700 rounded">
@@ -652,7 +652,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                           </>
                         )}
                       </div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Gems</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Gems</div>
                     </div>
 
                     <div className="text-center p-2 bg-stone-50 dark:bg-stone-700 rounded">
@@ -664,7 +664,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                           </>
                         )}
                       </div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Coins</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Coins</div>
                     </div>
                   </div>
                 </div>
@@ -684,7 +684,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                 <div className="text-3xl font-bold text-stone-900 dark:text-white">
                   {metaAnalysis.totalMatches.toLocaleString()}
                 </div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">Total Matches</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Total Matches</div>
               </div>
             </div>
 
@@ -693,7 +693,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                 <div className="text-3xl font-bold text-stone-900 dark:text-white">
                   {metaAnalysis.seasonStats.totalTournaments}
                 </div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">Tournaments</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Tournaments</div>
               </div>
             </div>
 
@@ -702,7 +702,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                 <div className="text-3xl font-bold text-stone-900 dark:text-white">
                   {metaAnalysis.seasonStats.averageParticipants}
                 </div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">Avg. Players</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Avg. Players</div>
               </div>
             </div>
           </div>
@@ -713,7 +713,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
               <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
                 Meta Breakdown
               </h3>
-              <div className="text-sm text-stone-500 dark:text-stone-400">
+              <div className="text-sm text-stone-500 dark:text-stone-300">
                 Last updated: {metaAnalysis.lastUpdated.toLocaleDateString()}
               </div>
             </div>
@@ -735,7 +735,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                         <h4 className="font-medium text-stone-900 dark:text-white">
                           {archetype.name}
                         </h4>
-                        <div className="text-sm text-stone-600 dark:text-stone-400">
+                        <div className="text-sm text-stone-600 dark:text-stone-300">
                           {archetype.keyCards.slice(0, 3).join(', ')}
                         </div>
                       </div>
@@ -746,14 +746,14 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
                         <div className="font-medium text-stone-900 dark:text-white">
                           {archetype.usage}%
                         </div>
-                        <div className="text-xs text-stone-500 dark:text-stone-400">Usage</div>
+                        <div className="text-xs text-stone-500 dark:text-stone-300">Usage</div>
                       </div>
 
                       <div className="text-right">
                         <div className="font-medium text-stone-900 dark:text-white">
                           {archetype.winRate}%
                         </div>
-                        <div className="text-xs text-stone-500 dark:text-stone-400">Win Rate</div>
+                        <div className="text-xs text-stone-500 dark:text-stone-300">Win Rate</div>
                       </div>
 
                       <div className="flex items-center">

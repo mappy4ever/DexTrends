@@ -78,7 +78,7 @@ const MarketPage: NextPage = () => {
                     className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap min-h-[44px] ${
                       activeTab === tab.id
                         ? 'bg-amber-600 text-white'
-                        : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
+                        : 'text-stone-600 dark:text-stone-300 hover:text-amber-600'
                     }`}
                   >
                     {tab.id === 'overview' && <IoTrendingUp className="w-4 h-4 flex-shrink-0" />}
@@ -96,19 +96,19 @@ const MarketPage: NextPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
             <Container variant="default" hover className="text-center p-4">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">2.4K+</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">Cards Tracked</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Cards Tracked</div>
             </Container>
             <Container variant="default" hover className="text-center p-4">
               <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">$45K</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">Daily Volume</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Daily Volume</div>
             </Container>
             <Container variant="default" hover className="text-center p-4">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">+12.5%</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">Weekly Growth</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Weekly Growth</div>
             </Container>
             <Container variant="default" hover className="text-center p-4">
               <div className="text-2xl font-bold text-stone-800 dark:text-stone-200">156</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">Active Traders</div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Active Traders</div>
             </Container>
           </div>
 

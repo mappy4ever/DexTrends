@@ -184,7 +184,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                       </div>
                     );
                   }
-                  return <span className="text-xs text-stone-500 dark:text-stone-400">No stat changes</span>;
+                  return <span className="text-xs text-stone-500 dark:text-stone-300">No stat changes</span>;
                 })()}
               </div>
               <svg className={`w-5 h-5 text-amber-600`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -210,7 +210,7 @@ export const PokemonBattleConfigurator: React.FC<PokemonBattleConfiguratorProps>
                     <span className="text-xs text-red-600">-{nature.decreased_stat.name.replace('special-', 'Sp.')}</span>
                   </div>
                 ) : (
-                  <span className="text-xs text-stone-500 dark:text-stone-400">Neutral</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-300">Neutral</span>
                 )}
               </button>
             ))}

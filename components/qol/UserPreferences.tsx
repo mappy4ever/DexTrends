@@ -584,7 +584,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({ isOpen, onCl
               </h3>
               <button
                 onClick={onClose}
-                className="text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200">
+                className="text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200">
 
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -599,7 +599,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({ isOpen, onCl
             <div className="p-4 border-t border-stone-200 dark:border-stone-700 flex justify-end space-x-3">
               <button
                 onClick={resetPreferences}
-                className="px-4 py-2 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-colors">
+                className="px-4 py-2 text-stone-600 dark:text-stone-300 hover:text-stone-800 dark:hover:text-stone-200 transition-colors">
 
                 Reset to Defaults
               </button>

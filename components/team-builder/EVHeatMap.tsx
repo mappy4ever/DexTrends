@@ -288,7 +288,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
           EV Optimization Heat Map
         </h3>
         <div className="text-sm">
-          <span className="text-stone-600 dark:text-stone-400">Remaining EVs: </span>
+          <span className="text-stone-600 dark:text-stone-300">Remaining EVs: </span>
           <span className={`font-bold ${remainingEVs > 0 ? 'text-amber-600' : 'text-green-600'}`}>
             {remainingEVs}
           </span>

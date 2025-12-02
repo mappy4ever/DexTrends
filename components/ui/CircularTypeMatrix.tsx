@@ -35,7 +35,7 @@ const POKEMON_TYPES = [
 const EFFECTIVENESS_COLORS: { [key: number]: { bg: string; text: string; symbol: string } } = {
   0: { bg: 'bg-stone-200 dark:bg-stone-700', text: 'text-stone-500', symbol: '0' },
   0.5: { bg: 'bg-red-200 dark:bg-red-900/50', text: 'text-red-700 dark:text-red-400', symbol: '½' },
-  1: { bg: 'bg-stone-100 dark:bg-stone-800', text: 'text-stone-600 dark:text-stone-400', symbol: '1' },
+  1: { bg: 'bg-stone-100 dark:bg-stone-800', text: 'text-stone-600 dark:text-stone-300', symbol: '1' },
   2: { bg: 'bg-green-200 dark:bg-green-900/50', text: 'text-green-700 dark:text-green-400', symbol: '2' }
 };
 
@@ -86,7 +86,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
             className={`px-6 py-3 rounded-full transition-all ${
               viewMode === 'attacking'
                 ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200'
+                : 'text-stone-600 dark:text-stone-300 hover:text-stone-800 dark:hover:text-stone-200'
             }`}
           >
             Attacking
@@ -96,7 +96,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
             className={`px-6 py-3 rounded-full transition-all ${
               viewMode === 'defending'
                 ? 'bg-gradient-to-r from-amber-500 to-amber-500 text-white'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200'
+                : 'text-stone-600 dark:text-stone-300 hover:text-stone-800 dark:hover:text-stone-200'
             }`}
           >
             Defending
@@ -199,7 +199,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                           
                           {relations.noEffect.length > 0 && (
                             <div>
-                              <p className="text-sm font-medium text-stone-700 dark:text-stone-400 mb-2">
+                              <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                                 No Effect (0×)
                               </p>
                               <div className="flex flex-wrap gap-2">
@@ -268,7 +268,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                           
                           {relations.immuneTo.length > 0 && (
                             <div>
-                              <p className="text-sm font-medium text-stone-700 dark:text-stone-400 mb-2">
+                              <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                                 Immune To (0× damage)
                               </p>
                               <div className="flex flex-wrap gap-2">
@@ -342,7 +342,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                 circular={true}
                 gradient={true}
               />
-              <p className="text-sm mt-2 text-stone-600 dark:text-stone-400">
+              <p className="text-sm mt-2 text-stone-600 dark:text-stone-300">
                 Click to view details
               </p>
             </Container>

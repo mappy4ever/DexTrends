@@ -275,7 +275,7 @@ const FavoritesPage: NextPage = () => {
                 className={`flex items-center gap-1.5 px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all ${
                   activeTab === 'pokemon'
                     ? 'bg-amber-600 text-white'
-                    : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-amber-600'
                 }`}
               >
                 Pokemon
@@ -292,7 +292,7 @@ const FavoritesPage: NextPage = () => {
                 className={`flex items-center gap-1.5 px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all ${
                   activeTab === 'cards'
                     ? 'bg-amber-600 text-white'
-                    : 'text-stone-600 dark:text-stone-400 hover:text-amber-600'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-amber-600'
                 }`}
               >
                 Cards

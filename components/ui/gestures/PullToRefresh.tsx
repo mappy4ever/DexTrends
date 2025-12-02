@@ -153,7 +153,7 @@ export const PullToRefresh: React.FC<PullToRefreshProps> = ({
                   "mt-2 text-xs font-medium",
                   pullState.shouldTrigger 
                     ? "text-blue-600 dark:text-blue-400" 
-                    : "text-stone-500 dark:text-stone-400"
+                    : "text-stone-500 dark:text-stone-300"
                 )}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}

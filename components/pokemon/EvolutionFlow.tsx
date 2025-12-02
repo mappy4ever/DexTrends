@@ -79,7 +79,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
   if (!evolutionTree) {
     return (
       <Container variant="default" className={cn("text-center py-12", className)}>
-        <p className="text-stone-600 dark:text-stone-400">
+        <p className="text-stone-600 dark:text-stone-300">
           No evolution data available
         </p>
       </Container>
@@ -159,7 +159,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
           </CircularCard>
           <div className="mt-3 text-center">
             <h4 className="font-bold capitalize">{node.name.replace(/-/g, ' ')}</h4>
-            <div className="text-sm text-stone-600 dark:text-stone-400">#{node.id.toString().padStart(3, '0')}</div>
+            <div className="text-sm text-stone-600 dark:text-stone-300">#{node.id.toString().padStart(3, '0')}</div>
           </div>
         </div>
         
@@ -197,14 +197,14 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
       
       {/* Evolution method legend */}
       <div className="mt-8 pt-6 border-t border-stone-200 dark:border-stone-700">
-        <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-3">
+        <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-300 mb-3">
           Evolution Methods
         </h4>
         <div className="flex flex-wrap gap-3">
           {Object.entries(EVOLUTION_TRIGGER_ICONS).slice(0, -1).map(([key, icon]) => (
             <div key={key} className="flex items-center gap-2 text-sm">
               <span className="text-lg">{icon}</span>
-              <span className="capitalize text-stone-600 dark:text-stone-400">
+              <span className="capitalize text-stone-600 dark:text-stone-300">
                 {key.replace(/-/g, ' ')}
               </span>
             </div>

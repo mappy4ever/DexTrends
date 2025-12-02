@@ -181,7 +181,7 @@ export const DynamicIsland: React.FC<DynamicIslandProps> = ({ className = '' }) 
       case 'loading':
         return 'from-amber-500/20 to-amber-500/20 text-amber-600 dark:text-amber-400';
       default:
-        return 'from-stone-500/20 to-stone-500/20 text-stone-600 dark:text-stone-400';
+        return 'from-stone-500/20 to-stone-500/20 text-stone-600 dark:text-stone-300';
     }
   };
 

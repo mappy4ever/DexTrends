@@ -227,7 +227,7 @@ const TCGCardItem = memo<TCGCardProps>(({
                   setZoomedCard(card);
                 }}
               >
-                <svg className="w-3 h-3 text-stone-600 dark:text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-3 h-3 text-stone-600 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
@@ -251,7 +251,7 @@ const TCGCardItem = memo<TCGCardProps>(({
               <span className="
                 text-xs px-2 py-0.5 rounded-full
                 bg-stone-100/70 dark:bg-stone-700/70
-                text-stone-600 dark:text-stone-400
+                text-stone-600 dark:text-stone-300
                 font-medium
                 truncate
               ">
@@ -390,7 +390,7 @@ function TCGCardListInner({
           </svg>
         </div>
         <h3 className="text-xl font-bold text-red-600">Error Loading Cards</h3>
-        <p className="text-stone-600 dark:text-stone-400 mt-2">{error}</p>
+        <p className="text-stone-600 dark:text-stone-300 mt-2">{error}</p>
       </div>
     );
   }
@@ -401,7 +401,7 @@ function TCGCardListInner({
         <svg className="w-16 h-16 text-stone-400 dark:text-stone-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h3 className="text-xl font-medium text-stone-600 dark:text-stone-400">{emptyMessage}</h3>
+        <h3 className="text-xl font-medium text-stone-600 dark:text-stone-300">{emptyMessage}</h3>
       </div>
     );
   }
@@ -457,7 +457,7 @@ function TCGCardListInner({
           shadow-lg
           inline-flex items-center gap-2
         ">
-          <span className="text-xs font-semibold text-stone-600 dark:text-stone-400 mr-1">Sort by:</span>
+          <span className="text-xs font-semibold text-stone-600 dark:text-stone-300 mr-1">Sort by:</span>
           
           {/* Sort by Price */}
           <button
@@ -472,7 +472,7 @@ function TCGCardListInner({
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border inline-flex items-center gap-1 ${
               sortOption === 'price'
                 ? 'bg-gradient-to-r from-amber-100/80 to-orange-100/80 dark:from-amber-900/30 dark:to-orange-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
-                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
+                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-300 hover:bg-white/80'
             }`}
           >
             <span>Price</span>
@@ -496,7 +496,7 @@ function TCGCardListInner({
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border inline-flex items-center gap-1 ${
               sortOption === 'name'
                 ? 'bg-gradient-to-r from-amber-100/80 to-orange-100/80 dark:from-amber-900/30 dark:to-orange-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
-                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
+                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-300 hover:bg-white/80'
             }`}
           >
             <span>Name</span>
@@ -520,7 +520,7 @@ function TCGCardListInner({
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border inline-flex items-center gap-1 ${
               sortOption === 'rarity'
                 ? 'bg-gradient-to-r from-amber-100/80 to-orange-100/80 dark:from-amber-900/30 dark:to-orange-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
-                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
+                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-300 hover:bg-white/80'
             }`}
           >
             <span>Rarity</span>
@@ -544,7 +544,7 @@ function TCGCardListInner({
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border inline-flex items-center gap-1 ${
               sortOption === 'number'
                 ? 'bg-gradient-to-r from-amber-100/80 to-orange-100/80 dark:from-amber-900/30 dark:to-orange-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
-                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-400 hover:bg-white/80'
+                : 'bg-white/60 dark:bg-stone-800/60 border-stone-200/30 text-stone-600 dark:text-stone-300 hover:bg-white/80'
             }`}
           >
             <span>#</span>
@@ -596,7 +596,7 @@ function TCGCardListInner({
 
     {/* Cards Count Info */}
     {!hideCardCount && sortedCards.length > 0 && (
-      <div className="text-center mt-4 text-sm text-stone-600 dark:text-stone-400">
+      <div className="text-center mt-4 text-sm text-stone-600 dark:text-stone-300">
         Showing {displayedCards.length} of {sortedCards.length} cards
         {hasMore && !scrollLoading && (
           <div className="text-xs text-amber-600 dark:text-amber-400 mt-1">
@@ -607,7 +607,7 @@ function TCGCardListInner({
     )}
 
     {!hideCardCount && !scrollLoading && !hasMore && sortedCards.length > 0 && (
-      <div className="text-center mt-4 text-sm text-stone-500 dark:text-stone-400">
+      <div className="text-center mt-4 text-sm text-stone-500 dark:text-stone-300">
         All {sortedCards.length} cards loaded
       </div>
     )}
@@ -633,7 +633,7 @@ function TCGCardListInner({
           />
           <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
           {zoomedCard.set?.name && (
-            <p className="text-stone-600 dark:text-stone-400 mt-2">{zoomedCard.set.name}</p>
+            <p className="text-stone-600 dark:text-stone-300 mt-2">{zoomedCard.set.name}</p>
           )}
         </div>
       </Modal>

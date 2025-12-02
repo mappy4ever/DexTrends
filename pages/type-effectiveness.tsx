@@ -292,7 +292,7 @@ const UnifiedTypeEffectivenessPage = () => {
                   'px-3 sm:px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap',
                   viewMode === 'calculator'
                     ? 'bg-amber-500 text-white shadow-sm'
-                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 )}
               >
                 <IoCalculator className="w-4 h-4 flex-shrink-0" />
@@ -304,7 +304,7 @@ const UnifiedTypeEffectivenessPage = () => {
                   'px-3 sm:px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap',
                   viewMode === 'chart'
                     ? 'bg-amber-500 text-white shadow-sm'
-                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 )}
               >
                 <IoGrid className="w-4 h-4 flex-shrink-0" />
@@ -316,7 +316,7 @@ const UnifiedTypeEffectivenessPage = () => {
                   'px-3 sm:px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap',
                   viewMode === 'team'
                     ? 'bg-amber-500 text-white shadow-sm'
-                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 )}
               >
                 <IoGitNetwork className="w-4 h-4 flex-shrink-0" />
@@ -390,7 +390,7 @@ const UnifiedTypeEffectivenessPage = () => {
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/10 flex items-center justify-center">
                         <span className="text-sm sm:text-lg font-bold text-red-500">ATK</span>
                       </div>
-                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-300">
                         Attacking Type
                       </h3>
                     </div>
@@ -412,7 +412,7 @@ const UnifiedTypeEffectivenessPage = () => {
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-cyan-500/10 flex items-center justify-center">
                         <span className="text-sm sm:text-lg font-bold text-amber-500">DEF</span>
                       </div>
-                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-300">
                         Defending Type(s)
                       </h3>
                     </div>
@@ -458,7 +458,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     <div className="flex items-center justify-center gap-4 sm:gap-6 mb-6">
                       <div>
                         <TypeBadge type={selectedAttacker} size="md" />
-                        <p className="text-xs text-stone-600 dark:text-stone-400 mt-2">Attacking</p>
+                        <p className="text-xs text-stone-600 dark:text-stone-300 mt-2">Attacking</p>
                       </div>
 
                       <div className="text-xl sm:text-2xl text-stone-400">→</div>
@@ -468,7 +468,7 @@ const UnifiedTypeEffectivenessPage = () => {
                           <TypeBadge type={selectedDefender1} size="md" />
                           {selectedDefender2 && <TypeBadge type={selectedDefender2} size="md" />}
                         </div>
-                        <p className="text-xs text-stone-600 dark:text-stone-400 mt-2">Defending</p>
+                        <p className="text-xs text-stone-600 dark:text-stone-300 mt-2">Defending</p>
                       </div>
                     </div>
 
@@ -611,7 +611,7 @@ const UnifiedTypeEffectivenessPage = () => {
                       <span className="text-lg sm:text-xl font-bold text-amber-500">TEAM</span>
                     </div>
                     <div>
-                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                      <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-300">
                         Team Synergy Analyzer
                       </h3>
                       <p className="text-xs text-stone-500 dark:text-stone-500 mt-1 hidden sm:block">
@@ -636,7 +636,7 @@ const UnifiedTypeEffectivenessPage = () => {
                         whileHover={{ y: -4, scale: 1.02 }}
                       >
                         <div className="flex items-center justify-between mb-2 sm:mb-3">
-                          <span className="text-xs font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                          <span className="text-xs font-medium text-stone-500 dark:text-stone-300 uppercase tracking-wider">
                             Slot {slot + 1}
                           </span>
                           {teamTypes[slot]?.[0] && (
@@ -711,7 +711,7 @@ const UnifiedTypeEffectivenessPage = () => {
                               <div className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-amber-500 to-amber-500 bg-clip-text text-transparent">
                                 {analysis.defensiveScore}%
                               </div>
-                              <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Defense</div>
+                              <div className="text-xs text-stone-600 dark:text-stone-300 mt-1">Defense</div>
                             </motion.div>
 
                             <motion.div
@@ -721,7 +721,7 @@ const UnifiedTypeEffectivenessPage = () => {
                               <div className="text-xl sm:text-3xl font-bold text-red-500">
                                 {Object.keys(analysis.sharedWeaknesses).length}
                               </div>
-                              <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Weaknesses</div>
+                              <div className="text-xs text-stone-600 dark:text-stone-300 mt-1">Weaknesses</div>
                             </motion.div>
 
                             <motion.div
@@ -731,7 +731,7 @@ const UnifiedTypeEffectivenessPage = () => {
                               <div className="text-xl sm:text-3xl font-bold text-green-500">
                                 {18 - analysis.uncoveredTypes.length}
                               </div>
-                              <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Coverage</div>
+                              <div className="text-xs text-stone-600 dark:text-stone-300 mt-1">Coverage</div>
                             </motion.div>
                           </div>
 

@@ -508,7 +508,7 @@ const PokemonDetail: NextPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-stone-500 dark:text-stone-400 mb-4">Pokémon not found</p>
+          <p className="text-stone-500 dark:text-stone-300 mb-4">Pokémon not found</p>
           <CircularButton
             onClick={() => router.push('/pokedex')}
             variant="primary"

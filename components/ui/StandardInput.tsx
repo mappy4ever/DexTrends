@@ -55,7 +55,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
         <div className="relative">
           {icon && (
             <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <div className="text-stone-500 dark:text-stone-400">
+              <div className="text-stone-500 dark:text-stone-300">
                 {icon}
               </div>
             </div>

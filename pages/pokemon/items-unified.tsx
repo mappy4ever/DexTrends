@@ -189,7 +189,7 @@ const UnifiedItemsPage: NextPage = () => {
       priority: 'detail',
       sortable: false,
       renderCell: (item: Item) => (
-        <div className="text-sm text-stone-600 dark:text-stone-400 line-clamp-2">
+        <div className="text-sm text-stone-600 dark:text-stone-300 line-clamp-2">
           {item.short_effect}
         </div>
       ),
@@ -257,7 +257,7 @@ const UnifiedItemsPage: NextPage = () => {
               </span>
             )}
           </div>
-          <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 line-clamp-2">
+          <p className="text-xs text-stone-600 dark:text-stone-300 mt-2 line-clamp-2">
             {item.short_effect}
           </p>
           <div className="flex gap-4 mt-2 text-xs text-stone-500 dark:text-stone-500">
@@ -303,7 +303,7 @@ const UnifiedItemsPage: NextPage = () => {
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
                 Items
               </h1>
-              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 hidden sm:block">
+              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-300 hidden sm:block">
                 Browse Pokemon items and equipment
               </p>
             </div>
@@ -315,7 +315,7 @@ const UnifiedItemsPage: NextPage = () => {
               <div className="text-sm sm:text-lg font-bold text-amber-600 dark:text-amber-400">
                 {filteredItems.length}
               </div>
-              <div className="text-xs text-stone-600 dark:text-stone-400">Items</div>
+              <div className="text-xs text-stone-600 dark:text-stone-300">Items</div>
             </div>
           </div>
         </div>

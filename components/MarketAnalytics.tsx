@@ -174,42 +174,42 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
       {analytics.marketStats && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-            <div className="text-sm text-stone-500 dark:text-stone-400">Cards Tracked</div>
+            <div className="text-sm text-stone-500 dark:text-stone-300">Cards Tracked</div>
             <div className="text-xl font-bold text-stone-900 dark:text-white">
               {analytics.marketStats.totalCardsTracked.toLocaleString()}
             </div>
           </div>
           
           <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-            <div className="text-sm text-stone-500 dark:text-stone-400">Avg Change</div>
+            <div className="text-sm text-stone-500 dark:text-stone-300">Avg Change</div>
             <div className={`text-xl font-bold ${parseFloat(analytics.marketStats.avgPriceChange) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {formatPercent(analytics.marketStats.avgPriceChange)}
             </div>
           </div>
           
           <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-            <div className="text-sm text-stone-500 dark:text-stone-400">Top Gainers</div>
+            <div className="text-sm text-stone-500 dark:text-stone-300">Top Gainers</div>
             <div className="text-xl font-bold text-green-600">
               {analytics.marketStats.topGainers}
             </div>
           </div>
           
           <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-            <div className="text-sm text-stone-500 dark:text-stone-400">Top Losers</div>
+            <div className="text-sm text-stone-500 dark:text-stone-300">Top Losers</div>
             <div className="text-xl font-bold text-red-600">
               {analytics.marketStats.topLosers}
             </div>
           </div>
           
           <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-            <div className="text-sm text-stone-500 dark:text-stone-400">Market Cap</div>
+            <div className="text-sm text-stone-500 dark:text-stone-300">Market Cap</div>
             <div className="text-xl font-bold text-stone-900 dark:text-white">
               {formatCurrency(analytics.marketStats.marketCap)}
             </div>
           </div>
           
           <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4">
-            <div className="text-sm text-stone-500 dark:text-stone-400">24h Volume</div>
+            <div className="text-sm text-stone-500 dark:text-stone-300">24h Volume</div>
             <div className="text-xl font-bold text-stone-900 dark:text-white">
               {formatCurrency(analytics.marketStats.volume24h)}
             </div>
@@ -229,7 +229,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
               {analytics.topMovers.slice(0, 8).map((card, index) => (
                 <div key={card.card_id} className="flex items-center justify-between p-2 hover:bg-stone-50 dark:hover:bg-stone-700 rounded">
                   <div className="flex items-center gap-3">
-                    <div className="text-sm font-medium text-stone-500 dark:text-stone-400 w-6">
+                    <div className="text-sm font-medium text-stone-500 dark:text-stone-300 w-6">
                       #{index + 1}
                     </div>
                     <div>
@@ -239,7 +239,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
 
                         {card.card_name}
                       </Link>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">
+                      <div className="text-xs text-stone-500 dark:text-stone-300">
                         {card.set_name}
                       </div>
                     </div>
@@ -270,7 +270,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
               {analytics.trendingCards.slice(0, 8).map((card, index) => (
                 <div key={card.card_id} className="flex items-center justify-between p-2 hover:bg-stone-50 dark:hover:bg-stone-700 rounded">
                   <div className="flex items-center gap-3">
-                    <div className="text-sm font-medium text-stone-500 dark:text-stone-400 w-6">
+                    <div className="text-sm font-medium text-stone-500 dark:text-stone-300 w-6">
                       #{index + 1}
                     </div>
                     <div>
@@ -280,7 +280,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
 
                         {card.card_name}
                       </Link>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">
+                      <div className="text-xs text-stone-500 dark:text-stone-300">
                         {card.set_name} • {card.variant_type}
                       </div>
                     </div>
@@ -313,7 +313,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
                   <div className="font-medium text-stone-900 dark:text-white text-sm mb-1 truncate">
                     {card.card_name}
                   </div>
-                  <div className="text-xs text-stone-500 dark:text-stone-400 mb-2">
+                  <div className="text-xs text-stone-500 dark:text-stone-300 mb-2">
                     {card.set_name}
                   </div>
                   <div className="flex justify-between items-center">

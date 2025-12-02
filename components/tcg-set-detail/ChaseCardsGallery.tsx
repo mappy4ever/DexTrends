@@ -154,7 +154,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
           <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
             {title}
           </h3>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+          <p className="text-sm text-stone-500 dark:text-stone-300 mt-1">
             {subtitle}
           </p>
         </div>
@@ -197,7 +197,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                   "px-3 py-1.5 rounded text-sm font-medium transition-all capitalize",
                   viewMode === mode
                     ? "bg-gradient-to-r from-amber-500 to-pink-500 text-white"
-                    : "text-stone-600 dark:text-stone-400"
+                    : "text-stone-600 dark:text-stone-300"
                 )}
               >
                 {mode}
@@ -252,7 +252,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                         <h4 className="text-xl font-bold text-stone-800 dark:text-stone-200">
                           {selectedCard.name}
                         </h4>
-                        <p className="text-sm text-stone-500 dark:text-stone-400">
+                        <p className="text-sm text-stone-500 dark:text-stone-300">
                           {selectedCard.set.name} • #{selectedCard.number}
                         </p>
                       </div>
@@ -267,7 +267,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                     </div>
                     
                     {selectedCard.artist && (
-                      <p className="text-sm text-stone-600 dark:text-stone-400">
+                      <p className="text-sm text-stone-600 dark:text-stone-300">
                         <span className="font-medium">Artist:</span> {selectedCard.artist}
                       </p>
                     )}
@@ -344,7 +344,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                     <h4 className="text-sm font-semibold text-stone-800 dark:text-stone-200">
                       {card.name}
                     </h4>
-                    <p className="text-xs text-stone-500 dark:text-stone-400">
+                    <p className="text-xs text-stone-500 dark:text-stone-300">
                       #{card.number} • {card.set.name}
                     </p>
                   </div>
@@ -406,7 +406,7 @@ const StatCard: React.FC<{
   gradient: string;
 }> = ({ label, value, gradient }) => (
   <div className="text-center">
-    <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">{label}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-300 mb-1">{label}</p>
     <p className={cn(
       "text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent",
       gradient

@@ -379,7 +379,7 @@ export const ElasticTabs: React.FC<ElasticTabsProps> = ({
             'relative z-10 px-4 py-2 text-sm font-medium transition-colors',
             activeTab === index
               ? 'text-white'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+              : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           )}
         >
           {tab}

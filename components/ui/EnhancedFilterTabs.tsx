@@ -177,7 +177,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                       <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
                         {selectedRarity}
                       </p>
-                      <p className="text-xs text-stone-500 dark:text-stone-400">
+                      <p className="text-xs text-stone-500 dark:text-stone-300">
                         Showing only {selectedRarity} cards
                       </p>
                     </div>
@@ -192,7 +192,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
             <div className="space-y-4 animate-fadeIn">
               {/* Supertype Filter */}
               <div>
-                <label className="text-xs font-medium text-stone-600 dark:text-stone-400 mb-2 block">
+                <label className="text-xs font-medium text-stone-600 dark:text-stone-300 mb-2 block">
                   Card Type
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -215,7 +215,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
               {/* Subtype Filter */}
               {availableSubtypes.length > 0 && (
                 <div>
-                  <label className="text-xs font-medium text-stone-600 dark:text-stone-400 mb-2 block">
+                  <label className="text-xs font-medium text-stone-600 dark:text-stone-300 mb-2 block">
                     Subtype
                   </label>
                   <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
@@ -280,7 +280,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
               </div>
               
               {searchQuery && (
-                <p className="text-xs text-stone-500 dark:text-stone-400">
+                <p className="text-xs text-stone-500 dark:text-stone-300">
                   Searching for "{searchQuery}"...
                 </p>
               )}
@@ -298,7 +298,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
                 onSubtypeChange('');
                 onSearchChange('');
               }}
-              className="text-xs text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors"
+              className="text-xs text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200 transition-colors"
             >
               Clear all filters
             </button>

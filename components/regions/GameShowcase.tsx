@@ -38,7 +38,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
             <h2 className="text-3xl font-bold mb-3">
               Games in {region.name}
             </h2>
-            <p className="text-lg text-stone-600 dark:text-stone-400">
+            <p className="text-lg text-stone-600 dark:text-stone-300">
               Experience the {region.name} region across different generations
             </p>
           </div>
@@ -180,7 +180,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                 } shadow-lg`}>
                   <FaGamepad className={`text-2xl bg-gradient-to-r ${region.color} bg-clip-text text-transparent`} />
                   <div className="text-left">
-                    <span className="text-sm text-stone-600 dark:text-stone-400 block">Generation</span>
+                    <span className="text-sm text-stone-600 dark:text-stone-300 block">Generation</span>
                     <span className={`text-3xl font-bold bg-gradient-to-r ${region.color} bg-clip-text text-transparent`}>
                       {region.generation}
                     </span>
@@ -193,7 +193,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                 theme === 'dark' ? 'bg-stone-800/50' : 'bg-stone-100/50'
               }`}>
                 <BsStarFill className="text-yellow-500" />
-                <span className="text-stone-600 dark:text-stone-400">
+                <span className="text-stone-600 dark:text-stone-300">
                   {region.games.length} Games Released
                 </span>
               </div>

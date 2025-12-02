@@ -119,7 +119,7 @@ export function StatBar({
       {/* Label */}
       <span className={cn(
         styles.label,
-        'font-medium text-stone-600 dark:text-stone-400 w-16 flex-shrink-0',
+        'font-medium text-stone-600 dark:text-stone-300 w-16 flex-shrink-0',
         isHighest && 'text-amber-600 dark:text-amber-400'
       )}>
         {label}
@@ -314,7 +314,7 @@ export function QuickStat({
   const trendColors = {
     up: 'text-green-600 dark:text-green-400',
     down: 'text-red-600 dark:text-red-400',
-    neutral: 'text-stone-500 dark:text-stone-400',
+    neutral: 'text-stone-500 dark:text-stone-300',
   };
 
   const trendIcons = {
@@ -335,7 +335,7 @@ export function QuickStat({
           {trendIcons[trend]} {trendValue}
         </div>
       )}
-      <div className={cn(styles.label, 'text-stone-500 dark:text-stone-400 uppercase tracking-wide mt-0.5')}>
+      <div className={cn(styles.label, 'text-stone-500 dark:text-stone-300 uppercase tracking-wide mt-0.5')}>
         {label}
       </div>
     </div>
@@ -371,7 +371,7 @@ export function ComparisonStat({
 
   return (
     <div className={cn('space-y-1', className)}>
-      <div className="flex justify-between text-xs text-stone-500 dark:text-stone-400">
+      <div className="flex justify-between text-xs text-stone-500 dark:text-stone-300">
         <span>{label}</span>
         <span className="text-stone-400">{label1} vs {label2}</span>
       </div>
@@ -379,7 +379,7 @@ export function ComparisonStat({
         {/* Value 1 bar (right-aligned) */}
         <span className={cn(
           'w-8 text-xs font-mono text-right tabular-nums',
-          winner === 1 ? 'text-green-600 dark:text-green-400 font-semibold' : 'text-stone-600 dark:text-stone-400'
+          winner === 1 ? 'text-green-600 dark:text-green-400 font-semibold' : 'text-stone-600 dark:text-stone-300'
         )}>
           {value1}
         </span>
@@ -408,7 +408,7 @@ export function ComparisonStat({
         </div>
         <span className={cn(
           'w-8 text-xs font-mono tabular-nums',
-          winner === 2 ? 'text-green-600 dark:text-green-400 font-semibold' : 'text-stone-600 dark:text-stone-400'
+          winner === 2 ? 'text-green-600 dark:text-green-400 font-semibold' : 'text-stone-600 dark:text-stone-300'
         )}>
           {value2}
         </span>

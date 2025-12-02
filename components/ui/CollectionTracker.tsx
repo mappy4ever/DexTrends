@@ -685,7 +685,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                   <div className="text-2xl font-bold text-amber-600">
                     {collectionAnalysis.averageSetCompletion.toFixed(1)}%
                   </div>
-                  <div className="text-sm text-stone-600 dark:text-stone-400">
+                  <div className="text-sm text-stone-600 dark:text-stone-300">
                     Average Set Completion
                   </div>
                 </div>
@@ -693,7 +693,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                   <div className="text-2xl font-bold text-green-600">
                     {collectionAnalysis.nearCompleteSets.length}
                   </div>
-                  <div className="text-sm text-stone-600 dark:text-stone-400">
+                  <div className="text-sm text-stone-600 dark:text-stone-300">
                     Sets Near Completion (80%+)
                   </div>
                 </div>
@@ -701,7 +701,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                   <div className="text-2xl font-bold text-purple-600">
                     {collectionAnalysis.highPriorityMissing.length}
                   </div>
-                  <div className="text-sm text-stone-600 dark:text-stone-400">
+                  <div className="text-sm text-stone-600 dark:text-stone-300">
                     High Priority Missing Cards
                   </div>
                 </div>
@@ -749,7 +749,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-stone-600 dark:text-stone-400">
+                        <span className="text-stone-600 dark:text-stone-300">
                           {set.ownedCards} / {set.totalCards} cards
                         </span>
                         <span className="font-medium text-stone-900 dark:text-white">
@@ -765,7 +765,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                       </div>
                       
                       {set.missingCards > 0 && (
-                        <div className="text-sm text-stone-600 dark:text-stone-400">
+                        <div className="text-sm text-stone-600 dark:text-stone-300">
                           {set.missingCards} cards remaining
                         </div>
                       )}
@@ -802,7 +802,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                         <h4 className="font-semibold text-stone-900 dark:text-white">
                           {goal.name}
                         </h4>
-                        <p className="text-sm text-stone-600 dark:text-stone-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-300">
                           {goal.description}
                         </p>
                       </div>
@@ -813,7 +813,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-stone-600 dark:text-stone-400">
+                        <span className="text-stone-600 dark:text-stone-300">
                           Progress
                         </span>
                         <span className="font-medium text-stone-900 dark:text-white">
@@ -831,7 +831,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                       </div>
                       
                       {goal.deadline && (
-                        <div className="text-sm text-stone-600 dark:text-stone-400 flex items-center">
+                        <div className="text-sm text-stone-600 dark:text-stone-300 flex items-center">
                           <FaClock className="h-4 w-4 mr-1" />
                           Deadline: {new Date(goal.deadline).toLocaleDateString()}
                         </div>
@@ -846,7 +846,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 <h3 className="text-lg font-medium text-stone-900 dark:text-white mb-2">
                   No goals set yet
                 </h3>
-                <p className="text-stone-600 dark:text-stone-400 mb-4">
+                <p className="text-stone-600 dark:text-stone-300 mb-4">
                   Set collection goals to track your progress and stay motivated
                 </p>
                 <button
@@ -911,7 +911,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                           {achievement.name}
                         </h4>
                         <p className={`text-sm ${
-                          isUnlocked ? 'text-yellow-600 dark:text-yellow-400' : 'text-stone-600 dark:text-stone-400'
+                          isUnlocked ? 'text-yellow-600 dark:text-yellow-400' : 'text-stone-600 dark:text-stone-300'
                         }`}>
                           {achievement.description}
                         </p>

@@ -273,9 +273,16 @@ export function UnifiedGrid<T extends GridItem>({
             }}
           >
             {row.map((item, colIndex) => (
-              <React.Fragment key={item.id}>
+              <div
+                key={item.id}
+                style={{
+                  width: itemDimensions.width,
+                  height: itemDimensions.height,
+                  flexShrink: 0
+                }}
+              >
                 {itemRenderer(item, rowIndex * columnCount + colIndex, itemDimensions)}
-              </React.Fragment>
+              </div>
             ))}
           </div>
         ))}

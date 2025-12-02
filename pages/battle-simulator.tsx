@@ -1520,7 +1520,7 @@ const BattleSimulator: NextPage = () => {
                     />
                   )}
                   {!battleActive && (
-                    <div className="mt-2 text-xs text-stone-600 dark:text-stone-400">
+                    <div className="mt-2 text-xs text-stone-600 dark:text-stone-300">
                       Select Pokemon and moves to begin
                     </div>
                   )}
@@ -1978,7 +1978,7 @@ const BattleSimulator: NextPage = () => {
                         <div className="font-semibold text-stone-700 dark:text-stone-300">
                           {battle.winner}'s {battle.winnerPokemon} defeated {battle.loser}'s {battle.loserPokemon}
                         </div>
-                        <div className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+                        <div className="text-sm text-stone-600 dark:text-stone-300 mt-1">
                           {battle.moves?.length || 0} moves • {new Date(battle.date || new Date()).toLocaleDateString()}
                         </div>
                       </div>

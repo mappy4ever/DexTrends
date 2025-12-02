@@ -203,7 +203,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
           <div className="flex flex-col h-full">
             <div className="p-6 md:p-8 flex-1">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Stats Distribution
                 </h2>
 
@@ -215,7 +215,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
                     onChange={(e) => setUsePerfectStats(e.target.checked)}
                     className="w-4 h-4 rounded text-amber-500 focus:ring-amber-500"
                   />
-                  <span className="text-xs text-stone-600 dark:text-stone-400">
+                  <span className="text-xs text-stone-600 dark:text-stone-300">
                     Optimized EVs
                   </span>
                 </label>
@@ -235,7 +235,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
             </div>
 
             {/* Notes at bottom */}
-            <div className="px-6 pb-4 md:px-8 md:pb-6 space-y-1 text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 border-t border-stone-200 dark:border-stone-700 pt-4">
+            <div className="px-6 pb-4 md:px-8 md:pb-6 space-y-1 text-[10px] sm:text-xs text-stone-500 dark:text-stone-300 border-t border-stone-200 dark:border-stone-700 pt-4">
               <div className="flex items-start gap-2">
                 <span className="text-amber-500">•</span>
                 <span>Minimum stats are calculated with 0 EVs, IVs of 0, and (if applicable) a hindering nature.</span>
@@ -282,7 +282,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
           </select>
 
           {natureData && (
-            <div className="mt-3 text-xs text-stone-600 dark:text-stone-400">
+            <div className="mt-3 text-xs text-stone-600 dark:text-stone-300">
               {natureData.increased_stat && natureData.decreased_stat ? (
                 <span>+{STAT_NAMES[natureData.increased_stat.name]} -{STAT_NAMES[natureData.decreased_stat.name]}</span>
               ) : (
@@ -329,7 +329,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
                   {level}
                 </button>
                 {level === 50 && (
-                  <span className="text-[8px] mt-1 text-stone-500 dark:text-stone-400 uppercase font-semibold">
+                  <span className="text-[8px] mt-1 text-stone-500 dark:text-stone-300 uppercase font-semibold">
                     Default
                   </span>
                 )}
@@ -360,7 +360,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
               </div>
             ))}
             {calculatedStats.filter(stat => stat.effort > 0).length === 0 && (
-              <div className="text-center text-sm text-stone-600 dark:text-stone-400 py-4">
+              <div className="text-center text-sm text-stone-600 dark:text-stone-300 py-4">
                 No EVs yielded
               </div>
             )}
@@ -368,7 +368,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
 
           {calculatedStats.filter(stat => stat.effort > 0).length > 0 && (
             <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700">
-              <p className="text-xs text-stone-600 dark:text-stone-400 text-center">
+              <p className="text-xs text-stone-600 dark:text-stone-300 text-center">
                 Effort Values gained when defeating this Pokémon
               </p>
             </div>

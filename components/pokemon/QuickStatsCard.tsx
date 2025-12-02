@@ -33,7 +33,7 @@ function getStatRanking(total: number): { label: string; color: string; bgColor:
   if (total >= 500) return { label: 'Very Strong', color: 'text-green-600 dark:text-green-400', bgColor: 'bg-green-100 dark:bg-green-900/30' };
   if (total >= 450) return { label: 'Strong', color: 'text-blue-600 dark:text-blue-400', bgColor: 'bg-blue-100 dark:bg-blue-900/30' };
   if (total >= 400) return { label: 'Above Average', color: 'text-cyan-600 dark:text-cyan-400', bgColor: 'bg-cyan-100 dark:bg-cyan-900/30' };
-  if (total >= 350) return { label: 'Average', color: 'text-stone-600 dark:text-stone-400', bgColor: 'bg-stone-100 dark:bg-stone-800' };
+  if (total >= 350) return { label: 'Average', color: 'text-stone-600 dark:text-stone-300', bgColor: 'bg-stone-100 dark:bg-stone-800' };
   if (total >= 300) return { label: 'Below Average', color: 'text-orange-600 dark:text-orange-400', bgColor: 'bg-orange-100 dark:bg-orange-900/30' };
   return { label: 'Weak', color: 'text-red-600 dark:text-red-400', bgColor: 'bg-red-100 dark:bg-red-900/30' };
 }
@@ -173,7 +173,7 @@ export function QuickStatsCard({ stats, pokemonName, className }: QuickStatsCard
             {analysis.classifications.map((cls) => (
               <span
                 key={cls}
-                className="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded-full bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-400"
+                className="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded-full bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300"
               >
                 {cls}
               </span>
@@ -233,7 +233,7 @@ export function QuickStatsCard({ stats, pokemonName, className }: QuickStatsCard
                 'text-[10px] font-medium uppercase tracking-wide',
                 isHighest ? 'text-amber-600 dark:text-amber-400' :
                 isLowest ? 'text-red-500 dark:text-red-400' :
-                'text-stone-500 dark:text-stone-400'
+                'text-stone-500 dark:text-stone-300'
               )}>
                 {STAT_LABELS[key]}
               </div>
@@ -247,7 +247,7 @@ export function QuickStatsCard({ stats, pokemonName, className }: QuickStatsCard
         <div className="flex items-center gap-4">
           {/* Best Stat */}
           <div className="flex items-center gap-1.5">
-            <span className="text-stone-500 dark:text-stone-400">Best:</span>
+            <span className="text-stone-500 dark:text-stone-300">Best:</span>
             <span className="font-semibold text-amber-600 dark:text-amber-400">
               {STAT_LABELS[analysis.highest.key]} ({analysis.highest.value})
             </span>
@@ -255,7 +255,7 @@ export function QuickStatsCard({ stats, pokemonName, className }: QuickStatsCard
 
           {/* Worst Stat */}
           <div className="flex items-center gap-1.5">
-            <span className="text-stone-500 dark:text-stone-400">Worst:</span>
+            <span className="text-stone-500 dark:text-stone-300">Worst:</span>
             <span className="font-semibold text-red-500 dark:text-red-400">
               {STAT_LABELS[analysis.lowest.key]} ({analysis.lowest.value})
             </span>

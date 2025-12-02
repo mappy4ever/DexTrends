@@ -157,7 +157,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
               fill="none"
               stroke="currentColor"
               strokeWidth="1"
-              className="text-stone-600 dark:text-stone-400"
+              className="text-stone-600 dark:text-stone-300"
             />
           ))}
         </g>
@@ -173,7 +173,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
               y2={p.y}
               stroke="currentColor"
               strokeWidth="1"
-              className="text-stone-600 dark:text-stone-400"
+              className="text-stone-600 dark:text-stone-300"
             />
           ))}
         </g>
@@ -338,7 +338,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
         <div className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-amber-600 bg-clip-text text-transparent">
           {orderedStats.reduce((sum, stat) => sum + stat.value, 0)}
         </div>
-        <div className="text-xs text-stone-600 dark:text-stone-400">Total</div>
+        <div className="text-xs text-stone-600 dark:text-stone-300">Total</div>
       </div>
     </div>
   );

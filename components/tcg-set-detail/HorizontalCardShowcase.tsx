@@ -131,7 +131,7 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
         <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
           Top Value Cards
         </h2>
-        <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+        <p className="text-sm text-stone-500 dark:text-stone-300 mt-1">
           Drag to browse collection
         </p>
       </div>
@@ -217,7 +217,7 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
                         <h3 className="text-sm font-bold text-stone-900 dark:text-white line-clamp-2">
                           {card.name.replace(/Team Rocket's/gi, "TR's")}
                         </h3>
-                        <p className="text-sm text-stone-600 dark:text-stone-400">
+                        <p className="text-sm text-stone-600 dark:text-stone-300">
                           {card.set.name}
                         </p>
                         {card.rarity && (

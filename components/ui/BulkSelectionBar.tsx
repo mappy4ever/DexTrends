@@ -109,7 +109,7 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
                   <span className="text-amber-600 dark:text-amber-400">
                     {selectedCount}
                   </span>
-                  <span className="text-stone-600 dark:text-stone-400">
+                  <span className="text-stone-600 dark:text-stone-300">
                     {' / '}
                     {totalCount} selected
                   </span>
@@ -177,7 +177,7 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
                 rounded: 'full',
               })} p-2 rounded-full hover:scale-110 transition-transform ml-2`}
             >
-              <FiX className="w-4 h-4 text-stone-600 dark:text-stone-400" />
+              <FiX className="w-4 h-4 text-stone-600 dark:text-stone-300" />
             </button>
           </div>
         </motion.div>

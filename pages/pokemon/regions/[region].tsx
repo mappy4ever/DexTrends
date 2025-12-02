@@ -738,13 +738,13 @@ const GymLeaderCard: React.FC<{ leader: GymLeader; gymNumber: number }> = ({ lea
           </div>
           <div>
             <h4 className="font-bold text-stone-800 dark:text-stone-100">{leader.name}</h4>
-            <p className="text-sm text-stone-600 dark:text-stone-400">{leader.city}</p>
+            <p className="text-sm text-stone-600 dark:text-stone-300">{leader.city}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <div className="text-right">
             <TypeBadge type={primaryType} size="sm" />
-            <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">{leader.badge}</p>
+            <p className="text-xs text-stone-500 dark:text-stone-300 mt-1">{leader.badge}</p>
           </div>
           {isExpanded ? <FiChevronUp className="text-stone-400" /> : <FiChevronDown className="text-stone-400" />}
         </div>
@@ -872,7 +872,7 @@ const EliteFourCard: React.FC<{ member: EliteFourMember; position: number }> = (
         <TypeBadge type={member.type} size="sm" />
         <h4 className="font-bold text-stone-800 dark:text-stone-100 mt-2">{member.name}</h4>
         {member.title && <p className="text-xs text-purple-600 dark:text-purple-400">{member.title}</p>}
-        <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">Ace: {member.signature}</p>
+        <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">Ace: {member.signature}</p>
       </div>
 
       {/* Expanded Content */}
@@ -893,7 +893,7 @@ const EliteFourCard: React.FC<{ member: EliteFourMember; position: number }> = (
                         height={40}
                         className="w-10 h-10 mx-auto"
                       />
-                      <span className="text-[10px] text-stone-600 dark:text-stone-400 block truncate">{pokemon.name}</span>
+                      <span className="text-[10px] text-stone-600 dark:text-stone-300 block truncate">{pokemon.name}</span>
                     </div>
                   </Link>
                 ))}
@@ -915,7 +915,7 @@ const EliteFourCard: React.FC<{ member: EliteFourMember; position: number }> = (
 
           {/* Strategy */}
           {member.strategy && (
-            <p className="text-xs text-stone-600 dark:text-stone-400 text-center italic">{member.strategy}</p>
+            <p className="text-xs text-stone-600 dark:text-stone-300 text-center italic">{member.strategy}</p>
           )}
         </div>
       )}
@@ -1011,7 +1011,7 @@ export default function RegionDetailPage() {
       <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-900">
         <Container variant="elevated" className="p-8 text-center">
           <h1 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4">Region Not Found</h1>
-          <p className="text-stone-600 dark:text-stone-400 mb-6">The region you're looking for doesn't exist.</p>
+          <p className="text-stone-600 dark:text-stone-300 mb-6">The region you're looking for doesn't exist.</p>
           <Link href="/pokemon/regions" className="text-purple-600 hover:text-purple-700 font-medium">
             ← Back to Regions
           </Link>
@@ -1088,19 +1088,19 @@ export default function RegionDetailPage() {
             <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-sm">
               <div className="text-center">
                 <div className="font-bold text-stone-900 dark:text-stone-100">{region.pokemonRange}</div>
-                <div className="text-stone-500 dark:text-stone-400">Pokédex</div>
+                <div className="text-stone-500 dark:text-stone-300">Pokédex</div>
               </div>
               <div className="text-center">
                 <div className="font-bold text-stone-900 dark:text-stone-100">{region.cities}</div>
-                <div className="text-stone-500 dark:text-stone-400">Cities</div>
+                <div className="text-stone-500 dark:text-stone-300">Cities</div>
               </div>
               <div className="text-center">
                 <div className="font-bold text-stone-900 dark:text-stone-100">{region.gymLeaders?.length || 0}</div>
-                <div className="text-stone-500 dark:text-stone-400">Gyms</div>
+                <div className="text-stone-500 dark:text-stone-300">Gyms</div>
               </div>
               <div className="text-center">
                 <div className="font-bold text-stone-900 dark:text-stone-100">{region.legendaries.length}</div>
-                <div className="text-stone-500 dark:text-stone-400">Legendaries</div>
+                <div className="text-stone-500 dark:text-stone-300">Legendaries</div>
               </div>
             </div>
           </div>
@@ -1191,7 +1191,7 @@ export default function RegionDetailPage() {
                     <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2">
                       The {region.name} Region
                     </h3>
-                    <p className="text-stone-600 dark:text-stone-400 leading-relaxed">
+                    <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
                       {region.description}
                     </p>
                   </div>
@@ -1200,19 +1200,19 @@ export default function RegionDetailPage() {
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
                       <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{region.cities}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Cities & Towns</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Cities & Towns</div>
                     </div>
                     <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
                       <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{region.routes || 'Open'}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">{region.routes > 0 ? 'Routes' : 'World'}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">{region.routes > 0 ? 'Routes' : 'World'}</div>
                     </div>
                     <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
                       <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{region.gymLeaders?.length || 0}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">{region.id === 'alola' ? 'Trials' : 'Gyms'}</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">{region.id === 'alola' ? 'Trials' : 'Gyms'}</div>
                     </div>
                     <div className="bg-stone-100 dark:bg-stone-700 rounded-lg p-3 text-center">
                       <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{region.legendaries.length}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Legendaries</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Legendaries</div>
                     </div>
                   </div>
 
@@ -1233,7 +1233,7 @@ export default function RegionDetailPage() {
                 <FiUsers className="text-red-500" />
                 {region.id === 'alola' ? 'Trial Captains' : 'Gym Leaders'}
               </h2>
-              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+              <p className="text-stone-600 dark:text-stone-300 mb-6 text-sm">
                 Click on any {region.id === 'alola' ? 'Trial Captain' : 'Gym Leader'} to see their team, strategy tips, and fun facts!
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -1251,7 +1251,7 @@ export default function RegionDetailPage() {
                 <FiStar className="text-purple-500" />
                 Elite Four & Champion
               </h2>
-              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+              <p className="text-stone-600 dark:text-stone-300 mb-6 text-sm">
                 Click to reveal their full teams and battle strategies!
               </p>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -1272,7 +1272,7 @@ export default function RegionDetailPage() {
                 <FiAward className="text-amber-500" />
                 Champion
               </h2>
-              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+              <p className="text-stone-600 dark:text-stone-300 mb-6 text-sm">
                 Click to reveal the Champion's full team!
               </p>
               <div className="max-w-sm">
@@ -1297,8 +1297,8 @@ export default function RegionDetailPage() {
                       </div>
                       <div>
                         <h4 className="font-bold text-stone-800 dark:text-stone-100">{location.name}</h4>
-                        <span className="text-xs uppercase text-stone-500 dark:text-stone-400">{location.type}</span>
-                        <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{location.description}</p>
+                        <span className="text-xs uppercase text-stone-500 dark:text-stone-300">{location.type}</span>
+                        <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">{location.description}</p>
                       </div>
                     </div>
                   </Container>
@@ -1318,7 +1318,7 @@ export default function RegionDetailPage() {
                 {region.landmarks.map(landmark => (
                   <Container key={landmark.name} variant="elevated" rounded="lg" className="p-4">
                     <h4 className="font-bold text-stone-800 dark:text-stone-100">{landmark.name}</h4>
-                    <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{landmark.description}</p>
+                    <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">{landmark.description}</p>
                   </Container>
                 ))}
               </div>
@@ -1332,7 +1332,7 @@ export default function RegionDetailPage() {
                 <FiInfo className="text-blue-500" />
                 Fun Facts & Trivia
               </h2>
-              <p className="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+              <p className="text-stone-600 dark:text-stone-300 mb-6 text-sm">
                 Interesting facts every {region.name} trainer should know!
               </p>
               <Container variant="elevated" rounded="xl" className="p-6">
@@ -1365,28 +1365,28 @@ export default function RegionDetailPage() {
                         <FiBook className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="font-bold text-stone-800 dark:text-stone-100">{region.games.length}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Games</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Games</div>
                     </div>
                     <div className="text-center px-6 py-3 bg-stone-100 dark:bg-stone-700 rounded-xl">
                       <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
                         <FiUsers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div className="font-bold text-stone-800 dark:text-stone-100">{region.professor.split(' ')[1]}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Professor</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Professor</div>
                     </div>
                     <div className="text-center px-6 py-3 bg-stone-100 dark:bg-stone-700 rounded-xl">
                       <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                         <FiAward className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                       </div>
                       <div className="font-bold text-stone-800 dark:text-stone-100">{region.champion?.name || 'Various'}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Champion</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Champion</div>
                     </div>
                     <div className="text-center px-6 py-3 bg-stone-100 dark:bg-stone-700 rounded-xl">
                       <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                         <FiStar className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                       </div>
                       <div className="font-bold text-stone-800 dark:text-stone-100">Gen {region.generation}</div>
-                      <div className="text-xs text-stone-500 dark:text-stone-400">Generation</div>
+                      <div className="text-xs text-stone-500 dark:text-stone-300">Generation</div>
                     </div>
                   </div>
                 </div>
@@ -1402,7 +1402,7 @@ export default function RegionDetailPage() {
               {currentRegionIndex > 0 ? (
                 <Link
                   href={`/pokemon/regions/${regionOrder[currentRegionIndex - 1]}`}
-                  className="flex items-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+                  className="flex items-center gap-2 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
                 >
                   <FiChevronLeft className="w-5 h-5" />
                   <span className="capitalize">{regionOrder[currentRegionIndex - 1]}</span>
@@ -1419,7 +1419,7 @@ export default function RegionDetailPage() {
               {currentRegionIndex < regionOrder.length - 1 ? (
                 <Link
                   href={`/pokemon/regions/${regionOrder[currentRegionIndex + 1]}`}
-                  className="flex items-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+                  className="flex items-center gap-2 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
                 >
                   <span className="capitalize">{regionOrder[currentRegionIndex + 1]}</span>
                   <FiChevronRight className="w-5 h-5" />

@@ -491,7 +491,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
               <BsExclamationTriangle className="text-red-500" />
               Villainous Organizations
             </h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               The evil teams threatening {region.name}'s peace
             </p>
           </div>
@@ -595,7 +595,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                                   {(team.executives || team.admins || team.commanders || team.scientists || team.sages || team.squadBosses || team.members || []).map((member, idx) => (
                                     <div key={idx} className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-stone-700' : 'bg-stone-100'}`}>
                                       <p className="font-semibold">{member.name}</p>
-                                      <p className="text-sm text-stone-600 dark:text-stone-400">
+                                      <p className="text-sm text-stone-600 dark:text-stone-300">
                                         {member.role} - {member.description}
                                       </p>
                                     </div>

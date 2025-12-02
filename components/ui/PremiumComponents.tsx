@@ -395,7 +395,7 @@ export const PremiumProgress = ({ value = 0, max = 100, className = '', variant 
   return (
     <div className={`space-y-2 ${className}`} {...props}>
       {showLabel && (
-        <div className="flex justify-between text-sm text-stone-600 dark:text-stone-400">
+        <div className="flex justify-between text-sm text-stone-600 dark:text-stone-300">
           <span>Progress</span>
           <span>{value}/{max}</span>
         </div>

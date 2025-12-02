@@ -40,7 +40,7 @@ const rarityConfig: Record<string, {
   'Common': {
     symbol: <CircleSymbol className="w-full h-full" />,
     label: 'Common',
-    color: 'text-stone-500 dark:text-stone-400'
+    color: 'text-stone-500 dark:text-stone-300'
   },
   'Uncommon': {
     symbol: <DiamondSymbol className="w-full h-full" />,
@@ -251,7 +251,7 @@ export const CleanRaritySymbol: React.FC<RaritySymbolProps> = ({
         <span className={cn(
           'font-medium',
           size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : 'text-sm',
-          isActive ? 'text-stone-900 dark:text-white' : 'text-stone-600 dark:text-stone-400'
+          isActive ? 'text-stone-900 dark:text-white' : 'text-stone-600 dark:text-stone-300'
         )}>
           {config.label}
         </span>
@@ -290,7 +290,7 @@ export const CleanRarityFilterBar: React.FC<{
           'px-3 py-1.5 rounded-lg text-sm font-medium transition-all',
           selectedRarity === null
             ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
-            : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+            : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
         )}
       >
         All Cards

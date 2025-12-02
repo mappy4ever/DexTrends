@@ -125,7 +125,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
             </h2>
             <FaCrown className="text-3xl text-amber-500 animate-pulse" />
           </div>
-          <p className="text-xl text-stone-600 dark:text-stone-400">
+          <p className="text-xl text-stone-600 dark:text-stone-300">
             The strongest trainers of each Alolan island, guardians of the Z-Crystals
           </p>
         </div>
@@ -224,7 +224,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
                     <div className="relative">
                       <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-amber-100/50 to-pink-100/50 dark:from-amber-900/30 dark:to-pink-900/30">
                         <div>
-                          <div className="text-xs text-stone-600 dark:text-stone-400">Totem Pokemon</div>
+                          <div className="text-xs text-stone-600 dark:text-stone-300">Totem Pokemon</div>
                           <div className="text-sm font-bold text-stone-800 dark:text-white">{kahuna.totemPokemon.split('/')[0]}</div>
                         </div>
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-pink-400 p-1">
@@ -250,7 +250,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
                           className="mt-3 pt-3 border-t border-stone-200/30 dark:border-stone-700/30"
                         >
                           <div className="text-center">
-                            <span className="text-xs text-stone-600 dark:text-stone-400">Signature Pokemon</span>
+                            <span className="text-xs text-stone-600 dark:text-stone-300">Signature Pokemon</span>
                             <div className="text-sm font-bold text-amber-600 dark:text-amber-400">
                               {kahuna.signature}
                             </div>
@@ -280,7 +280,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
             <BsLightningFill className="text-2xl text-yellow-500" />
             <h3 className="text-lg font-bold text-stone-800 dark:text-white">About Island Trials</h3>
           </div>
-          <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+          <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-4">
             In the Alola region, instead of traditional Gyms, trainers undertake Island Trials. 
             Each trial is overseen by a Trial Captain and culminates in a battle against a powerful Totem Pokémon. 
             After completing all trials on an island, trainers face the Island Kahuna in a Grand Trial to earn a Z-Crystal.

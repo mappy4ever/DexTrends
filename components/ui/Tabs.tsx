@@ -122,10 +122,10 @@ export function TabList({
 
   // Inactive tab styles per variant
   const inactiveStyles = {
-    pill: 'text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200',
-    underline: 'text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 border-b-2 border-transparent -mb-px',
-    solid: 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800',
-    ghost: 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800',
+    pill: 'text-stone-600 dark:text-stone-300 hover:text-stone-800 dark:hover:text-stone-200',
+    underline: 'text-stone-500 dark:text-stone-300 hover:text-stone-700 dark:hover:text-stone-200 border-b-2 border-transparent -mb-px',
+    solid: 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800',
+    ghost: 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800',
   };
 
   // Tab border radius per variant

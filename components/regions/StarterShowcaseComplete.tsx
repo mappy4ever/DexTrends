@@ -190,7 +190,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
-          <p className="text-stone-600 dark:text-stone-400">Loading starter Pokemon...</p>
+          <p className="text-stone-600 dark:text-stone-300">Loading starter Pokemon...</p>
         </div>
       </div>
     );
@@ -219,7 +219,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
           <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 via-amber-600 to-amber-600 bg-clip-text text-transparent mb-3">
             Choose Your Partner
           </h2>
-          <p className="text-lg text-stone-600 dark:text-stone-400">
+          <p className="text-lg text-stone-600 dark:text-stone-300">
             Select your starter and explore their evolution journey
           </p>
         </div>
@@ -362,7 +362,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
               <h3 className="text-2xl font-bold text-stone-800 dark:text-white mb-2">
                 Evolution Journey
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 Watch your {starters[selectedStarter]} grow stronger through each evolution
               </p>
             </div>
@@ -382,7 +382,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
               {currentChain.stage2 && (
                 <div className="hidden md:flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xs text-stone-600 dark:text-stone-400 mb-2">
+                    <div className="text-xs text-stone-600 dark:text-stone-300 mb-2">
                       Level {currentChain.stage2.evolutionLevel}
                     </div>
                     <motion.div
@@ -410,7 +410,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
               {currentChain.stage3 && (
                 <div className="hidden md:flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xs text-stone-600 dark:text-stone-400 mb-2">
+                    <div className="text-xs text-stone-600 dark:text-stone-300 mb-2">
                       Level {currentChain.stage3.evolutionLevel}
                     </div>
                     <motion.div
@@ -571,7 +571,7 @@ const EvolutionCard: React.FC<{
 
             {/* Total Stats */}
             <div className="mt-3 text-center">
-              <span className="text-xs text-stone-600 dark:text-stone-400">Total: </span>
+              <span className="text-xs text-stone-600 dark:text-stone-300">Total: </span>
               <span className="text-sm font-bold text-stone-800 dark:text-white">{pokemon.stats.total}</span>
             </div>
           </div>

@@ -198,7 +198,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                                 {game.names.join(' & ')}
                               </h4>
                               
-                              <div className="flex flex-wrap items-center gap-4 text-sm text-stone-600 dark:text-stone-400">
+                              <div className="flex flex-wrap items-center gap-4 text-sm text-stone-600 dark:text-stone-300">
                                 <div className="flex items-center gap-1">
                                   <BsController />
                                   <span>{game.platform}</span>
@@ -219,7 +219,7 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                                 <motion.p
                                   initial={{ opacity: 0, height: 0 }}
                                   animate={{ opacity: 1, height: 'auto' }}
-                                  className="mt-3 text-sm text-stone-600 dark:text-stone-400"
+                                  className="mt-3 text-sm text-stone-600 dark:text-stone-300"
                                 >
                                   {game.description}
                                 </motion.p>
@@ -279,19 +279,19 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
             <div className="text-3xl font-bold text-pokemon-red">{totalYears}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Years of Pokémon</div>
+            <div className="text-sm text-stone-600 dark:text-stone-300">Years of Pokémon</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-pokemon-blue">{allGames.filter(g => g.type === 'main').length}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Main Games</div>
+            <div className="text-sm text-stone-600 dark:text-stone-300">Main Games</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-pokemon-yellow">{allGames.filter(g => g.type === 'spinoff').length}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Major Spin-offs</div>
+            <div className="text-sm text-stone-600 dark:text-stone-300">Major Spin-offs</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-pokemon-green">{Object.keys(gamesByYear).length}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Release Years</div>
+            <div className="text-sm text-stone-600 dark:text-stone-300">Release Years</div>
           </div>
         </div>
       </motion.div>

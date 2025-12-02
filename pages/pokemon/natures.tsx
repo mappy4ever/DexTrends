@@ -134,7 +134,7 @@ const NaturesPage: NextPage = () => {
         <h3 className="text-lg font-bold text-stone-800 dark:text-white mb-4 text-center">
           Nature Chart Matrix
         </h3>
-        <p className="text-sm text-stone-500 dark:text-stone-400 mb-6 text-center">
+        <p className="text-sm text-stone-500 dark:text-stone-300 mb-6 text-center">
           Row = Increased Stat (+10%) | Column = Decreased Stat (-10%)
         </p>
 
@@ -142,7 +142,7 @@ const NaturesPage: NextPage = () => {
           <table className="w-full">
             <thead>
               <tr>
-                <th className="p-2 text-xs font-medium text-stone-500 dark:text-stone-400">
+                <th className="p-2 text-xs font-medium text-stone-500 dark:text-stone-300">
                   +↓ / -→
                 </th>
                 {statOrder.map(stat => (
@@ -238,7 +238,7 @@ const NaturesPage: NextPage = () => {
               <h3 className="font-semibold text-stone-800 dark:text-white mb-1">
                 How Natures Work
               </h3>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 Each nature increases one stat by 10% and decreases another by 10%.
                 Five neutral natures (Hardy, Docile, Serious, Bashful, Quirky) have no effect.
                 Natures do not affect HP.
@@ -255,7 +255,7 @@ const NaturesPage: NextPage = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {Object.entries(COMPETITIVE_NATURES).map(([role, natures]) => (
               <div key={role} className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-3">
-                <div className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-2 capitalize">
+                <div className="text-xs font-medium text-stone-500 dark:text-stone-300 mb-2 capitalize">
                   {role.replace(/([A-Z])/g, ' $1').trim()}
                 </div>
                 <div className="space-y-1">
@@ -326,7 +326,7 @@ const NaturesPage: NextPage = () => {
                 'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
                 viewMode === 'cards'
                   ? 'bg-white dark:bg-stone-700 shadow-sm'
-                  : 'text-stone-500 dark:text-stone-400'
+                  : 'text-stone-500 dark:text-stone-300'
               )}
             >
               Cards
@@ -337,7 +337,7 @@ const NaturesPage: NextPage = () => {
                 'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
                 viewMode === 'chart'
                   ? 'bg-white dark:bg-stone-700 shadow-sm'
-                  : 'text-stone-500 dark:text-stone-400'
+                  : 'text-stone-500 dark:text-stone-300'
               )}
             >
               Chart
@@ -380,22 +380,22 @@ const NaturesPage: NextPage = () => {
                   {/* Stat Changes */}
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-stone-500 dark:text-stone-400 w-16">Increase:</span>
+                      <span className="text-xs text-stone-500 dark:text-stone-300 w-16">Increase:</span>
                       {renderStatChange(nature.increasedStat, true)}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-stone-500 dark:text-stone-400 w-16">Decrease:</span>
+                      <span className="text-xs text-stone-500 dark:text-stone-300 w-16">Decrease:</span>
                       {renderStatChange(nature.decreasedStat, false)}
                     </div>
                   </div>
 
                   {/* Flavor */}
-                  <div className="text-xs text-stone-500 dark:text-stone-400 mb-3">
+                  <div className="text-xs text-stone-500 dark:text-stone-300 mb-3">
                     {nature.flavor}
                   </div>
 
                   {/* Description */}
-                  <p className="text-sm text-stone-600 dark:text-stone-400">
+                  <p className="text-sm text-stone-600 dark:text-stone-300">
                     {nature.description}
                   </p>
                 </Container>
@@ -411,7 +411,7 @@ const NaturesPage: NextPage = () => {
             <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-2">
               No natures found
             </h3>
-            <p className="text-stone-500 dark:text-stone-400">
+            <p className="text-stone-500 dark:text-stone-300">
               Try adjusting your search or filter criteria
             </p>
           </Container>
@@ -431,7 +431,7 @@ const NaturesPage: NextPage = () => {
                 )}>
                   {stat}
                 </span>
-                <span className="text-xs text-stone-500 dark:text-stone-400">
+                <span className="text-xs text-stone-500 dark:text-stone-300">
                   {stat === 'Sp. Atk' ? 'Special Attack' :
                    stat === 'Sp. Def' ? 'Special Defense' : stat}
                 </span>

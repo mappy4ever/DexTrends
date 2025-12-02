@@ -241,7 +241,7 @@ const EvolutionGuidePage: NextPage = () => {
             <FaCrown className="text-amber-500" />
             Eevee: The Evolution Pokemon
           </h3>
-          <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+          <p className="text-sm text-stone-600 dark:text-stone-300 mb-4">
             Eevee has the most branching evolutions of any Pokemon, showcasing many different evolution methods.
           </p>
 
@@ -280,7 +280,7 @@ const EvolutionGuidePage: NextPage = () => {
                   <span className="text-xs font-medium text-stone-800 dark:text-white block">
                     {evo.name}
                   </span>
-                  <span className="text-[10px] text-stone-500 dark:text-stone-400">
+                  <span className="text-[10px] text-stone-500 dark:text-stone-300">
                     {evo.method}
                   </span>
                 </motion.div>
@@ -325,7 +325,7 @@ const EvolutionGuidePage: NextPage = () => {
                     <h3 className="font-bold text-stone-800 dark:text-white">
                       {method.name}
                     </h3>
-                    <p className="text-sm text-stone-500 dark:text-stone-400 line-clamp-1">
+                    <p className="text-sm text-stone-500 dark:text-stone-300 line-clamp-1">
                       {method.description}
                     </p>
                   </div>
@@ -349,7 +349,7 @@ const EvolutionGuidePage: NextPage = () => {
                     >
                       <div className="px-4 pb-4 sm:px-6 sm:pb-6 space-y-4">
                         {/* Full Description */}
-                        <p className="text-stone-600 dark:text-stone-400">
+                        <p className="text-stone-600 dark:text-stone-300">
                           {method.description}
                         </p>
 
@@ -372,7 +372,7 @@ const EvolutionGuidePage: NextPage = () => {
                                         alt={ex.from}
                                         className="w-12 h-12 mx-auto"
                                       />
-                                      <span className="text-xs text-stone-600 dark:text-stone-400">
+                                      <span className="text-xs text-stone-600 dark:text-stone-300">
                                         {ex.from}
                                       </span>
                                     </div>
@@ -385,7 +385,7 @@ const EvolutionGuidePage: NextPage = () => {
                                         alt={ex.to}
                                         className="w-12 h-12 mx-auto"
                                       />
-                                      <span className="text-xs text-stone-600 dark:text-stone-400">
+                                      <span className="text-xs text-stone-600 dark:text-stone-300">
                                         {ex.to}
                                       </span>
                                     </div>
@@ -406,7 +406,7 @@ const EvolutionGuidePage: NextPage = () => {
                           </h4>
                           <ul className="space-y-1">
                             {method.tips.map((tip, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-stone-600 dark:text-stone-400">
+                              <li key={i} className="flex items-start gap-2 text-sm text-stone-600 dark:text-stone-300">
                                 <span className="text-amber-500 mt-1">•</span>
                                 {tip}
                               </li>
@@ -429,7 +429,7 @@ const EvolutionGuidePage: NextPage = () => {
             <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-2">
               No evolution methods found
             </h3>
-            <p className="text-stone-500 dark:text-stone-400">
+            <p className="text-stone-500 dark:text-stone-300">
               Try a different search term
             </p>
           </Container>
@@ -446,7 +446,7 @@ const EvolutionGuidePage: NextPage = () => {
               <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
                 Cancel Evolution
               </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 Press B during evolution animation to cancel. Some Pokemon benefit from staying unevolved longer to learn moves earlier.
               </p>
             </div>
@@ -454,7 +454,7 @@ const EvolutionGuidePage: NextPage = () => {
               <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
                 Everstone
               </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 Pokemon holding an Everstone won't evolve. Useful for keeping a pre-evolution or for breeding natures.
               </p>
             </div>
@@ -462,7 +462,7 @@ const EvolutionGuidePage: NextPage = () => {
               <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
                 Regional Variants
               </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 Some Pokemon have regional forms that evolve differently. Check the specific region's requirements.
               </p>
             </div>
@@ -470,7 +470,7 @@ const EvolutionGuidePage: NextPage = () => {
               <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
                 Mega Evolution & Dynamax
               </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 These are temporary battle transformations, not permanent evolutions. They require special items.
               </p>
             </div>

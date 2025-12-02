@@ -106,7 +106,7 @@ export const StarterDetails: React.FC<StarterDetailsProps> = ({
                       {idx === 1 && <span className="text-xs text-amber-500">Hidden</span>}
                     </p>
                     {idx === 1 && starter.hiddenAbility && (
-                      <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+                      <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">
                         {starter.hiddenAbility.split(' - ')[1]}
                       </p>
                     )}

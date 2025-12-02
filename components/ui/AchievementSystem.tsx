@@ -423,7 +423,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
             <h3 className="text-xl font-semibold text-stone-900 dark:text-white capitalize">
               {category} Achievements
             </h3>
-            <span className="text-sm text-stone-500 dark:text-stone-400">
+            <span className="text-sm text-stone-500 dark:text-stone-300">
               ({(categoryAchievements as Achievement[]).filter((a: Achievement) => unlockedAchievements.includes(a.id)).length}/{(categoryAchievements as Achievement[]).length})
             </span>
           </div>
@@ -449,7 +449,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
                     </div>
                     
                     <div className="flex-1">
-                      <h4 className={`font-bold text-lg ${isUnlocked ? '' : 'text-stone-500 dark:text-stone-400'}`}>
+                      <h4 className={`font-bold text-lg ${isUnlocked ? '' : 'text-stone-500 dark:text-stone-300'}`}>
                         {achievement.title}
                       </h4>
                       <p className={`text-sm ${isUnlocked ? '' : 'text-stone-400 dark:text-stone-500'}`}>
@@ -507,7 +507,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
                 <div className="text-lg font-bold text-stone-900 dark:text-white">
                   {unlockedCount}/{categoryAchievements.length}
                 </div>
-                <div className="text-sm text-stone-600 dark:text-stone-400 capitalize">{category}</div>
+                <div className="text-sm text-stone-600 dark:text-stone-300 capitalize">{category}</div>
                 <div className="text-xs text-stone-500 dark:text-stone-500">{percentage}%</div>
               </div>
             );

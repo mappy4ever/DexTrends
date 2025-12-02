@@ -133,7 +133,7 @@ function MobileFilterDrawer({
                   'px-3 py-2 rounded-lg text-sm font-semibold transition-all border',
                   rarityFilter === value
                     ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
-                    : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400'
+                    : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300'
                 )}
               >
                 {label}
@@ -152,7 +152,7 @@ function MobileFilterDrawer({
                 'px-3 py-2 rounded-lg text-sm font-semibold transition-all border',
                 typeFilter === 'all'
                   ? 'bg-gradient-to-r from-amber-100 to-pink-100 dark:from-amber-900/30 dark:to-pink-900/30 border-amber-400/50 text-amber-700 dark:text-amber-300'
-                  : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400'
+                  : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300'
               )}
             >
               All Types
@@ -183,7 +183,7 @@ function MobileFilterDrawer({
           {activeFilterCount > 0 && (
             <button
               onClick={onClearFilters}
-              className="w-full py-3 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-medium hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
+              className="w-full py-3 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
             >
               Clear All Filters
             </button>
@@ -447,13 +447,13 @@ const PocketMode: NextPage = () => {
             </button>
             <button
               onClick={() => router.push('/pocketmode/deckbuilder')}
-              className="px-4 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-amber-600 rounded-full transition-colors"
+              className="px-4 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-amber-600 rounded-full transition-colors"
             >
               Deck Builder
             </button>
             <button
               onClick={() => router.push('/pocketmode/packs')}
-              className="px-4 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-amber-600 rounded-full transition-colors"
+              className="px-4 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-amber-600 rounded-full transition-colors"
             >
               Packs
             </button>
@@ -507,7 +507,7 @@ const PocketMode: NextPage = () => {
                       'px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all',
                       rarityFilter === value
                         ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50 text-yellow-700 dark:text-yellow-300'
-                        : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:border-amber-400/50'
+                        : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:border-amber-400/50'
                     )}
                   >
                     {label}
@@ -594,7 +594,7 @@ const PocketMode: NextPage = () => {
           ) : (
             <>
               <div className="text-center mb-3">
-                <p className="text-xs text-stone-500 dark:text-stone-400">
+                <p className="text-xs text-stone-500 dark:text-stone-300">
                   Showing {filteredPokemon.length} {filteredPokemon.length === 1 ? 'card' : 'cards'}
                   {(search || typeFilter !== 'all' || rarityFilter !== 'all') && ' (filtered)'}
                 </p>

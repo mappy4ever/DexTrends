@@ -130,13 +130,13 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                       rounded: 'full',
                     })} p-2 rounded-full hover:scale-110 transition-transform`}
                   >
-                    <FiX className="w-5 h-5 text-stone-600 dark:text-stone-400" />
+                    <FiX className="w-5 h-5 text-stone-600 dark:text-stone-300" />
                   </button>
                 </div>
 
                 {/* Format Selection */}
                 <div className="space-y-3 mb-6">
-                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-3">
+                  <p className="text-sm text-stone-600 dark:text-stone-300 mb-3">
                     Select export format for {data.length} records
                   </p>
                   
@@ -161,7 +161,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                               })
                         }`}
                       >
-                        <div className={selectedFormat === format ? 'text-white' : 'text-stone-600 dark:text-stone-400'}>
+                        <div className={selectedFormat === format ? 'text-white' : 'text-stone-600 dark:text-stone-300'}>
                           {info.icon}
                         </div>
                         <div className="flex-1 text-left">

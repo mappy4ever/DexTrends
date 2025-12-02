@@ -102,7 +102,7 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
         <h3 className="font-bold capitalize text-base sm:text-lg mb-2">{node.name}</h3>
         
         {/* Pokemon Number */}
-        <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400">#{String(node.id).padStart(3, '0')}</p>
+        <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-300">#{String(node.id).padStart(3, '0')}</p>
       </Container>
     </motion.div>
   </Link>
@@ -300,11 +300,11 @@ const EvolutionArrow = ({
       transition={{ delay: 0.2 }}
     >
       {evolutionText && (
-        <div className="text-xs text-stone-600 dark:text-stone-400 font-medium text-center max-w-[120px]">
+        <div className="text-xs text-stone-600 dark:text-stone-300 font-medium text-center max-w-[120px]">
           {evolutionText}
         </div>
       )}
-      <div className="text-stone-500 dark:text-stone-400">
+      <div className="text-stone-500 dark:text-stone-300">
         {horizontal ? (
           <FaArrowRight className="w-6 h-6" />
         ) : (
@@ -572,7 +572,7 @@ interface EvolutionChainNode {
             <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center mx-auto">
               <FaDna className="w-8 h-8 text-stone-400" />
             </div>
-            <p className="text-stone-500 dark:text-stone-400">
+            <p className="text-stone-500 dark:text-stone-300">
               No evolution data available for this Pokémon.
             </p>
           </div>
@@ -601,10 +601,10 @@ interface EvolutionChainNode {
                   <FaDna className="w-5 h-5 text-amber-400" />
                 </div>
                 <div>
-                  <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+                  <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                     Evolution Chain
                   </h2>
-                  <p className="text-xs text-stone-500 dark:text-stone-400">
+                  <p className="text-xs text-stone-500 dark:text-stone-300">
                     This Pokémon's evolutionary line
                   </p>
                 </div>
@@ -741,7 +741,7 @@ interface EvolutionChainNode {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
                   <FaLevelUpAlt className="w-5 h-5 text-amber-400" />
                 </div>
-                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Evolution Methods
                 </h3>
               </div>
@@ -756,7 +756,7 @@ interface EvolutionChainNode {
                       <FaExchangeAlt className="w-4 h-4 text-amber-400" />
                       <span className="font-semibold text-sm">Evolution Requirements</span>
                     </div>
-                    <div className="text-sm text-stone-600 dark:text-stone-400">
+                    <div className="text-sm text-stone-600 dark:text-stone-300">
                       {(() => {
                         const allMethods = evolutionStages.flatMap(stage => 
                           stage.flatMap(node => node.evolutionDetails || [])
@@ -788,7 +788,7 @@ interface EvolutionChainNode {
                       <GiStoneSphere className="w-4 h-4 text-green-400" />
                       <span className="font-semibold text-sm">Special Items</span>
                     </div>
-                    <div className="text-sm text-stone-600 dark:text-stone-400">
+                    <div className="text-sm text-stone-600 dark:text-stone-300">
                       {(() => {
                         const allItems = evolutionStages.flatMap(stage => 
                           stage.flatMap(node => 
@@ -831,7 +831,7 @@ interface EvolutionChainNode {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
                   <HiSparkles className="w-5 h-5 text-amber-400" />
                 </div>
-                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Mega Evolution
                 </h3>
               </div>
@@ -927,7 +927,7 @@ interface EvolutionChainNode {
                 </div>
               </div>
               
-              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-400">
+              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-300">
                 <p>Mega Evolution is a temporary transformation that requires a Mega Stone and a strong bond with the trainer.</p>
               </div>
             </div>
@@ -952,7 +952,7 @@ interface EvolutionChainNode {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center">
                   <HiSparkles className="w-5 h-5 text-red-400" />
                 </div>
-                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Gigantamax Form
                 </h3>
               </div>
@@ -1044,7 +1044,7 @@ interface EvolutionChainNode {
                 </div>
               </div>
               
-              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-400">
+              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-300">
                 <p>Gigantamax is a phenomenon that makes Pokemon giant with a special appearance. It requires a Pokemon with the Gigantamax Factor.</p>
               </div>
             </div>

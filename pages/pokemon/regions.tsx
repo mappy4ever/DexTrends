@@ -268,19 +268,19 @@ const RegionsPage: NextPage = () => {
             <div className="flex flex-wrap justify-center gap-8 md:gap-16">
               <div className="text-center">
                 <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">9</div>
-                <div className="text-sm text-stone-600 dark:text-stone-400">Regions</div>
+                <div className="text-sm text-stone-600 dark:text-stone-300">Regions</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">1000+</div>
-                <div className="text-sm text-stone-600 dark:text-stone-400">Pokémon</div>
+                <div className="text-sm text-stone-600 dark:text-stone-300">Pokémon</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">27</div>
-                <div className="text-sm text-stone-600 dark:text-stone-400">Starters</div>
+                <div className="text-sm text-stone-600 dark:text-stone-300">Starters</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">9</div>
-                <div className="text-sm text-stone-600 dark:text-stone-400">Generations</div>
+                <div className="text-sm text-stone-600 dark:text-stone-300">Generations</div>
               </div>
             </div>
           </div>
@@ -301,7 +301,7 @@ const RegionsPage: NextPage = () => {
             <h2 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-4">
               Ready to explore?
             </h2>
-            <p className="text-stone-600 dark:text-stone-400 mb-6">
+            <p className="text-stone-600 dark:text-stone-300 mb-6">
               Click on any region to discover its unique Pokémon, landmarks, and stories.
             </p>
             <Link

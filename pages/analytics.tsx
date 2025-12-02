@@ -133,7 +133,7 @@ const MetricCard: React.FC<{ metric: AnalyticsMetric; icon: React.ReactNode }> =
           <div className="text-amber-600 dark:text-amber-400">
             {icon}
           </div>
-          <p className="text-sm font-medium text-stone-600 dark:text-stone-400">
+          <p className="text-sm font-medium text-stone-600 dark:text-stone-300">
             {metric.label}
           </p>
         </div>
@@ -194,7 +194,7 @@ const PopularItemsList: React.FC<{
               {item.name}
             </p>
             {item.type && (
-              <p className="text-xs text-stone-600 dark:text-stone-400">
+              <p className="text-xs text-stone-600 dark:text-stone-300">
                 {item.type}
               </p>
             )}
@@ -204,7 +204,7 @@ const PopularItemsList: React.FC<{
               {item.count.toLocaleString()}
             </p>
             {showPercentage && item.percentage && (
-              <p className="text-xs text-stone-600 dark:text-stone-400">
+              <p className="text-xs text-stone-600 dark:text-stone-300">
                 {item.percentage}%
               </p>
             )}
@@ -439,7 +439,7 @@ const Analytics: NextPage = () => {
                 <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-2">
                   No Analytics Data Available
                 </h2>
-                <p className="text-stone-600 dark:text-stone-400">
+                <p className="text-stone-600 dark:text-stone-300">
                   Analytics data is not available at the moment. Please try again later.
                 </p>
               </div>
@@ -470,7 +470,7 @@ const Analytics: NextPage = () => {
                 <h1 className="text-3xl font-bold text-stone-900 dark:text-white mb-2">
                   Analytics Dashboard
                 </h1>
-                <p className="text-stone-600 dark:text-stone-400">
+                <p className="text-stone-600 dark:text-stone-300">
                   Comprehensive insights into DexTrends usage and performance
                 </p>
               </div>

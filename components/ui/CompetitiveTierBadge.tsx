@@ -99,7 +99,7 @@ export const CompetitiveTierBadge: React.FC<CompetitiveTierBadgeProps> = ({
       </span>
       {showValue && (
         <span className={cn(
-          'text-stone-500 dark:text-stone-400',
+          'text-stone-500 dark:text-stone-300',
           size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : size === 'md' ? 'text-sm' : 'text-base'
         )}>
           ({rating.toFixed(1)})
@@ -130,7 +130,7 @@ export const TierLegend: React.FC<{ className?: string }> = ({ className = '' })
           )}>
             {tier}
           </span>
-          <span className="text-xs text-stone-600 dark:text-stone-400">
+          <span className="text-xs text-stone-600 dark:text-stone-300">
             {rating} • {description}
           </span>
         </div>

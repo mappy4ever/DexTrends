@@ -402,7 +402,7 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
               hp: '', attackDamage: '', artist: '', year: '', hasPrice: false,
               sortBy: 'name', sortOrder: 'asc'
             })}
-            className="px-4 py-2 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200"
+            className="px-4 py-2 text-stone-600 dark:text-stone-300 hover:text-stone-800 dark:hover:text-stone-200"
           >
             Clear All
           </button>
@@ -445,7 +445,7 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
                     <div className="font-medium truncate" title={card.name}>
                       {card.name}
                     </div>
-                    <div className="text-stone-500 dark:text-stone-400 truncate">
+                    <div className="text-stone-500 dark:text-stone-300 truncate">
                       {card.set?.name}
                     </div>
                     <CompactPriceIndicator
@@ -458,7 +458,7 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
               ))}
             </div>
             {results.length > 24 && (
-              <p className="text-center text-sm text-stone-500 dark:text-stone-400 mt-4">
+              <p className="text-center text-sm text-stone-500 dark:text-stone-300 mt-4">
                 Showing first 24 results. Close this modal to see all {results.length} results.
               </p>
             )}

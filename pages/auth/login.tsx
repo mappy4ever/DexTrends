@@ -290,7 +290,7 @@ const AuthPage: NextPage = () => {
                       minLength={8}
                     />
                     {mode === 'signup' && (
-                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-300">
                         Min 8 chars with uppercase, lowercase, and number
                       </p>
                     )}
@@ -405,7 +405,7 @@ const AuthPage: NextPage = () => {
               )}
 
               {/* Mode Toggle */}
-              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-400">
+              <div className="mt-6 text-center text-sm text-stone-600 dark:text-stone-300">
                 {mode === 'login' && (
                   <>
                     Don't have an account?{' '}

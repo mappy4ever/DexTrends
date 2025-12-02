@@ -179,7 +179,7 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
             "text-stone-900 dark:text-white"
           )}>
             {pokemon.name}
-            <span className="text-stone-500 dark:text-stone-400 ml-2">
+            <span className="text-stone-500 dark:text-stone-300 ml-2">
               #{String(pokemon.id).padStart(3, '0')}
             </span>
           </h1>

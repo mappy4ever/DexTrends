@@ -96,7 +96,7 @@ function FeatureCard({ href, icon, iconBg, title, description, badge }: FeatureC
           <h3 className="text-sm sm:text-base md:text-xl font-semibold text-stone-800 dark:text-white mb-1 sm:mb-2">
             {title}
           </h3>
-          <p className="text-stone-500 dark:text-stone-400 text-xs sm:text-sm hidden sm:block">
+          <p className="text-stone-500 dark:text-stone-300 text-xs sm:text-sm hidden sm:block">
             {description}
           </p>
         </div>
@@ -297,7 +297,7 @@ const HomePage: NextPage = () => {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <h2 className={cn(TYPOGRAPHY.heading.h5, 'mb-1')}>Quick Access</h2>
-                  <p className="text-sm text-stone-500 dark:text-stone-400">Jump to popular tools</p>
+                  <p className="text-sm text-stone-500 dark:text-stone-300">Jump to popular tools</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_LINKS.map((link) => (
@@ -342,7 +342,7 @@ const HomePage: NextPage = () => {
                     <Link
                       key={name}
                       href={`/pokedex/${[6, 25, 282, 448][i]}`}
-                      className="flex items-center justify-between text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                      className="flex items-center justify-between text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
                     >
                       <span>#{i + 1} {name}</span>
                       <span className="text-xs text-green-600 dark:text-green-400">↑</span>
@@ -358,10 +358,10 @@ const HomePage: NextPage = () => {
                   <h3 className={cn(TYPOGRAPHY.heading.h5)}>Latest Sets</h3>
                 </div>
                 <div className="space-y-2">
-                  <Link href="/tcgexpansions" className="block text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                  <Link href="/tcgexpansions" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                     Scarlet & Violet Series
                   </Link>
-                  <Link href="/pocketmode/expansions" className="block text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                  <Link href="/pocketmode/expansions" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                     TCG Pocket: Genetic Apex
                   </Link>
                   <Link href="/tcgexpansions" className="text-amber-600 dark:text-amber-400 text-sm font-medium inline-flex items-center gap-1 mt-2">
@@ -377,13 +377,13 @@ const HomePage: NextPage = () => {
                   <h3 className={cn(TYPOGRAPHY.heading.h5)}>Explore</h3>
                 </div>
                 <div className="space-y-2">
-                  <Link href="/pokemon/starters" className="block text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                  <Link href="/pokemon/starters" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                     Starter Pokémon
                   </Link>
-                  <Link href="/pokemon/games" className="block text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                  <Link href="/pokemon/games" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                     Pokémon Games
                   </Link>
-                  <Link href="/battle-simulator" className="block text-sm text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                  <Link href="/battle-simulator" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                     Battle Simulator
                   </Link>
                 </div>
@@ -394,7 +394,7 @@ const HomePage: NextPage = () => {
           {/* Footer */}
           <footer className="border-t border-stone-100 dark:border-stone-800 mt-8 md:mt-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-              <div className="text-center text-stone-500 dark:text-stone-400">
+              <div className="text-center text-stone-500 dark:text-stone-300">
                 <p className="mb-2 text-sm">© 2024 DexTrends. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
                 <p className="text-xs">
                   Data provided by{' '}

@@ -296,7 +296,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                 {selectedCards.length} cards selected
               </h3>
               {selectionAnalytics && (
-                <p className="text-sm text-stone-600 dark:text-stone-400">
+                <p className="text-sm text-stone-600 dark:text-stone-300">
                   Total value: ${selectionAnalytics.totalValue.toFixed(2)}
                 </p>
               )}
@@ -426,7 +426,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
         {activeTab === 'actions' && (
           <div className="space-y-6">
             {selectedCards.length === 0 ? (
-              <div className="text-center py-8 text-stone-500 dark:text-stone-400">
+              <div className="text-center py-8 text-stone-500 dark:text-stone-300">
                 Select some cards to see available actions
               </div>
             ) : (
@@ -572,7 +572,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
         {activeTab === 'analytics' && (
           <div className="space-y-6">
             {!selectionAnalytics ? (
-              <div className="text-center py-8 text-stone-500 dark:text-stone-400">
+              <div className="text-center py-8 text-stone-500 dark:text-stone-300">
                 Select some cards to see analytics
               </div>
             ) : (
@@ -581,19 +581,19 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-blue-600">{selectionAnalytics.count}</div>
-                    <div className="text-sm text-stone-600 dark:text-stone-400">Cards Selected</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-300">Cards Selected</div>
                   </div>
                   <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-green-600">${selectionAnalytics.totalValue.toFixed(2)}</div>
-                    <div className="text-sm text-stone-600 dark:text-stone-400">Total Value</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-300">Total Value</div>
                   </div>
                   <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-purple-600">${selectionAnalytics.averageValue.toFixed(2)}</div>
-                    <div className="text-sm text-stone-600 dark:text-stone-400">Average Value</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-300">Average Value</div>
                   </div>
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-yellow-600">{Object.keys(selectionAnalytics.sets).length}</div>
-                    <div className="text-sm text-stone-600 dark:text-stone-400">Different Sets</div>
+                    <div className="text-sm text-stone-600 dark:text-stone-300">Different Sets</div>
                   </div>
                 </div>
 
@@ -605,7 +605,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                     <div className="space-y-2">
                       {Object.entries(selectionAnalytics.rarities).map(([rarity, count]) => (
                         <div key={rarity} className="flex justify-between items-center">
-                          <span className="text-sm text-stone-600 dark:text-stone-400">{rarity}</span>
+                          <span className="text-sm text-stone-600 dark:text-stone-300">{rarity}</span>
                           <div className="flex items-center space-x-2">
                             <div className="w-20 h-2 bg-stone-200 dark:bg-stone-600 rounded-full overflow-hidden">
                               <div 
@@ -631,7 +631,7 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                         .slice(0, 10)
                         .map(([setName, count]) => (
                         <div key={setName} className="flex justify-between items-center">
-                          <span className="text-sm text-stone-600 dark:text-stone-400 truncate">{setName}</span>
+                          <span className="text-sm text-stone-600 dark:text-stone-300 truncate">{setName}</span>
                           <span className="text-sm font-medium text-stone-900 dark:text-white ml-2">
                             {count}
                           </span>
@@ -646,14 +646,14 @@ const BulkCardOperations: React.FC<BulkCardOperationsProps> = ({
                   <h5 className="font-semibold text-stone-900 dark:text-white mb-3">Notable Cards</h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-stone-600 dark:text-stone-400">Oldest Card</div>
+                      <div className="text-sm text-stone-600 dark:text-stone-300">Oldest Card</div>
                       <div className="font-medium text-stone-900 dark:text-white">
                         {selectionAnalytics.oldestCard?.name} 
                         ({new Date(selectionAnalytics.oldestCard?.set?.releaseDate || '1999-01-01').getFullYear()})
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-stone-600 dark:text-stone-400">Newest Card</div>
+                      <div className="text-sm text-stone-600 dark:text-stone-300">Newest Card</div>
                       <div className="font-medium text-stone-900 dark:text-white">
                         {selectionAnalytics.newestCard?.name} 
                         ({new Date(selectionAnalytics.newestCard?.set?.releaseDate || '1999-01-01').getFullYear()})

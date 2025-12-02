@@ -166,7 +166,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           <p
             id={`${props.id}-description`}
             className={cn(
-              'mt-0.5 text-stone-600 dark:text-stone-400',
+              'mt-0.5 text-stone-600 dark:text-stone-300',
               sizeConfig[size].description
             )}
           >
@@ -228,7 +228,7 @@ export const CheckboxGroup: React.FC<{
             {label}
           </h3>
           {description && (
-            <p className="mt-0.5 text-sm text-stone-600 dark:text-stone-400">
+            <p className="mt-0.5 text-sm text-stone-600 dark:text-stone-300">
               {description}
             </p>
           )}

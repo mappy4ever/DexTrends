@@ -22,7 +22,7 @@ function SimpleLineChart({ data, title, height = 200 }: SimpleLineChartProps) {
   if (!data || data.length === 0) {
     return (
       <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4 h-48 flex items-center justify-center">
-        <p className="text-stone-500 dark:text-stone-400">No price data available</p>
+        <p className="text-stone-500 dark:text-stone-300">No price data available</p>
       </div>
     );
   }
@@ -37,7 +37,7 @@ function SimpleLineChart({ data, title, height = 200 }: SimpleLineChartProps) {
 
       <div className="relative" style={{ height: `${height}px` }}>
         {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-stone-500 dark:text-stone-400 pr-2">
+        <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-stone-500 dark:text-stone-300 pr-2">
           <span>${maxPrice.toFixed(2)}</span>
           <span>${((maxPrice + minPrice) / 2).toFixed(2)}</span>
           <span>${minPrice.toFixed(2)}</span>
@@ -85,7 +85,7 @@ function SimpleLineChart({ data, title, height = 200 }: SimpleLineChartProps) {
         </div>
         
         {/* X-axis labels */}
-        <div className="ml-12 flex justify-between text-xs text-stone-500 dark:text-stone-400 mt-1">
+        <div className="ml-12 flex justify-between text-xs text-stone-500 dark:text-stone-300 mt-1">
           <span>{data[0]?.collected_at?.split('T')[0]}</span>
           <span>{data[data.length - 1]?.collected_at?.split('T')[0]}</span>
         </div>
@@ -114,7 +114,7 @@ function PriceStats({ stats, loading }: PriceStatsProps) {
   if (!stats) {
     return (
       <div className="bg-white dark:bg-stone-800 rounded-lg p-4 shadow-lg">
-        <p className="text-stone-500 dark:text-stone-400">No statistics available</p>
+        <p className="text-stone-500 dark:text-stone-300">No statistics available</p>
       </div>
     );
   }
@@ -123,7 +123,7 @@ function PriceStats({ stats, loading }: PriceStatsProps) {
     switch (direction) {
       case 'UP': return 'text-green-600 dark:text-green-400';
       case 'DOWN': return 'text-red-600 dark:text-red-400';
-      default: return 'text-stone-600 dark:text-stone-400';
+      default: return 'text-stone-600 dark:text-stone-300';
     }
   };
 
@@ -141,28 +141,28 @@ function PriceStats({ stats, loading }: PriceStatsProps) {
       
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <p className="text-sm text-stone-500 dark:text-stone-400">Current Price</p>
+          <p className="text-sm text-stone-500 dark:text-stone-300">Current Price</p>
           <p className="text-lg font-bold text-stone-900 dark:text-white">
             ${parseFloat(String(stats.current_price || 0)).toFixed(2)}
           </p>
         </div>
 
         <div>
-          <p className="text-sm text-stone-500 dark:text-stone-400">Average Price</p>
+          <p className="text-sm text-stone-500 dark:text-stone-300">Average Price</p>
           <p className="text-lg font-bold text-stone-900 dark:text-white">
             ${parseFloat(String(stats.avg_price || 0)).toFixed(2)}
           </p>
         </div>
 
         <div>
-          <p className="text-sm text-stone-500 dark:text-stone-400">Price Range</p>
+          <p className="text-sm text-stone-500 dark:text-stone-300">Price Range</p>
           <p className="text-sm text-stone-900 dark:text-white">
             ${parseFloat(String(stats.min_price || 0)).toFixed(2)} - ${parseFloat(String(stats.max_price || 0)).toFixed(2)}
           </p>
         </div>
 
         <div>
-          <p className="text-sm text-stone-500 dark:text-stone-400">Trend</p>
+          <p className="text-sm text-stone-500 dark:text-stone-300">Trend</p>
           <p className={`text-sm font-medium flex items-center ${getTrendColor(stats.trend_direction)}`}>
             {getTrendIcon(stats.trend_direction)} {stats.trend_direction}
           </p>
@@ -171,7 +171,7 @@ function PriceStats({ stats, loading }: PriceStatsProps) {
 
       {stats.price_volatility && (
         <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-600">
-          <p className="text-sm text-stone-500 dark:text-stone-400">Volatility</p>
+          <p className="text-sm text-stone-500 dark:text-stone-300">Volatility</p>
           <p className="text-sm text-stone-900 dark:text-white">
             ${parseFloat(String(stats.price_volatility)).toFixed(2)}
           </p>
@@ -237,7 +237,7 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
           <h2 className="text-xl font-bold text-stone-900 dark:text-white">
             Price History: {cardName}
           </h2>
-          <p className="text-sm text-stone-500 dark:text-stone-400 capitalize">
+          <p className="text-sm text-stone-500 dark:text-stone-300 capitalize">
             {variantType} variant
           </p>
         </div>
@@ -318,14 +318,14 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
                     <td className="px-4 py-3 text-sm text-stone-900 dark:text-white font-medium">
                       ${parseFloat(String(row.price_market || 0)).toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-stone-500 dark:text-stone-400">
+                    <td className="px-4 py-3 text-sm text-stone-500 dark:text-stone-300">
                       ${parseFloat(String(row.price_low || 0)).toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-stone-500 dark:text-stone-400">
+                    <td className="px-4 py-3 text-sm text-stone-500 dark:text-stone-300">
                       ${parseFloat(String(row.price_high || 0)).toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      <span className="text-stone-500 dark:text-stone-400">
+                      <span className="text-stone-500 dark:text-stone-300">
                         -
                       </span>
                     </td>

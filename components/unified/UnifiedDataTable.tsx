@@ -255,7 +255,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
           </div>
           
           {/* Secondary Info */}
-          <div className="flex flex-wrap gap-2 text-sm text-stone-600 dark:text-stone-400">
+          <div className="flex flex-wrap gap-2 text-sm text-stone-600 dark:text-stone-300">
             {secondaryCols.map(col => (
               <div key={String(col.key)} className="flex items-center gap-1">
                 <span className="font-medium">{col.mobileLabel || col.label}:</span>
@@ -286,7 +286,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
                   <div className="space-y-2 text-sm">
                     {detailCols.map(col => (
                       <div key={String(col.key)} className="flex justify-between">
-                        <span className="font-medium text-stone-600 dark:text-stone-400">
+                        <span className="font-medium text-stone-600 dark:text-stone-300">
                           {col.label}:
                         </span>
                         {col.renderCell ? (
@@ -431,7 +431,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
       
       {/* Results count */}
       {searchTerm && (
-        <div className="mb-4 text-sm text-stone-600 dark:text-stone-400">
+        <div className="mb-4 text-sm text-stone-600 dark:text-stone-300">
           Found {sortedData.length} results
         </div>
       )}
@@ -504,7 +504,7 @@ export function UnifiedDataTable<T extends Record<string, any>>({
                 <tr>
                   <td 
                     colSpan={columns.length + (expandable ? 1 : 0)} 
-                    className="text-center py-8 text-stone-500 dark:text-stone-400"
+                    className="text-center py-8 text-stone-500 dark:text-stone-300"
                   >
                     No data found
                   </td>

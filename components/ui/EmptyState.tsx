@@ -380,7 +380,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
           className={cn(
-            'text-stone-500 dark:text-stone-400 max-w-md mb-6',
+            'text-stone-500 dark:text-stone-300 max-w-md mb-6',
             styles.description
           )}
         >

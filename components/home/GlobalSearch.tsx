@@ -203,7 +203,7 @@ export const GlobalSearch: React.FC = () => {
             {/* Recent Searches - proper touch targets */}
             {searchTerm.length < 2 && recentSearches.length > 0 && (
               <div className="p-3 border-b border-stone-100 dark:border-stone-700/50">
-                <h3 className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-2 px-1">Recent</h3>
+                <h3 className="text-xs font-medium text-stone-500 dark:text-stone-300 mb-2 px-1">Recent</h3>
                 <div className="space-y-1">
                   {recentSearches.map((search, idx) => (
                     <button
@@ -256,7 +256,7 @@ export const GlobalSearch: React.FC = () => {
                           {result.name}
                         </p>
                         {result.description && (
-                          <p className="text-sm text-stone-600 dark:text-stone-400 truncate">
+                          <p className="text-sm text-stone-600 dark:text-stone-300 truncate">
                             {result.description}
                           </p>
                         )}
@@ -277,7 +277,7 @@ export const GlobalSearch: React.FC = () => {
             {/* No Results */}
             {searchTerm.length >= 2 && results.length === 0 && !loading && (
               <div className="p-8 text-center">
-                <p className="text-stone-500 dark:text-stone-400">No results found for "{searchTerm}"</p>
+                <p className="text-stone-500 dark:text-stone-300">No results found for "{searchTerm}"</p>
               </div>
             )}
           </motion.div>

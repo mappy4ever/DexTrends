@@ -461,7 +461,7 @@ const ShinyGalleryPage: NextPage = () => {
         </div>
 
         {/* Results Count */}
-        <div className="text-sm text-stone-500 dark:text-stone-400 mb-4">
+        <div className="text-sm text-stone-500 dark:text-stone-300 mb-4">
           Showing {paginatedPokemon.length} of {filteredPokemon.length} Pokemon
         </div>
 
@@ -493,7 +493,7 @@ const ShinyGalleryPage: NextPage = () => {
             <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-2">
               No Pokemon found
             </h3>
-            <p className="text-stone-500 dark:text-stone-400">
+            <p className="text-stone-500 dark:text-stone-300">
               Try adjusting your search criteria
             </p>
           </Container>
@@ -559,7 +559,7 @@ const ShinyGalleryPage: NextPage = () => {
                         className="w-40 h-40 mx-auto object-contain"
                       />
                     </div>
-                    <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
+                    <span className="text-sm font-medium text-stone-600 dark:text-stone-300">
                       Normal Form
                     </span>
                   </div>

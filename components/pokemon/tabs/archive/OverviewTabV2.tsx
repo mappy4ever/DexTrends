@@ -88,7 +88,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaTag className="text-sm" /> Species
               </span>
               <span className="font-semibold">
@@ -96,7 +96,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaHome className="text-sm" /> Habitat
               </span>
               <span className="font-semibold capitalize">
@@ -104,7 +104,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaGem className="text-sm" /> Shape
               </span>
               <span className="font-semibold capitalize">
@@ -112,7 +112,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaPalette className="text-sm" /> Color
               </span>
               <span className="font-semibold capitalize">
@@ -132,13 +132,13 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaHeart className="text-sm text-pink-500" /> Base Happiness
               </span>
               <span className="font-semibold">{species.base_happiness || 0}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaChartLine className="text-sm" /> Growth Rate
               </span>
               <span className="font-semibold capitalize">
@@ -146,7 +146,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaEgg className="text-sm" /> Egg Groups
               </span>
               <span className="font-semibold capitalize text-right">
@@ -154,7 +154,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaClock className="text-sm" /> Hatch Time
               </span>
               <span className="font-semibold">{species.hatch_counter || 0} cycles</span>
@@ -172,13 +172,13 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaMedal className="text-sm" /> Base EXP
               </span>
               <span className="font-semibold">{pokemon.base_experience || '—'}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaRunning className="text-sm" /> Flee Rate
               </span>
               <span className="font-semibold">
@@ -186,7 +186,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaCalculator className="text-sm" /> Base Stats
               </span>
               <span className="font-semibold">
@@ -194,7 +194,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-stone-600 dark:text-stone-300 flex items-center gap-2">
                 <FaTrophy className="text-sm" /> EV Yield
               </span>
               <span className="font-semibold">
@@ -268,7 +268,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
                 
                 {/* Visual indicator for ability slot */}
                 <div className="mt-4 flex items-center gap-2">
-                  <div className="text-xs text-stone-600 dark:text-stone-400">
+                  <div className="text-xs text-stone-600 dark:text-stone-300">
                     Slot {abilityInfo.slot}
                   </div>
                   {abilityInfo.is_hidden && (

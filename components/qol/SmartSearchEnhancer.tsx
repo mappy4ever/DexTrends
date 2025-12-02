@@ -280,7 +280,7 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
             <div className="border-t border-stone-200 dark:border-stone-700">
               <button
                 onClick={clearSearchHistory}
-                className="w-full px-4 py-2 text-left text-sm text-stone-500 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors">
+                className="w-full px-4 py-2 text-left text-sm text-stone-500 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors">
 
                 🗑️ Clear search history
               </button>

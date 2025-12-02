@@ -199,7 +199,7 @@ export const ContainerDescription: React.FC<{
   className?: string;
 }> = ({ children, className }) => {
   return (
-    <p className={cn('text-sm sm:text-base text-stone-600 dark:text-stone-400 mt-1', className)}>
+    <p className={cn('text-sm sm:text-base text-stone-600 dark:text-stone-300 mt-1', className)}>
       {children}
     </p>
   );

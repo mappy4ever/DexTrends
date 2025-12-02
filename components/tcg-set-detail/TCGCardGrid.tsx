@@ -249,7 +249,7 @@ export const TCGCardGrid: React.FC<TCGCardGridProps> = ({
                     <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-1">
                       {card.name}
                     </h3>
-                    <div className="flex items-center gap-4 text-sm text-stone-600 dark:text-stone-400">
+                    <div className="flex items-center gap-4 text-sm text-stone-600 dark:text-stone-300">
                       <span>#{card.number}</span>
                       {card.rarity && (
                         <span className="flex items-center gap-1">
@@ -285,7 +285,7 @@ export const TCGCardGrid: React.FC<TCGCardGridProps> = ({
                       className={`p-2 rounded-full ${
                         isFavorite(card) 
                           ? 'bg-red-500 text-white' 
-                          : 'bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-400'
+                          : 'bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300'
                       }`}
                     >
                       <svg className="w-5 h-5" fill={isFavorite(card) ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">

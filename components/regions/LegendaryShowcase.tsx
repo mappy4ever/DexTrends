@@ -683,7 +683,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
               <FaCrown className="text-yellow-500" />
               {regionLegendaries.title}
             </h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               {regionLegendaries.description}
             </p>
           </div>
@@ -724,7 +724,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
                   <div className="p-3">
                     <div className="text-center mb-2">
                       <h3 className="font-bold text-sm mb-1">{legendary.name}</h3>
-                      <p className="text-xs text-stone-500 dark:text-stone-400">
+                      <p className="text-xs text-stone-500 dark:text-stone-300">
                         {legendary.title}
                       </p>
                     </div>
@@ -738,7 +738,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
 
                     {/* Location */}
                     <div className="text-center">
-                      <p className="text-xs text-stone-600 dark:text-stone-400 truncate">
+                      <p className="text-xs text-stone-600 dark:text-stone-300 truncate">
                         {legendary.location}
                       </p>
                     </div>

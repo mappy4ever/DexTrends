@@ -727,7 +727,7 @@ const Expansions: NextPage = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
                 <div className="text-2xl font-bold text-amber-600">{packOpenCount}</div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">Packs Opened</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Packs Opened</div>
               </div>
               <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
                 <div className="text-2xl font-bold text-yellow-500">
@@ -735,7 +735,7 @@ const Expansions: NextPage = () => {
                     acc + pack.cards.filter(c => c.rarity?.includes('★') || c.rarity?.includes('◊◊◊')).length, 0
                   )}
                 </div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">Rare Cards</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Rare Cards</div>
               </div>
               <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
                 <div className="text-2xl font-bold text-blue-500">
@@ -743,7 +743,7 @@ const Expansions: NextPage = () => {
                     acc + pack.cards.filter(c => c.rarity?.includes('★') || c.rarity?.includes('◊◊◊')).length, 0
                   ) / packOpenCount) * 100) / 100) : 0}
                 </div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">Avg Rares/Pack</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Avg Rares/Pack</div>
               </div>
               <div className="bg-stone-50 dark:bg-stone-800 rounded-xl p-4 text-center">
                 <div className="text-2xl font-bold text-green-500">
@@ -752,7 +752,7 @@ const Expansions: NextPage = () => {
                     return acc;
                   }, {} as Record<string, boolean>)).length}
                 </div>
-                <div className="text-sm text-stone-500 dark:text-stone-400">Packs Tried</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Packs Tried</div>
               </div>
             </div>
           </Container>
@@ -771,7 +771,7 @@ const Expansions: NextPage = () => {
                 </svg>
               </div>
               <h4 className="text-base font-semibold mb-2 text-stone-900 dark:text-white">Authentic Experience</h4>
-              <p className="text-stone-500 dark:text-stone-400 text-sm">Realistic pack opening with authentic rarity rates</p>
+              <p className="text-stone-500 dark:text-stone-300 text-sm">Realistic pack opening with authentic rarity rates</p>
             </div>
             <div className="group p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-all">
               <div className="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
@@ -780,7 +780,7 @@ const Expansions: NextPage = () => {
                 </svg>
               </div>
               <h4 className="text-base font-semibold mb-2 text-stone-900 dark:text-white">Free & Fun</h4>
-              <p className="text-stone-500 dark:text-stone-400 text-sm">Open unlimited packs without any cost</p>
+              <p className="text-stone-500 dark:text-stone-300 text-sm">Open unlimited packs without any cost</p>
             </div>
             <div className="group p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-all">
               <div className="w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
@@ -789,7 +789,7 @@ const Expansions: NextPage = () => {
                 </svg>
               </div>
               <h4 className="text-base font-semibold mb-2 text-stone-900 dark:text-white">Beautiful Animations</h4>
-              <p className="text-stone-500 dark:text-stone-400 text-sm">Smooth animations and satisfying card reveals</p>
+              <p className="text-stone-500 dark:text-stone-300 text-sm">Smooth animations and satisfying card reveals</p>
             </div>
           </div>
         </Container>

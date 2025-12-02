@@ -302,7 +302,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
               <h3 className="text-lg font-bold text-stone-800 dark:text-stone-200">
                 Rarity Filter
               </h3>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 {selectedRarity ? (
                   <span className="flex items-center gap-2">
                     <span className={cn(
@@ -325,7 +325,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
           
           <svg
             className={cn(
-              'w-5 h-5 text-stone-600 dark:text-stone-400 transition-transform duration-300',
+              'w-5 h-5 text-stone-600 dark:text-stone-300 transition-transform duration-300',
               isExpanded && 'rotate-180'
             )}
             fill="none" 
@@ -424,27 +424,27 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-yellow-400 to-amber-500 flex items-center justify-center text-white font-bold">GS</span>
-                  <span className="text-stone-600 dark:text-stone-400">Gold Star</span>
+                  <span className="text-stone-600 dark:text-stone-300">Gold Star</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-stone-300 to-stone-400 flex items-center justify-center text-white font-bold">SS</span>
-                  <span className="text-stone-600 dark:text-stone-400">Silver Star</span>
+                  <span className="text-stone-600 dark:text-stone-300">Silver Star</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-300 to-cyan-400 flex items-center justify-center text-white font-bold">D</span>
-                  <span className="text-stone-600 dark:text-stone-400">Diamond</span>
+                  <span className="text-stone-600 dark:text-stone-300">Diamond</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 flex items-center justify-center text-white font-bold">SR</span>
-                  <span className="text-stone-600 dark:text-stone-400">Secret Rare</span>
+                  <span className="text-stone-600 dark:text-stone-300">Secret Rare</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-red-400 to-amber-400 flex items-center justify-center text-white font-bold">RR</span>
-                  <span className="text-stone-600 dark:text-stone-400">Rainbow Rare</span>
+                  <span className="text-stone-600 dark:text-stone-300">Rainbow Rare</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-8 h-8 rounded-lg bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center text-white font-bold">UR</span>
-                  <span className="text-stone-600 dark:text-stone-400">Ultra Rare</span>
+                  <span className="text-stone-600 dark:text-stone-300">Ultra Rare</span>
                 </div>
               </div>
             </Container>

@@ -279,7 +279,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             {/* Info */}
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-stone-500 dark:text-stone-400">
+                <span className="text-stone-500 dark:text-stone-300">
                   #{String(id).padStart(3, '0')}
                 </span>
                 {showBadges && specialStatus && (
@@ -397,6 +397,8 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             'border border-stone-200 dark:border-stone-700/50',
             'shadow-sm',
             'p-3',
+            'h-full w-full', // Fill container
+            'flex flex-col', // Enable flex layout
             'transition-shadow duration-150',
             className
           )}
@@ -406,25 +408,25 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             #{String(id).padStart(3, '0')}
           </span>
 
-          {/* Pokemon Image - centered, prominent */}
-          <div className="flex justify-center pt-5 pb-2">
+          {/* Pokemon Image - centered, prominent, takes available space */}
+          <div className="flex-1 flex items-center justify-center pt-4 min-h-0">
             <Image
               src={imageSrc}
               alt={name}
-              width={width || 80}
-              height={height || 80}
+              width={width || 72}
+              height={height || 72}
               className="object-contain drop-shadow-sm"
               onError={() => setImgError(true)}
             />
           </div>
 
           {/* Name - bottom, centered, bold */}
-          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-sm leading-tight">
+          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-sm leading-tight mt-auto">
             {name}
           </h3>
 
           {/* Type pills - small, centered below name */}
-          <div className="flex justify-center gap-1 mt-1.5">
+          <div className="flex justify-center gap-1 mt-1 pb-0.5">
             {typeNames.map(type => (
               <TypeBadge key={type} type={type} size="xs" />
             ))}

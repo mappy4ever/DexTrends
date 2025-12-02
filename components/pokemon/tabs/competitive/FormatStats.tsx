@@ -49,7 +49,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
                 <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
               </div>
-              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                 Competitive Formats
               </h2>
             </div>
@@ -89,7 +89,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                 {/* Section Header */}
                 <div className="text-center p-4 bg-gradient-to-r from-amber-50 to-amber-50 dark:from-amber-900/10 dark:to-amber-900/10 rounded-xl">
                   <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-2">Standard Format Statistics</h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400">Current generation competitive play</p>
+                  <p className="text-sm text-stone-600 dark:text-stone-300">Current generation competitive play</p>
                 </div>
 
                 {/* Usage and Win Rate Stats */}
@@ -103,7 +103,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     <div className="space-y-3">
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-stone-600 dark:text-stone-400">Usage Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-300">Usage Rate</span>
                           <span className="font-bold text-sm">{usageStats.usage.toFixed(1)}%</span>
                         </div>
                         <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
@@ -117,7 +117,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                       </div>
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-stone-600 dark:text-stone-400">Win Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-300">Win Rate</span>
                           <span className="font-bold text-sm">{usageStats.winRate.toFixed(1)}%</span>
                         </div>
                         <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
@@ -146,7 +146,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     <div className="space-y-3">
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-stone-600 dark:text-stone-400">Usage Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-300">Usage Rate</span>
                           <span className="font-bold text-sm">{FORMAT_STATS.standard.doubles.usage}%</span>
                         </div>
                         <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
@@ -160,7 +160,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                       </div>
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-stone-600 dark:text-stone-400">Win Rate</span>
+                          <span className="text-xs text-stone-600 dark:text-stone-300">Win Rate</span>
                           <span className="font-bold text-sm">{FORMAT_STATS.standard.doubles.winRate}%</span>
                         </div>
                         <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
@@ -190,20 +190,20 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
-                      <p className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">Current Tiers</p>
+                      <p className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-300">Current Tiers</p>
                     </div>
                     <div className="text-center">
                       {competitiveTiers ? (
                         <div className="flex items-center justify-center gap-4">
                           {competitiveTiers.singles_tier && (
                             <div className="flex flex-col items-center">
-                              <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">Singles</p>
+                              <p className="text-xs text-stone-500 dark:text-stone-300 mb-1">Singles</p>
                               <TierBadge tier={competitiveTiers.singles_tier} size="md" />
                             </div>
                           )}
                           {competitiveTiers.doubles_tier && (
                             <div className="flex flex-col items-center">
-                              <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">Doubles</p>
+                              <p className="text-xs text-stone-500 dark:text-stone-300 mb-1">Doubles</p>
                               <TierBadge tier={competitiveTiers.doubles_tier} format="doubles" size="md" />
                             </div>
                           )}
@@ -214,7 +214,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                       ) : (
                         <div>
                           <TierBadge tier={estimatedTier} size="md" />
-                          <p className="text-xs text-stone-500 dark:text-stone-400 italic mt-2">
+                          <p className="text-xs text-stone-500 dark:text-stone-300 italic mt-2">
                             Estimated based on stats
                           </p>
                         </div>
@@ -226,7 +226,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
-                      <h4 className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">VGC Eligibility</h4>
+                      <h4 className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-300">VGC Eligibility</h4>
                     </div>
                     <div className="flex items-center justify-center gap-2 text-center">
                       {formatEligibility.vgc ? (
@@ -247,7 +247,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <MdCatchingPokemon className="w-5 h-5 text-yellow-400" />
-                      <h4 className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">Battle Stadium</h4>
+                      <h4 className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-300">Battle Stadium</h4>
                     </div>
                     <div className="flex items-center justify-center gap-2 text-center">
                       {formatEligibility.battleStadium ? (
@@ -272,7 +272,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                 {/* Section Header */}
                 <div className="text-center p-4 bg-gradient-to-r from-teal-50 to-green-50 dark:from-teal-900/10 dark:to-green-900/10 rounded-xl">
                   <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-2">National Dex Format</h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400">All generations with legacy mechanics</p>
+                  <p className="text-sm text-stone-600 dark:text-stone-300">All generations with legacy mechanics</p>
                 </div>
 
                 {/* National Dex Stats */}
@@ -284,7 +284,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-stone-600 dark:text-stone-400">Usage Rate</span>
+                        <span className="text-xs text-stone-600 dark:text-stone-300">Usage Rate</span>
                         <span className="font-bold text-sm">{FORMAT_STATS.nationalDex.usage}%</span>
                       </div>
                       <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
@@ -298,7 +298,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     </div>
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-stone-600 dark:text-stone-400">Win Rate</span>
+                        <span className="text-xs text-stone-600 dark:text-stone-300">Win Rate</span>
                         <span className="font-bold text-sm">{FORMAT_STATS.nationalDex.winRate}%</span>
                       </div>
                       <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
@@ -324,14 +324,14 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                 <div className="text-center p-6 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-3">
                     <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
-                    <p className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-400">National Dex Tier</p>
+                    <p className="text-sm font-medium uppercase tracking-wider text-stone-500 dark:text-stone-300">National Dex Tier</p>
                   </div>
                   {competitiveTiers?.national_dex_tier ? (
                     <TierBadge tier={competitiveTiers.national_dex_tier} format="national-dex" size="lg" />
                   ) : (
                     <div>
                       <TierBadge tier={estimatedTier} format="national-dex" size="lg" />
-                      <p className="text-sm text-stone-500 dark:text-stone-400 italic mt-2">
+                      <p className="text-sm text-stone-500 dark:text-stone-300 italic mt-2">
                         Estimated tier - actual may vary
                       </p>
                     </div>
@@ -350,7 +350,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                 {/* Section Header */}
                 <div className="text-center p-4 bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-900/10 dark:to-pink-900/10 rounded-xl">
                   <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-2">Alternative Formats</h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400">Special rulesets and niche metagames</p>
+                  <p className="text-sm text-stone-600 dark:text-stone-300">Special rulesets and niche metagames</p>
                 </div>
 
                 <div className="space-y-4">
@@ -361,12 +361,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     {formatEligibility.littleCup ? (
                       <>
                         <FaCheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-stone-600 dark:text-stone-400">Little Cup eligible (Level 5, unevolved)</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-300">Little Cup eligible (Level 5, unevolved)</span>
                       </>
                     ) : (
                       <>
                         <FaTimesCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-stone-600 dark:text-stone-400">
+                        <span className="text-sm text-stone-600 dark:text-stone-300">
                           {species.is_baby
                             ? 'Baby Pokémon are banned in Little Cup'
                             : species.evolves_from_species
@@ -390,7 +390,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                 {/* Monotype */}
                 <div className="p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <h4 className="font-semibold text-sm mb-2">Monotype</h4>
-                  <p className="text-sm text-stone-600 dark:text-stone-400">
+                  <p className="text-sm text-stone-600 dark:text-stone-300">
                     Good on {pokemon.types?.map(t => t.type.name).join(' and ') || 'Unknown type'} teams
                   </p>
                   <div className="mt-2 text-xs">
@@ -411,12 +411,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     {formatEligibility.nfe ? (
                       <>
                         <FaCheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-stone-600 dark:text-stone-400">Eligible for NFE format</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-300">Eligible for NFE format</span>
                       </>
                     ) : (
                       <>
                         <FaTimesCircle className="w-4 h-4 text-red-500" />
-                        <span className="text-sm text-stone-600 dark:text-stone-400">Fully evolved - not NFE eligible</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-300">Fully evolved - not NFE eligible</span>
                       </>
                     )}
                   </div>
@@ -432,12 +432,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     {baseStatTotal >= 500 ? (
                       <>
                         <FaCheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-stone-600 dark:text-stone-400">Viable in 1v1 format</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-300">Viable in 1v1 format</span>
                       </>
                     ) : (
                       <>
                         <FaExclamationTriangle className="w-4 h-4 text-yellow-500" />
-                        <span className="text-sm text-stone-600 dark:text-stone-400">May struggle in 1v1</span>
+                        <span className="text-sm text-stone-600 dark:text-stone-300">May struggle in 1v1</span>
                       </>
                     )}
                   </div>

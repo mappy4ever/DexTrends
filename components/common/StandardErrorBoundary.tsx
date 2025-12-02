@@ -17,7 +17,7 @@ function ErrorFallback({ error, resetErrorBoundary, componentName }: ErrorFallba
         <h3 className="text-lg font-semibold mb-2 text-stone-900 dark:text-stone-100">
           Something went wrong{componentName ? ` in ${componentName}` : ''}
         </h3>
-        <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+        <p className="text-sm text-stone-600 dark:text-stone-300 mb-4">
           We encountered an unexpected error. Please try again.
         </p>
         <Button 

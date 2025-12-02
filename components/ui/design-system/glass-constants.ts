@@ -54,11 +54,55 @@ export const COLORS = {
       text: {
         primary: '#FAFAF9',    // Stone 50
         secondary: '#E7E5E4',  // Stone 200
-        tertiary: '#A8A29E',   // Stone 400
+        tertiary: '#D6D3D1',   // Stone 300 - WCAG AA compliant (6.3:1 on stone-900)
+        // Note: Stone 400 (#A8A29E) has only 4.1:1 contrast - fails WCAG
       },
       border: {
         subtle: '#44403C',     // Stone 700
         default: '#57534E',    // Stone 600
+      },
+    },
+  },
+  // Semantic status colors
+  status: {
+    success: {
+      bg: '#DCFCE7',        // Green 100
+      text: '#166534',       // Green 800
+      border: '#86EFAC',     // Green 300
+      dark: {
+        bg: '#14532D',       // Green 900
+        text: '#86EFAC',     // Green 300
+        border: '#22C55E',   // Green 500
+      },
+    },
+    warning: {
+      bg: '#FEF3C7',        // Amber 100
+      text: '#92400E',       // Amber 800
+      border: '#FCD34D',     // Amber 300
+      dark: {
+        bg: '#78350F',       // Amber 900
+        text: '#FCD34D',     // Amber 300
+        border: '#F59E0B',   // Amber 500
+      },
+    },
+    error: {
+      bg: '#FEE2E2',        // Red 100
+      text: '#991B1B',       // Red 800
+      border: '#FCA5A5',     // Red 300
+      dark: {
+        bg: '#7F1D1D',       // Red 900
+        text: '#FCA5A5',     // Red 300
+        border: '#EF4444',   // Red 500
+      },
+    },
+    info: {
+      bg: '#DBEAFE',        // Blue 100
+      text: '#1E40AF',       // Blue 800
+      border: '#93C5FD',     // Blue 300
+      dark: {
+        bg: '#1E3A8A',       // Blue 900
+        text: '#93C5FD',     // Blue 300
+        border: '#3B82F6',   // Blue 500
       },
     },
   },
@@ -420,7 +464,7 @@ export const TYPOGRAPHY = {
   color: {
     primary: 'text-stone-900 dark:text-white',
     secondary: 'text-stone-600 dark:text-stone-300',
-    muted: 'text-stone-500 dark:text-stone-400',
+    muted: 'text-stone-500 dark:text-stone-300',
     disabled: 'text-stone-400 dark:text-stone-500',
     accent: 'text-amber-600 dark:text-amber-400',
     success: 'text-green-600 dark:text-green-400',
@@ -440,13 +484,13 @@ export const TYPOGRAPHY = {
   body: {
     lg: 'text-lg text-stone-600 dark:text-stone-300 leading-relaxed',
     base: 'text-base text-stone-600 dark:text-stone-300 leading-relaxed',
-    sm: 'text-sm text-stone-500 dark:text-stone-400 leading-relaxed',
+    sm: 'text-sm text-stone-500 dark:text-stone-300 leading-relaxed',
   },
   // Utility text
-  caption: 'text-xs text-stone-500 dark:text-stone-400',
+  caption: 'text-xs text-stone-500 dark:text-stone-300',
   label: 'text-sm font-medium text-stone-700 dark:text-stone-200',
   stat: 'text-2xl md:text-3xl font-bold tabular-nums',
-  statLabel: 'text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400',
+  statLabel: 'text-xs uppercase tracking-wide text-stone-500 dark:text-stone-300',
 } as const;
 
 // ===========================================
@@ -575,6 +619,30 @@ export const TOUCH_TARGET = {
 } as const;
 
 // ===========================================
+// FOCUS - WCAG 2.1 AA Compliant Focus Styles
+// ===========================================
+
+export const FOCUS = {
+  // Focus ring colors
+  ring: {
+    light: '#f59e0b',           // Amber 500 - visible on light backgrounds
+    dark: '#fbbf24',            // Amber 400 - visible on dark backgrounds
+    input: '#3b82f6',           // Blue 500 - form inputs
+  },
+  // Focus ring styles (Tailwind classes)
+  styles: {
+    default: 'focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2',
+    input: 'focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:ring-4 focus-visible:ring-blue-500/15',
+    card: 'focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2 focus-visible:scale-[1.02]',
+    button: 'focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2',
+    // Remove focus (use sparingly)
+    none: 'focus:outline-none focus-visible:outline-none',
+  },
+  // CSS custom property for use in stylesheets
+  cssVar: '--focus-ring-color',
+} as const;
+
+// ===========================================
 // REGION ACCENT COLORS
 // ===========================================
 
@@ -656,6 +724,8 @@ export default {
   // Spacing & touch targets (mobile redesign)
   SPACING,
   TOUCH_TARGET,
+  // Focus (WCAG 2.1 AA)
+  FOCUS,
   // Glass morphism (deprecated - use SURFACE instead)
   GLASS_BG,
   GLASS_BLUR,

@@ -57,7 +57,7 @@ class CardsErrorBoundary extends Component<
           <div className="p-6 text-center">
             <div className="text-6xl mb-4">⚠️</div>
             <p className="text-red-500 font-semibold mb-2">Error loading cards</p>
-            <p className="text-stone-600 dark:text-stone-400 text-sm">
+            <p className="text-stone-600 dark:text-stone-300 text-sm">
               {this.state.error?.message || 'Something went wrong while loading the cards'}
             </p>
             <button
@@ -145,7 +145,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
                   <GiCardPlay className="w-5 h-5 text-amber-400" />
                 </div>
-                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Card Gallery
                 </h2>
               </div>
@@ -219,7 +219,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
                     </div>
                     <div>
                       <p className="text-lg font-semibold text-stone-700 dark:text-stone-300">No TCG cards found</p>
-                      <p className="text-sm text-stone-500 dark:text-stone-400">This Pokémon doesn't have any TCG cards yet</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-300">This Pokémon doesn't have any TCG cards yet</p>
                     </div>
                   </motion.div>
                 )
@@ -254,7 +254,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
                     </div>
                     <div>
                       <p className="text-lg font-semibold text-stone-700 dark:text-stone-300">No Pocket cards found</p>
-                      <p className="text-sm text-stone-500 dark:text-stone-400">This Pokémon doesn't have any Pocket cards yet</p>
+                      <p className="text-sm text-stone-500 dark:text-stone-300">This Pokémon doesn't have any Pocket cards yet</p>
                     </div>
                   </motion.div>
                 )
@@ -287,7 +287,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
             <div className="text-3xl font-bold text-stone-800 dark:text-stone-100">
               {validTcgCards.length + validPocketCards.length}
             </div>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+            <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">
               Combined collection
             </p>
           </div>
@@ -309,7 +309,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
             <div className="text-lg font-bold text-stone-800 dark:text-stone-100">
               {cardType === 'tcg' ? 'Varies by set' : 'Check collection'}
             </div>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+            <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">
               Most valuable variant
             </p>
           </div>
@@ -331,7 +331,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
             <div className="text-3xl font-bold text-stone-800 dark:text-stone-100">
               {new Set(validTcgCards?.map(card => card.set?.name).filter(Boolean)).size || 0}
             </div>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+            <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">
               Different TCG sets
             </p>
           </div>

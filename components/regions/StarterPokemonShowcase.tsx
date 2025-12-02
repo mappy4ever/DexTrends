@@ -894,7 +894,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Choose Your Starter</h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               Begin your journey with one of these three Pokémon
             </p>
           </div>
@@ -944,7 +944,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                       {/* Pokemon Info */}
                       <div className="text-center space-y-3">
                         <h3 className="text-2xl font-bold">{starterName}</h3>
-                        <p className="text-sm text-stone-600 dark:text-stone-400">{starter.species}</p>
+                        <p className="text-sm text-stone-600 dark:text-stone-300">{starter.species}</p>
                         
                         {/* Types */}
                         <div className="flex justify-center gap-2">
@@ -1066,7 +1066,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                             {idx === 1 && <span className="text-xs text-amber-500">Hidden</span>}
                           </p>
                           {idx === 1 && starterData[selectedStarter].hiddenAbility && (
-                            <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+                            <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">
                               {starterData[selectedStarter].hiddenAbility.split(' - ')[1]}
                             </p>
                           )}
@@ -1231,7 +1231,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
               <BsController className="text-amber-500" />
               Choosing Your Starter
             </h3>
-            <p className="text-sm text-stone-600 dark:text-stone-400 max-w-2xl">
+            <p className="text-sm text-stone-600 dark:text-stone-300 max-w-2xl">
               Your starter Pokémon will be your first partner on your journey. Consider their type advantages 
               against early gym leaders, their evolution potential, and which one you connect with most!
             </p>

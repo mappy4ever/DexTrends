@@ -663,18 +663,18 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
               <SparklesIcon className="h-6 w-6 mr-2 text-amber-500" />
               Recommendations
             </h2>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+            <p className="text-sm text-stone-600 dark:text-stone-300 mt-1">
               Personalized suggestions based on your collection and interests
             </p>
           </div>
           
           {userProfile && (
             <div className="text-right">
-              <div className="text-sm text-stone-600 dark:text-stone-400">
+              <div className="text-sm text-stone-600 dark:text-stone-300">
                 Activity Level: <span className="font-medium capitalize text-amber-600">{userProfile.activityLevel}</span>
               </div>
               {userProfile.interests.length > 0 && (
-                <div className="text-sm text-stone-600 dark:text-stone-400">
+                <div className="text-sm text-stone-600 dark:text-stone-300">
                   Interests: <span className="font-medium">{userProfile.interests.join(', ')}</span>
                 </div>
               )}
@@ -742,7 +742,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
                       {card.name}
                     </h3>
 
-                    <p className="text-sm text-stone-600 dark:text-stone-400">
+                    <p className="text-sm text-stone-600 dark:text-stone-300">
                       {card.set?.name}
                     </p>
 
@@ -774,7 +774,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
                     {/* Additional info for specific tabs */}
                     {activeTab === 'completion' && card.completion && (
                       <div className="mt-2">
-                        <div className="flex justify-between text-xs text-stone-600 dark:text-stone-400 mb-1">
+                        <div className="flex justify-between text-xs text-stone-600 dark:text-stone-300 mb-1">
                           <span>Set Completion</span>
                           <span>{card.completion}%</span>
                         </div>
@@ -790,7 +790,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
                     {activeTab === 'investment' && card.potential && (
                       <div className="mt-2">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-stone-600 dark:text-stone-400">Potential</span>
+                          <span className="text-stone-600 dark:text-stone-300">Potential</span>
                           <span className="font-medium text-green-600">+{card.potential}%</span>
                         </div>
                         <div className={`text-xs px-2 py-1 rounded-full mt-1 ${
@@ -834,7 +834,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
             <h3 className="text-lg font-medium text-stone-900 dark:text-white mb-2">
               No recommendations yet
             </h3>
-            <p className="text-stone-600 dark:text-stone-400">
+            <p className="text-stone-600 dark:text-stone-300">
               Add some cards to your collection to get personalized recommendations
             </p>
           </div>

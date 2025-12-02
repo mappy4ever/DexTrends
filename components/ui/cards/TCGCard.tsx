@@ -718,7 +718,7 @@ const TCGCard = memo(({
 
           {/* Set and Number Info - Simplified */}
           {(showSet || normalizedCard.number) && (
-            <div className="text-center text-xs text-stone-600 dark:text-stone-400">
+            <div className="text-center text-xs text-stone-600 dark:text-stone-300">
               <div className="flex items-center justify-center gap-2">
                 {showSet && normalizedCard.set && (
                   <span className="font-medium bg-stone-100 dark:bg-stone-700 px-2 py-0.5 rounded">

@@ -169,7 +169,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
           <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
             Collection Tracker
           </h3>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+          <p className="text-sm text-stone-500 dark:text-stone-300 mt-1">
             Track your set completion progress
           </p>
         </div>
@@ -192,7 +192,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
                 "px-3 py-1.5 rounded text-sm font-medium transition-all capitalize",
                 viewMode === mode
                   ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white"
-                  : "text-stone-600 dark:text-stone-400"
+                  : "text-stone-600 dark:text-stone-300"
               )}
             >
               {mode}
@@ -216,7 +216,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
               >
                 {stats.completionPercentage.toFixed(1)}%
               </motion.span>
-              <span className="text-xs text-stone-500 dark:text-stone-400">Complete</span>
+              <span className="text-xs text-stone-500 dark:text-stone-300">Complete</span>
             </div>
           </div>
           
@@ -224,15 +224,15 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
           <div className="mt-4 flex gap-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-green-500">{stats.ownedCount}</p>
-              <p className="text-xs text-stone-500 dark:text-stone-400">Owned</p>
+              <p className="text-xs text-stone-500 dark:text-stone-300">Owned</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-red-500">{stats.missingCount}</p>
-              <p className="text-xs text-stone-500 dark:text-stone-400">Missing</p>
+              <p className="text-xs text-stone-500 dark:text-stone-300">Missing</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-amber-500">{stats.wishlistCount}</p>
-              <p className="text-xs text-stone-500 dark:text-stone-400">Wishlist</p>
+              <p className="text-xs text-stone-500 dark:text-stone-300">Wishlist</p>
             </div>
           </div>
         </div>
@@ -265,7 +265,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
                   <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
                     {rarity}
                   </span>
-                  <span className="text-sm text-stone-600 dark:text-stone-400">
+                  <span className="text-sm text-stone-600 dark:text-stone-300">
                     {data.owned}/{data.total}
                   </span>
                 </div>
@@ -281,7 +281,7 @@ export const SetCompletionTracker: React.FC<SetCompletionTrackerProps> = ({
                 </div>
                 
                 <div className="mt-1 flex justify-between text-xs">
-                  <span className="text-stone-500 dark:text-stone-400">
+                  <span className="text-stone-500 dark:text-stone-300">
                     {percentage.toFixed(0)}% complete
                   </span>
                   {data.owned < data.total && (
@@ -400,14 +400,14 @@ const StatCard: React.FC<{
   gradient: string;
 }> = ({ label, value, subValue, gradient }) => (
   <div className="text-center">
-    <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">{label}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-300 mb-1">{label}</p>
     <p className={cn(
       "text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent",
       gradient
     )}>
       {value}
     </p>
-    <p className="text-xs text-stone-500 dark:text-stone-400">{subValue}</p>
+    <p className="text-xs text-stone-500 dark:text-stone-300">{subValue}</p>
   </div>
 );
 

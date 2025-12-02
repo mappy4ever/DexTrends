@@ -316,7 +316,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           transition={{ duration: 0.3 }}
           className="text-center mb-10 relative"
         >
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-400 inline-flex items-center gap-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-300 inline-flex items-center gap-1">
             Type Advantage Rating
             <button
               onClick={() => setShowRatingInfo(!showRatingInfo)}
@@ -333,8 +333,8 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           <div className="relative">
             {/* Label above */}
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-              <FaShieldAlt className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
+              <FaShieldAlt className="w-3.5 h-3.5 text-stone-500 dark:text-stone-300" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-300">
                 Defense
               </span>
             </div>
@@ -395,8 +395,8 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           <div className="relative">
             {/* Label above */}
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-              <GiSwordWound className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
+              <GiSwordWound className="w-3.5 h-3.5 text-stone-500 dark:text-stone-300" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-300">
                 Offense
               </span>
             </div>
@@ -483,12 +483,12 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             <div className="space-y-3 text-xs">
               <div>
                 <p className="font-semibold mb-1">Defense Rating:</p>
-                <p className="text-stone-600 dark:text-stone-400">Based on type resistances, weaknesses, and immunities. Points are added for resistances and subtracted for weaknesses.</p>
+                <p className="text-stone-600 dark:text-stone-300">Based on type resistances, weaknesses, and immunities. Points are added for resistances and subtracted for weaknesses.</p>
               </div>
               
               <div>
                 <p className="font-semibold mb-1">Offense Rating:</p>
-                <p className="text-stone-600 dark:text-stone-400">Based on type coverage and super effective matchups against other types.</p>
+                <p className="text-stone-600 dark:text-stone-300">Based on type coverage and super effective matchups against other types.</p>
               </div>
               
               <div className="border-t border-stone-200 dark:border-stone-700 pt-3">
@@ -525,7 +525,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
               <span className="text-red-500 font-bold">!</span>
             </div>
-            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-300">
               Weak to ({weaknesses.length} types)
             </h3>
           </div>
@@ -544,7 +544,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
               <span className="text-green-500 font-bold">✓</span>
             </div>
-            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-300">
               Resistant to ({resistances.length} types)
             </h3>
           </div>
@@ -562,7 +562,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           <div className="w-8 h-8 rounded-full bg-stone-500/20 flex items-center justify-center">
             <span className="text-stone-500 font-bold">∅</span>
           </div>
-          <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
+          <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-300">
             Immune to ({immunities.length} types)
           </h3>
         </div>
@@ -572,7 +572,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               <TypeBadge key={matchup.type} matchup={matchup} />
             ))
           ) : (
-            <div className="text-sm text-stone-500 dark:text-stone-400 italic">
+            <div className="text-sm text-stone-500 dark:text-stone-300 italic">
               No immunities
             </div>
           )}
@@ -586,7 +586,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center">
               <span className="text-amber-500 font-bold">★</span>
             </div>
-            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-stone-600 dark:text-stone-300">
               Competitive Tiers
             </h3>
           </div>

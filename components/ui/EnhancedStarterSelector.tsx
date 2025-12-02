@@ -413,7 +413,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
-          <p className="text-stone-600 dark:text-stone-400">Loading starter Pokemon...</p>
+          <p className="text-stone-600 dark:text-stone-300">Loading starter Pokemon...</p>
         </div>
       </div>
     );
@@ -585,7 +585,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                           {starter.name}
                         </h3>
                         {starter.genus && (
-                          <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 font-medium">
+                          <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 font-medium">
                             {starter.genus}
                           </p>
                         )}
@@ -640,7 +640,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
 
                   {/* Key Stats */}
                   <div className="mb-4">
-                    <p className="text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2">
+                    <p className="text-xs font-semibold text-stone-600 dark:text-stone-300 mb-2">
                       Base Stats
                     </p>
                     <div className="space-y-2">
@@ -798,7 +798,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                     {/* Total Stats */}
                     <div className="mt-3 pt-3 border-t border-stone-200/50 dark:border-stone-700/50">
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-semibold text-stone-600 dark:text-stone-400">Total Base Stats</span>
+                        <span className="text-xs font-semibold text-stone-600 dark:text-stone-300">Total Base Stats</span>
                         <span className="text-lg font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                           {starter.stats.total}
                         </span>
@@ -808,7 +808,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
 
                   {/* Evolution Preview */}
                   <div className="mb-4">
-                    <p className="text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2">
+                    <p className="text-xs font-semibold text-stone-600 dark:text-stone-300 mb-2">
                       Evolution Chain
                     </p>
                     <div className="flex items-center justify-center gap-2">
@@ -820,7 +820,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                               </svg>
                               {evo.level && (
-                                <span className="text-[9px] text-stone-500 dark:text-stone-400">
+                                <span className="text-[9px] text-stone-500 dark:text-stone-300">
                                   Lv.{evo.level}
                                 </span>
                               )}
@@ -849,13 +849,13 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                   {/* Physical Info */}
                   <div className="flex justify-around py-3 border-t border-stone-200/50 dark:border-stone-700/50">
                     <div className="text-center">
-                      <p className="text-xs font-semibold text-stone-500 dark:text-stone-400">Height</p>
+                      <p className="text-xs font-semibold text-stone-500 dark:text-stone-300">Height</p>
                       <p className="text-sm font-bold text-stone-700 dark:text-stone-300">
                         {starter.height}m
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs font-semibold text-stone-500 dark:text-stone-400">Weight</p>
+                      <p className="text-xs font-semibold text-stone-500 dark:text-stone-300">Weight</p>
                       <p className="text-sm font-bold text-stone-700 dark:text-stone-300">
                         {starter.weight}kg
                       </p>
@@ -903,7 +903,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                 <div className="space-y-4">
                         {/* Detailed Stats */}
                         <div>
-                          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-3">
+                          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-300 mb-3">
                             Detailed Base Stats {selectedEvolution && `- ${selectedEvolution.name}`}
                           </h4>
                           <div className="space-y-2">
@@ -1042,7 +1042,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                             {/* Total */}
                             <div className="pt-2 mt-2 border-t border-stone-200 dark:border-stone-700">
                               <div className="flex justify-between items-center">
-                                <span className="text-xs font-semibold text-stone-600 dark:text-stone-400">Total</span>
+                                <span className="text-xs font-semibold text-stone-600 dark:text-stone-300">Total</span>
                                 <span className="text-sm font-bold text-stone-900 dark:text-white">{selectedEvolution?.stats?.total || starter.stats.total}</span>
                               </div>
                             </div>
@@ -1051,7 +1051,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                         
                         {/* Abilities Section - Bottom of Left Column */}
                         <div className="mt-6">
-                          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-3">
+                          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-300 mb-3">
                             Abilities
                           </h4>
                           <div className="space-y-2">
@@ -1089,7 +1089,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                         {/* Pokedex Entry */}
                         {starter.description && (
                           <div>
-                            <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-3">
+                            <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-300 mb-3">
                               Pokedex Entry
                             </h4>
                             <div 
@@ -1109,7 +1109,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                         
                         {/* Evolution Line */}
                         <div className="w-full">
-                          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-3">
+                          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-300 mb-3">
                             Complete Evolution Line
                           </h4>
                           <div className="flex items-center justify-between gap-2 p-4">
@@ -1122,7 +1122,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                     </svg>
                                     {evo.level && (
-                                      <span className="text-[10px] text-stone-500 dark:text-stone-400">
+                                      <span className="text-[10px] text-stone-500 dark:text-stone-300">
                                         Lv.{evo.level}
                                       </span>
                                     )}
@@ -1244,7 +1244,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
               <p className="text-lg font-semibold capitalize text-stone-900 dark:text-white">
                 {starters.find(s => s.id === selectedStarter)?.name}
               </p>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 {starters.find(s => s.id === selectedStarter)?.description}
               </p>
             </div>

@@ -132,7 +132,7 @@ const CardDetailPanel: React.FC<{
         onClick={onClose}
         className="absolute top-2 right-2 w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
       >
-        <svg className="w-4 h-4 text-stone-600 dark:text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-4 h-4 text-stone-600 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -161,10 +161,10 @@ const CardDetailPanel: React.FC<{
         {/* Price breakdown */}
         {card.tcgplayer?.prices && (
           <div className="p-3 bg-stone-100/50 dark:bg-stone-800/50 rounded-lg">
-            <p className="text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2">Market Prices</p>
+            <p className="text-xs font-semibold text-stone-600 dark:text-stone-300 mb-2">Market Prices</p>
             {Object.entries(card.tcgplayer.prices).map(([type, prices]: [string, any]) => (
               <div key={type} className="flex justify-between items-center py-1">
-                <span className="text-xs text-stone-600 dark:text-stone-400 capitalize">
+                <span className="text-xs text-stone-600 dark:text-stone-300 capitalize">
                   {type.replace(/([A-Z])/g, ' $1').trim()}
                 </span>
                 <span className="text-sm font-semibold text-stone-900 dark:text-white">
@@ -248,7 +248,7 @@ export const CardShowcaseStrip: React.FC<CardShowcaseStripProps> = ({
           </h2>
           <div className="flex items-center gap-2">
             {/* Card count */}
-            <span className="text-xs text-stone-500 dark:text-stone-400">
+            <span className="text-xs text-stone-500 dark:text-stone-300">
               {activeIndex + 1} / {cards.length}
             </span>
             

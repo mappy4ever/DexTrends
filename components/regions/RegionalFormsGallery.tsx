@@ -341,7 +341,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
               </h2>
               <GiPalmTree className="text-3xl text-green-500" />
             </div>
-            <p className="text-xl text-stone-600 dark:text-stone-400">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               Unique adaptations found only in {region.name}
             </p>
           </div>
@@ -430,7 +430,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
 
                           {/* Description */}
                           {!isFlipped && (
-                            <p className="text-xs text-center text-stone-600 dark:text-stone-400 leading-relaxed">
+                            <p className="text-xs text-center text-stone-600 dark:text-stone-300 leading-relaxed">
                               {form.description}
                             </p>
                           )}
@@ -464,7 +464,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
             <GiMountains className="text-2xl text-amber-600 dark:text-amber-400" />
             <h3 className="font-bold text-stone-800 dark:text-white">About Regional Forms</h3>
           </div>
-          <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+          <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
             Regional forms are Pokémon that have adapted to the unique environment of {region.name}. 
             These variants have different types, abilities, and appearances from their original forms, 
             showcasing the incredible diversity of Pokémon evolution across different regions.

@@ -279,7 +279,7 @@ export default function VoiceSearchInterface({
 
   if (!isEnabled) {
     return (
-      <div className="text-center text-stone-500 dark:text-stone-400">
+      <div className="text-center text-stone-500 dark:text-stone-300">
         Voice search not available
       </div>
     );
@@ -338,7 +338,7 @@ export default function VoiceSearchInterface({
           )}
           
           {!isListening && !isProcessing && (
-            <span className="text-stone-600 dark:text-stone-400">
+            <span className="text-stone-600 dark:text-stone-300">
               Click to start voice search
             </span>
           )}
@@ -347,7 +347,7 @@ export default function VoiceSearchInterface({
         {/* Transcript Display */}
         {(transcript || interimTranscript) && (
           <div className="w-full max-w-md p-4 bg-stone-50 dark:bg-stone-800 rounded-lg border">
-            <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">
+            <div className="text-sm text-stone-500 dark:text-stone-300 mb-1">
               Voice Input:
             </div>
             <div className="text-stone-900 dark:text-white">

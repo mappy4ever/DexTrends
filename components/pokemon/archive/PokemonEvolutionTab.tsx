@@ -80,7 +80,7 @@ const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({
             formatEvolutionDetails={formatEvolutionDetails}
           />
         ) : (
-          <p className="text-center text-stone-500 dark:text-stone-400 text-sm py-4">No evolution data available.</p>
+          <p className="text-center text-stone-500 dark:text-stone-300 text-sm py-4">No evolution data available.</p>
         )}
       </div>
     </FadeIn>

@@ -65,7 +65,7 @@ export class SmartErrorBoundary extends React.Component<SmartErrorBoundaryProps,
 
               {this.state.error && (
                 <details className="mt-4 text-left">
-                  <summary className="cursor-pointer text-sm text-stone-500 dark:text-stone-400">
+                  <summary className="cursor-pointer text-sm text-stone-500 dark:text-stone-300">
                     Technical Details
                   </summary>
                   <pre className="mt-2 p-2 bg-stone-100 dark:bg-stone-700 rounded text-xs text-stone-800 dark:text-stone-200 overflow-auto">

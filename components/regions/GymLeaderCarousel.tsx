@@ -180,7 +180,7 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
           <h3 className="text-2xl font-bold mb-2 text-stone-900 dark:text-white">
             Gym Leader Challenge
           </h3>
-          <p className="text-base text-stone-600 dark:text-stone-400">
+          <p className="text-base text-stone-600 dark:text-stone-300">
             Defeat all {gymLeaders.length} Gym Leaders to earn their badges
           </p>
         </div>

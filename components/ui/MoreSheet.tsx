@@ -106,7 +106,7 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
                   'touch-manipulation tap-highlight-transparent'
                 )}
               >
-                <IoClose className="w-5 h-5 text-stone-500 dark:text-stone-400" />
+                <IoClose className="w-5 h-5 text-stone-500 dark:text-stone-300" />
               </button>
             </div>
 
@@ -139,7 +139,7 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
                     <p className="font-medium text-stone-900 dark:text-white">
                       {item.label}
                     </p>
-                    <p className="text-sm text-stone-500 dark:text-stone-400 truncate">
+                    <p className="text-sm text-stone-500 dark:text-stone-300 truncate">
                       {item.description}
                     </p>
                   </div>

@@ -32,7 +32,7 @@ const BadgeCollection: React.FC<BadgeCollectionProps> = ({ region, gymLeaders, t
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-5xl font-bold mb-4">Badge Collection</h2>
-            <p className="text-xl text-stone-600 dark:text-stone-400">
+            <p className="text-xl text-stone-600 dark:text-stone-300">
               Collect all {gymLeaders.length} badges to challenge the Pokémon League
             </p>
           </div>
@@ -77,7 +77,7 @@ const BadgeCollection: React.FC<BadgeCollectionProps> = ({ region, gymLeaders, t
                   </div>
                 </Scale>
                 <h3 className="font-semibold text-sm">{leader.badge}</h3>
-                <p className="text-xs text-stone-600 dark:text-stone-400">{leader.name}</p>
+                <p className="text-xs text-stone-600 dark:text-stone-300">{leader.name}</p>
               </div>
             </SlideUp>
           ))}
@@ -99,7 +99,7 @@ const BadgeCollection: React.FC<BadgeCollectionProps> = ({ region, gymLeaders, t
                 All Badges Collected!
               </span>
             </p>
-            <p className="text-stone-600 dark:text-stone-400 mt-2">
+            <p className="text-stone-600 dark:text-stone-300 mt-2">
               You're ready to challenge the Elite Four
             </p>
           </FadeIn>

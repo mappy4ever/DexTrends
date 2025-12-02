@@ -135,16 +135,16 @@ const PokemonMovesTab: React.FC<PokemonMovesTabProps> = ({
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-stone-200 dark:border-stone-700">
-                        {method === 'Level Up' && <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">Level</th>}
-                        <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">Move</th>
-                        <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">Type</th>
+                        {method === 'Level Up' && <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">Level</th>}
+                        <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">Move</th>
+                        <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">Type</th>
                         {showMoveDetails && (
                           <>
-                            <th className="text-center py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">Power</th>
-                            <th className="text-center py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">Acc</th>
-                            <th className="text-center py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">PP</th>
-                            <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">Category</th>
-                            <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-400">Description</th>
+                            <th className="text-center py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">Power</th>
+                            <th className="text-center py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">Acc</th>
+                            <th className="text-center py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">PP</th>
+                            <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">Category</th>
+                            <th className="text-left py-2 px-3 text-sm font-medium text-stone-600 dark:text-stone-300">Description</th>
                           </>
                         )}
                       </tr>
@@ -193,7 +193,7 @@ const PokemonMovesTab: React.FC<PokemonMovesTabProps> = ({
                                     </span>
                                   )}
                                 </td>
-                                <td className="py-3 px-3 text-sm text-stone-600 dark:text-stone-400 max-w-xs">
+                                <td className="py-3 px-3 text-sm text-stone-600 dark:text-stone-300 max-w-xs">
                                   {moveDetails ? (
                                     <span className="line-clamp-2" title={moveDetails.description}>
                                       {moveDetails.description}
@@ -213,7 +213,7 @@ const PokemonMovesTab: React.FC<PokemonMovesTabProps> = ({
                 
                 {moves.length > (showMoveDetails ? 15 : 25) && (
                   <div className="mt-3 text-center">
-                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                    <p className="text-sm text-stone-500 dark:text-stone-300">
                       Showing {showMoveDetails ? 15 : 25} of {moves.length} moves
                     </p>
                   </div>
@@ -223,7 +223,7 @@ const PokemonMovesTab: React.FC<PokemonMovesTabProps> = ({
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-stone-500 dark:text-stone-400">No move data available.</p>
+            <p className="text-stone-500 dark:text-stone-300">No move data available.</p>
           </div>
         )}
         </>
@@ -260,7 +260,7 @@ const PokemonMovesTab: React.FC<PokemonMovesTabProps> = ({
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-stone-500 dark:text-stone-400">No ability data available.</p>
+                <p className="text-stone-500 dark:text-stone-300">No ability data available.</p>
               </div>
             )}
           </>

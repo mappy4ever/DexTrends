@@ -33,8 +33,8 @@ const TYPE_COLORS: Record<string, { border: string; bg: string; text: string }> 
   steel: { border: 'border-slate-500', bg: 'bg-slate-500', text: 'text-slate-600 dark:text-slate-300' },
   dragon: { border: 'border-indigo-600', bg: 'bg-indigo-600', text: 'text-indigo-600 dark:text-indigo-400' },
   fairy: { border: 'border-pink-500', bg: 'bg-pink-500', text: 'text-pink-600 dark:text-pink-400' },
-  colorless: { border: 'border-stone-400', bg: 'bg-stone-400', text: 'text-stone-600 dark:text-stone-400' },
-  normal: { border: 'border-stone-400', bg: 'bg-stone-400', text: 'text-stone-600 dark:text-stone-400' },
+  colorless: { border: 'border-stone-400', bg: 'bg-stone-400', text: 'text-stone-600 dark:text-stone-300' },
+  normal: { border: 'border-stone-400', bg: 'bg-stone-400', text: 'text-stone-600 dark:text-stone-300' },
 };
 
 // Rarity to visual mapping
@@ -215,7 +215,7 @@ export const PracticalCardDisplay = memo(({
               {name}
             </h3>
             {setName && setNumber && (
-              <p className="text-xs text-stone-500 dark:text-stone-400 truncate">
+              <p className="text-xs text-stone-500 dark:text-stone-300 truncate">
                 {setName} · {setNumber}
               </p>
             )}

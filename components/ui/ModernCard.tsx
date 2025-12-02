@@ -129,7 +129,7 @@ export const StatCard: React.FC<StatCardProps> = ({
     <ModernCard variant="glass" padding="none" className={sizeStyles[size]}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mb-1">{label}</p>
+          <p className="text-sm text-stone-500 dark:text-stone-300 mb-1">{label}</p>
           <div className="flex items-center gap-2">
             <span className={`${valueSizes[size]} font-bold text-stone-900 dark:text-white`}>
               {value}
@@ -192,7 +192,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
         {icon}
       </div>
       <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">{title}</h3>
-      <p className="text-sm text-stone-600 dark:text-stone-400">{description}</p>
+      <p className="text-sm text-stone-600 dark:text-stone-300">{description}</p>
     </ModernCard>
   );
 };
@@ -222,7 +222,7 @@ export const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
         </div>
       )}
       <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-2">{title}</h3>
-      <p className="text-stone-600 dark:text-stone-400 mb-4">{description}</p>
+      <p className="text-stone-600 dark:text-stone-300 mb-4">{description}</p>
       {action && (
         <motion.button
           whileHover={{ scale: 1.05 }}

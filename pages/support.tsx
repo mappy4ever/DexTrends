@@ -123,7 +123,7 @@ export default function SupportPage() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100">Support & Help</h1>
-                <p className="text-stone-600 dark:text-stone-400">Tips, shortcuts, and guides to help you get the most out of DexTrends</p>
+                <p className="text-stone-600 dark:text-stone-300">Tips, shortcuts, and guides to help you get the most out of DexTrends</p>
               </div>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function SupportPage() {
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-medium text-stone-900 dark:text-stone-100">{help.title}</span>
-                      <span className="text-xs text-stone-500 dark:text-stone-400 font-mono">{path}</span>
+                      <span className="text-xs text-stone-500 dark:text-stone-300 font-mono">{path}</span>
                     </div>
                     <svg
                       className={`w-4 h-4 text-stone-500 transition-transform ${expandedPage === path ? 'rotate-180' : ''}`}
@@ -211,7 +211,7 @@ export default function SupportPage() {
                           <h4 className="text-sm font-medium text-stone-800 dark:text-stone-200 mb-1">
                             {section.title}
                           </h4>
-                          <p className="text-sm text-stone-600 dark:text-stone-400">
+                          <p className="text-sm text-stone-600 dark:text-stone-300">
                             {section.content}
                           </p>
                         </div>
@@ -237,7 +237,7 @@ export default function SupportPage() {
               </div>
               <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Need More Help?</h2>
             </div>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+            <p className="text-sm text-stone-600 dark:text-stone-300 mb-4">
               If you have questions, feedback, or need assistance, feel free to reach out to us.
             </p>
             <div className="flex flex-wrap gap-3">

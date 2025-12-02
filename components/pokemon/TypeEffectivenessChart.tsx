@@ -66,7 +66,7 @@ const TypeEffectivenessChart: React.FC<TypeEffectivenessChartProps> = ({
         {/* Immunities */}
         {immunities.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            <span className="text-xs font-semibold text-stone-600 dark:text-stone-400">Immune:</span>
+            <span className="text-xs font-semibold text-stone-600 dark:text-stone-300">Immune:</span>
             {immunities.map(type => (
               <TypeBadge key={type} type={type} multiplier={0} />
             ))}

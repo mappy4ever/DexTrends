@@ -640,7 +640,7 @@ export default function PocketPokemonDetail() {
               <div className="flex items-center justify-center space-x-3">
                 <TypeGradientBadge type={pokemonDetails.type} size="lg" />
                 <div className="h-6 w-px bg-stone-300 dark:bg-stone-600" />
-                <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
+                <span className="text-sm font-medium text-stone-600 dark:text-stone-300">
                   {pokemonDetails.rarity}
                 </span>
               </div>
@@ -654,7 +654,7 @@ export default function PocketPokemonDetail() {
           <div className="space-y-6">
             <div>
               <h1 className="text-4xl font-bold mb-2">{pokemonDetails.name}</h1>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 {pokemonDetails.pack} • Card #{pokemonDetails.number}
               </p>
               {pokemonDetails.expansion && (
@@ -876,7 +876,7 @@ export default function PocketPokemonDetail() {
                   className="mt-6"
                 >
                   <h3 className="text-lg font-semibold mb-4 text-stone-800 dark:text-stone-200">Related Cards</h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+                  <p className="text-sm text-stone-600 dark:text-stone-300 mb-4">
                     Other {pokemonDetails.type} type cards from the {pokemonDetails.pack} pack
                   </p>
                   <div className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4 border border-stone-200 dark:border-stone-700">
@@ -898,10 +898,10 @@ export default function PocketPokemonDetail() {
             {/* Fallback Similar Cards Section */}
             {relatedCards?.fallback && relatedCards.fallback.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-stone-600 dark:text-stone-400 border-b border-stone-200 dark:border-stone-700 pb-2">
+                <h3 className="text-lg font-semibold mb-4 text-stone-600 dark:text-stone-300 border-b border-stone-200 dark:border-stone-700 pb-2">
                   Other Similar Cards
                 </h3>
-                <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+                <p className="text-sm text-stone-600 dark:text-stone-300 mb-4">
                   Cards from the same pack or with similar type
                 </p>
                 <PocketCardList 
@@ -927,7 +927,7 @@ export default function PocketPokemonDetail() {
                 <svg className="w-16 h-16 mx-auto mb-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <h3 className="text-lg font-semibold text-stone-600 dark:text-stone-400 mb-2">No Related Cards Found</h3>
+                <h3 className="text-lg font-semibold text-stone-600 dark:text-stone-300 mb-2">No Related Cards Found</h3>
                 <p className="text-stone-500 dark:text-stone-500">
                   We couldn't find any other cards related to {pokemonDetails.name}.
                 </p>
@@ -957,7 +957,7 @@ export default function PocketPokemonDetail() {
             />
             <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
             {zoomedCard.set && (
-              <p className="text-stone-600 dark:text-stone-400 mt-2">{zoomedCard.set}</p>
+              <p className="text-stone-600 dark:text-stone-300 mt-2">{zoomedCard.set}</p>
             )}
           </div>
         </Modal>

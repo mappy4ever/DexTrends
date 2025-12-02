@@ -1,0 +1,129 @@
+/* Reduced Motion Support - WCAG 2.1 SC 2.3.3
+ *
+ * Respects user's prefers-reduced-motion preference
+ * Disables animations and transitions for users who opt-out
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all animations and transitions */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep very short transitions for feedback (< 150ms) */
+  button,
+  a,
+  [role="button"] {
+    transition-duration: 50ms !important;
+  }
+
+  /* Disable transform-based hover effects */
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .hover\:-translate-y-1:hover,
+  .hover\:-translate-y-2:hover,
+  .group:hover .group-hover\:scale-105,
+  .group:hover .group-hover\:scale-110 {
+    transform: none !important;
+  }
+
+  /* Disable skeleton animations */
+  .animate-pulse,
+  .animate-shimmer,
+  .animate-bounce,
+  .animate-spin {
+    animation: none !important;
+  }
+
+  /* Keep opacity transitions for meaningful feedback */
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Disable parallax and scroll effects */
+  .parallax,
+  .scroll-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable Framer Motion transition overrides */
+  [data-framer-motion],
+  [style*="transform"] {
+    transition: none !important;
+  }
+
+  /* Keep color transitions (no motion involved) */
+  .transition-colors {
+    transition-duration: 100ms !important;
+  }
+
+  /* Loading spinners - show static indicator */
+  .animate-spin {
+    animation: none !important;
+    /* Show a static state instead */
+  }
+
+  /* Pull-to-refresh - instant feedback */
+  .pull-to-refresh {
+    transition: none !important;
+  }
+
+  /* Card hover effects - disable scale */
+  .pokemon-card:hover,
+  .card:hover,
+  [role="link"]:hover {
+    transform: none !important;
+  }
+
+  /* Toast/notification animations */
+  .toast-enter,
+  .toast-exit,
+  .notification-enter {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Modal animations */
+  .modal-enter,
+  .modal-exit,
+  .sheet-enter,
+  .sheet-exit {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Page transitions */
+  .page-enter,
+  .page-exit {
+    animation: none !important;
+  }
+}
+
+/* Provide utility class for motion-safe-only content */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-safe-only {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe-only {
+    display: none;
+  }
+
+  .motion-reduce-only {
+    display: block;
+  }
+}
+
+/* Default: hide reduced-motion alternatives */
+.motion-reduce-only {
+  display: none;
+}

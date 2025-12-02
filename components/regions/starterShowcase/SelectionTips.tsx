@@ -13,7 +13,7 @@ export const SelectionTips: React.FC<SelectionTipsProps> = ({ theme }) => {
           <BsController className="text-amber-500" />
           Choosing Your Starter
         </h3>
-        <p className="text-sm text-stone-600 dark:text-stone-400 max-w-2xl">
+        <p className="text-sm text-stone-600 dark:text-stone-300 max-w-2xl">
           Your starter Pokémon will be your first partner on your journey. Consider their type advantages 
           against early gym leaders, their evolution potential, and which one you connect with most!
         </p>

@@ -281,7 +281,7 @@ const StartersPage: NextPage = () => {
                   <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200 mb-2">
                     {currentRegion.name} Region
                   </h3>
-                  <p className="text-stone-600 dark:text-stone-400 text-sm mb-3">
+                  <p className="text-stone-600 dark:text-stone-300 text-sm mb-3">
                     {currentRegion.description}
                   </p>
                   <div className="flex flex-wrap justify-center gap-2">
@@ -331,7 +331,7 @@ const StartersPage: NextPage = () => {
               >
                 <FiBook className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">Pokedex</h4>
-                <p className="text-xs text-stone-600 dark:text-stone-400">Browse all Pokemon</p>
+                <p className="text-xs text-stone-600 dark:text-stone-300">Browse all Pokemon</p>
               </motion.div>
 
               <motion.div
@@ -350,7 +350,7 @@ const StartersPage: NextPage = () => {
               >
                 <FiMapPin className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">Regions</h4>
-                <p className="text-xs text-stone-600 dark:text-stone-400">Explore worlds</p>
+                <p className="text-xs text-stone-600 dark:text-stone-300">Explore worlds</p>
               </motion.div>
 
               <motion.div
@@ -369,7 +369,7 @@ const StartersPage: NextPage = () => {
               >
                 <FiLayers className="w-8 h-8 mb-3 text-pink-500 group-hover:text-pink-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Sets</h4>
-                <p className="text-xs text-stone-600 dark:text-stone-400">Card collections</p>
+                <p className="text-xs text-stone-600 dark:text-stone-300">Card collections</p>
               </motion.div>
 
               <motion.div
@@ -388,7 +388,7 @@ const StartersPage: NextPage = () => {
               >
                 <FiSmartphone className="w-8 h-8 mb-3 text-green-500 group-hover:text-green-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Pocket</h4>
-                <p className="text-xs text-stone-600 dark:text-stone-400">Mobile game cards</p>
+                <p className="text-xs text-stone-600 dark:text-stone-300">Mobile game cards</p>
               </motion.div>
             </motion.div>
 

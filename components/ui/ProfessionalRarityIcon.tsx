@@ -271,7 +271,7 @@ export const ProfessionalRarityIcon: React.FC<RarityIconProps> = ({
         <span className={cn(
           'font-medium',
           size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : 'text-sm',
-          isActive ? 'text-stone-900 dark:text-white font-semibold' : 'text-stone-600 dark:text-stone-400'
+          isActive ? 'text-stone-900 dark:text-white font-semibold' : 'text-stone-600 dark:text-stone-300'
         )}>
           {config.label}
         </span>
@@ -326,7 +326,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Basic Rarities */}
         {groupedRarities.basic.filter((r: string) => availableRarities.includes(r)).length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-300 mb-2 uppercase tracking-wider">
               Basic
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -347,7 +347,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Holo Rarities */}
         {groupedRarities.holo.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-300 mb-2 uppercase tracking-wider">
               Holo Variants
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -368,7 +368,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Special Rarities */}
         {groupedRarities.special.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-300 mb-2 uppercase tracking-wider">
               Special
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -389,7 +389,7 @@ export const ProfessionalRarityFilterBar: React.FC<{
         {/* Other Rarities */}
         {groupedRarities.other.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-stone-500 dark:text-stone-300 mb-2 uppercase tracking-wider">
               Other
             </h4>
             <div className="flex flex-wrap gap-2">

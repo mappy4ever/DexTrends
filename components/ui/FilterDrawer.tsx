@@ -50,7 +50,7 @@ function FilterChip({ option, isActive, onClick }: FilterChipProps) {
         TRANSITION.fast,
         isActive
           ? 'bg-amber-600 text-white'
-          : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
+          : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
       )}
     >
       {option.icon && <span className="mr-1">{option.icon}</span>}
@@ -279,7 +279,7 @@ export function ActiveFilterPills({ filters, onClearAll, className }: ActiveFilt
       {filters.length > 1 && onClearAll && (
         <button
           onClick={onClearAll}
-          className="text-xs text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
+          className="text-xs text-stone-500 dark:text-stone-300 hover:text-stone-700 dark:hover:text-stone-200"
         >
           Clear all
         </button>

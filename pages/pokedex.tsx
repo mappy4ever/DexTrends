@@ -379,7 +379,7 @@ const UnifiedPokedex: NextPage = () => {
                     'flex-shrink-0 px-3 py-2 rounded-full text-xs font-medium transition-all touch-manipulation min-h-[36px] active:scale-95',
                     selectedTypes.includes(type)
                       ? 'text-white shadow-sm'
-                      : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
+                      : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                   )}
                   style={{
                     backgroundColor: selectedTypes.includes(type)
@@ -416,7 +416,7 @@ const UnifiedPokedex: NextPage = () => {
                 {sortBy !== 'id' && (
                   <button
                     onClick={() => setSortBy('id')}
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded-full text-sm hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 rounded-full text-sm hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
                   >
                     Sort: {sortBy === 'name' ? 'A-Z' : 'Stats'}
                     <IoClose className="w-3.5 h-3.5" />
@@ -450,7 +450,7 @@ const UnifiedPokedex: NextPage = () => {
               <h3 className="text-xl font-semibold text-stone-700 dark:text-stone-300 mb-2">
                 No Pokémon found
               </h3>
-              <p className="text-stone-500 dark:text-stone-400 mb-4">
+              <p className="text-stone-500 dark:text-stone-300 mb-4">
                 Try adjusting your search or filters
               </p>
               <button

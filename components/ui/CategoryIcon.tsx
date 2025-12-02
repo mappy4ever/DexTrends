@@ -21,7 +21,7 @@ export const CategoryIcon: React.FC<CategoryIconProps> = ({
   const colors = {
     physical: 'text-orange-600 dark:text-orange-400',
     special: 'text-amber-600 dark:text-amber-400',
-    status: 'text-stone-600 dark:text-stone-400'
+    status: 'text-stone-600 dark:text-stone-300'
   };
 
   return (

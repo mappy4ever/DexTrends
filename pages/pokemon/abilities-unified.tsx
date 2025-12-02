@@ -216,7 +216,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
       priority: 'detail',
       sortable: false,
       renderCell: (ability: Ability) => (
-        <div className="text-sm text-stone-600 dark:text-stone-400 line-clamp-2">
+        <div className="text-sm text-stone-600 dark:text-stone-300 line-clamp-2">
           {ability.short_effect}
         </div>
       ),
@@ -248,7 +248,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
           </div>
         </div>
       </div>
-      <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3">
+      <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-3">
         {ability.short_effect}
       </p>
     </motion.div>
@@ -262,7 +262,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
           <h4 className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-1">
             Full Description
           </h4>
-          <p className="text-sm text-stone-600 dark:text-stone-400">
+          <p className="text-sm text-stone-600 dark:text-stone-300">
             {ability.effect || ability.short_effect}
           </p>
         </div>
@@ -334,7 +334,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
                 Abilities
               </h1>
-              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 hidden sm:block">
+              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-300 hidden sm:block">
                 Explore Pokemon abilities and effects
               </p>
             </div>
@@ -346,7 +346,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
               <div className="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400">
                 {filteredAbilities.length}
               </div>
-              <div className="text-xs text-stone-600 dark:text-stone-400">Abilities</div>
+              <div className="text-xs text-stone-600 dark:text-stone-300">Abilities</div>
             </div>
           </div>
         </div>
@@ -380,7 +380,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
       <div className="container mx-auto px-4 py-3 sm:py-4">
         <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-lg p-3 sm:p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs sm:text-sm font-medium text-stone-600 dark:text-stone-400">
+            <span className="text-xs sm:text-sm font-medium text-stone-600 dark:text-stone-300">
               Competitive Tiers:
             </span>
             <div className="flex gap-2 sm:gap-3 overflow-x-auto">

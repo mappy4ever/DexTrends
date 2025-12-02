@@ -218,7 +218,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
             </h3>
           )}
           {subtitle && (
-            <p className="text-xs text-stone-600 dark:text-stone-400 mt-1">
+            <p className="text-xs text-stone-600 dark:text-stone-300 mt-1">
               {subtitle}
             </p>
           )}

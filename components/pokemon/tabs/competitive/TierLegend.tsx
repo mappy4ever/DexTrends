@@ -27,7 +27,7 @@ export const TierLegend: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
                 <MdCatchingPokemon className="w-5 h-5 text-amber-400" />
               </div>
-              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                 Competitive Information
               </h3>
             </div>
@@ -81,7 +81,7 @@ export const TierLegend: React.FC = () => {
                       <div className="flex items-center gap-2 mb-2">
                         <TierBadge tier={tier} size="sm" />
                       </div>
-                      <p className="text-xs text-stone-600 dark:text-stone-400">
+                      <p className="text-xs text-stone-600 dark:text-stone-300">
                         {info.description}
                       </p>
                     </motion.div>
@@ -114,7 +114,7 @@ export const TierLegend: React.FC = () => {
                           <Icon className={cn("w-5 h-5", info.color)} />
                           <span className="font-semibold text-sm">{role}</span>
                         </div>
-                        <p className="text-xs text-stone-600 dark:text-stone-400">
+                        <p className="text-xs text-stone-600 dark:text-stone-300">
                           {info.description}
                         </p>
                       </motion.div>

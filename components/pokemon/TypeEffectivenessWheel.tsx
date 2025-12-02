@@ -178,7 +178,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               )}>
                 {category.count}
               </div>
-              <div className="text-xs text-stone-600 dark:text-stone-400">
+              <div className="text-xs text-stone-600 dark:text-stone-300">
                 {category.count === 1 ? 'type' : 'types'}
               </div>
             </div>
@@ -253,7 +253,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
       {/* Visual effectiveness chart */}
       {!selectedCategory && (
         <Container variant="default" className="p-6">
-          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-4 text-center">
+          <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-300 mb-4 text-center">
             Click a category above to see type matchups
           </h4>
           
@@ -263,7 +263,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               <div className="text-3xl mb-1">
                 <FaCircle className="text-red-500 mx-auto" />
               </div>
-              <div className="text-sm text-stone-600 dark:text-stone-400">
+              <div className="text-sm text-stone-600 dark:text-stone-300">
                 {groupedRelations.weakness.filter(r => r.effectiveness >= 4).length} double weaknesses
               </div>
             </div>
@@ -271,7 +271,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               <div className="text-3xl mb-1">
                 <FaCircle className="text-green-500 mx-auto" />
               </div>
-              <div className="text-sm text-stone-600 dark:text-stone-400">
+              <div className="text-sm text-stone-600 dark:text-stone-300">
                 {groupedRelations.resistance.filter(r => r.effectiveness <= 0.25).length} double resistances
               </div>
             </div>
@@ -279,7 +279,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               <div className="text-3xl mb-1">
                 <FaCircle className="text-stone-400 mx-auto" />
               </div>
-              <div className="text-sm text-stone-600 dark:text-stone-400">
+              <div className="text-sm text-stone-600 dark:text-stone-300">
                 {groupedRelations.normal.length} normal damage
               </div>
             </div>

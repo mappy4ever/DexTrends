@@ -196,7 +196,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl p-8 text-center"
        
       >
-        <p className="text-stone-500 dark:text-stone-400">Loading location data...</p>
+        <p className="text-stone-500 dark:text-stone-300">Loading location data...</p>
       </Container>
     );
   }
@@ -220,7 +220,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
               {habitat && (
                 <div className="flex items-center gap-3">
                   <FaTree className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Natural Habitat:</span>
+                  <span className="text-sm font-medium text-stone-500 dark:text-stone-300">Natural Habitat:</span>
                   <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-500 to-green-600 text-white">
                     {habitat.charAt(0).toUpperCase() + habitat.slice(1)}
                   </span>
@@ -232,7 +232,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <FaFilter className="w-4 h-4 text-amber-400" />
-                    <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Filter by Era</span>
+                    <span className="text-sm font-medium text-stone-500 dark:text-stone-300">Filter by Era</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     <button
@@ -271,7 +271,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <FaGamepad className="w-4 h-4 text-amber-400" />
-                    <span className="text-sm font-medium text-stone-500 dark:text-stone-400">Filter by Console</span>
+                    <span className="text-sm font-medium text-stone-500 dark:text-stone-300">Filter by Console</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {['3ds', 'ds', 'gameboy-advance', 'gameboy-color', 'gameboy'].map(console => {
@@ -348,7 +348,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                       )}>
                         {GENERATION_INFO[Number(generation)]?.gen || `Gen ${generation}`}
                       </span>
-                      <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
+                      <span className="text-sm font-medium text-stone-600 dark:text-stone-300">
                         {GENERATION_INFO[Number(generation)]?.region || 'Unknown Region'}
                       </span>
                     </h3>
@@ -379,7 +379,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                               </h4>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs text-stone-500 dark:text-stone-400">
+                              <span className="text-xs text-stone-500 dark:text-stone-300">
                                 {game.locations.length} loc{game.locations.length !== 1 ? 's' : ''}
                               </span>
                               <motion.svg
@@ -417,7 +417,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                                         <h5 className="text-xs font-medium capitalize">
                                           {loc.area}
                                         </h5>
-                                        <div className="flex flex-wrap gap-2 text-[11px] text-stone-600 dark:text-stone-400">
+                                        <div className="flex flex-wrap gap-2 text-[11px] text-stone-600 dark:text-stone-300">
                                           <span>Method: <span className="capitalize">{loc.method}</span></span>
                                           <span>Lv. {loc.minLevel}{loc.maxLevel !== loc.minLevel && `-${loc.maxLevel}`}</span>
                                           {loc.chance < 100 && (
@@ -470,7 +470,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                   No Location Data Available
                 </h3>
               </div>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 This Pokémon doesn't have wild encounter location data in our database.
               </p>
               <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">

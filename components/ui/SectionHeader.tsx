@@ -70,7 +70,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           {title}
         </h2>
         {subtitle && (
-          <p className={cn(sizes.subtitle, 'text-stone-500 dark:text-stone-400 mt-0.5')}>
+          <p className={cn(sizes.subtitle, 'text-stone-500 dark:text-stone-300 mt-0.5')}>
             {subtitle}
           </p>
         )}

@@ -692,7 +692,7 @@ function DeckBuilder() {
         </Head>
         <div className="bg-white dark:bg-stone-800 rounded-xl p-8 text-center shadow-xl max-w-md">
           <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
-          <p className="text-stone-600 dark:text-stone-400 mb-6">{error}</p>
+          <p className="text-stone-600 dark:text-stone-300 mb-6">{error}</p>
           <button 
             onClick={() => window.location.reload()}
             className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
@@ -766,7 +766,7 @@ function DeckBuilder() {
               <div className={`text-xl font-bold ${
                 deckStats.isFull ? 'text-green-600' : 
                 deckStats.totalCards > 15 ? 'text-yellow-600' : 
-                'text-stone-600 dark:text-stone-400'
+                'text-stone-600 dark:text-stone-300'
               }`}>
                 {deckStats.totalCards}/{MAX_DECK_SIZE}
               </div>
@@ -887,7 +887,7 @@ function DeckBuilder() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   activeTab === 'builder'
                     ? 'bg-pokemon-red text-white'
-                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700'
+                    : 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700'
                 }`}
               >
                 Card Browser
@@ -897,7 +897,7 @@ function DeckBuilder() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                   activeTab === 'validation'
                     ? 'bg-pokemon-red text-white'
-                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700'
+                    : 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700'
                 }`}
               >
                 Validation
@@ -912,7 +912,7 @@ function DeckBuilder() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   activeTab === 'analysis'
                     ? 'bg-pokemon-red text-white'
-                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700'
+                    : 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700'
                 }`}
               >
                 Meta Analysis
@@ -947,7 +947,7 @@ function DeckBuilder() {
               <div className="space-y-3">
                 {/* Type Filters */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">Types</label>
+                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-300 mb-2 uppercase tracking-wider">Types</label>
                   <div className="flex flex-wrap gap-2">
                     {filterOptions.types.map(type => {
                       const displayType = getDisplayType(type, { type } as ExtendedPocketCard);
@@ -958,7 +958,7 @@ function DeckBuilder() {
                           className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
                             selectedTypes.includes(type)
                               ? `${getTypeColor(type)} shadow-md scale-105`
-                              : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-600'
+                              : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
                           }`}
                         >
                           {displayType}
@@ -970,7 +970,7 @@ function DeckBuilder() {
 
                 {/* Rarity Filters */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">Rarity</label>
+                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-300 mb-2 uppercase tracking-wider">Rarity</label>
                   <div className="flex flex-wrap gap-2">
                     {filterOptions.rarities.map(rarity => (
                       <button
@@ -979,7 +979,7 @@ function DeckBuilder() {
                         className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
                           selectedRarities.includes(rarity)
                             ? `bg-gradient-to-r ${getRarityColor(rarity)} text-white shadow-md scale-105`
-                            : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-600'
+                            : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
                         }`}
                       >
                         {rarity}
@@ -990,7 +990,7 @@ function DeckBuilder() {
 
                 {/* Pack Filters - Core packs only */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-2 uppercase tracking-wider">Packs</label>
+                  <label className="block text-xs font-semibold text-stone-600 dark:text-stone-300 mb-2 uppercase tracking-wider">Packs</label>
                   <div className="flex flex-wrap gap-2">
                     {filterOptions.packs.map(pack => (
                       <button
@@ -1020,7 +1020,7 @@ function DeckBuilder() {
                     <option value="health">Health</option>
                     <option value="rarity">Rarity</option>
                   </select>
-                  <div className="text-sm text-stone-500 dark:text-stone-400">
+                  <div className="text-sm text-stone-500 dark:text-stone-300">
                     {filteredCards.length} cards
                   </div>
                 </div>
@@ -1194,25 +1194,25 @@ function DeckBuilder() {
                       <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.totalCards}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Total Cards</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Total Cards</div>
                     </div>
                     <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
                       <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.pokemon}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Pokémon</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Pokémon</div>
                     </div>
                     <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
                       <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.trainers}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Trainers</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Trainers</div>
                     </div>
                     <div className="text-center p-3 bg-stone-50 dark:bg-stone-700 rounded-lg">
                       <div className="text-2xl font-bold text-stone-900 dark:text-white">
                         {validation.stats.basicPokemon}
                       </div>
-                      <div className="text-sm text-stone-500 dark:text-stone-400">Basic Pokémon</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-300">Basic Pokémon</div>
                     </div>
                   </div>
                 </div>
@@ -1230,19 +1230,19 @@ function DeckBuilder() {
                   <div className="text-3xl font-bold text-stone-900 dark:text-white">
                     {metaAnalysis.score}
                   </div>
-                  <div className="text-sm text-stone-500 dark:text-stone-400">Meta Score</div>
+                  <div className="text-sm text-stone-500 dark:text-stone-300">Meta Score</div>
                 </div>
                 <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
                   <div className="text-2xl font-bold text-stone-900 dark:text-white">
                     {metaAnalysis.tier}
                   </div>
-                  <div className="text-sm text-stone-500 dark:text-stone-400">Tier Rating</div>
+                  <div className="text-sm text-stone-500 dark:text-stone-300">Tier Rating</div>
                 </div>
                 <div className="text-center p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
                   <div className="text-2xl font-bold text-stone-900 dark:text-white">
                     {metaAnalysis.consistency}%
                   </div>
-                  <div className="text-sm text-stone-500 dark:text-stone-400">Consistency</div>
+                  <div className="text-sm text-stone-500 dark:text-stone-300">Consistency</div>
                 </div>
               </div>
 
@@ -1302,7 +1302,7 @@ function DeckBuilder() {
                         <span className={`text-sm font-semibold w-12 text-right ${
                           matchup.difficulty === 'favorable' ? 'text-green-600 dark:text-green-400' :
                           matchup.difficulty === 'unfavorable' ? 'text-red-600 dark:text-red-400' :
-                          'text-stone-600 dark:text-stone-400'
+                          'text-stone-600 dark:text-stone-300'
                         }`}>
                           {matchup.winRate}%
                         </span>
@@ -1365,7 +1365,7 @@ function DeckBuilder() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
           <div className="bg-white dark:bg-stone-800 rounded-xl p-6 max-w-2xl w-full shadow-2xl">
             <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Import Deck</h3>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+            <p className="text-sm text-stone-600 dark:text-stone-300 mb-4">
               Paste your deck list below. Supported formats:
               <br />• Card Name x2
               <br />• 2x Card Name
@@ -1493,7 +1493,7 @@ function DeckBuilder() {
                   )}
                 </div>
                 {zoomedCard.pack && (
-                  <p className="text-sm text-stone-600 dark:text-stone-400">
+                  <p className="text-sm text-stone-600 dark:text-stone-300">
                     Pack: <span className="font-medium">{zoomedCard.pack}</span>
                   </p>
                 )}
@@ -1609,7 +1609,7 @@ function DeckBuilder() {
                       )}
                     </div>
                     {currentCard.pack && (
-                      <p className="text-sm text-stone-600 dark:text-stone-400">
+                      <p className="text-sm text-stone-600 dark:text-stone-300">
                         Pack: <span className="font-medium">{currentCard.pack}</span>
                       </p>
                     )}
@@ -1657,7 +1657,7 @@ function DeckBuilder() {
             <div className={`text-lg font-bold ${
               deckStats.isFull ? 'text-green-600' : 
               deckStats.totalCards > 15 ? 'text-yellow-600' : 
-              'text-stone-600 dark:text-stone-400'
+              'text-stone-600 dark:text-stone-300'
             }`}>
               {deckStats.totalCards}/{MAX_DECK_SIZE}
             </div>

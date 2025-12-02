@@ -233,7 +233,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             <div className="space-y-4">
             {/* Can Breed Status */}
             <div className="flex justify-between items-center">
-              <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                 <FaDna className="w-4 h-4 opacity-70" />
                 Breeding Status
               </span>
@@ -249,7 +249,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
 
             {/* Egg Groups */}
             <div className="flex justify-between items-center">
-              <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                 <FaEgg className="w-4 h-4 opacity-70" />
                 Egg Groups
               </span>
@@ -272,7 +272,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             {/* Gender Ratio */}
             <div>
               <div className="flex justify-between items-center mb-3">
-                <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                   <FaHeart className="w-4 h-4 opacity-70" />
                   Gender Ratio
                 </span>
@@ -339,7 +339,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             <div className="space-y-3">
             {/* Hatch Time Title */}
             <div className="flex justify-between items-center">
-              <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+              <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                 <FaClock className="w-4 h-4 opacity-70" />
                 Hatch Time
               </span>
@@ -353,7 +353,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                   <div className="text-2xl font-bold text-orange-500">
                     {breedingInfo.hatchCycles}
                   </div>
-                  <div className="text-xs text-stone-600 dark:text-stone-400">Egg Cycles</div>
+                  <div className="text-xs text-stone-600 dark:text-stone-300">Egg Cycles</div>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-white/10 dark:bg-stone-800/30 rounded-lg">
@@ -362,18 +362,18 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                   <div className="text-2xl font-bold text-amber-500">
                     {breedingInfo.hatchSteps.toLocaleString()}
                   </div>
-                  <div className="text-xs text-stone-600 dark:text-stone-400">Steps</div>
+                  <div className="text-xs text-stone-600 dark:text-stone-300">Steps</div>
                 </div>
               </div>
             </div>
-            <p className="text-center text-xs text-stone-600 dark:text-stone-400">
+            <p className="text-center text-xs text-stone-600 dark:text-stone-300">
               Approximately {formatHatchTime(breedingInfo.hatchSteps)} with Flame Body
             </p>
 
             {/* Base Happiness */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
                   <FaHeart className="w-4 h-4 text-red-500 opacity-70" />
                   Base Happiness
                 </span>
@@ -439,7 +439,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                       <div className="text-2xl font-bold text-yellow-500">
                         {shinyOdds.odds}
                       </div>
-                      <div className="text-sm text-stone-600 dark:text-stone-400">
+                      <div className="text-sm text-stone-600 dark:text-stone-300">
                         {shinyOdds.percentage} chance
                       </div>
                     </div>
@@ -466,7 +466,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
           >
             <div className="p-6 md:p-8">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">Egg Moves ({eggMoves.length})</h2>
+                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">Egg Moves ({eggMoves.length})</h2>
               
               {/* Search and Filter */}
               <div className="flex flex-col sm:flex-row gap-2">
@@ -516,12 +516,12 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                     <TypeBadge type={move.type} size="sm" />
                   </div>
                   
-                  <div className="flex items-center gap-3 text-sm text-stone-600 dark:text-stone-400">
+                  <div className="flex items-center gap-3 text-sm text-stone-600 dark:text-stone-300">
                     <span className={cn(
                       "px-2 py-0.5 rounded",
                       move.category === 'physical' && "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400",
                       move.category === 'special' && "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400",
-                      move.category === 'status' && "bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-400"
+                      move.category === 'status' && "bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300"
                     )}>
                       {move.category}
                     </span>
@@ -534,7 +534,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             </div>
 
             {filteredMoves.length === 0 && (
-              <div className="text-center py-8 text-stone-500 dark:text-stone-400">
+              <div className="text-center py-8 text-stone-500 dark:text-stone-300">
                 No moves found matching your criteria
               </div>
             )}
@@ -556,7 +556,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         >
           <div className="p-6 md:p-8">
             <div className="flex items-center justify-between cursor-pointer mb-4" onClick={() => setShowCompatible(!showCompatible)}>
-              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">Breeding Partners</h2>
+              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">Breeding Partners</h2>
               <motion.div
                 animate={{ rotate: showCompatible ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
@@ -578,10 +578,10 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                 {loading ? (
                   <div className="text-center py-8">
                     <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500" />
-                    <p className="mt-2 text-stone-500 dark:text-stone-400">Loading compatible Pokémon...</p>
+                    <p className="mt-2 text-stone-500 dark:text-stone-300">Loading compatible Pokémon...</p>
                   </div>
                 ) : !breedingInfo.canBreed ? (
-                  <div className="text-center py-8 text-stone-500 dark:text-stone-400">
+                  <div className="text-center py-8 text-stone-500 dark:text-stone-300">
                     This Pokémon cannot breed
                   </div>
                 ) : compatiblePokemon.length > 0 ? (
@@ -625,13 +625,13 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-stone-500 dark:text-stone-400">
+                  <div className="text-center py-8 text-stone-500 dark:text-stone-300">
                     Loading breeding partners...
                   </div>
                 )}
                 
                 {compatiblePokemon.length > 0 && (
-                  <p className="text-center text-sm text-stone-500 dark:text-stone-400 mt-4">
+                  <p className="text-center text-sm text-stone-500 dark:text-stone-300 mt-4">
                     Showing sample partners from the same egg groups
                   </p>
                 )}
@@ -654,7 +654,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
          
         >
           <div className="p-6 md:p-8">
-            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400 mb-6">
+            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300 mb-6">
               Useful Breeding Items
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -686,7 +686,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                   </div>
                   <div className="flex-1">
                     <h5 className="font-semibold">{item.name}</h5>
-                    <p className="text-sm text-stone-600 dark:text-stone-400">{item.effect}</p>
+                    <p className="text-sm text-stone-600 dark:text-stone-300">{item.effect}</p>
                   </div>
                 </motion.div>
               ))}

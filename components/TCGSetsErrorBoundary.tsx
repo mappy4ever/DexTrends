@@ -44,7 +44,7 @@ class TCGSetsErrorBoundary extends React.Component<TCGSetsErrorBoundaryProps, TC
             <h2 className="text-2xl font-bold text-stone-900 dark:text-white mb-4">
               Oops! Something went wrong
             </h2>
-            <p className="text-stone-600 dark:text-stone-400 mb-6">
+            <p className="text-stone-600 dark:text-stone-300 mb-6">
               We encountered an error loading the TCG sets. This might be due to a temporary issue.
             </p>
             <div className="space-y-3">
@@ -63,7 +63,7 @@ class TCGSetsErrorBoundary extends React.Component<TCGSetsErrorBoundaryProps, TC
             </div>
             {this.state.errorInfo && (
               <details className="mt-6" open>
-                <summary className="cursor-pointer text-sm text-stone-500 dark:text-stone-400">
+                <summary className="cursor-pointer text-sm text-stone-500 dark:text-stone-300">
                   Error Details (for debugging)
                 </summary>
                 <pre className="mt-2 text-xs overflow-auto bg-stone-100 dark:bg-stone-900 p-2 rounded max-h-48">

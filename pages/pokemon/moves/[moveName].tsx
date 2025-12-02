@@ -102,7 +102,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-500 mb-4">Error Loading Move</h1>
-          <p className="text-stone-600 dark:text-stone-400 mb-4">{error || 'Move not found'}</p>
+          <p className="text-stone-600 dark:text-stone-300 mb-4">{error || 'Move not found'}</p>
           <StyledBackButton 
             text="Back to Moves" 
             onClick={() => router.push('/pokemon/moves')} 
@@ -160,13 +160,13 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                     <CategoryIcon category={moveCategory as 'physical' | 'special' | 'status' | null} size={24} />
                     <span className="text-sm font-medium capitalize">{moveCategory}</span>
                   </div>
-                  <span className="text-sm text-stone-500 dark:text-stone-400">Gen {generation}</span>
+                  <span className="text-sm text-stone-500 dark:text-stone-300">Gen {generation}</span>
                 </div>
               </div>
               
               {/* Move ID */}
               <div className="text-right">
-                <div className="text-sm text-stone-500 dark:text-stone-400">Move ID</div>
+                <div className="text-sm text-stone-500 dark:text-stone-300">Move ID</div>
                 <div className="text-2xl font-bold">#{moveData.id}</div>
               </div>
             </div>
@@ -190,26 +190,26 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
-                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">Power</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-300 mb-1">Power</div>
                     <div className="text-2xl font-bold">
                       {basePower || '—'}
                     </div>
                   </div>
                   
                   <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
-                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">Accuracy</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-300 mb-1">Accuracy</div>
                     <div className="text-2xl font-bold">
                       {accuracy ? `${accuracy}%` : '—'}
                     </div>
                   </div>
                   
                   <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
-                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">PP</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-300 mb-1">PP</div>
                     <div className="text-2xl font-bold">{moveData.pp}</div>
                   </div>
                   
                   <div className="bg-stone-100 dark:bg-stone-800 rounded-lg p-4">
-                    <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">Priority</div>
+                    <div className="text-sm text-stone-500 dark:text-stone-300 mb-1">Priority</div>
                     <div className="text-2xl font-bold">
                       {priority > 0 ? `+${priority}` : priority}
                     </div>
@@ -241,7 +241,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 {englishEffect?.short_effect && englishEffect.short_effect !== englishEffect.effect && (
                   <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-700">
                     <h3 className="font-semibold mb-2">Short Description</h3>
-                    <p className="text-sm text-stone-600 dark:text-stone-400">
+                    <p className="text-sm text-stone-600 dark:text-stone-300">
                       {englishEffect.short_effect}
                     </p>
                   </div>
@@ -283,7 +283,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                   {competitiveData.secondary_effect && (
                     <div>
                       <h3 className="font-semibold mb-2">Secondary Effects</h3>
-                      <p className="text-sm text-stone-600 dark:text-stone-400">
+                      <p className="text-sm text-stone-600 dark:text-stone-300">
                         {formatSecondaryEffects(competitiveData.secondary_effect)}
                       </p>
                     </div>
@@ -305,7 +305,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 Pokémon that can learn {displayName}
               </h2>
               
-              <div className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+              <div className="text-sm text-stone-600 dark:text-stone-300 mb-4">
                 {moveData.learned_by_pokemon.length} Pokémon can learn this move
               </div>
 
@@ -325,7 +325,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 </div>
                 
                 {moveData.learned_by_pokemon.length > 30 && (
-                  <div className="mt-4 text-center text-sm text-stone-500 dark:text-stone-400">
+                  <div className="mt-4 text-center text-sm text-stone-500 dark:text-stone-300">
                     And {moveData.learned_by_pokemon.length - 30} more...
                   </div>
                 )}

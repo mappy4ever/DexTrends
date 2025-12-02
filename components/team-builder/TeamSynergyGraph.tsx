@@ -321,7 +321,7 @@ const TeamSynergyGraph: React.FC<TeamSynergyGraphProps> = ({
 
       {team.length === 0 ? (
         <div className="flex items-center justify-center h-full">
-          <p className="text-stone-500 dark:text-stone-400">
+          <p className="text-stone-500 dark:text-stone-300">
             Add Pokemon to your team to see synergy analysis
           </p>
         </div>

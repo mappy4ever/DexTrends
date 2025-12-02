@@ -129,7 +129,7 @@ export const BottomNavigation: React.FC = () => {
         <motion.div
           className={cn(
             "mb-0.5 transition-colors duration-200 relative z-10",
-            active ? item.color : "text-stone-500 dark:text-stone-400"
+            active ? item.color : "text-stone-500 dark:text-stone-300"
           )}
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -143,7 +143,7 @@ export const BottomNavigation: React.FC = () => {
             "text-[10px] font-medium transition-colors duration-200 relative z-10",
             active
               ? "text-stone-900 dark:text-white"
-              : "text-stone-500 dark:text-stone-400"
+              : "text-stone-500 dark:text-stone-300"
           )}
         >
           {item.label}
@@ -227,7 +227,7 @@ export const BottomNavigation: React.FC = () => {
                 "mb-0.5 transition-colors duration-200 relative z-10",
                 isMoreActive()
                   ? "text-amber-600 dark:text-amber-400"
-                  : "text-stone-500 dark:text-stone-400"
+                  : "text-stone-500 dark:text-stone-300"
               )}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -240,7 +240,7 @@ export const BottomNavigation: React.FC = () => {
                 "text-[10px] font-medium transition-colors duration-200 relative z-10",
                 isMoreActive()
                   ? "text-stone-900 dark:text-white"
-                  : "text-stone-500 dark:text-stone-400"
+                  : "text-stone-500 dark:text-stone-300"
               )}
             >
               More

@@ -87,7 +87,7 @@ export default function EvolutionTreeRenderer({
     if (!details || details.length === 0) return null;
     
     return (
-      <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">
+      <div className="text-xs text-stone-600 dark:text-stone-300 mt-1">
         {details.map((detail, idx) => (
           <div key={idx}>
             {formatEvolutionDetails ? formatEvolutionDetails(detail) : 'Evolves'}

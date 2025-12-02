@@ -313,7 +313,7 @@ const MovesPage: NextPage = () => {
       label: 'Effect',
       priority: 'detail',
       renderCell: (move) => (
-        <span className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2">
+        <span className="text-xs text-stone-600 dark:text-stone-300 line-clamp-2">
           {move.short_effect || move.effect || 'No description available'}
         </span>
       )
@@ -330,7 +330,7 @@ const MovesPage: NextPage = () => {
         {/* Full effect description */}
         <div>
           <h4 className="font-semibold text-sm mb-2 text-stone-700 dark:text-stone-300">Full Description</h4>
-          <p className="text-sm text-stone-600 dark:text-stone-400">
+          <p className="text-sm text-stone-600 dark:text-stone-300">
             {move.effect || move.short_effect || 'No description available'}
           </p>
         </div>
@@ -338,12 +338,12 @@ const MovesPage: NextPage = () => {
         {/* Move details */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
           <div>
-            <span className="text-stone-500 dark:text-stone-400">Generation:</span>
+            <span className="text-stone-500 dark:text-stone-300">Generation:</span>
             <span className="ml-2 font-medium">Gen {move.generation}</span>
           </div>
           {move.effect_chance && (
             <div>
-              <span className="text-stone-500 dark:text-stone-400">Effect Chance:</span>
+              <span className="text-stone-500 dark:text-stone-300">Effect Chance:</span>
               <span className="ml-2 font-medium">{move.effect_chance}%</span>
             </div>
           )}
@@ -398,7 +398,7 @@ const MovesPage: NextPage = () => {
             <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
               Pokémon Moves
             </h1>
-            <p className="text-stone-600 dark:text-stone-400">
+            <p className="text-stone-600 dark:text-stone-300">
               {filteredMoves.length} moves available
             </p>
           </div>

@@ -38,11 +38,11 @@ export const TeammatesCountersSection: React.FC<TeammatesCountersSectionProps> =
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center">
                   <MdCatchingPokemon className="w-5 h-5 text-green-400" />
                 </div>
-                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Common Teammates
                 </h3>
               </div>
-              {loading && <span className="text-xs text-stone-500 dark:text-stone-400 italic">Loading...</span>}
+              {loading && <span className="text-xs text-stone-500 dark:text-stone-300 italic">Loading...</span>}
             </div>
             <div className="space-y-3">
               {teammates.map((teammate, index) => (
@@ -81,7 +81,7 @@ export const TeammatesCountersSection: React.FC<TeammatesCountersSectionProps> =
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center">
                 <MdCatchingPokemon className="w-5 h-5 text-red-400" />
               </div>
-              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                 Top Counters
               </h3>
             </div>

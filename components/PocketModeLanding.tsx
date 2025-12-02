@@ -113,7 +113,7 @@ const PocketModeLanding: React.FC = () => {
                   {feature.title}
                 </h3>
 
-                <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-4">
+                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-4">
                   {feature.description}
                 </p>
 
@@ -139,7 +139,7 @@ const PocketModeLanding: React.FC = () => {
               <h3 className="text-xl font-semibold text-stone-900 dark:text-white mb-3">
                 Streamlined Gameplay
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 Simplified rules and mechanics designed for quick, engaging battles on mobile devices.
               </p>
             </div>
@@ -151,7 +151,7 @@ const PocketModeLanding: React.FC = () => {
               <h3 className="text-xl font-semibold text-stone-900 dark:text-white mb-3">
                 Faster Matches
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 Games designed to finish in 5-10 minutes, perfect for mobile gaming sessions.
               </p>
             </div>
@@ -163,7 +163,7 @@ const PocketModeLanding: React.FC = () => {
               <h3 className="text-xl font-semibold text-stone-900 dark:text-white mb-3">
                 Exclusive Cards
               </h3>
-              <p className="text-stone-600 dark:text-stone-400">
+              <p className="text-stone-600 dark:text-stone-300">
                 Unique cards and artwork created specifically for the Pocket format.
               </p>
             </div>

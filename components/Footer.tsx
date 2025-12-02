@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
               <div className="flex justify-center md:justify-start mb-6">
                 <FooterLogo />
               </div>
-              <p className="text-stone-600 dark:text-stone-400 max-w-xs mx-auto md:mx-0">
+              <p className="text-stone-600 dark:text-stone-300 max-w-xs mx-auto md:mx-0">
                 Your comprehensive Pokemon TCG and Pokedex companion. Track, trade, and battle with confidence.
               </p>
             </div>
@@ -89,7 +89,7 @@ const Footer: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className={`p-3 ${borderRadiusClasses.full} bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 hover:bg-amber-600 hover:text-white hover:shadow-md transition-all duration-150`}
+                    className={`p-3 ${borderRadiusClasses.full} bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-300 hover:bg-amber-600 hover:text-white hover:shadow-md transition-all duration-150`}
                   >
                     {social.icon}
                   </a>
@@ -98,7 +98,7 @@ const Footer: React.FC = () => {
 
               {/* Newsletter Signup */}
               <div className="max-w-xs mx-auto md:ml-auto md:mr-0">
-                <p className="text-sm text-stone-600 dark:text-stone-400 mb-3">
+                <p className="text-sm text-stone-600 dark:text-stone-300 mb-3">
                   Stay updated with the latest Pokemon TCG news
                 </p>
                 <div className="flex gap-2">
@@ -122,7 +122,7 @@ const Footer: React.FC = () => {
 
           {/* Copyright & Legal */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-stone-600 dark:text-stone-400 text-center md:text-left">
+            <p className="text-sm text-stone-600 dark:text-stone-300 text-center md:text-left">
               © {currentYear} DexTrends - A{" "}
               <a
                 href="https://www.pakepoint.com"
@@ -138,13 +138,13 @@ const Footer: React.FC = () => {
             <div className="flex items-center gap-6 text-sm">
               <Link
                 href="/privacy"
-                className="text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-150"
+                className="text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-150"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms"
-                className="text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-150"
+                className="text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-150"
               >
                 Terms of Service
               </Link>

@@ -54,13 +54,13 @@ const rarityIcons: Record<string, { icon: React.FC<{className?: string; hollow?:
   'Double Rare': { icon: StarIcon, color: 'text-stone-900 dark:text-stone-100', label: 'Double Rare', count: 2 },
 
   // White/Silver star rarities (Ultra Rare)
-  'Ultra Rare': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'Ultra Rare', count: 2 },
-  'Rare Ultra': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'Ultra Rare', count: 2 },
-  'Rare Holo EX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'EX', count: 2 },
-  'Rare Holo GX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'GX', count: 2 },
-  'Rare Holo V': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'V', count: 2 },
-  'Rare Holo VMAX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'VMAX', count: 2 },
-  'Rare Holo VSTAR': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-400', label: 'VSTAR', count: 2 },
+  'Ultra Rare': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-300', label: 'Ultra Rare', count: 2 },
+  'Rare Ultra': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-300', label: 'Ultra Rare', count: 2 },
+  'Rare Holo EX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-300', label: 'EX', count: 2 },
+  'Rare Holo GX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-300', label: 'GX', count: 2 },
+  'Rare Holo V': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-300', label: 'V', count: 2 },
+  'Rare Holo VMAX': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-300', label: 'VMAX', count: 2 },
+  'Rare Holo VSTAR': { icon: StarIcon, color: 'text-stone-300 dark:text-stone-300', label: 'VSTAR', count: 2 },
   
   // Gold star rarities
   'Illustration Rare': { icon: StarIcon, color: 'text-yellow-500', label: 'Illustration Rare', count: 1 },
@@ -253,7 +253,7 @@ export const RarityIcon: React.FC<RarityIconProps> = ({
       {showLabel && (
         <span className={cn(
           'text-xs font-medium ml-1',
-          isActive ? 'text-stone-900 dark:text-white' : 'text-stone-600 dark:text-stone-400'
+          isActive ? 'text-stone-900 dark:text-white' : 'text-stone-600 dark:text-stone-300'
         )}>
           {finalRarityData.label}
         </span>

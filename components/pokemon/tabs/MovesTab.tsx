@@ -240,7 +240,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
           <div className="p-6">
             {/* Title and Generation Selector */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                 Move Pool Analysis
               </h2>
               
@@ -262,7 +262,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
                     onChange={(e) => setShowCumulative(e.target.checked)}
                     className="rounded text-amber-500"
                   />
-                  <span className="text-sm text-stone-600 dark:text-stone-400">
+                  <span className="text-sm text-stone-600 dark:text-stone-300">
                     Show all up to Gen {selectedGeneration}
                   </span>
                 </label>
@@ -393,7 +393,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
             <div className="text-3xl font-bold text-stone-800 dark:text-stone-100">
               {stats.total}
             </div>
-            <p className="text-xs text-stone-600 dark:text-stone-400 mt-1">
+            <p className="text-xs text-stone-600 dark:text-stone-300 mt-1">
               Available moves
             </p>
           </div>
@@ -582,7 +582,7 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, moveData, expanded, onToggle 
           </div>
 
           {moveData && (
-            <div className="flex items-center gap-3 text-xs text-stone-600 dark:text-stone-400">
+            <div className="flex items-center gap-3 text-xs text-stone-600 dark:text-stone-300">
               {moveData.power && (
                 <span>Power: {moveData.power}</span>
               )}
@@ -614,7 +614,7 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, moveData, expanded, onToggle 
             transition={{ duration: 0.2 }}
             className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700"
           >
-            <p className="text-sm text-stone-600 dark:text-stone-400">
+            <p className="text-sm text-stone-600 dark:text-stone-300">
               {'No description available'}
             </p>
             {moveData.priority !== 0 && (

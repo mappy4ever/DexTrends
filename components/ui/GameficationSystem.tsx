@@ -394,7 +394,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${
               activeTab === tab.id
                 ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             {tab.icon}
@@ -416,7 +416,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                   <div className="text-xl font-bold text-stone-900 dark:text-white">
                     {typeof value === 'number' && value > 1000 ? value.toLocaleString() : value}
                   </div>
-                  <div className="text-xs text-stone-500 dark:text-stone-400 capitalize">
+                  <div className="text-xs text-stone-500 dark:text-stone-300 capitalize">
                     {key.replace(/([A-Z])/g, ' $1').trim()}
                   </div>
                 </div>
@@ -443,7 +443,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                   </div>
                   <div className="flex-1">
                     <p className="text-sm text-stone-900 dark:text-white">{activity.message}</p>
-                    <p className="text-xs text-stone-500 dark:text-stone-400">
+                    <p className="text-xs text-stone-500 dark:text-stone-300">
                       +{activity.points} points • {formatTimeAgo(activity.timestamp)}
                     </p>
                   </div>
@@ -475,13 +475,13 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                       {achievement.rarity}
                     </span>
                   </div>
-                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
+                  <p className="text-sm text-stone-600 dark:text-stone-300 mb-2">
                     {achievement.description}
                   </p>
 
                   {/* Progress Bar */}
                   <div className="mb-2">
-                    <div className="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 mb-1">
+                    <div className="flex items-center justify-between text-xs text-stone-500 dark:text-stone-300 mb-1">
                       <span>Progress</span>
                       <span>{Math.min(achievement.progress, achievement.maxProgress)} / {achievement.maxProgress}</span>
                     </div>
@@ -521,7 +521,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
               <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
                 Daily Tasks
               </h3>
-              <div className="text-sm text-stone-500 dark:text-stone-400">
+              <div className="text-sm text-stone-500 dark:text-stone-300">
                 Resets in {Math.floor(Math.random() * 20 + 4)} hours
               </div>
             </div>
@@ -537,11 +537,11 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-stone-900 dark:text-white">{task.name}</h4>
-                      <p className="text-sm text-stone-600 dark:text-stone-400">{task.description}</p>
+                      <p className="text-sm text-stone-600 dark:text-stone-300">{task.description}</p>
 
                       {/* Progress */}
                       <div className="mt-2">
-                        <div className="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 mb-1">
+                        <div className="flex items-center justify-between text-xs text-stone-500 dark:text-stone-300 mb-1">
                           <span>Progress</span>
                           <span>{task.progress} / {task.maxProgress}</span>
                         </div>
@@ -618,7 +618,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                   <div className="font-medium text-stone-900 dark:text-white">
                     {player.username}
                   </div>
-                  <div className="text-sm text-stone-500 dark:text-stone-400">
+                  <div className="text-sm text-stone-500 dark:text-stone-300">
                     Level {player.level}
                   </div>
                 </div>
@@ -627,7 +627,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                   <div className="font-bold text-stone-900 dark:text-white">
                     {player.points.toLocaleString()}
                   </div>
-                  <div className="text-sm text-stone-500 dark:text-stone-400">
+                  <div className="text-sm text-stone-500 dark:text-stone-300">
                     points
                   </div>
                 </div>

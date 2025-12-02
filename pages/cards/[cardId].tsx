@@ -560,7 +560,7 @@ export default function CardDetailPage() {
                   className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center transition-colors ${
                     isCardFavorite(card.id) 
                       ? 'bg-red-100 dark:bg-red-900/30 text-red-500 hover:bg-red-200 dark:hover:bg-red-900/40' 
-                      : 'bg-stone-100 dark:bg-stone-700 text-stone-500 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-600'
+                      : 'bg-stone-100 dark:bg-stone-700 text-stone-500 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
                   }`}
                   onClick={handleToggleFavorite}
                 >
@@ -603,7 +603,7 @@ export default function CardDetailPage() {
                     )}
                     <span className="text-amber-600 dark:text-amber-400 hover:underline">{card.set.name}</span>
                   </Link>
-                  <span className="text-stone-500 dark:text-stone-400">#{card.number}</span>
+                  <span className="text-stone-500 dark:text-stone-300">#{card.number}</span>
                   {card.rarity && (
                     <span className="px-2 py-1 bg-stone-100 dark:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-full text-sm">
                       {card.rarity}
@@ -618,35 +618,35 @@ export default function CardDetailPage() {
                   <div className="space-y-3">
                     {card.supertype && (
                       <div className="flex justify-between">
-                        <span className="text-stone-600 dark:text-stone-400">Supertype:</span>
+                        <span className="text-stone-600 dark:text-stone-300">Supertype:</span>
                         <span className="font-medium">{card.supertype}</span>
                       </div>
                     )}
                     
                     {card.subtypes && card.subtypes.length > 0 && (
                       <div className="flex justify-between">
-                        <span className="text-stone-600 dark:text-stone-400">Subtypes:</span>
+                        <span className="text-stone-600 dark:text-stone-300">Subtypes:</span>
                         <span className="font-medium">{card.subtypes.join(", ")}</span>
                       </div>
                     )}
 
                     {card.hp && (
                       <div className="flex justify-between">
-                        <span className="text-stone-600 dark:text-stone-400">HP:</span>
+                        <span className="text-stone-600 dark:text-stone-300">HP:</span>
                         <span className="font-medium">{card.hp}</span>
                       </div>
                     )}
 
                     {card.types && card.types.length > 0 && (
                       <div className="flex justify-between items-center">
-                        <span className="text-stone-600 dark:text-stone-400">Types:</span>
+                        <span className="text-stone-600 dark:text-stone-300">Types:</span>
                         <div>{renderTypes(card.types)}</div>
                       </div>
                     )}
 
                     {card.evolvesFrom && (
                       <div className="flex justify-between">
-                        <span className="text-stone-600 dark:text-stone-400">Evolves From:</span>
+                        <span className="text-stone-600 dark:text-stone-300">Evolves From:</span>
                         <Link
                           href={`/pokedex/${card.evolvesFrom}`}
                           className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
@@ -658,7 +658,7 @@ export default function CardDetailPage() {
 
                     {card.rules && card.rules.length > 0 && (
                       <div className="border-t border-stone-200 dark:border-stone-700 pt-3 mt-3">
-                        <span className="block text-stone-600 dark:text-stone-400 mb-1">Rules:</span>
+                        <span className="block text-stone-600 dark:text-stone-300 mb-1">Rules:</span>
                         <ul className="list-disc pl-5 space-y-1">
                           {card.rules.map((rule, index) => (
                             <li key={index} className="text-sm">{rule}</li>
@@ -681,15 +681,15 @@ export default function CardDetailPage() {
                             </h3>
                             <div className="grid grid-cols-3 gap-2 mt-1">
                               <div className="bg-amber-50 dark:bg-amber-900/20 p-2 rounded">
-                                <div className="text-xs text-stone-500 dark:text-stone-400">Low</div>
+                                <div className="text-xs text-stone-500 dark:text-stone-300">Low</div>
                                 <div className="font-semibold">${priceData.low?.toFixed(2) || 'N/A'}</div>
                               </div>
                               <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded">
-                                <div className="text-xs text-stone-500 dark:text-stone-400">Market</div>
+                                <div className="text-xs text-stone-500 dark:text-stone-300">Market</div>
                                 <div className="font-semibold">${priceData.market?.toFixed(2) || 'N/A'}</div>
                               </div>
                               <div className="bg-red-50 dark:bg-red-900/20 p-2 rounded">
-                                <div className="text-xs text-stone-500 dark:text-stone-400">High</div>
+                                <div className="text-xs text-stone-500 dark:text-stone-300">High</div>
                                 <div className="font-semibold">${priceData.high?.toFixed(2) || 'N/A'}</div>
                               </div>
                             </div>
@@ -711,7 +711,7 @@ export default function CardDetailPage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="text-stone-500 dark:text-stone-400 italic">
+                      <div className="text-stone-500 dark:text-stone-300 italic">
                         No pricing data available for this card.
                       </div>
                     )}
@@ -746,7 +746,7 @@ export default function CardDetailPage() {
                       <div key={index} className="border-l-4 border-purple-500 pl-4">
                         <div className="flex justify-between items-center">
                           <h3 className="font-bold text-lg">{ability.name}</h3>
-                          <span className="text-sm text-stone-500 dark:text-stone-400">{ability.type}</span>
+                          <span className="text-sm text-stone-500 dark:text-stone-300">{ability.type}</span>
                         </div>
                         <p className="mt-1">{ability.text}</p>
                       </div>

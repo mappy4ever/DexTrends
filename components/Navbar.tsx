@@ -306,7 +306,7 @@ export default function Navbar() {
                             <div className="font-medium text-sm">
                               {dropdownItem.label}
                             </div>
-                            <div className="text-xs text-stone-500 dark:text-stone-400">
+                            <div className="text-xs text-stone-500 dark:text-stone-300">
                               {dropdownItem.description}
                             </div>
                           </div>
@@ -452,7 +452,7 @@ export default function Navbar() {
                             className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-colors duration-150 touch-manipulation min-h-[44px] active:bg-stone-200 dark:active:bg-stone-700
                               ${router.pathname === dropdownItem.href
                                 ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
-                                : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
+                                : 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                             onClick={() => setMobileOpen(false)}
                           >
                             <span className={`flex-shrink-0 w-5 h-5 flex items-center justify-center ${router.pathname === dropdownItem.href ? 'text-amber-600 dark:text-amber-400' : 'text-stone-400'}`}>

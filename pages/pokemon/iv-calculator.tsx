@@ -287,7 +287,7 @@ const IVCalculatorPage: NextPage = () => {
               <h3 className="font-semibold text-stone-800 dark:text-white mb-1">
                 What are IVs?
               </h3>
-              <p className="text-sm text-stone-600 dark:text-stone-400">
+              <p className="text-sm text-stone-600 dark:text-stone-300">
                 Individual Values (IVs) are hidden numbers from 0-31 that determine your Pokemon's potential.
                 Higher IVs mean higher stats. A Pokemon with 31 IVs in a stat is considered "perfect" in that stat.
               </p>
@@ -391,7 +391,7 @@ const IVCalculatorPage: NextPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   {/* Level */}
                   <div>
-                    <label className="text-sm font-medium text-stone-600 dark:text-stone-400 mb-2 block">
+                    <label className="text-sm font-medium text-stone-600 dark:text-stone-300 mb-2 block">
                       Level
                     </label>
                     <input
@@ -406,7 +406,7 @@ const IVCalculatorPage: NextPage = () => {
 
                   {/* Nature */}
                   <div>
-                    <label className="text-sm font-medium text-stone-600 dark:text-stone-400 mb-2 block">
+                    <label className="text-sm font-medium text-stone-600 dark:text-stone-300 mb-2 block">
                       Nature
                     </label>
                     <select
@@ -571,7 +571,7 @@ const IVCalculatorPage: NextPage = () => {
                   {/* Overall Rating */}
                   <div className="mt-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl">
                     <div className="text-center">
-                      <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
+                      <p className="text-sm text-stone-600 dark:text-stone-300 mb-2">
                         Overall IV Rating
                       </p>
                       <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
@@ -607,7 +607,7 @@ const IVCalculatorPage: NextPage = () => {
                     )}>
                       {value.label}
                     </span>
-                    <span className="text-sm text-stone-600 dark:text-stone-400">
+                    <span className="text-sm text-stone-600 dark:text-stone-300">
                       {key === 'perfect' ? '31 IVs - Maximum potential' :
                        key === 'good' ? '26-30 IVs - Great stats' :
                        key === 'decent' ? '16-25 IVs - Average stats' :
@@ -623,7 +623,7 @@ const IVCalculatorPage: NextPage = () => {
               <h3 className="font-bold text-stone-800 dark:text-white mb-3">
                 Tips for Accurate Calculation
               </h3>
-              <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+              <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-300">
                 <li className="flex items-start gap-2">
                   <FaCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                   Use Pokemon at higher levels for more accurate results

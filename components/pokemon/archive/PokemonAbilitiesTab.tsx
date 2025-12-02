@@ -72,13 +72,13 @@ const PokemonAbilitiesTab: React.FC<PokemonAbilitiesTabProps> = ({ pokemonDetail
                   <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-full"></div>
                   <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-3/4"></div>
                 </div>
-                <p className="text-stone-500 dark:text-stone-400 text-sm mt-2 italic">
+                <p className="text-stone-500 dark:text-stone-300 text-sm mt-2 italic">
                   Loading ability description...
                 </p>
               </div>
             )) || (
               <div className="text-center py-12">
-                <p className="text-stone-500 dark:text-stone-400">No abilities data available.</p>
+                <p className="text-stone-500 dark:text-stone-300">No abilities data available.</p>
               </div>
             )}
           </div>

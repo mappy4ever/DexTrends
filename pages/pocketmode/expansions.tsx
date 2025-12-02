@@ -139,7 +139,7 @@ const PocketExpansions: NextPage = () => {
               <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent">
                 Pokémon TCG Pocket Expansions
               </h1>
-              <p className="text-stone-600 dark:text-stone-400 mt-2">
+              <p className="text-stone-600 dark:text-stone-300 mt-2">
                 Explore all {expansions.length} expansion sets
               </p>
             </div>
@@ -148,7 +148,7 @@ const PocketExpansions: NextPage = () => {
             <div className="flex justify-center gap-2 mb-4">
               <button
                 onClick={() => router.push('/pocketmode')}
-                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-stone-800/60 border border-white/30 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:bg-white/80 transition-all"
+                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-stone-800/60 border border-white/30 font-semibold text-sm text-stone-600 dark:text-stone-300 hover:bg-white/80 transition-all"
               >
                 Card List
               </button>
@@ -159,7 +159,7 @@ const PocketExpansions: NextPage = () => {
               </button>
               <button
                 onClick={() => router.push('/pocketmode/deckbuilder')}
-                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-stone-800/60 border border-white/30 font-semibold text-sm text-stone-600 dark:text-stone-400 hover:bg-white/80 transition-all"
+                className="px-4 py-2 rounded-xl bg-white/60 dark:bg-stone-800/60 border border-white/30 font-semibold text-sm text-stone-600 dark:text-stone-300 hover:bg-white/80 transition-all"
               >
                 Deck Builder
               </button>
@@ -248,7 +248,7 @@ const PocketExpansions: NextPage = () => {
         ) : error ? (
           <div className="text-center p-8 bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
             <h2 className="text-xl font-bold text-red-600 mb-4">Failed to Load Expansions</h2>
-            <p className="text-stone-600 dark:text-stone-400 mb-4">{error}</p>
+            <p className="text-stone-600 dark:text-stone-300 mb-4">{error}</p>
             <GradientButton
               variant="primary"
               onClick={() => window.location.reload()}
@@ -289,7 +289,7 @@ const PocketExpansions: NextPage = () => {
                   <div className="p-5 flex-1 flex flex-col">
                     <h2 className="font-bold text-lg text-stone-800 dark:text-stone-100 mb-1">{expansion.name}</h2>
 
-                    <p className="text-sm text-stone-600 dark:text-stone-400 mb-4 line-clamp-2">
+                    <p className="text-sm text-stone-600 dark:text-stone-300 mb-4 line-clamp-2">
                       {expansion.description}
                     </p>
 
@@ -346,7 +346,7 @@ const PocketExpansions: NextPage = () => {
           <div className="text-center py-20 bg-white/90 dark:bg-stone-800/90 rounded-xl shadow-lg">
             <div className="text-6xl mb-4">🔍</div>
             <h2 className="text-xl font-bold text-stone-800 dark:text-stone-200 mb-4">No Expansions Found</h2>
-            <p className="text-stone-600 dark:text-stone-400 mb-6">
+            <p className="text-stone-600 dark:text-stone-300 mb-6">
               {search ? `No expansions match "${search}".` : "No Pocket expansions available."}
             </p>
             {search && (

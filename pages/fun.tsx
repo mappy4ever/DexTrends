@@ -216,7 +216,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                   <h3 className="text-xl font-bold capitalize mb-2 text-stone-800 dark:text-white">
                     {randomPokemon.name}
                   </h3>
-                  <p className="text-stone-600 dark:text-stone-400 mb-4">
+                  <p className="text-stone-600 dark:text-stone-300 mb-4">
                     #{randomPokemon.id.toString().padStart(3, '0')}
                   </p>
                   <div className="flex flex-wrap justify-center gap-2 mb-4">
@@ -294,7 +294,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                             ? 'bg-green-500 text-white'
                             : index === selectedAnswer && index !== pokemonQuizzes[currentQuiz].correct
                             ? 'bg-red-500 text-white'
-                            : 'bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-400'
+                            : 'bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300'
                           : 'bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 text-stone-800 dark:text-white'
                       }`}
                     >

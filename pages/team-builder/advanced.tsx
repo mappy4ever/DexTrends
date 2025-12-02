@@ -200,7 +200,7 @@ const AdvancedTeamBuilder: NextPage = () => {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-stone-900 dark:text-white mb-1 sm:mb-2">
               Advanced Team Builder
             </h1>
-            <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400">
+            <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300">
               Build competitive teams with real-time synergy analysis and type coverage visualization
             </p>
           </div>
@@ -432,20 +432,20 @@ const TeamMemberCard: React.FC<{
 
       <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
         <div className="flex justify-between">
-          <span className="text-stone-600 dark:text-stone-400">Level:</span>
+          <span className="text-stone-600 dark:text-stone-300">Level:</span>
           <span>{member.level}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-stone-600 dark:text-stone-400">Nature:</span>
+          <span className="text-stone-600 dark:text-stone-300">Nature:</span>
           <span>{member.nature.name}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-stone-600 dark:text-stone-400">Ability:</span>
+          <span className="text-stone-600 dark:text-stone-300">Ability:</span>
           <span className="capitalize">{member.ability}</span>
         </div>
         {member.item && (
           <div className="flex justify-between">
-            <span className="text-stone-600 dark:text-stone-400">Item:</span>
+            <span className="text-stone-600 dark:text-stone-300">Item:</span>
             <span>{member.item}</span>
           </div>
         )}
@@ -467,7 +467,7 @@ const TypeCoverageMatrix: React.FC<{ team: TeamMember[] }> = ({ team }) => {
         <div>
           <h4 className="font-medium mb-2 text-red-600">Shared Weaknesses</h4>
           {Object.keys(analysis.sharedWeaknesses).length === 0 ? (
-            <p className="text-stone-600 dark:text-stone-400">No shared weaknesses!</p>
+            <p className="text-stone-600 dark:text-stone-300">No shared weaknesses!</p>
           ) : (
             <ul className="space-y-1">
               {Object.entries(analysis.sharedWeaknesses).map(([type, count]) => (
@@ -483,7 +483,7 @@ const TypeCoverageMatrix: React.FC<{ team: TeamMember[] }> = ({ team }) => {
         <div>
           <h4 className="font-medium mb-2 text-orange-600">Uncovered Types</h4>
           {analysis.uncoveredTypes.length === 0 ? (
-            <p className="text-stone-600 dark:text-stone-400">All types covered!</p>
+            <p className="text-stone-600 dark:text-stone-300">All types covered!</p>
           ) : (
             <ul className="space-y-1">
               {analysis.uncoveredTypes.map((type) => (
@@ -530,14 +530,14 @@ const SpeedTierAnalysis: React.FC<{ team: TeamMember[] }> = ({ team }) => {
               <span className="text-2xl font-bold text-stone-500">#{index + 1}</span>
               <div>
                 <div className="font-medium capitalize text-amber-800 dark:text-amber-200">{pokemon.name}</div>
-                <div className="text-sm text-stone-600 dark:text-stone-400">
+                <div className="text-sm text-stone-600 dark:text-stone-300">
                   Nature: {pokemon.nature}
                 </div>
               </div>
             </div>
             <div className="text-right">
               <div className="font-bold">{pokemon.actualSpeed}</div>
-              <div className="text-sm text-stone-600 dark:text-stone-400">
+              <div className="text-sm text-stone-600 dark:text-stone-300">
                 Base: {pokemon.baseSpeed}
               </div>
             </div>

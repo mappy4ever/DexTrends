@@ -821,10 +821,10 @@ export default function StarterDetailPage() {
                 {regionData.region} Starters
               </span>
             </h1>
-            <p className="text-xl text-stone-600 dark:text-stone-400 mb-2">
+            <p className="text-xl text-stone-600 dark:text-stone-300 mb-2">
               Generation {regionData.generation} • {regionData.games.join(", ")}
             </p>
-            <p className="text-lg text-stone-600 dark:text-stone-400 max-w-3xl mx-auto">
+            <p className="text-lg text-stone-600 dark:text-stone-300 max-w-3xl mx-auto">
               {regionData.description}
             </p>
           </div>
@@ -872,7 +872,7 @@ export default function StarterDetailPage() {
 
                     {/* Info Section */}
                     <div className="p-6">
-                      <p className="text-stone-600 dark:text-stone-400 mb-4">
+                      <p className="text-stone-600 dark:text-stone-300 mb-4">
                         {starter.description}
                       </p>
 
@@ -979,7 +979,7 @@ export default function StarterDetailPage() {
                           />
                         </svg>
                       </div>
-                      <p className="text-sm text-stone-600 dark:text-stone-400">Total Base Stats</p>
+                      <p className="text-sm text-stone-600 dark:text-stone-300">Total Base Stats</p>
                     </div>
                   );
                 })}
@@ -1038,7 +1038,7 @@ export default function StarterDetailPage() {
                               </div>
                               <div className="flex-1">
                                 <h4 className="font-bold text-lg">{evo.name}</h4>
-                                <p className="text-sm text-stone-600 dark:text-stone-400">
+                                <p className="text-sm text-stone-600 dark:text-stone-300">
                                   {idx === 0 ? 'Base Form' : `Evolves at Level ${evo.level}`}
                                 </p>
                                 <div className="flex gap-2 mt-2">
@@ -1060,7 +1060,7 @@ export default function StarterDetailPage() {
                           {selectedStarter.funFacts.map((fact, idx) => (
                             <li key={idx} className="flex items-start gap-2">
                               <BsStar className="text-yellow-500 mt-1 flex-shrink-0" />
-                              <span className="text-stone-600 dark:text-stone-400">{fact}</span>
+                              <span className="text-stone-600 dark:text-stone-300">{fact}</span>
                             </li>
                           ))}
                         </ul>
@@ -1099,7 +1099,7 @@ export default function StarterDetailPage() {
 
                         {/* Strategy */}
                         <h3 className="text-2xl font-bold mb-4">Battle Strategy</h3>
-                        <p className="text-stone-600 dark:text-stone-400 mb-4">
+                        <p className="text-stone-600 dark:text-stone-300 mb-4">
                           {selectedStarter.strategy}
                         </p>
 

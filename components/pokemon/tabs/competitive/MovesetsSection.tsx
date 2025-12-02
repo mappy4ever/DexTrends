@@ -33,11 +33,11 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
                 <FaChessBishop className="w-5 h-5 text-amber-400" />
               </div>
-              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">
+              <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                 Popular Movesets
               </h3>
             </div>
-            {loading && <span className="text-xs text-stone-500 dark:text-stone-400 italic">Loading...</span>}
+            {loading && <span className="text-xs text-stone-500 dark:text-stone-300 italic">Loading...</span>}
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -84,15 +84,15 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                     {/* Quick Info */}
                     <div className="grid grid-cols-3 gap-2 text-xs">
                       <div className="text-center p-2 bg-white/5 dark:bg-stone-800/50 rounded">
-                        <p className="text-stone-500 dark:text-stone-400">Item</p>
+                        <p className="text-stone-500 dark:text-stone-300">Item</p>
                         <p className="font-medium">{moveset.item}</p>
                       </div>
                       <div className="text-center p-2 bg-white/5 dark:bg-stone-800/50 rounded">
-                        <p className="text-stone-500 dark:text-stone-400">Ability</p>
+                        <p className="text-stone-500 dark:text-stone-300">Ability</p>
                         <p className="font-medium">{moveset.ability}</p>
                       </div>
                       <div className="text-center p-2 bg-white/5 dark:bg-stone-800/50 rounded">
-                        <p className="text-stone-500 dark:text-stone-400">Nature</p>
+                        <p className="text-stone-500 dark:text-stone-300">Nature</p>
                         <p className="font-medium">{moveset.nature}</p>
                       </div>
                     </div>
@@ -110,7 +110,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                         <div className="p-4 space-y-3 border-t border-stone-200/50 dark:border-stone-700/50">
                           {/* EVs */}
                           <div>
-                            <p className="text-sm text-stone-600 dark:text-stone-400 mb-2 flex items-center gap-2">
+                            <p className="text-sm text-stone-600 dark:text-stone-300 mb-2 flex items-center gap-2">
                               <HiSparkles className="w-4 h-4 text-amber-400" />
                               EV Spread
                             </p>
@@ -132,7 +132,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                           
                           {/* Moves */}
                           <div>
-                            <p className="text-sm text-stone-600 dark:text-stone-400 mb-2 flex items-center gap-2">
+                            <p className="text-sm text-stone-600 dark:text-stone-300 mb-2 flex items-center gap-2">
                               <FaFistRaised className="w-4 h-4 text-red-400" />
                               Moveset
                             </p>
@@ -159,7 +159,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
           {/* Data Notice */}
           {!loading && (
             <div className="mt-4 text-center">
-              <p className="text-xs text-stone-500 dark:text-stone-400 italic">
+              <p className="text-xs text-stone-500 dark:text-stone-300 italic">
                 * Data calculated based on tier placement, stats, and type matchups
               </p>
             </div>
