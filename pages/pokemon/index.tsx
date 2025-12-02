@@ -4,7 +4,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Container } from '../../components/ui/Container';
 import { cn } from '../../utils/cn';
-import { FaBook, FaGamepad, FaDice, FaListAlt, FaFlask, FaMagic, FaGlobe, FaPaw } from 'react-icons/fa';
+import {
+  FaBook, FaGamepad, FaDice, FaListAlt, FaFlask, FaMagic, FaGlobe, FaPaw,
+  FaBalanceScale, FaDna, FaAppleAlt, FaStar, FaCalculator, FaRandom
+} from 'react-icons/fa';
 
 const POKEMON_SECTIONS = [
   {
@@ -13,6 +16,14 @@ const POKEMON_SECTIONS = [
     href: '/pokedex',
     icon: <FaBook className="w-6 h-6" />,
     color: 'from-red-500 to-orange-500',
+  },
+  {
+    title: 'Compare',
+    description: 'Side-by-side Pokémon comparison with stats, abilities, and type analysis',
+    href: '/pokemon/compare',
+    icon: <FaBalanceScale className="w-6 h-6" />,
+    color: 'from-indigo-500 to-blue-500',
+    isNew: true,
   },
   {
     title: 'Moves',
@@ -34,6 +45,46 @@ const POKEMON_SECTIONS = [
     href: '/pokemon/items-unified',
     icon: <FaListAlt className="w-6 h-6" />,
     color: 'from-amber-500 to-yellow-500',
+  },
+  {
+    title: 'Natures',
+    description: 'Complete guide to all 25 natures and their stat effects',
+    href: '/pokemon/natures',
+    icon: <FaDna className="w-6 h-6" />,
+    color: 'from-pink-500 to-rose-500',
+    isNew: true,
+  },
+  {
+    title: 'Berries',
+    description: 'All berries with effects, flavors, and growth times',
+    href: '/pokemon/berries',
+    icon: <FaAppleAlt className="w-6 h-6" />,
+    color: 'from-red-400 to-pink-500',
+    isNew: true,
+  },
+  {
+    title: 'Shiny Gallery',
+    description: 'Browse and compare shiny Pokémon variations',
+    href: '/pokemon/shiny',
+    icon: <FaStar className="w-6 h-6" />,
+    color: 'from-amber-400 to-yellow-500',
+    isNew: true,
+  },
+  {
+    title: 'IV Calculator',
+    description: 'Calculate your Pokémon\'s hidden Individual Values',
+    href: '/pokemon/iv-calculator',
+    icon: <FaCalculator className="w-6 h-6" />,
+    color: 'from-cyan-500 to-blue-500',
+    isNew: true,
+  },
+  {
+    title: 'Evolution Guide',
+    description: 'Master all Pokémon evolution methods and requirements',
+    href: '/pokemon/evolution-guide',
+    icon: <FaRandom className="w-6 h-6" />,
+    color: 'from-green-400 to-emerald-500',
+    isNew: true,
   },
   {
     title: 'Games',
@@ -102,11 +153,18 @@ const PokemonIndexPage: NextPage = () => {
                   <Container
                     variant="elevated"
                     className={cn(
-                      'h-full p-6 cursor-pointer group',
+                      'h-full p-6 cursor-pointer group relative',
                       'hover:scale-[1.02] transition-all duration-200',
                       'hover:shadow-lg'
                     )}
                   >
+                    {/* New Badge */}
+                    {(section as any).isNew && (
+                      <span className="absolute top-3 right-3 px-2 py-0.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full">
+                        NEW
+                      </span>
+                    )}
+
                     {/* Icon */}
                     <div className={cn(
                       'w-12 h-12 rounded-xl flex items-center justify-center mb-4',
