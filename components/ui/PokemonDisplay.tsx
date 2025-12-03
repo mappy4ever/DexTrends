@@ -56,6 +56,28 @@ const typeGradients: Record<string, string> = {
   fairy: 'from-pink-400 via-rose-300 to-pink-200',
 };
 
+// Solid type colors for dots/indicators
+const typeColors: Record<string, string> = {
+  normal: '#A8A878',
+  fire: '#F08030',
+  water: '#6890F0',
+  electric: '#F8D030',
+  grass: '#78C850',
+  ice: '#98D8D8',
+  fighting: '#C03028',
+  poison: '#A040A0',
+  ground: '#E0C068',
+  flying: '#A890F0',
+  psychic: '#F85888',
+  bug: '#A8B820',
+  rock: '#B8A038',
+  ghost: '#705898',
+  dragon: '#7038F8',
+  dark: '#705848',
+  steel: '#B8B8D0',
+  fairy: '#EE99AC',
+};
+
 interface PokemonType {
   type: {
     name: string;
@@ -397,9 +419,9 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
       
     case 'listing':
       // Clean, minimal card for Pokedex grid listing
-      // Shows: number, image, name, type pills
+      // Shows: number, image, name, type indicators
       // No stats, no badges, no gradients
-      // Mobile-optimized: smaller padding, flexible image, wrapping types
+      // Mobile-optimized: compact layout, no overflow
       return (
         <motion.div
           whileHover={animated ? { y: -2, boxShadow: '0 8px 25px -5px rgba(0,0,0,0.1)' } : undefined}
@@ -414,40 +436,45 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             'bg-white dark:bg-stone-800/95',
             'border border-stone-200 dark:border-stone-700/50',
             'shadow-sm',
-            'p-2 sm:p-3', // Smaller padding on mobile
-            'h-full w-full', // Fill container
-            'flex flex-col', // Enable flex layout
+            'p-2 sm:p-3',
+            'h-full w-full min-h-[120px] sm:min-h-[140px]',
+            'flex flex-col',
             'transition-shadow duration-150',
             'focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none',
             className
           )}
         >
           {/* Pokemon Number - top left, subtle */}
-          <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 text-[10px] sm:text-[11px] text-stone-400 dark:text-stone-500 font-medium">
+          <span className="text-[10px] sm:text-[11px] text-stone-400 dark:text-stone-500 font-medium">
             #{String(id).padStart(3, '0')}
           </span>
 
-          {/* Pokemon Image - centered, responsive size */}
-          <div className="flex-1 flex items-center justify-center pt-3 sm:pt-4 min-h-0">
+          {/* Pokemon Image - centered, fixed responsive size */}
+          <div className="flex-1 flex items-center justify-center py-1">
             <Image
               src={imageSrc}
               alt={name}
               width={width || 56}
               height={height || 56}
-              className="object-contain drop-shadow-sm w-14 h-14 sm:w-[72px] sm:h-[72px]"
+              className="object-contain drop-shadow-sm w-12 h-12 sm:w-16 sm:h-16"
               onError={() => setImgError(true)}
             />
           </div>
 
-          {/* Name - bottom, centered, responsive text */}
-          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-xs sm:text-sm leading-tight mt-auto truncate px-0.5">
-            {name}
+          {/* Name - bottom, centered, no truncate for short names */}
+          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-[11px] sm:text-xs leading-tight">
+            {name.length > 10 ? name.slice(0, 10) + '...' : name}
           </h3>
 
-          {/* Type pills - wrap on mobile, centered */}
-          <div className="flex flex-wrap justify-center gap-0.5 sm:gap-1 mt-1 pb-0.5">
-            {typeNames.map(type => (
-              <TypeBadge key={type} type={type} size="xs" />
+          {/* Type dots instead of badges on mobile - prevents overlap */}
+          <div className="flex justify-center gap-1 mt-1">
+            {typeNames.slice(0, 2).map(type => (
+              <span
+                key={type}
+                className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full"
+                style={{ backgroundColor: typeColors[type] || '#A8A878' }}
+                title={type}
+              />
             ))}
           </div>
         </motion.div>

@@ -431,12 +431,36 @@ const HeroSection: React.FC<{
   );
 };
 
-// Stats Section
+// Stats calculation helper
+const calculateStat = (
+  base: number,
+  iv: number,
+  ev: number,
+  level: number,
+  nature: number,
+  isHp: boolean
+): number => {
+  if (isHp) {
+    // HP formula: ((2 * Base + IV + EV/4) * Level / 100) + Level + 10
+    return Math.floor(((2 * base + iv + Math.floor(ev / 4)) * level) / 100) + level + 10;
+  }
+  // Other stats: (((2 * Base + IV + EV/4) * Level / 100) + 5) * Nature
+  return Math.floor((Math.floor(((2 * base + iv + Math.floor(ev / 4)) * level) / 100) + 5) * nature);
+};
+
+// Stats Section with Level/IV Calculator
 const StatsSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
   const stats = pokemon.stats || [];
-  const totalStats = stats.reduce((sum, stat) => sum + stat.base_stat, 0);
+  const [level, setLevel] = useState(50);
+  const [ivMode, setIvMode] = useState<'base' | 'perfect' | 'zero'>('base');
 
   if (stats.length === 0) return null;
+
+  const totalBaseStats = stats.reduce((sum, stat) => sum + stat.base_stat, 0);
+
+  // Get IV value based on mode
+  const getIV = () => ivMode === 'perfect' ? 31 : ivMode === 'zero' ? 0 : 0;
+  const getEV = () => ivMode === 'base' ? 0 : 0; // For simplicity, EVs at 0
 
   const getStatRating = (value: number) => {
     if (value >= 150) return 'Outstanding';
@@ -448,34 +472,94 @@ const StatsSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
   };
 
   return (
-    <Section title="Base Stats" subtitle={`Total: ${totalStats}`}>
-      <div className="space-y-4">
-        {stats.map(({ stat, base_stat }) => (
-          <div key={stat.name} className="group">
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-3">
-                <span className="w-16 text-sm font-semibold text-stone-700 dark:text-stone-300">
-                  {getStatAbbr(stat.name)}
-                </span>
-                <span className="text-lg font-bold text-stone-900 dark:text-white tabular-nums">
-                  {base_stat}
+    <Section
+      title="Base Stats"
+      subtitle={`Total: ${totalBaseStats}`}
+      action={
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Level Selector */}
+          <div className="flex items-center gap-1.5 bg-stone-100 dark:bg-stone-800 rounded-lg px-2 py-1">
+            <span className="text-xs text-stone-500 dark:text-stone-400">Lv.</span>
+            <select
+              value={level}
+              onChange={(e) => setLevel(Number(e.target.value))}
+              className="bg-transparent text-sm font-semibold text-stone-700 dark:text-stone-300 focus:outline-none cursor-pointer"
+            >
+              {[1, 5, 10, 25, 50, 100].map(l => (
+                <option key={l} value={l}>{l}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* IV Toggle */}
+          <div className="flex rounded-lg overflow-hidden border border-stone-200 dark:border-stone-700">
+            {[
+              { value: 'base' as const, label: 'Base' },
+              { value: 'perfect' as const, label: '31 IV' },
+              { value: 'zero' as const, label: '0 IV' },
+            ].map(({ value, label }) => (
+              <button
+                key={value}
+                onClick={() => setIvMode(value)}
+                className={cn(
+                  "px-2 py-1 text-xs font-medium transition-colors",
+                  ivMode === value
+                    ? "bg-amber-500 text-white"
+                    : "bg-stone-50 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700"
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      }
+    >
+      <div className="space-y-3">
+        {stats.map(({ stat, base_stat }) => {
+          const isHp = stat.name === 'hp';
+          const calculatedStat = ivMode === 'base'
+            ? base_stat
+            : calculateStat(base_stat, getIV(), getEV(), level, 1.0, isHp);
+
+          return (
+            <div key={stat.name} className="group">
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-14 text-xs font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide">
+                    {getStatAbbr(stat.name)}
+                  </span>
+                  <span className="text-sm font-bold text-stone-900 dark:text-white tabular-nums min-w-[2rem]">
+                    {base_stat}
+                  </span>
+                  {ivMode !== 'base' && (
+                    <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                      → {calculatedStat}
+                    </span>
+                  )}
+                </div>
+                <span className="text-xs text-stone-500 dark:text-stone-400">
+                  {getStatRating(base_stat)}
                 </span>
               </div>
-              <span className="text-xs text-stone-500 dark:text-stone-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                {getStatRating(base_stat)}
-              </span>
+              <div className="h-2.5 bg-stone-100 dark:bg-stone-800 rounded-full overflow-hidden">
+                <motion.div
+                  className={cn("h-full rounded-full", getStatColor(stat.name))}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min((base_stat / 255) * 100, 100)}%` }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
+                />
+              </div>
             </div>
-            <div className="h-3 bg-stone-100 dark:bg-stone-800 rounded-full overflow-hidden">
-              <motion.div
-                className={cn("h-full rounded-full", getStatColor(stat.name))}
-                initial={{ width: 0 }}
-                animate={{ width: `${Math.min((base_stat / 255) * 100, 100)}%` }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
+
+      {ivMode !== 'base' && (
+        <p className="mt-3 text-xs text-stone-500 dark:text-stone-400 text-center">
+          Showing calculated stats at Level {level} with {ivMode === 'perfect' ? '31' : '0'} IVs, 0 EVs, neutral nature
+        </p>
+      )}
     </Section>
   );
 };
@@ -922,38 +1006,26 @@ const MovesSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
         ))}
       </div>
 
-      {/* Moves Table */}
+      {/* Moves Grid - All tabs now use consistent grid layout */}
       <div className="bg-stone-50 dark:bg-stone-800/50 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700">
-        {activeTab === 'level-up' ? (
-          // Level-up moves with level column
-          <div className="divide-y divide-stone-200 dark:divide-stone-700 max-h-96 overflow-y-auto">
-            {filteredMoves.map((move, idx) => (
-              <div key={move.name} className={cn(
-                "flex items-center justify-between px-4 py-3",
-                idx % 2 === 0 ? "bg-white dark:bg-stone-800/30" : ""
-              )}>
-                <span className="font-medium text-stone-800 dark:text-stone-200">
-                  {capitalize(move.name)}
-                </span>
-                <span className="text-sm px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold">
-                  {move.level === 0 ? 'Evo' : `Lv. ${move.level}`}
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          // Other moves as grid
-          <div className="p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-96 overflow-y-auto">
-            {filteredMoves.map(move => (
-              <span
-                key={move.name}
-                className="px-3 py-2 bg-white dark:bg-stone-800 rounded-lg text-sm font-medium text-stone-700 dark:text-stone-300 text-center"
-              >
+        <div className="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-[400px] overflow-y-auto">
+          {filteredMoves.map(move => (
+            <div
+              key={move.name}
+              className="relative px-3 py-2.5 bg-white dark:bg-stone-800 rounded-lg text-center group hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors"
+            >
+              <span className="text-sm font-medium text-stone-700 dark:text-stone-300 block truncate">
                 {capitalize(move.name)}
               </span>
-            ))}
-          </div>
-        )}
+              {/* Show level badge for level-up moves */}
+              {activeTab === 'level-up' && move.level !== undefined && (
+                <span className="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 bg-amber-500 text-white text-[10px] font-bold rounded-full shadow-sm">
+                  {move.level === 0 ? 'Evo' : move.level}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {filteredMoves.length === 0 && (
