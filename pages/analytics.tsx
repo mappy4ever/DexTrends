@@ -21,6 +21,7 @@ import {
   FiTablet
 } from 'react-icons/fi';
 import { Container } from '../components/ui/Container';
+import { PageHeader } from '../components/ui/BreadcrumbNavigation';
 import { LineChart, BarChart, DoughnutChart } from '../components/ui/LazyChart';
 import ExportButton from '../components/ui/ExportButton';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
@@ -459,35 +460,27 @@ const Analytics: NextPage = () => {
       
       <FullBleedWrapper gradient="pokedex">
         <div className="container mx-auto px-4 py-8">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+          {/* Header with Breadcrumbs */}
+          <PageHeader
+            title="Analytics Dashboard"
+            description="Comprehensive insights into DexTrends usage and performance"
+            breadcrumbs={[
+              { title: 'Home', href: '/', icon: '🏠', isActive: false },
+              { title: 'Analytics', href: '/analytics', icon: '📊', isActive: true },
+            ]}
           >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-3xl font-bold text-stone-900 dark:text-white mb-2">
-                  Analytics Dashboard
-                </h1>
-                <p className="text-stone-600 dark:text-stone-300">
-                  Comprehensive insights into DexTrends usage and performance
-                </p>
-              </div>
-              
-              <div className="flex items-center gap-3">
-                <ExportButton
-                  data={[analyticsData]}
-                  onExport={handleExportAnalytics}
-                  filename="dextrends-analytics"
-                  buttonText="Export Analytics"
-                  modalTitle="Export Analytics Data"
-                  includeFormats={['json', 'csv']}
-                  className="px-4 py-2"
-                />
-              </div>
+            <div className="flex items-center gap-3">
+              <ExportButton
+                data={[analyticsData]}
+                onExport={handleExportAnalytics}
+                filename="dextrends-analytics"
+                buttonText="Export Analytics"
+                modalTitle="Export Analytics Data"
+                includeFormats={['json', 'csv']}
+                className="px-4 py-2"
+              />
             </div>
-          </motion.div>
+          </PageHeader>
 
           {/* Overview Metrics */}
           <motion.section

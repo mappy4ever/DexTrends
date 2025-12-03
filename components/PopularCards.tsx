@@ -80,7 +80,7 @@ export default function PopularCards() {
         {cards.map((card, idx) => (
           <div
             key={card.id}
-            className="flex items-center bg-white rounded-lg shadow p-3 hover:bg-stone-50 cursor-pointer border border-stone-200 transition"
+            className="flex items-center bg-white dark:bg-stone-800 rounded-xl shadow-sm p-3 hover:bg-stone-50 dark:hover:bg-stone-700 cursor-pointer border border-stone-200 dark:border-stone-700 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none"
             onClick={() => setModalCard(card)}
             tabIndex={0}
             role="button"
