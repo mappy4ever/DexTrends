@@ -1,20 +1,18 @@
-import React, { useState, useEffect, Component, ErrorInfo, ReactNode, useMemo } from 'react';
+import React, { useState, Component, ErrorInfo, ReactNode, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
 import type { PocketCard } from '../../../types/api/pocket-cards';
 import type { TCGCard } from '../../../types/api/cards';
 import { Container } from '../../ui/Container';
-import CardList from '../../CardList';
-import PocketCardList from '../../PocketCardList';
+import PokemonCardsGrid from '../PokemonCardsGrid';
 import { cn } from '../../../utils/cn';
 import logger from '@/utils/logger';
-import { 
-  FaLayerGroup, FaMobileAlt, FaGamepad, FaImages,
-  FaStar, FaTrophy, FaGem
+import {
+  FaLayerGroup, FaMobileAlt, FaImages,
+  FaStar
 } from 'react-icons/fa';
 import { GiCardPlay, GiCardPick } from 'react-icons/gi';
-import { HiSparkles } from 'react-icons/hi';
 
 interface ExtendedPocketCard extends PocketCard {
   health?: string | number;
@@ -188,77 +186,26 @@ const CardsTab: React.FC<CardsTabProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <Container 
-          variant="default" 
+        <Container
+          variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-         
         >
-          <div className="p-6 md:p-8">
+          <div className="p-2 sm:p-3">
             <AnimatePresence mode="wait">
-              {cardType === 'tcg' ? (
-                validTcgCards.length > 0 ? (
-                  <motion.div
-                    key="tcg"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <CardList cards={validTcgCards} />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="tcg-empty"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="text-center py-12 space-y-4"
-                  >
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center mx-auto">
-                      <FaLayerGroup className="w-8 h-8 text-stone-400" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-semibold text-stone-700 dark:text-stone-300">No TCG cards found</p>
-                      <p className="text-sm text-stone-500 dark:text-stone-300">This Pokémon doesn't have any TCG cards yet</p>
-                    </div>
-                  </motion.div>
-                )
-              ) : (
-                validPocketCards.length > 0 ? (
-                  <motion.div
-                    key="pocket"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <PocketCardList 
-                      cards={validPocketCards}
-                      loading={false}
-                      error={undefined}
-                      showPack={true}
-                      showRarity={true}
-                      showHP={true}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="pocket-empty"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="text-center py-12 space-y-4"
-                  >
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center mx-auto">
-                      <FaMobileAlt className="w-8 h-8 text-stone-400" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-semibold text-stone-700 dark:text-stone-300">No Pocket cards found</p>
-                      <p className="text-sm text-stone-500 dark:text-stone-300">This Pokémon doesn't have any Pocket cards yet</p>
-                    </div>
-                  </motion.div>
-                )
-              )}
+              <motion.div
+                key={cardType}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+              >
+                <PokemonCardsGrid
+                  tcgCards={validTcgCards}
+                  pocketCards={validPocketCards}
+                  cardType={cardType}
+                  showPrices={true}
+                />
+              </motion.div>
             </AnimatePresence>
           </div>
         </Container>

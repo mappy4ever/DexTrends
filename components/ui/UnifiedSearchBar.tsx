@@ -163,11 +163,11 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
     }
   };
 
-  // Size configurations - consistent with design system, proper icon spacing to not block placeholder
+  // Size configurations - no icon, just padding for text
   const sizeConfig = {
-    sm: { height: 'h-9', padding: 'pl-10 pr-9', text: 'text-sm', iconSize: 'w-4 h-4', iconLeft: 'left-3' },
-    md: { height: 'h-11', padding: 'pl-11 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-3.5' },
-    lg: { height: 'h-12', padding: 'pl-12 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-4' },
+    sm: { height: 'h-9', padding: 'px-4 pr-9', text: 'text-sm', iconSize: 'w-4 h-4', iconLeft: 'left-3' },
+    md: { height: 'h-11', padding: 'px-4 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-3.5' },
+    lg: { height: 'h-12', padding: 'px-5 pr-10', text: 'text-base', iconSize: 'w-5 h-5', iconLeft: 'left-4' },
   };
 
   // Variant configurations - clean, consistent styling
@@ -193,14 +193,12 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
   return (
     <div className={`relative ${className}`}>
       <div className={`relative flex items-center ${variantClasses[variant]} rounded-xl ${currentSize.height} ${isFocused ? 'ring-2 ring-blue-500/20 border-blue-500' : ''} transition-all duration-150`}>
-        {/* Search Icon */}
-        <div className={`absolute ${currentSize.iconLeft} top-1/2 -translate-y-1/2 pointer-events-none`}>
-          {loading ? (
+        {/* Loading indicator (only when loading) */}
+        {loading && (
+          <div className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none`}>
             <div className={`${currentSize.iconSize} animate-spin rounded-full border-2 border-blue-500 border-t-transparent`} />
-          ) : (
-            <Search className={`${currentSize.iconSize} text-stone-400`} />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Input Field */}
         <input

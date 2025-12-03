@@ -466,14 +466,9 @@ function PocketCardListInner({
         {onSearchChange && (
           <div className="relative flex-1 max-w-xs bg-stone-50/90 dark:bg-stone-800/90 rounded-full p-1 shadow-lg border border-stone-300 dark:border-stone-700/40">
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
               <input
                 type="text"
-                className="w-full pl-9 pr-9 py-1.5 bg-transparent rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:ring-offset-0 transition-all"
+                className="w-full px-4 py-1.5 bg-transparent rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:ring-offset-0 transition-all text-stone-900 dark:text-white placeholder-stone-400"
                 placeholder="Search cards..."
                 value={searchValue}
                 onChange={(e) => onSearchChange(e.target.value)}

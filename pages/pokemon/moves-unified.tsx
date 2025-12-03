@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { NextPage } from "next";
 import { TypeBadge } from "@/components/ui/TypeBadge";
+import { CategoryIcon } from "@/components/ui/CategoryIcon";
 import { UnifiedDataTable, Column } from "@/components/unified/UnifiedDataTable";
 import { fetchJSON } from "@/utils/unifiedFetch";
 import { showdownQueries, PokemonLearnsetRecord } from "@/utils/supabase";
@@ -183,19 +184,6 @@ const MovesPage: NextPage = () => {
     }
   }, [expandedMoveId, loadMoveLearners]);
 
-  // Get category icon
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'physical':
-        return <span className="text-orange-500">⚔️</span>;
-      case 'special':
-        return <span className="text-amber-500">✨</span>;
-      case 'status':
-        return <span className="text-stone-500">🛡️</span>;
-      default:
-        return null;
-    }
-  };
 
   // Filter moves
   const filteredMoves = useMemo(() => {
@@ -240,12 +228,9 @@ const MovesPage: NextPage = () => {
       label: 'Category',
       sortable: true,
       priority: 'secondary',
-      width: '100px',
+      width: '120px',
       renderCell: (move) => (
-        <div className="flex items-center gap-1">
-          {getCategoryIcon(move.category)}
-          <span className="capitalize text-sm">{move.category}</span>
-        </div>
+        <CategoryIcon category={move.category} size={18} showLabel={true} />
       )
     },
     {

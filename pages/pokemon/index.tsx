@@ -48,6 +48,20 @@ const SECTION_CATEGORIES = [
         icon: <FaListAlt className="w-5 h-5" />,
         gradient: 'from-amber-500 to-yellow-500',
       },
+      {
+        title: 'Natures',
+        description: 'All 25 natures & stat effects',
+        href: '/pokemon/natures',
+        icon: <FaDna className="w-5 h-5" />,
+        gradient: 'from-pink-500 to-rose-500',
+      },
+      {
+        title: 'Berries',
+        description: 'Berry effects & growth times',
+        href: '/pokemon/berries',
+        icon: <FaAppleAlt className="w-5 h-5" />,
+        gradient: 'from-red-400 to-pink-500',
+      },
     ]
   },
   {
@@ -125,31 +139,6 @@ const SECTION_CATEGORIES = [
         href: '/fun',
         icon: <FaDice className="w-5 h-5" />,
         gradient: 'from-indigo-500 to-purple-500',
-      },
-    ]
-  },
-  {
-    id: 'reference',
-    title: 'Reference',
-    subtitle: 'Quick guides & data',
-    icon: <FaBook className="w-4 h-4" />,
-    color: 'from-amber-500 to-orange-600',
-    sections: [
-      {
-        title: 'Natures',
-        description: 'All 25 natures & stat effects',
-        href: '/pokemon/natures',
-        icon: <FaDna className="w-5 h-5" />,
-        gradient: 'from-pink-500 to-rose-500',
-        isNew: true,
-      },
-      {
-        title: 'Berries',
-        description: 'Berry effects & growth times',
-        href: '/pokemon/berries',
-        icon: <FaAppleAlt className="w-5 h-5" />,
-        gradient: 'from-red-400 to-pink-500',
-        isNew: true,
       },
     ]
   },

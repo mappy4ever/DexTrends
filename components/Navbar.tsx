@@ -501,8 +501,7 @@ export default function Navbar() {
           </div>
         </>
       )}
-      {/* Spacer for fixed navbar */}
-      <div className="h-14 md:h-16" />
+      {/* Spacer removed - Layout component handles padding via pt-14/pt-16 */}
       <GlobalSearchModal ref={searchModalRef} />
 
       {/* Advanced Search Modal */}

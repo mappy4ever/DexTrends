@@ -138,46 +138,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         cardCount: allCards.length
       });
 
-      // Fetch pricing for first batch of cards in parallel (background)
-      // Only fetch for first 50 cards to keep response time fast
-      const cardsNeedingPrices = allCards.slice(0, 50);
-      try {
-        const pricePromises = cardsNeedingPrices.map(async (card) => {
-          try {
-            const cardDetail = await fetchJSON<any>(`https://api.tcgdex.net/v2/en/cards/${card.id}`, {
-              useCache: true,
-              cacheTime: 24 * 60 * 60 * 1000,
-              timeout: 5000,
-              throwOnError: false
-            });
-            if (cardDetail?.pricing) {
-              return { id: card.id, pricing: cardDetail.pricing };
-            }
-          } catch {
-            // Silently fail - price just won't show
-          }
-          return null;
-        });
-
-        const prices = await Promise.all(pricePromises);
-        const priceMap = new Map(prices.filter(Boolean).map(p => [p!.id, p!.pricing]));
-
-        // Merge prices into cards
-        allCards = allCards.map(card => {
-          const pricing = priceMap.get(card.id);
-          if (pricing) {
-            return { ...card, pricing };
-          }
-          return card;
-        });
-
-        logger.info('Fetched prices for cards', {
-          setId: id,
-          cardsWithPrices: priceMap.size
-        });
-      } catch (priceError) {
-        logger.warn('Failed to fetch card prices', { setId: id, error: priceError });
-      }
+      // PERFORMANCE FIX: Don't fetch prices during initial load
+      // Prices are fetched when viewing individual card details
+      // This removes 50 blocking API calls that were adding 5-15s to load time
     }
 
     logger.info('TCGDex response transformed', {

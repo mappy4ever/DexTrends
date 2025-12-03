@@ -71,7 +71,7 @@ const CATEGORIES = [
 ] as const;
 
 const TOTAL_POKEMON = 1025;
-const BATCH_SIZE = 20;
+const BATCH_SIZE = 50; // Increased from 20 for faster loading
 
 const STARTER_IDS = new Set([
   1, 4, 7, 152, 155, 158, 252, 255, 258, 387, 390, 393,
@@ -99,99 +99,101 @@ const UnifiedPokedex: NextPage = () => {
 
   const debouncedSearch = useDebounce(searchTerm, 300);
 
-  // Load Pokémon data
+  // Load Pokémon data - optimized for fast initial load
   useEffect(() => {
     const loadPokemon = async () => {
       try {
         setLoading(true);
 
-        // Create placeholders immediately
-        const placeholders: Pokemon[] = Array.from({ length: TOTAL_POKEMON }, (_, i) => ({
+        // Create placeholders with skeleton-ready state
+        const allPokemon: Pokemon[] = Array.from({ length: TOTAL_POKEMON }, (_, i) => ({
           id: i + 1,
           name: `pokemon-${i + 1}`,
-          sprite: '/dextrendslogo.png',
+          sprite: '', // Empty = show skeleton
           types: [],
           generation: getGeneration(i + 1).toString(),
           isStarter: STARTER_IDS.has(i + 1)
         }));
 
-        setPokemon(placeholders);
-        setLoading(false);
+        setPokemon(allPokemon);
 
-        // Load real data in batches
-        const allPokemon = [...placeholders];
-
-        for (let start = 1; start <= TOTAL_POKEMON; start += BATCH_SIZE) {
-          const promises = [];
-          for (let id = start; id < start + BATCH_SIZE && id <= TOTAL_POKEMON; id++) {
-            promises.push(
+        // Helper to load a single Pokemon with both basic and species data
+        const loadPokemonData = async (id: number): Promise<Pokemon | null> => {
+          try {
+            // Fetch Pokemon and species data in PARALLEL
+            const [pokemonData, speciesData] = await Promise.all([
               fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
                 useCache: true,
-                cacheTime: 60 * 60 * 1000,
-                timeout: 10000
-              })
-                .then((data) => (data ? {
-                  id: typeof data.id === 'string' ? parseInt(data.id, 10) : data.id,
-                  name: data.name,
-                  sprite: data.sprites?.other?.['official-artwork']?.front_default ||
-                          data.sprites?.front_default ||
-                          '/dextrendslogo.png',
-                  types: data.types?.map((t: PokemonType) => t.type.name) || [],
-                  generation: getGeneration(typeof data.id === 'string' ? parseInt(data.id, 10) : data.id).toString(),
-                  isStarter: STARTER_IDS.has(typeof data.id === 'string' ? parseInt(data.id, 10) : data.id),
-                  height: data.height,
-                  weight: data.weight,
-                  stats: data.stats,
-                  totalStats: data.stats?.reduce((acc: number, stat: PokemonStat) => acc + stat.base_stat, 0) || 0
-                } : null))
-                .catch(() => null)
-            );
+                cacheTime: 24 * 60 * 60 * 1000, // 24 hours cache
+                timeout: 8000
+              }),
+              fetchJSON<{ is_legendary: boolean; is_mythical: boolean }>(
+                `https://pokeapi.co/api/v2/pokemon-species/${id}`,
+                { useCache: true, cacheTime: 24 * 60 * 60 * 1000, timeout: 8000 }
+              ).catch(() => null) // Species can fail silently
+            ]);
+
+            if (!pokemonData) return null;
+
+            const numId = typeof pokemonData.id === 'string' ? parseInt(pokemonData.id, 10) : pokemonData.id;
+            return {
+              id: numId,
+              name: pokemonData.name,
+              sprite: pokemonData.sprites?.other?.['official-artwork']?.front_default ||
+                      pokemonData.sprites?.front_default ||
+                      '/dextrendslogo.png',
+              types: pokemonData.types?.map((t: PokemonType) => t.type.name) || [],
+              generation: getGeneration(numId).toString(),
+              isStarter: STARTER_IDS.has(numId),
+              isLegendary: speciesData?.is_legendary || false,
+              isMythical: speciesData?.is_mythical || false,
+              height: pokemonData.height,
+              weight: pokemonData.weight,
+              stats: pokemonData.stats,
+              totalStats: pokemonData.stats?.reduce((acc: number, stat: PokemonStat) => acc + stat.base_stat, 0) || 0
+            };
+          } catch {
+            return null;
+          }
+        };
+
+        // Load in batches without artificial delays
+        let loadedCount = 0;
+        for (let start = 1; start <= TOTAL_POKEMON; start += BATCH_SIZE) {
+          const batchPromises: Promise<Pokemon | null>[] = [];
+
+          for (let id = start; id < start + BATCH_SIZE && id <= TOTAL_POKEMON; id++) {
+            batchPromises.push(loadPokemonData(id));
           }
 
-          const batchResults = await Promise.all(promises);
+          const batchResults = await Promise.all(batchPromises);
+
+          // Update allPokemon array with results
           batchResults.forEach(result => {
             if (result) {
               allPokemon[result.id - 1] = result;
+              loadedCount++;
             }
           });
 
+          // Update state after each batch for progressive loading
           setPokemon([...allPokemon]);
-          await new Promise(resolve => setTimeout(resolve, 200));
-        }
 
-        // Load species data for legendary/mythical status in batches
-        // Performance fix: Batch API calls instead of sequential (GAMMA-001)
-        const SPECIES_BATCH_SIZE = 20;
-        for (let start = 1; start <= TOTAL_POKEMON; start += SPECIES_BATCH_SIZE) {
-          const speciesPromises = [];
-          for (let id = start; id < start + SPECIES_BATCH_SIZE && id <= TOTAL_POKEMON; id++) {
-            speciesPromises.push(
-              fetchJSON<{ is_legendary: boolean; is_mythical: boolean }>(
-                `https://pokeapi.co/api/v2/pokemon-species/${id}`,
-                { useCache: true, cacheTime: 60 * 60 * 1000, timeout: 10000 }
-              )
-                .then(species => species ? { id, isLegendary: species.is_legendary, isMythical: species.is_mythical } : null)
-                .catch(() => null)
-            );
+          // Mark loading as complete after first batch (fast initial paint)
+          if (start === 1) {
+            setLoading(false);
           }
 
-          const speciesResults = await Promise.all(speciesPromises);
-          speciesResults.forEach(result => {
-            if (result) {
-              allPokemon[result.id - 1].isLegendary = result.isLegendary;
-              allPokemon[result.id - 1].isMythical = result.isMythical;
-            }
-          });
-
-          // Update UI after each batch and small delay to avoid API rate limits
-          setPokemon([...allPokemon]);
-          await new Promise(resolve => setTimeout(resolve, 200));
+          // Minimal delay only if needed for rate limiting (reduced from 200ms)
+          if (start + BATCH_SIZE <= TOTAL_POKEMON) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
         }
 
-        setPokemon([...allPokemon]);
-        logger.info('All Pokémon loaded successfully');
+        logger.info('All Pokémon loaded successfully', { count: loadedCount });
       } catch (error) {
         logger.error('Failed to load Pokémon', { error });
+        setLoading(false);
       }
     };
 

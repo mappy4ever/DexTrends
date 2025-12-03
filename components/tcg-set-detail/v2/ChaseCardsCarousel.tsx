@@ -42,19 +42,32 @@ export const ChaseCardsCarousel: React.FC<ChaseCardsCarouselProps> = ({
               Most valuable in this set
             </p>
           </div>
+          {/* Scroll hint for mobile */}
+          <div className="flex items-center gap-1 text-xs text-stone-400 dark:text-stone-500 sm:hidden">
+            <span>Scroll</span>
+            <svg className="w-4 h-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
       </div>
 
-      {/* Carousel */}
+      {/* Carousel - horizontally scrollable on all screen sizes */}
       <div className="relative">
         <div
           className={cn(
-            'flex gap-3 overflow-x-auto',
+            'flex gap-3 overflow-x-auto overflow-y-hidden',
             'px-4 sm:px-6 pb-4',
             'snap-x snap-mandatory',
             'scrollbar-hide',
-            '-webkit-overflow-scrolling-touch'
+            '-webkit-overflow-scrolling-touch',
+            // Ensure proper scroll behavior on mobile
+            'touch-pan-x'
           )}
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            scrollBehavior: 'smooth'
+          }}
         >
           {topCards.map(({ card, price }, index) => (
             <button

@@ -593,20 +593,12 @@ const PocketMode: NextPage = () => {
             />
           ) : (
             <>
-              <div className="text-center mb-3">
-                <p className="text-xs text-stone-500 dark:text-stone-300">
-                  Showing {filteredPokemon.length} {filteredPokemon.length === 1 ? 'card' : 'cards'}
-                  {(search || typeFilter !== 'all' || rarityFilter !== 'all') && ' (filtered)'}
-                </p>
-              </div>
-              {/* Cards Container */}
-              <Container variant="elevated" rounded="xl" className="p-6 md:p-8">
+              {/* Cards Container - no duplicate search bar */}
+              <Container variant="elevated" rounded="xl" className="p-3 sm:p-4 md:p-6">
                 <PocketCardList
                   cards={filteredPokemon}
                   loading={false}
                   selectedRarityFilter={rarityFilter}
-                  searchValue={search}
-                  onSearchChange={setSearch}
                   variant="clean"
                 />
               </Container>

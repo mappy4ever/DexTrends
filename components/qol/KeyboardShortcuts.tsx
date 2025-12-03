@@ -393,12 +393,6 @@ export const KeyboardShortcutsManager: React.FC = () => {
         </div>
       )}
 
-      {/* Keyboard shortcut indicator (bottom right) */}
-      <div className="fixed bottom-4 left-4 z-30 pointer-events-none">
-        <div className="bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded opacity-75">
-          Press <kbd className="bg-white bg-opacity-20 px-1 rounded">?</kbd> for shortcuts
-        </div>
-      </div>
     </>
   );
 };

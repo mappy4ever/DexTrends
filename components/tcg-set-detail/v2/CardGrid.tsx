@@ -73,49 +73,45 @@ export const CardGrid: React.FC<CardGridProps> = ({
               draggable={false}
             />
 
-            {/* Hover overlay with info */}
+            {/* Always-visible info bar at bottom with card name and price */}
             <div className={cn(
-              'absolute inset-0',
-              'bg-gradient-to-t from-black/80 via-black/20 to-transparent',
-              'opacity-0 group-hover:opacity-100',
-              'transition-opacity duration-150',
-              'flex flex-col justify-end p-2',
-              'pointer-events-none'
+              'absolute inset-x-0 bottom-0',
+              'bg-black/75 backdrop-blur-sm',
+              'px-1.5 py-1',
+              'flex flex-col gap-0.5'
             )}>
-              <p className="text-white text-xs font-semibold line-clamp-1">
+              <p className="text-white text-[10px] sm:text-xs font-semibold line-clamp-1 leading-tight">
                 {card.name}
               </p>
               {showPrices && price > 0 && (
-                <p className="text-green-400 text-xs font-bold mt-0.5">
+                <p className="text-green-400 text-[10px] sm:text-xs font-bold leading-tight">
                   ${price.toFixed(2)}
                 </p>
               )}
             </div>
 
-            {/* Always-visible price badge for expensive cards */}
-            {showPrices && price >= 10 && (
-              <div className={cn(
-                'absolute top-1 right-1',
-                'px-1.5 py-0.5 rounded',
-                'bg-green-500/90 backdrop-blur-sm',
-                'text-white text-[10px] font-bold',
-                'shadow-sm'
-              )}>
-                ${price >= 100 ? Math.floor(price) : price.toFixed(0)}
-              </div>
-            )}
-
-            {/* Card number badge */}
+            {/* Card number badge - top left */}
             <div className={cn(
-              'absolute bottom-1 left-1',
+              'absolute top-1 left-1',
               'px-1 py-0.5 rounded',
               'bg-black/60 backdrop-blur-sm',
-              'text-white text-[9px] font-medium',
-              'opacity-60 group-hover:opacity-0',
-              'transition-opacity'
+              'text-white text-[9px] font-medium'
             )}>
               #{card.number}
             </div>
+
+            {/* High value badge - top right for expensive cards */}
+            {showPrices && price >= 50 && (
+              <div className={cn(
+                'absolute top-1 right-1',
+                'px-1.5 py-0.5 rounded',
+                'bg-amber-500/90 backdrop-blur-sm',
+                'text-white text-[10px] font-bold',
+                'shadow-sm'
+              )}>
+                ${price >= 100 ? Math.floor(price) : price.toFixed(0)}+
+              </div>
+            )}
           </button>
         );
       })}
