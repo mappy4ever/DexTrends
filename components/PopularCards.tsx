@@ -139,22 +139,24 @@ export default function PopularCards() {
           animation-timing-function: ease-in-out;
         }
         .hot {
-          background-color: #22c55e;
-          box-shadow: 0 0 8px #22c55e;
+          /* Tailwind green-500 */
+          background-color: rgb(34 197 94);
+          box-shadow: 0 0 8px rgb(34 197 94);
           animation-name: pulse-green;
         }
         .cold {
-          background-color: #ef4444;
-          box-shadow: 0 0 8px #ef4444;
+          /* Tailwind red-500 */
+          background-color: rgb(239 68 68);
+          box-shadow: 0 0 8px rgb(239 68 68);
           animation-name: pulse-red;
         }
         @keyframes pulse-green {
-          0%, 100% { box-shadow: 0 0 8px #22c55e; }
-          50% { box-shadow: 0 0 16px #22c55e; }
+          0%, 100% { box-shadow: 0 0 8px rgb(34 197 94); }
+          50% { box-shadow: 0 0 16px rgb(34 197 94); }
         }
         @keyframes pulse-red {
-          0%, 100% { box-shadow: 0 0 8px #ef4444; }
-          50% { box-shadow: 0 0 16px #ef4444; }
+          0%, 100% { box-shadow: 0 0 8px rgb(239 68 68); }
+          50% { box-shadow: 0 0 16px rgb(239 68 68); }
         }
       `}</style>
     </div>

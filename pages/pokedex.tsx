@@ -319,7 +319,7 @@ const UnifiedPokedex: NextPage = () => {
         <meta name="description" content="Browse all Pokémon with our elegant, responsive Pokédex" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-[#FFFDF7] to-[#FBF8F3] dark:from-stone-900 dark:to-stone-950">
+      <div className="min-h-screen bg-gradient-to-b from-page-bg to-sidebar-bg dark:from-stone-900 dark:to-stone-950">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
           {/* Page Header */}
@@ -344,7 +344,7 @@ const UnifiedPokedex: NextPage = () => {
           </PageHeader>
 
           {/* Search & Filter Bar - Sticky below navbar */}
-          <div className="sticky top-[48px] md:top-[64px] z-20 -mx-3 sm:-mx-4 lg:-mx-6 px-3 sm:px-4 lg:px-6 py-3 bg-[#FFFDF7] dark:bg-stone-900 shadow-sm mb-4">
+          <div className="sticky top-[48px] md:top-[64px] z-20 -mx-3 sm:-mx-4 lg:-mx-6 px-3 sm:px-4 lg:px-6 py-3 bg-page-bg dark:bg-stone-900 shadow-sm mb-4">
             {/* Search Input - Prominent, full width */}
             <div className="relative mb-3">
               <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-amber-500" />
@@ -353,7 +353,8 @@ const UnifiedPokedex: NextPage = () => {
                 placeholder="Search Pokemon by name or number..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full min-h-[52px] pl-12 pr-16 py-3 bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 rounded-2xl text-base focus:outline-none focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+                className="w-full min-h-[52px] pl-12 pr-16 py-3 bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
+                aria-label="Search Pokemon by name or number"
                 style={{ fontSize: '16px' }}
               />
               {searchTerm ? (

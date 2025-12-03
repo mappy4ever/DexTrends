@@ -165,12 +165,13 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortOption)}
+            aria-label="Sort cards by"
             className={cn(
-              "px-4 py-2 rounded-lg text-sm",
+              "min-h-[44px] px-4 py-2 rounded-lg text-sm",
               "bg-white/50 dark:bg-stone-800/50",
               "backdrop-blur-md",
               "border border-white/30 dark:border-stone-700/30",
-              "focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+              "focus:outline-none focus:ring-2 focus:ring-amber-500/30"
             )}
           >
             <option value="price-desc">Price: High to Low</option>
@@ -193,11 +194,13 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
               <button
                 key={mode}
                 onClick={() => setViewMode(mode)}
+                aria-label={`View as ${mode}`}
+                aria-pressed={viewMode === mode}
                 className={cn(
-                  "px-3 py-1.5 rounded text-sm font-medium transition-all capitalize",
+                  "min-h-[44px] px-4 py-2 rounded text-sm font-medium transition-all capitalize",
                   viewMode === mode
                     ? "bg-gradient-to-r from-amber-500 to-pink-500 text-white"
-                    : "text-stone-600 dark:text-stone-300"
+                    : "text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700"
                 )}
               >
                 {mode}

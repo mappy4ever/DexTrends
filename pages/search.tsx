@@ -30,7 +30,7 @@ const PokemonResultCard = memo(({ pokemon }: { pokemon: PokemonResult }) => {
   return (
     <Link
       href={`/pokedex/${pokemonId}`}
-      className="flex items-center p-3 bg-stone-50 dark:bg-stone-700/50 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors border border-stone-200 dark:border-stone-600"
+      className="flex items-center min-h-[56px] p-3 bg-stone-50 dark:bg-stone-700/50 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors border border-stone-200 dark:border-stone-600"
     >
       <div className="relative w-12 h-12 mr-3">
         <Image
@@ -54,7 +54,7 @@ PokemonResultCard.displayName = 'PokemonResultCard';
 const CardResultItem = memo(({ card }: { card: TCGCard }) => (
   <Link
     href={`/cards/${card.id}`}
-    className="flex items-center p-3 bg-stone-50 dark:bg-stone-700/50 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors border border-stone-200 dark:border-stone-600"
+    className="flex items-center min-h-[56px] p-3 bg-stone-50 dark:bg-stone-700/50 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors border border-stone-200 dark:border-stone-600"
   >
     {card.images?.small && (
       <div className="relative w-10 h-14 mr-3 rounded overflow-hidden">
@@ -180,13 +180,15 @@ const SearchPage: NextPage = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search Pokemon, cards..."
-                className="w-full pl-11 pr-12 py-4 text-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+                aria-label="Search Pokemon and TCG cards"
+                className="w-full min-h-[56px] pl-11 pr-14 py-4 text-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all"
                 autoFocus
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors"
+                  aria-label="Clear search"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors"
                 >
                   <IoClose className="w-5 h-5 text-stone-400" />
                 </button>

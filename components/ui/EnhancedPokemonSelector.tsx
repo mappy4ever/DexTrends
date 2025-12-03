@@ -124,9 +124,10 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
             <input
               type="text"
               placeholder="Search Pokémon by name..."
+              aria-label="Search Pokemon by name"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-12 py-3 border-2 border-stone-300 rounded-full focus:ring-4 focus:ring-amber-500 focus:ring-opacity-20 focus:border-blue-500 transition-all text-lg"
+              className="w-full min-h-[52px] px-12 py-3 border-2 border-stone-300 rounded-full focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all text-lg"
               autoFocus
             />
             <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

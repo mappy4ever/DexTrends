@@ -4,7 +4,7 @@ import logger from '../utils/logger';
 import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { PageHeader } from '../components/ui/BreadcrumbNavigation';
-import { CircularButton } from '../components/ui/design-system';
+import { CircularButton, TYPE_COLORS } from '../components/ui/design-system';
 import type { NextPage } from 'next';
 
 interface PokemonFact {
@@ -221,9 +221,10 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                   </p>
                   <div className="flex flex-wrap justify-center gap-2 mb-4">
                     {randomPokemon.types.map((type, index) => (
-                      <span 
+                      <span
                         key={index}
-                        className="px-3 py-1 rounded-full bg-pokemon-red text-white text-sm font-medium"
+                        className="px-3 py-1 rounded-full text-white text-sm font-medium"
+                        style={{ backgroundColor: TYPE_COLORS[type.toLowerCase()] || '#A8A878' }}
                       >
                         {type}
                       </span>
@@ -241,10 +242,10 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 disabled={loadingRandomPokemon}
                 variant="primary"
                 size="lg"
-                className={`w-full font-bold ${
+                className={`w-full min-h-[44px] font-bold ${
                   loadingRandomPokemon
                     ? 'bg-stone-400 cursor-not-allowed'
-                    : 'bg-pokemon-yellow hover:bg-yellow-600'
+                    : 'bg-amber-500 hover:bg-amber-600'
                 } text-white`}>
                 {loadingRandomPokemon ? 'Loading...' : 'Get New Random Pokémon!'}
               </CircularButton>
@@ -266,7 +267,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 onClick={getRandomFact}
                 variant="primary"
                 size="lg"
-                className="w-full mt-4 bg-amber-600 hover:bg-amber-700 text-white font-bold">
+                className="w-full min-h-[44px] mt-4 bg-amber-600 hover:bg-amber-700 text-white font-bold">
                 Show Random Fact!
               </CircularButton>
             </div>
@@ -314,7 +315,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 onClick={getRandomQuiz}
                 variant="primary"
                 size="lg"
-                className="w-full bg-pokemon-red hover:bg-red-700 text-white font-bold">
+                className="w-full min-h-[44px] bg-red-500 hover:bg-red-600 text-white font-bold">
                 New Question!
               </CircularButton>
             </div>

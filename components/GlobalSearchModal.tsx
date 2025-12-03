@@ -216,7 +216,8 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
           <input
             ref={inputRef}
             autoFocus
-            className="w-full max-w-md px-5 py-3 rounded-xl border-2 border-primary focus:ring-4 focus:ring-primary/30 text-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-lg mb-2 outline-none transition-all duration-200 placeholder-stone-400 caret-primary"
+            aria-label="Search cards, Pokemon, and sets"
+            className="w-full max-w-md px-5 py-3 rounded-xl border-2 border-primary focus:ring-2 focus:ring-primary/30 text-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-lg mb-2 outline-none transition-all duration-200 placeholder-stone-400 caret-primary"
             style={{
               boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)',
               background: 'rgba(255,255,255,0.98)',
