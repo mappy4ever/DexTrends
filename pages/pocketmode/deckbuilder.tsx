@@ -96,6 +96,7 @@ function DeckBuilder() {
   const [importText, setImportText] = useState<string>('');
   const [importError, setImportError] = useState<string>('');
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
+  const [showShareView, setShowShareView] = useState<boolean>(false);
   
   // Validation and analysis state
   const [activeTab, setActiveTab] = useState<'builder' | 'analysis' | 'validation'>('builder');
@@ -732,6 +733,15 @@ function DeckBuilder() {
             </button>
             {!deckStats.isEmpty && (
               <>
+                <button
+                  onClick={() => setShowShareView(true)}
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-colors flex items-center gap-1.5"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Share
+                </button>
                 <button
                   onClick={() => setShowExportModal(true)}
                   className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-medium transition-colors"
@@ -1446,6 +1456,120 @@ function DeckBuilder() {
         </div>
       )}
 
+      {/* Share View Modal - Screenshot-friendly deck display */}
+      {showShareView && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+          <div className="bg-gradient-to-br from-stone-900 via-stone-800 to-stone-900 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden">
+            {/* Shareable Content */}
+            <div id="deck-share-image" className="p-6">
+              {/* Header with Branding */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-white">{deckName}</h2>
+                  <p className="text-stone-400 text-sm">Pokémon Pocket Deck • {deckStats.totalCards}/20 cards</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs font-bold text-amber-400 uppercase tracking-wider">DexTrends</div>
+                  <div className="text-[10px] text-stone-500">dextrends.com</div>
+                </div>
+              </div>
+
+              {/* Deck Grid - 5x4 layout for screenshots */}
+              <div className="grid grid-cols-5 gap-2 mb-6">
+                {Array.from({ length: 20 }, (_, index) => {
+                  let cardIndex = 0;
+                  let countIndex = index;
+
+                  for (const entry of deck) {
+                    if (countIndex < entry.count) {
+                      return (
+                        <div
+                          key={`share-slot-${index}`}
+                          className="relative aspect-[3/4] rounded-lg overflow-hidden bg-stone-700/50"
+                        >
+                          <Image
+                            src={entry.card.image || "/back-card.png"}
+                            alt={entry.card.name}
+                            fill
+                            className="object-contain"
+                            sizes="100px"
+                          />
+                        </div>
+                      );
+                    }
+                    countIndex -= entry.count;
+                  }
+
+                  return (
+                    <div
+                      key={`share-empty-${index}`}
+                      className="relative aspect-[3/4] rounded-lg bg-stone-700/30 border border-dashed border-stone-600"
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Stats Summary */}
+              <div className="flex items-center justify-between p-4 rounded-xl bg-stone-700/50">
+                <div className="flex gap-6">
+                  {Object.entries(deckStats.typeDistribution).slice(0, 4).map(([type, count]) => (
+                    <div key={type} className="text-center">
+                      <div className="text-lg font-bold text-white">{count}</div>
+                      <div className="text-[10px] text-stone-400 capitalize">{type}</div>
+                    </div>
+                  ))}
+                </div>
+                {metaAnalysis && (
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-amber-400">{metaAnalysis.archetype}</div>
+                    <div className="text-[10px] text-stone-400">Meta Score: {metaAnalysis.score}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Actions - Outside shareable area */}
+            <div className="p-4 bg-stone-900/80 border-t border-stone-700 flex flex-col sm:flex-row gap-3">
+              <p className="text-xs text-stone-400 sm:flex-1">
+                Screenshot this view or use the buttons to share your deck.
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={async () => {
+                    const deckText = `${deckName}\n${deckStats.totalCards}/20 cards\n\n${deck.map(e => `${e.card.name} x${e.count}`).join('\n')}\n\nBuilt with DexTrends`;
+                    if (typeof navigator !== 'undefined' && navigator.share) {
+                      try {
+                        await navigator.share({
+                          title: deckName,
+                          text: deckText,
+                        });
+                      } catch (err) {
+                        // User cancelled share
+                      }
+                    } else {
+                      await navigator.clipboard.writeText(deckText);
+                      alert('Deck copied to clipboard!');
+                    }
+                  }}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  Share
+                </button>
+                <button
+                  onClick={() => setShowShareView(false)}
+                  className="px-4 py-2 bg-stone-700 hover:bg-stone-600 text-white rounded-lg font-medium text-sm transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Zoom Modal */}
       {zoomedCard && (
         <div 
@@ -1680,7 +1804,7 @@ function DeckBuilder() {
           </div>
         </div>
         
-        {/* Import/Export buttons for mobile */}
+        {/* Import/Export/Share buttons for mobile */}
         <div className="flex gap-2 mb-2">
           <button
             onClick={() => setShowImportModal(true)}
@@ -1689,12 +1813,20 @@ function DeckBuilder() {
             Import
           </button>
           {!deckStats.isEmpty && (
-            <button
-              onClick={() => setShowExportModal(true)}
-              className="flex-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-medium transition-colors"
-            >
-              Export
-            </button>
+            <>
+              <button
+                onClick={() => setShowShareView(true)}
+                className="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-colors"
+              >
+                Share
+              </button>
+              <button
+                onClick={() => setShowExportModal(true)}
+                className="flex-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-medium transition-colors"
+              >
+                Export
+              </button>
+            </>
           )}
         </div>
         
