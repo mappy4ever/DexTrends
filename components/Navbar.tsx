@@ -14,6 +14,7 @@ import { useAuthSafe } from "../context/AuthContext";
 import ClientOnly from "./ClientOnly";
 import { NavbarLogo } from "../components/ui/DexTrendsLogo";
 import { PokeballSVG } from "./ui/PokeballSVG";
+import { Z_INDEX } from "../hooks/useViewport";
 
 // Type definitions for navigation
 interface DropdownItem {
@@ -195,7 +196,10 @@ export default function Navbar() {
   return (
     <>
       {/* Clean Navbar - Warm cream background */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 z-30 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)] safe-area-padding-top">
+      <div
+        className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)] safe-area-padding-top"
+        style={{ zIndex: Z_INDEX.navbar }}
+      >
         <div className="flex items-center gap-x-2">
           {/* Mobile Menu Button */}
           <button
@@ -419,8 +423,9 @@ export default function Navbar() {
         <>
           {/* Backdrop - solid bg for iOS performance */}
           <div
-            className="fixed inset-0 bg-black/60 z-40 md:hidden"
+            className="fixed inset-0 bg-black/60 md:hidden"
             style={{
+              zIndex: Z_INDEX.modal,
               pointerEvents: 'auto'
             }}
             onClick={() => setMobileOpen(false)}
@@ -429,7 +434,8 @@ export default function Navbar() {
           {/* Menu panel - slide in from left, above backdrop */}
           <div
             ref={menuWrapperRef}
-            className="fixed left-0 top-14 bottom-0 w-80 max-w-[85vw] bg-[#FFFDF7] dark:bg-stone-900 shadow-2xl z-50 md:hidden overflow-y-auto safe-area-padding-x"
+            className="fixed left-0 top-14 bottom-0 w-80 max-w-[85vw] bg-[#FFFDF7] dark:bg-stone-900 shadow-2xl md:hidden overflow-y-auto safe-area-padding-x"
+            style={{ zIndex: Z_INDEX.mobileMenu }}
             onClick={(e) => e.stopPropagation()}
           >
             <nav className="flex flex-col p-3 space-y-1">

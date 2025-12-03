@@ -8,6 +8,7 @@ import "../styles/tokens.css";     // Design tokens (colors, spacing, typography
 import "../styles/components.css"; // All component styles
 import "../styles/utilities.css";  // Helper classes, animations
 import "../styles/overrides.css";  // Temporary fixes only
+import "../styles/card-types.css"; // TCG and Pocket card grid styles
 
 // Legacy CSS - To be removed after full migration
 import "../styles/globals.css";

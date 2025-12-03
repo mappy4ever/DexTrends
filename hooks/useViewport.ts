@@ -19,11 +19,13 @@ export const BREAKPOINTS = {
 // Z-index hierarchy for fixed elements (prevents overlap conflicts)
 export const Z_INDEX = {
   base: 0,
+  content: 10,       // Main content
   dropdown: 30,
-  sticky: 35,
-  fab: 40,           // FloatingActionBar
+  navbar: 40,        // Top navbar (must be above content and dropdowns)
+  fab: 42,           // FloatingActionBar
   bottomNav: 45,     // BottomNavigation (above FAB)
   modal: 50,
+  mobileMenu: 52,    // Mobile menu overlay
   toast: 55,
   tooltip: 60,
 } as const;

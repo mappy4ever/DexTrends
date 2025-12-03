@@ -164,11 +164,18 @@ const TcgSetsContent: React.FC = () => {
     }
   };
 
+  // Track if initial fetch has been done
+  const [hasFetched, setHasFetched] = useState(false);
+
+  // Fetch sets when component mounts or when navigating to this page
   useEffect(() => {
-    fetchSets(1, false).catch(err => {
-      logger.error('Failed to fetch initial sets:', err);
-    });
-  }, []);
+    if (router.isReady && !hasFetched) {
+      setHasFetched(true);
+      fetchSets(1, false).catch(err => {
+        logger.error('Failed to fetch initial sets:', err);
+      });
+    }
+  }, [router.isReady, hasFetched]);
 
 
   // Replace inline scripts with proper useEffect hooks
@@ -500,52 +507,22 @@ const TcgSetsContent: React.FC = () => {
               />
             </motion.div>
           ) : (
-            <motion.div 
+            <div
               className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 xs:gap-4 sm:gap-5 md:gap-6"
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: { opacity: 0 },
-                show: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.08,
-                    delayChildren: 0.1
-                  }
-                }
-              }}
             >
               {visibleSets.map((set: CardSet, index) => (
-                <motion.div
+                <div
                   key={set.id}
-                  variants={{
-                    hidden: {
-                      opacity: 0,
-                      y: 20,
-                      scale: 0.98
-                    },
-                    show: {
-                      opacity: 1,
-                      y: 0,
-                      scale: 1,
-                      transition: {
-                        type: "spring",
-                        stiffness: 200,
-                        damping: 20
-                      }
-                    }
-                  }}
-                  className="group cursor-pointer"
+                  className="group cursor-pointer animate-fadeIn"
+                  style={{ animationDelay: `${Math.min(index * 30, 300)}ms` }}
                   onClick={() => {
                     logger.debug('Navigating to set:', { setId: set.id, setName: set.name });
                     setSelectedSetId(set.id);
                     router.push(`/tcgexpansions/${set.id}`);
                   }}
                 >
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className={`h-full rounded-xl sm:rounded-2xl overflow-hidden bg-white dark:bg-stone-800/95 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-shadow duration-200 border border-stone-100 dark:border-stone-700/50 ${
+                  <div
+                    className={`h-full rounded-xl sm:rounded-2xl overflow-hidden bg-white dark:bg-stone-800/95 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-all duration-200 border border-stone-100 dark:border-stone-700/50 hover:-translate-y-1 ${
                       selectedSetId === set.id
                         ? 'ring-2 ring-amber-500 ring-offset-2 ring-offset-white dark:ring-offset-stone-900'
                         : ''
@@ -594,8 +571,8 @@ const TcgSetsContent: React.FC = () => {
                         </svg>
                       </button>
                     </div>
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
               ))}
 
               {/* Skeleton cards during batch loading */}
@@ -619,7 +596,7 @@ const TcgSetsContent: React.FC = () => {
                   </div>
                 </div>
               ))}
-            </motion.div>
+            </div>
           )}
 
           {/* Infinite scroll sentinel */}
