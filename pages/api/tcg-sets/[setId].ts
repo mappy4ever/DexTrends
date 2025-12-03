@@ -5,8 +5,8 @@ import { tcgCache } from '../../../lib/tcg-cache';
 import { createSetDetailFallback } from '../../../lib/static-sets-fallback';
 import type { TCGCardListApiResponse } from '../../../types/api/enhanced-responses';
 import type { CardSet, TCGCard } from '../../../types/api/cards';
-import type { TCGDexSet, TCGDexCard } from '../../../types/api/tcgdex';
-import { transformSet, transformCards, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
+import type { TCGDexSet } from '../../../types/api/tcgdex';
+import { transformSet, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { setId, page = '1', pageSize = '250' } = req.query; // Increased default
@@ -106,60 +106,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Transform TCGDex data to app format
     const set = transformSet(tcgdexData);
 
-    // TCGDex set response has brief card info - fetch full card details for better display
+    // TCGDex set response includes brief card info - use directly for fast loading
+    // Full card details can be fetched when user clicks on a specific card
     let allCards: TCGCard[] = [];
 
     if (tcgdexData.cards && tcgdexData.cards.length > 0) {
-      // Fetch full card data in batches for better display (rarity, pricing, HP, types)
-      const BATCH_SIZE = 50;
-      const cardIds = tcgdexData.cards.map(c => c.id);
+      // Transform brief cards directly - much faster than fetching each card individually
+      allCards = tcgdexData.cards.map(briefCard => {
+        // Construct image URL if missing
+        const imageBase = briefCard.image || `https://assets.tcgdex.net/en/sv/${briefCard.id.split('-')[0]}/${briefCard.localId}`;
 
-      // Fetch cards in parallel batches
-      const fetchFullCards = async (ids: string[]): Promise<TCGCard[]> => {
-        const results = await Promise.all(
-          ids.map(async (cardId) => {
-            try {
-              const cardUrl = TCGDexEndpoints.card(cardId, 'en');
-              const fullCard = await fetchJSON<TCGDexCard>(cardUrl, {
-                useCache: true,
-                cacheTime: 24 * 60 * 60 * 1000,
-                timeout: 8000,
-                throwOnError: false
-              });
-              if (fullCard) {
-                return transformCards([fullCard])[0];
-              }
-              return null;
-            } catch {
-              return null;
-            }
-          })
-        );
-        return results.filter((c): c is TCGCard => c !== null);
-      };
-
-      // Process in batches to avoid overwhelming the API
-      for (let i = 0; i < cardIds.length; i += BATCH_SIZE) {
-        const batch = cardIds.slice(i, i + BATCH_SIZE);
-        const batchCards = await fetchFullCards(batch);
-        allCards.push(...batchCards);
-      }
-
-      // If fetching full cards failed, fall back to brief cards
-      if (allCards.length === 0) {
-        logger.warn('Full card fetch failed, using brief cards', { setId: id });
-        allCards = tcgdexData.cards.map(briefCard => ({
+        return {
           id: briefCard.id,
           name: briefCard.name,
           supertype: 'Pokémon' as const,
           set: set,
           number: briefCard.localId,
+          rarity: (briefCard as { rarity?: string }).rarity || undefined,
           images: {
-            small: briefCard.image ? `${briefCard.image}/low.png` : '',
-            large: briefCard.image ? `${briefCard.image}/high.png` : '',
+            small: `${imageBase}/low.png`,
+            large: `${imageBase}/high.png`,
           },
-        }));
-      }
+        };
+      });
+
+      logger.info('Transformed brief cards from set response', {
+        setId: id,
+        cardCount: allCards.length
+      });
     }
 
     logger.info('TCGDex response transformed', {

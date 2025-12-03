@@ -34,10 +34,10 @@ const ALLOWED_ORIGINS = [
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
 
-  // Parse query params with defaults
-  const { page = '1', pageSize = '25', forceRefresh = 'false' } = req.query;
+  // Parse query params with defaults - allow up to 200 sets per page
+  const { page = '1', pageSize = '100', forceRefresh = 'false' } = req.query;
   const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1;
-  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 25, 50);
+  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 100, 200);
   const shouldForceRefresh = (Array.isArray(forceRefresh) ? forceRefresh[0] : forceRefresh) === 'true';
 
   // Set CORS headers with origin whitelist (security: prevent cross-origin abuse)

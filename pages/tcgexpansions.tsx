@@ -65,14 +65,14 @@ const TcgSetsContent: React.FC = () => {
       setError(null);
       
       try {
-        // Request 50 sets per page to ensure newest sets (including Mega Evolution) are included
+        // Request 150 sets per page to load most sets in one request
         const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
-          `/api/tcgexpansions?page=${page}&pageSize=50`,
+          `/api/tcgexpansions?page=${page}&pageSize=150`,
           {
-            useCache: true, // Enable caching for better performance
+            useCache: false, // Disable cache to ensure fresh data on initial load
             cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
             timeout: 30000, // 30 second timeout
-            retries: 1,
+            retries: 2,
             retryDelay: 1000
           }
         );
