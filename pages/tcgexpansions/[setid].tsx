@@ -684,6 +684,7 @@ const SetIdPage: NextPage = () => {
                       showSet={true}
                       showSort={true}
                       showSearch={false}
+                      variant="clean"
                     />
                   </div>
                 ) : (

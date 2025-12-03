@@ -57,13 +57,22 @@ export const useInfiniteScroll = <T = any>(
   const lastLoadTimeRef = useRef(0);
   const loadCountRef = useRef(0);
 
+  // Fix: When items changes from empty to populated, ensure we show at least initialVisible items
+  // This prevents a race condition where visibleCount is 0 from the previous empty state
+  const effectiveVisibleCount = useMemo(() => {
+    if (items.length > 0 && visibleCount === 0) {
+      return Math.min(initialVisible, items.length, maxItems);
+    }
+    return visibleCount;
+  }, [items.length, visibleCount, initialVisible, maxItems]);
+
   // Memoize visible items to prevent unnecessary re-renders
   const visibleItems = useMemo(() => {
-    const endIndex = Math.min(visibleCount, items.length, maxItems);
+    const endIndex = Math.min(effectiveVisibleCount, items.length, maxItems);
     return items.slice(0, endIndex);
-  }, [items, visibleCount, maxItems]);
+  }, [items, effectiveVisibleCount, maxItems]);
 
-  const hasMore = visibleCount < Math.min(items.length, maxItems);
+  const hasMore = effectiveVisibleCount < Math.min(items.length, maxItems);
 
   // Fix BETA-006: Use refs for values accessed in observer callback
   // to prevent race conditions and avoid recreating observer on every state change

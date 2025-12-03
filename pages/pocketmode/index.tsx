@@ -607,6 +607,7 @@ const PocketMode: NextPage = () => {
                   selectedRarityFilter={rarityFilter}
                   searchValue={search}
                   onSearchChange={setSearch}
+                  variant="clean"
                 />
               </Container>
             </>

@@ -25,16 +25,10 @@ import type {
 } from "../../types/pokemon";
 import type { TCGCard } from "../../types/api/cards";
 import type { PocketCard } from "../../types/api/pocket-cards";
-import PokemonHeroSectionV3 from "../../components/pokemon/PokemonHeroSectionV3";
-import PokemonTabSystem from "../../components/pokemon/PokemonTabSystem";
-import FloatingActionBar from "../../components/pokemon/FloatingActionBar";
 import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper, PageErrorBoundary } from '../../components/ui';
 import { CircularButton } from "../../components/ui/design-system";
-import { getPokemonTheme } from "../../utils/pokemonAnimations";
-import NavigationArrow from "../../components/pokemon/NavigationArrow";
-import { ProgressiveImage } from "../../components/ui/ProgressiveImage";
-import { UnifiedPokemonDetail } from "../../components/pokemon/UnifiedPokemonDetail";
+import PokemonDetailPageV2 from "../../components/pokemon/PokemonDetailPageV2";
 
 // Interface for abilities state
 interface AbilityData {
@@ -520,45 +514,28 @@ const PokemonDetail: NextPage = () => {
     );
   }
 
-  // Unified view for all devices
+  // New simplified view
   return (
     <PageErrorBoundary pageName="Pokemon Detail">
       <Head>
         <title>{pokemon?.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : 'Pokemon'} - Pokédex | DexTrends</title>
-        <meta 
-          name="description" 
-          content={`View detailed information about ${pokemon?.name || 'this Pokemon'}, including stats, abilities, evolution chain, and more.`} 
+        <meta
+          name="description"
+          content={`View detailed information about ${pokemon?.name || 'this Pokemon'}, including stats, abilities, evolution chain, and more.`}
         />
       </Head>
-      
-      <FullBleedWrapper 
-        gradient="pokemon-type"
-        pokemonTypes={pokemon?.types}
-      >
-        <UnifiedPokemonDetail
-          pokemon={pokemon}
-          species={species}
-          evolutionChain={evolutionChain}
-          abilities={abilities}
-          tcgCards={tcgCards}
-          pocketCards={pocketCards}
-          showShiny={showShiny}
-          onShinyToggle={() => setShowShiny(!showShiny)}
-          adjacentPokemon={adjacentPokemon}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          selectedForm={selectedForm}
-          onFormChange={handleFormChange}
-          locationEncounters={locationAreaEncounters}
-          natureData={natureData}
-          allNatures={allNatures}
-          selectedNature={selectedNature}
-          onNatureChange={handleNatureChange}
-          selectedLevel={selectedLevel}
-          onLevelChange={setSelectedLevel}
-          competitiveTiers={competitiveTiers}
-        />
-      </FullBleedWrapper>
+
+      <PokemonDetailPageV2
+        pokemon={pokemon}
+        species={species}
+        evolutionChain={evolutionChain}
+        abilities={abilities}
+        tcgCards={tcgCards}
+        pocketCards={pocketCards}
+        showShiny={showShiny}
+        onShinyToggle={() => setShowShiny(!showShiny)}
+        adjacentPokemon={adjacentPokemon}
+      />
     </PageErrorBoundary>
   );
 };

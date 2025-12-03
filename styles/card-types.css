@@ -1,12 +1,225 @@
 /* Pokemon Card System - TCG and Pocket Cards */
 
+/* ============================================
+   CLEAN CARD GRID - Pokemon Zone Inspired
+   Space-efficient, minimal chrome, focused on cards
+   ============================================ */
+
+.clean-card-grid {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (min-width: 420px) {
+  .clean-card-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .clean-card-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.625rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .clean-card-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.625rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .clean-card-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .clean-card-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .clean-card-grid {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+/* Clean Card Item - Minimal design with black outline */
+.clean-card {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  /* Subtle black outline */
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  background: transparent;
+}
+
+.clean-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.clean-card:active {
+  transform: scale(0.98);
+}
+
+/* Clean Card Image - Full bleed, no padding */
+.clean-card-image {
+  width: 100%;
+  display: block;
+  aspect-ratio: 245 / 342; /* Pokemon card aspect ratio */
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+/* Optional overlay for card info on hover */
+.clean-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.375rem 0.5rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.clean-card:hover .clean-card-overlay {
+  opacity: 1;
+}
+
+.clean-card-name {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Clean Card with info below (alternative layout) */
+.clean-card-with-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.clean-card-with-info .clean-card-image-wrapper {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.clean-card-with-info:hover .clean-card-image-wrapper {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.clean-card-info {
+  text-align: center;
+  padding: 0.125rem 0;
+}
+
+.clean-card-info-name {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #44403c; /* stone-700 */
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (prefers-color-scheme: dark) {
+  .clean-card-info-name {
+    color: #d6d3d1; /* stone-300 */
+  }
+}
+
+.clean-card-info-price {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: #d97706; /* amber-600 */
+}
+
+/* Dark mode adjustments for clean cards */
+@media (prefers-color-scheme: dark) {
+  .clean-card {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .clean-card:hover {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .clean-card-with-info .clean-card-image-wrapper {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .clean-card-with-info:hover .clean-card-image-wrapper {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Magnify button for clean cards */
+.clean-card-magnify {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.clean-card:hover .clean-card-magnify,
+.clean-card-with-info:hover .clean-card-magnify {
+  opacity: 1;
+}
+
+.clean-card-magnify svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: #44403c;
+}
+
+/* ============================================
+   LEGACY GRID STYLES (kept for compatibility)
+   ============================================ */
+
 /* Grid layout optimizations for both TCG and Pocket cards */
 .pocket-cards-grid,
 .tcg-cards-grid {
   display: grid;
   gap: 1rem;
   padding: 0.75rem;
-  
+
   /* Responsive grid columns with better spacing */
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }

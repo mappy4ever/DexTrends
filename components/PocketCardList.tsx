@@ -21,6 +21,9 @@ interface ExtendedPocketCard extends PocketCard {
 // Re-added type - used by pages
 type RarityFilter = "all" | "◊" | "◊◊" | "◊◊◊" | "◊◊◊◊" | "★" | "☆☆" | "★★" | "fullart" | "immersive";
 
+// Card display variant type
+type CardVariant = 'default' | 'clean';
+
 
 // Pocket Card wrapper props
 interface PocketCardProps {
@@ -33,22 +36,24 @@ interface PocketCardProps {
   imageWidth: number;
   imageHeight: number;
   onCardClick?: (card: ExtendedPocketCard) => void;
+  variant?: CardVariant;
 }
 
 // Pocket Card wrapper with new glass design
-const PocketCard = memo<PocketCardProps>(({ 
-  card, 
-  cardClassName, 
-  showRarity, 
+const PocketCard = memo<PocketCardProps>(({
+  card,
+  cardClassName,
+  showRarity,
   setZoomedCard,
   imageWidth,
   imageHeight,
-  onCardClick
+  onCardClick,
+  variant = 'default'
 }) => {
   // Parse card details
   const setId = card.id?.split('-')[0]?.toUpperCase() || 'A1';
   const cardNumber = card.id?.split('-')[1] || '???';
-  
+
   // Get rarity display
   const getRarityDisplay = (rarity?: string) => {
     if (!rarity) return null;
@@ -61,8 +66,8 @@ const PocketCard = memo<PocketCardProps>(({
       .replace(/◊/g, '♦');  // Replace outline diamonds with filled diamonds
     return displayRarity;
   };
-  
-  
+
+
   // Check if rarity should have gold/shiny text
   const isGoldRarity = (rarity?: string) => {
     if (!rarity) return false;
@@ -70,10 +75,10 @@ const PocketCard = memo<PocketCardProps>(({
     if (rarity === '👑' || rarity === '♕') return false;
     // Always apply gold styling to star rarities
     // Check for both black star (★) and white star (☆) and other star variations
-    return rarity.includes('★') || rarity.includes('☆') || rarity.includes('⭐') || 
+    return rarity.includes('★') || rarity.includes('☆') || rarity.includes('⭐') ||
            rarity === '☆☆' || rarity === '☆☆☆';
   };
-  
+
   // Get subtle type-based gradient for card background
   const getTypeGradient = (type?: string) => {
     if (!type) return '';
@@ -96,7 +101,49 @@ const PocketCard = memo<PocketCardProps>(({
     const typeLower = type.toLowerCase();
     return typeColors[typeLower] || '';
   };
-  
+
+  // Clean variant - minimal, space-efficient design with subtle black outline
+  if (variant === 'clean') {
+    return (
+      <div
+        className="clean-card-with-info group cursor-pointer"
+        onClick={() => onCardClick?.(card)}
+      >
+        <div className="clean-card-image-wrapper">
+          <img
+            src={card.image || '/back-card.png'}
+            alt={card.name}
+            className="clean-card-image"
+            loading="lazy"
+          />
+          {/* Magnify Button */}
+          {setZoomedCard && (
+            <button
+              className="clean-card-magnify"
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoomedCard(card);
+              }}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          )}
+          {/* Hover overlay with name */}
+          <div className="clean-card-overlay">
+            <span className="clean-card-name">{card.name}</span>
+          </div>
+        </div>
+        {/* Minimal info below card */}
+        <div className="clean-card-info">
+          <span className="clean-card-info-name">{card.name}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Default variant - original glass design
   return (
     <div className="group relative">
       {/* Main Card Container - Mobile Optimized Glass */}
@@ -135,8 +182,8 @@ const PocketCard = memo<PocketCardProps>(({
               loading="lazy"
             />
           </div>
-          
-          
+
+
           {/* Magnify Button - Small and Subtle */}
           {setZoomedCard && (
             <button
@@ -160,7 +207,7 @@ const PocketCard = memo<PocketCardProps>(({
             </button>
           )}
         </div>
-        
+
         {/* Card Info Section - Two Rows */}
         <div className="space-y-1 flex-grow flex flex-col justify-end pb-1">
           {/* First Row - Card Name (Centered) */}
@@ -182,7 +229,7 @@ const PocketCard = memo<PocketCardProps>(({
             ">
               {setId} #{cardNumber}
             </span>
-            
+
             {/* Rarity Display (Now on Right) */}
             {showRarity && card.rarity && (
               <div className="flex-shrink-0">
@@ -233,6 +280,8 @@ interface PocketCardListProps {
   onCardClick?: (card: ExtendedPocketCard) => void;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
+  /** Display variant: 'default' for current glass design, 'clean' for minimal Pokemon Zone style */
+  variant?: CardVariant;
 }
 
 // Helper interface for parsed card ID
@@ -243,13 +292,13 @@ interface ParsedCardId {
 }
 
 // PocketCardList: displays cards from the Pocket API with enhanced visual design
-function PocketCardListInner({ 
-  cards, 
-  loading, 
-  error, 
+function PocketCardListInner({
+  cards,
+  loading,
+  error,
   emptyMessage = "No Pocket cards found.",
-  hideCardCount = false, 
-  cardClassName = "", 
+  hideCardCount = false,
+  cardClassName = "",
   gridClassName = "",
   showRarity = true,
   showSort = true,
@@ -257,7 +306,8 @@ function PocketCardListInner({
   imageHeight = 154, // 50% smaller than 308
   onCardClick,
   searchValue = '',
-  onSearchChange
+  onSearchChange,
+  variant = 'default'
 }: PocketCardListProps) {
   const [zoomedCard, setZoomedCard] = useState<ExtendedPocketCard | null>(null);
   const [sortOption, setSortOption] = useState<string>("number");
@@ -584,7 +634,7 @@ function PocketCardListInner({
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 min-420:gap-3 sm:gap-4"}>
+    <div className={gridClassName || (variant === 'clean' ? "clean-card-grid" : "grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 min-420:gap-3 sm:gap-4")}>
       {displayedCards.map((card, _index) => {
         return (
           <PocketCard
@@ -596,6 +646,7 @@ function PocketCardListInner({
             imageWidth={imageWidth}
             imageHeight={imageHeight}
             onCardClick={onCardClick}
+            variant={variant}
           />
         );
       })}

@@ -395,8 +395,8 @@ function SetView() {
                   } : undefined}
                 />
               ) : (
-                <PocketCardList 
-                  cards={allCards.filter(card => 
+                <PocketCardList
+                  cards={allCards.filter(card =>
                     card.name.toLowerCase().includes(search.toLowerCase())
                   )}
                   loading={false}
@@ -411,6 +411,7 @@ function SetView() {
                   selectedRarityFilter="all"
                   searchValue={search}
                   onSearchChange={setSearch}
+                  variant="clean"
                 />
               )}
             </motion.div>

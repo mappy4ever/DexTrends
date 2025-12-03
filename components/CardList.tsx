@@ -55,6 +55,7 @@ const SimpleModal: React.FC<SimpleModalProps> = ({ isOpen, onClose, children }) 
 };
 
 type SortOption = "price" | "releaseDate" | "rarity";
+type CardVariant = 'default' | 'clean';
 
 interface CardListProps {
   cards?: TCGCard[];
@@ -66,6 +67,8 @@ interface CardListProps {
   getPrice?: (card: TCGCard) => number;
   getReleaseDate?: (card: TCGCard) => string;
   getRarityRank?: (card: TCGCard) => number;
+  /** Display variant: 'default' for current glass design, 'clean' for minimal Pokemon Zone style */
+  variant?: CardVariant;
 }
 
 interface CardWithPrice extends TCGCard {
@@ -78,9 +81,10 @@ interface CardItemProps {
   onMagnifyClick: (card: TCGCard) => void;
   onCardClick: (card: TCGCard) => void;
   isScrolling?: boolean;
+  variant?: CardVariant;
 }
 
-const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScrolling = false }) => {
+const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScrolling = false, variant = 'default' }) => {
   // Get price for the card
   const price = card.currentPrice || 0;
   const setNumber = card.number || '???';
@@ -99,6 +103,50 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
     return 'from-stone-100/80 to-stone-200/80';
   };
 
+  // Clean variant - minimal, space-efficient design with subtle black outline
+  if (variant === 'clean') {
+    return (
+      <div
+        className="clean-card-with-info group cursor-pointer"
+        onClick={() => onCardClick(card)}
+      >
+        <div className="clean-card-image-wrapper">
+          <img
+            src={card.images?.small || '/back-card.png'}
+            alt={card.name}
+            className="clean-card-image"
+            loading="lazy"
+            decoding="async"
+          />
+          {/* Magnify Button */}
+          <button
+            className="clean-card-magnify"
+            onClick={(e) => {
+              e.stopPropagation();
+              onMagnifyClick(card);
+            }}
+          >
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+          {/* Hover overlay with name */}
+          <div className="clean-card-overlay">
+            <span className="clean-card-name">{card.name}</span>
+          </div>
+        </div>
+        {/* Minimal info below card */}
+        <div className="clean-card-info">
+          <span className="clean-card-info-name">{card.name}</span>
+          {price > 0 && (
+            <div className="clean-card-info-price">${price.toFixed(2)}</div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Default variant - original design
   return (
     <div className="group relative animate-fadeIn">
       {/* Main Card Container */}
@@ -209,7 +257,8 @@ const areCardItemPropsEqual = (prev: CardItemProps, next: CardItemProps) => {
   return (
     prev.card.id === next.card.id &&
     prev.card.currentPrice === next.card.currentPrice &&
-    prev.isScrolling === next.isScrolling
+    prev.isScrolling === next.isScrolling &&
+    prev.variant === next.variant
   );
 };
 
@@ -227,6 +276,7 @@ const arePropsEqual = (prevProps: CardListProps, nextProps: CardListProps): bool
   if (prevProps.getPrice !== nextProps.getPrice) return false;
   if (prevProps.getReleaseDate !== nextProps.getReleaseDate) return false;
   if (prevProps.getRarityRank !== nextProps.getRarityRank) return false;
+  if (prevProps.variant !== nextProps.variant) return false;
   return true;
 };
 
@@ -239,6 +289,7 @@ const CardList = memo<CardListProps>(({
   getPrice = () => 0,
   getReleaseDate = () => "0000-00-00",
   getRarityRank = () => 0,
+  variant = 'default',
 }) => {
   const [sortOption, setSortOption] = useState<SortOption>(initialSortOption);
   const [zoomedCard, setZoomedCard] = useState<TCGCard | null>(null);
@@ -386,7 +437,7 @@ const CardList = memo<CardListProps>(({
       ) : (
         /* Card grid */
         <div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 p-6"
+          className={variant === 'clean' ? "clean-card-grid" : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 p-6"}
           style={{
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden'
@@ -405,6 +456,7 @@ const CardList = memo<CardListProps>(({
                 onMagnifyClick={handleMagnifyClick}
                 onCardClick={handleCardClick}
                 isScrolling={isScrolling}
+                variant={variant}
               />
             );
           })}

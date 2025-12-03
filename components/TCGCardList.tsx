@@ -22,6 +22,9 @@ const VirtualizedGrid = dynamic(
   }
 );
 
+// Card display variant type
+type CardVariant = 'default' | 'clean';
+
 // TCG Card wrapper props
 interface TCGCardProps {
   card: TCGCard;
@@ -34,6 +37,7 @@ interface TCGCardProps {
   imageHeight: number;
   onCardClick?: (card: TCGCard) => void;
   getPrice?: (card: TCGCard) => number;
+  variant?: CardVariant;
 }
 
 
@@ -81,17 +85,18 @@ const getActualRarity = (card: TCGCard): string => {
 };
 
 // TCG Card wrapper with glass design matching PocketCard
-const TCGCardItem = memo<TCGCardProps>(({ 
-  card, 
-  cardClassName, 
-  showPrice, 
+const TCGCardItem = memo<TCGCardProps>(({
+  card,
+  cardClassName,
+  showPrice,
   showRarity,
   showSet,
   setZoomedCard,
   imageWidth,
   imageHeight,
   onCardClick,
-  getPrice
+  getPrice,
+  variant = 'default'
 }) => {
   const router = useRouter();
   // Get card details
@@ -99,12 +104,12 @@ const TCGCardItem = memo<TCGCardProps>(({
   const setName = card.set?.name || '';
   const cardNumber = card.number || '???';
   const price = getPrice ? getPrice(card) : 0;
-  
+
   // Get subtle type-based gradient for card background
   const getTypeGradient = (types?: string[]) => {
     if (!types || types.length === 0) return '';
     const primaryType = types[0].toLowerCase();
-    
+
     const typeColors: Record<string, string> = {
       'grass': 'from-green-100/60 via-green-50/40 via-70% to-transparent',
       'fire': 'from-red-100/60 via-orange-50/40 via-70% to-transparent',
@@ -121,10 +126,63 @@ const TCGCardItem = memo<TCGCardProps>(({
       'colorless': 'from-stone-50/60 via-stone-50/40 via-70% to-transparent',
       'fairy': 'from-pink-100/60 via-rose-50/40 via-70% to-transparent',
     };
-    
+
     return typeColors[primaryType] || '';
   };
-  
+
+  // Clean variant - minimal, space-efficient design with subtle black outline
+  if (variant === 'clean') {
+    return (
+      <div
+        className="clean-card-with-info group cursor-pointer"
+        onClick={() => onCardClick?.(card)}
+      >
+        <div className="clean-card-image-wrapper">
+          <img
+            src={card.images?.small || '/back-card.png'}
+            alt={card.name}
+            className="clean-card-image"
+            loading="lazy"
+          />
+          {/* Magnify Button */}
+          {setZoomedCard && (
+            <button
+              className="clean-card-magnify"
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoomedCard(card);
+              }}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          )}
+          {/* Hover overlay with name */}
+          <div className="clean-card-overlay">
+            <span className="clean-card-name">{card.name}</span>
+          </div>
+        </div>
+        {/* Minimal info below card */}
+        <div className="clean-card-info">
+          <button
+            className="clean-card-info-name hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/cards/${card.id}`);
+            }}
+          >
+            {card.name}
+          </button>
+          {showPrice && price > 0 && (
+            <div className="clean-card-info-price">${price.toFixed(2)}</div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Default variant - original glass design
   return (
     <div className="group relative">
       {/* Main Card Container - Mobile Optimized Glass */}
@@ -154,7 +212,7 @@ const TCGCardItem = memo<TCGCardProps>(({
         {card.types && (
           <div className={`absolute inset-0 bg-gradient-to-b ${getTypeGradient(card.types)} pointer-events-none rounded-xl opacity-80`} />
         )}
-        
+
         {/* Rarity Badge - Top Right Corner in Circle */}
         {showRarity && card.rarity && (
           <div className="absolute top-3 right-3 z-20">
@@ -174,7 +232,7 @@ const TCGCardItem = memo<TCGCardProps>(({
             </div>
           </div>
         )}
-        
+
         {/* Card content with relative positioning to be above gradient */}
         <div className="relative z-10 flex flex-col h-full">
           {/* Card Name at Top - Clickable for direct navigation */}
@@ -207,9 +265,9 @@ const TCGCardItem = memo<TCGCardProps>(({
                 loading="lazy"
               />
             </div>
-            
+
             {/* Rarity display removed from image - now shown in bottom row */}
-            
+
             {/* Magnify Button - Small and Subtle */}
             {setZoomedCard && (
               <button
@@ -233,7 +291,7 @@ const TCGCardItem = memo<TCGCardProps>(({
               </button>
             )}
           </div>
-          
+
           {/* Bottom Info Row - Price and Set */}
           <div className="flex items-center justify-between px-1 gap-1">
             {/* Enhanced Price Display */}
@@ -245,7 +303,7 @@ const TCGCardItem = memo<TCGCardProps>(({
                 animated={true}
               />
             )}
-            
+
             {/* Set Badge */}
             {showSet && (
               <span className="
@@ -288,16 +346,18 @@ interface TCGCardListProps {
   getPrice?: (card: TCGCard) => number;
   getReleaseDate?: (card: TCGCard) => string;
   getRarityRank?: (card: TCGCard) => number;
+  /** Display variant: 'default' for current glass design, 'clean' for minimal Pokemon Zone style */
+  variant?: CardVariant;
 }
 
 // TCGCardList: displays TCG cards with enhanced visual design matching PocketCardList
-function TCGCardListInner({ 
-  cards, 
-  loading = false, 
-  error, 
+function TCGCardListInner({
+  cards,
+  loading = false,
+  error,
   emptyMessage = "No cards found.",
-  hideCardCount = false, 
-  cardClassName = "", 
+  hideCardCount = false,
+  cardClassName = "",
   gridClassName = "",
   showPrice = true,
   showRarity = true,
@@ -309,7 +369,8 @@ function TCGCardListInner({
   onCardClick,
   getPrice = () => 0,
   getReleaseDate = () => "0000-00-00",
-  getRarityRank = () => 0
+  getRarityRank = () => 0,
+  variant = 'default'
 }: TCGCardListProps) {
   const [zoomedCard, setZoomedCard] = useState<TCGCard | null>(null);
   const [sortOption, setSortOption] = useState<string>("price");
@@ -559,7 +620,7 @@ function TCGCardListInner({
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 min-420:gap-3 sm:gap-4"}>
+    <div className={gridClassName || (variant === 'clean' ? "clean-card-grid" : "grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 min-420:gap-3 sm:gap-4")}>
       {displayedCards.map((card) => {
         return (
           <TCGCardItem
@@ -574,6 +635,7 @@ function TCGCardListInner({
             imageHeight={imageHeight}
             onCardClick={onCardClick}
             getPrice={getPrice}
+            variant={variant}
           />
         );
       })}
