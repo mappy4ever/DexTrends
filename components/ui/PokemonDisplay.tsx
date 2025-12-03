@@ -399,6 +399,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
       // Clean, minimal card for Pokedex grid listing
       // Shows: number, image, name, type pills
       // No stats, no badges, no gradients
+      // Mobile-optimized: smaller padding, flexible image, wrapping types
       return (
         <motion.div
           whileHover={animated ? { y: -2, boxShadow: '0 8px 25px -5px rgba(0,0,0,0.1)' } : undefined}
@@ -413,7 +414,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             'bg-white dark:bg-stone-800/95',
             'border border-stone-200 dark:border-stone-700/50',
             'shadow-sm',
-            'p-3',
+            'p-2 sm:p-3', // Smaller padding on mobile
             'h-full w-full', // Fill container
             'flex flex-col', // Enable flex layout
             'transition-shadow duration-150',
@@ -422,29 +423,29 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           )}
         >
           {/* Pokemon Number - top left, subtle */}
-          <span className="absolute top-2 left-2 text-[11px] text-stone-400 dark:text-stone-500 font-medium">
+          <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 text-[10px] sm:text-[11px] text-stone-400 dark:text-stone-500 font-medium">
             #{String(id).padStart(3, '0')}
           </span>
 
-          {/* Pokemon Image - centered, prominent, takes available space */}
-          <div className="flex-1 flex items-center justify-center pt-4 min-h-0">
+          {/* Pokemon Image - centered, responsive size */}
+          <div className="flex-1 flex items-center justify-center pt-3 sm:pt-4 min-h-0">
             <Image
               src={imageSrc}
               alt={name}
-              width={width || 72}
-              height={height || 72}
-              className="object-contain drop-shadow-sm"
+              width={width || 56}
+              height={height || 56}
+              className="object-contain drop-shadow-sm w-14 h-14 sm:w-[72px] sm:h-[72px]"
               onError={() => setImgError(true)}
             />
           </div>
 
-          {/* Name - bottom, centered, bold */}
-          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-sm leading-tight mt-auto">
+          {/* Name - bottom, centered, responsive text */}
+          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-xs sm:text-sm leading-tight mt-auto truncate px-0.5">
             {name}
           </h3>
 
-          {/* Type pills - small, centered below name */}
-          <div className="flex justify-center gap-1 mt-1 pb-0.5">
+          {/* Type pills - wrap on mobile, centered */}
+          <div className="flex flex-wrap justify-center gap-0.5 sm:gap-1 mt-1 pb-0.5">
             {typeNames.map(type => (
               <TypeBadge key={type} type={type} size="xs" />
             ))}
