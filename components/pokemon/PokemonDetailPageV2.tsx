@@ -10,7 +10,8 @@
  * - High quality, polished appearance
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { TYPE_COLORS } from '@/components/ui/design-system/glass-constants';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -920,10 +921,16 @@ const InfoCard: React.FC<{ label: string; value: string; hint?: string; classNam
   </div>
 );
 
-// Moves Section - Expanded by default with better display
+// Move types cache - shared across component instances
+const moveTypesCache: Record<string, string> = {};
+
+// Moves Section - Expanded by default with better display and type coloring
 const MovesSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'level-up' | 'machine' | 'egg' | 'tutor'>('level-up');
   const [searchQuery, setSearchQuery] = useState('');
+  const [moveTypes, setMoveTypes] = useState<Record<string, string>>(moveTypesCache);
+  const [loadingTypes, setLoadingTypes] = useState(false);
 
   const groupedMoves = useMemo(() => {
     const groups: Record<string, Array<{ name: string; level?: number }>> = {
@@ -953,6 +960,46 @@ const MovesSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
     return groups;
   }, [pokemon.moves]);
 
+  // Fetch move types for current tab
+  const fetchMoveTypes = useCallback(async (moves: Array<{ name: string }>) => {
+    const uncachedMoves = moves.filter(m => !moveTypesCache[m.name]);
+    if (uncachedMoves.length === 0) return;
+
+    setLoadingTypes(true);
+
+    // Batch fetch in chunks of 10 to avoid overwhelming the API
+    const chunkSize = 10;
+    for (let i = 0; i < uncachedMoves.length; i += chunkSize) {
+      const chunk = uncachedMoves.slice(i, i + chunkSize);
+
+      await Promise.all(
+        chunk.map(async (move) => {
+          try {
+            const response = await fetch(`https://pokeapi.co/api/v2/move/${move.name}`);
+            if (response.ok) {
+              const data = await response.json();
+              const typeName = data.type?.name || 'normal';
+              moveTypesCache[move.name] = typeName;
+            }
+          } catch {
+            // Silently fail - move will show without type color
+          }
+        })
+      );
+
+      // Update state after each chunk
+      setMoveTypes({ ...moveTypesCache });
+    }
+
+    setLoadingTypes(false);
+  }, []);
+
+  // Fetch types when tab changes
+  useEffect(() => {
+    const currentMoves = groupedMoves[activeTab] || [];
+    fetchMoveTypes(currentMoves);
+  }, [activeTab, groupedMoves, fetchMoveTypes]);
+
   const tabs = [
     { id: 'level-up', label: 'Level Up', count: groupedMoves['level-up'].length },
     { id: 'machine', label: 'TM/HM', count: groupedMoves['machine'].length },
@@ -966,6 +1013,29 @@ const MovesSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
     : currentMoves;
 
   const totalMoves = Object.values(groupedMoves).reduce((sum, arr) => sum + arr.length, 0);
+
+  // Helper to get type-based styling
+  const getMoveTypeStyle = (moveName: string) => {
+    const moveType = moveTypes[moveName];
+    if (!moveType || !TYPE_COLORS[moveType]) {
+      return {};
+    }
+    const color = TYPE_COLORS[moveType];
+    return {
+      backgroundColor: `${color}20`, // 20 = 12.5% opacity
+      borderColor: `${color}60`, // 60 = 37.5% opacity
+    };
+  };
+
+  const getMoveTypeBadgeStyle = (moveName: string) => {
+    const moveType = moveTypes[moveName];
+    if (!moveType || !TYPE_COLORS[moveType]) {
+      return {};
+    }
+    return {
+      backgroundColor: TYPE_COLORS[moveType],
+    };
+  };
 
   if (totalMoves === 0) return null;
 
@@ -1006,33 +1076,67 @@ const MovesSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
         ))}
       </div>
 
-      {/* Moves Grid - All tabs now use consistent grid layout */}
+      {/* Loading indicator */}
+      {loadingTypes && (
+        <div className="text-xs text-stone-500 dark:text-stone-400 mb-2 flex items-center gap-2">
+          <div className="w-3 h-3 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+          Loading move types...
+        </div>
+      )}
+
+      {/* Moves Grid - All tabs now use consistent grid layout with type colors */}
       <div className="bg-stone-50 dark:bg-stone-800/50 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700">
-        <div className="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-[400px] overflow-y-auto">
-          {filteredMoves.map(move => (
-            <div
-              key={move.name}
-              className="relative px-3 py-2.5 bg-white dark:bg-stone-800 rounded-lg text-center group hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors"
-            >
-              <span className="text-sm font-medium text-stone-700 dark:text-stone-300 block truncate">
-                {capitalize(move.name)}
-              </span>
-              {/* Show level badge for level-up moves */}
-              {activeTab === 'level-up' && move.level !== undefined && (
-                <span className="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 bg-amber-500 text-white text-[10px] font-bold rounded-full shadow-sm">
-                  {move.level === 0 ? 'Evo' : move.level}
+        <div className="p-3 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
+          {filteredMoves.map(move => {
+            const moveType = moveTypes[move.name];
+            return (
+              <button
+                key={move.name}
+                onClick={() => router.push(`/moves/${move.name}`)}
+                className="px-2 py-1.5 rounded-lg text-center group transition-all duration-200 border cursor-pointer hover:scale-105 hover:shadow-md"
+                style={{
+                  ...getMoveTypeStyle(move.name),
+                  ...((!moveType || !TYPE_COLORS[moveType]) && {
+                    backgroundColor: 'var(--move-default-bg)',
+                    borderColor: 'var(--move-default-border)',
+                  }),
+                }}
+                title={moveType ? capitalize(moveType) : undefined}
+              >
+                <span className="text-xs text-stone-700 dark:text-stone-200 flex items-center gap-1.5">
+                  {activeTab === 'level-up' && move.level !== undefined && (
+                    <>
+                      <span className="text-stone-400 dark:text-stone-500 font-normal shrink-0">
+                        {move.level === 0 ? 'Evo' : `Lv.${move.level}`}
+                      </span>
+                      <span className="text-stone-300 dark:text-stone-600">·</span>
+                    </>
+                  )}
+                  <span className="font-medium truncate">{capitalize(move.name)}</span>
                 </span>
-              )}
-            </div>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {filteredMoves.length === 0 && (
         <p className="text-center py-8 text-stone-500 dark:text-stone-400">
-          No moves found matching "{searchQuery}"
+          No moves found matching &quot;{searchQuery}&quot;
         </p>
       )}
+
+      {/* CSS variables for default move styling */}
+      <style jsx>{`
+        :root {
+          --move-default-bg: rgb(255 255 255);
+          --move-default-border: rgb(229 231 235);
+        }
+        :global(.dark) {
+          --move-default-bg: rgb(41 37 36);
+          --move-default-border: rgb(68 64 60);
+        }
+      `}</style>
     </Section>
   );
 };
