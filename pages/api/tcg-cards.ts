@@ -52,8 +52,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Build TCGDex query with all filters
     const queryParams = new URLSearchParams();
 
-    // Name filter (supports wildcards)
-    queryParams.append('name', pokemonName);
+    // Name filter - TCGDex uses 'like:' prefix for partial matching
+    // This will match "Pikachu", "Pikachu V", "Pikachu VMAX", etc.
+    queryParams.append('name', `like:${pokemonName}`);
 
     // Type filter (Fire, Water, Grass, etc.)
     const typeFilter = Array.isArray(type) ? type[0] : type;

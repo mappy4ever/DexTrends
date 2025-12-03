@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, memo, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "./ui/LazyMotion";
+import { motion } from "framer-motion";
 import Modal from '@/components/ui/Modal';
 import logger from "@/utils/logger";
 import { SkeletonGrid as CardGridSkeleton } from "./ui/Skeleton";

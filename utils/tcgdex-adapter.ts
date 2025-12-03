@@ -34,6 +34,87 @@ import type {
 } from '../types/api/cards';
 
 // ============================================================================
+// Series Name Mapping (must be before transformers that use it)
+// ============================================================================
+
+/**
+ * Map set ID prefixes to series names.
+ * TCGDex set IDs follow patterns like sv1, swsh1, sm1, xy1, etc.
+ */
+const SERIES_MAP: Record<string, string> = {
+  // Scarlet & Violet Era
+  'sv': 'Scarlet & Violet',
+  'svp': 'Scarlet & Violet',
+  // Sword & Shield Era
+  'swsh': 'Sword & Shield',
+  'swshp': 'Sword & Shield',
+  // Sun & Moon Era
+  'sm': 'Sun & Moon',
+  'smp': 'Sun & Moon',
+  // XY Era
+  'xy': 'XY',
+  'xyp': 'XY',
+  // Black & White Era
+  'bw': 'Black & White',
+  'bwp': 'Black & White',
+  // HeartGold SoulSilver Era
+  'hgss': 'HeartGold & SoulSilver',
+  // Diamond & Pearl Era
+  'dp': 'Diamond & Pearl',
+  // EX Era
+  'ex': 'EX',
+  // E-Card Era
+  'ecard': 'E-Card',
+  // Neo Era
+  'neo': 'Neo',
+  // Gym Era
+  'gym': 'Gym',
+  // Base Era
+  'base': 'Base',
+  'basep': 'Wizards Promos',
+  // Pop Series
+  'pop': 'POP Series',
+  // Platinum Era
+  'pl': 'Platinum',
+  // Legendary Collection
+  'lc': 'Legendary Collection',
+  // Other
+  'det': 'Detective Pikachu',
+  'fut20': 'Futsal',
+  'cel25': 'Celebrations',
+  'mcd': "McDonald's",
+};
+
+/**
+ * Get series name from set ID
+ */
+export function getSeriesFromSetId(setId: string): string {
+  if (!setId) return '';
+
+  // Try exact match first (for sets like 'basep')
+  if (SERIES_MAP[setId]) {
+    return SERIES_MAP[setId];
+  }
+
+  // Try prefix matching (sv1 -> sv, swsh12 -> swsh)
+  // Remove numbers from the end to get the prefix
+  const prefix = setId.replace(/\d+$/, '').toLowerCase();
+  return SERIES_MAP[prefix] || '';
+}
+
+/**
+ * Format TCGDex image URL (add .png extension if needed)
+ */
+export function formatImageUrl(url?: string): string {
+  if (!url) return '';
+  // TCGDex image URLs don't have extensions, add .png
+  if (!url.endsWith('.png') && !url.endsWith('.webp') && !url.endsWith('.jpg')) {
+    return `${url}.png`;
+  }
+  return url;
+}
+
+// ============================================================================
 // Card Transformations
 // ============================================================================
 
@@ -93,17 +174,20 @@ export function transformSetBrief(
   seriesName?: string,
   seriesReleaseDate?: string
 ): CardSet {
+  // Import at runtime to avoid circular dependency
+  const series = seriesName || getSeriesFromSetId(tcgdexSet.id);
+
   return {
     id: tcgdexSet.id,
     name: tcgdexSet.name,
-    series: seriesName || '',
+    series: series,
     printedTotal: tcgdexSet.cardCount?.official || 0,
     total: tcgdexSet.cardCount?.total || 0,
     releaseDate: seriesReleaseDate || '',
     updatedAt: new Date().toISOString(),
     images: {
-      symbol: tcgdexSet.symbol || '',
-      logo: tcgdexSet.logo || '',
+      symbol: formatImageUrl(tcgdexSet.symbol),
+      logo: formatImageUrl(tcgdexSet.logo),
     },
   };
 }
@@ -112,10 +196,13 @@ export function transformSetBrief(
  * Transform a full TCGDex set to CardSet format
  */
 export function transformSet(tcgdexSet: TCGDexSet): CardSet {
+  // Use serie name from response, or fallback to mapping from set ID
+  const seriesName = tcgdexSet.serie?.name || getSeriesFromSetId(tcgdexSet.id);
+
   return {
     id: tcgdexSet.id,
     name: tcgdexSet.name,
-    series: tcgdexSet.serie?.name || '',
+    series: seriesName,
     printedTotal: tcgdexSet.cardCount?.official || 0,
     total: tcgdexSet.cardCount?.total || 0,
     legalities: transformLegalities(tcgdexSet.legal),
@@ -123,8 +210,8 @@ export function transformSet(tcgdexSet: TCGDexSet): CardSet {
     releaseDate: tcgdexSet.releaseDate || '',
     updatedAt: new Date().toISOString(),
     images: {
-      symbol: tcgdexSet.symbol || '',
-      logo: tcgdexSet.logo || '',
+      symbol: formatImageUrl(tcgdexSet.symbol),
+      logo: formatImageUrl(tcgdexSet.logo),
     },
   };
 }
