@@ -253,26 +253,31 @@ interface PageHeaderProps {
   breadcrumbs?: Breadcrumb[] | null;
   className?: string;
   children?: React.ReactNode;
+  /** Show breadcrumbs above the title. Default: false (navbar provides navigation) */
+  showBreadcrumbs?: boolean;
 }
 
 /**
- * Page Header with Breadcrumbs
- * Combines breadcrumbs with page actions
+ * Page Header with optional Breadcrumbs
+ * Breadcrumbs are hidden by default since navbar provides navigation
  */
-const PageHeader: React.FC<PageHeaderProps> = ({ 
+const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   description,
   actions = [],
   breadcrumbs = null,
   className = '',
-  children 
+  children,
+  showBreadcrumbs = false
 }) => {
   return (
     <div className={`page-header ${className}`}>
-      <BreadcrumbNavigation 
-        customBreadcrumbs={breadcrumbs} 
-        showPageTitle={false}
-      />
+      {showBreadcrumbs && (
+        <BreadcrumbNavigation
+          customBreadcrumbs={breadcrumbs}
+          showPageTitle={false}
+        />
+      )}
       
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1 min-w-0">

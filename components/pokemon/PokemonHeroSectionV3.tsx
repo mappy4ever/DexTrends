@@ -476,111 +476,88 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
               </div>
             </div>
             
-            {/* Additional Info Row - All in one container */}
-            <div className="flex items-center justify-center mt-6">
-              {/* Unified Stats Container - solid bg for iOS */}
-              <motion.div
-                className="relative rounded-xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/95 dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300 shadow-sm"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
+            {/* Additional Info Row - Mobile-optimized grid */}
+            <motion.div
+              className="mt-6 rounded-xl p-3 sm:p-4 bg-white/95 dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 shadow-sm"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              {/* Grid layout: 3 cols on mobile, 6 cols on desktop */}
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4">
                 {/* Pokédex Number */}
-                <div className="flex flex-col items-center justify-between min-w-[60px] sm:min-w-[80px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Pokédex #</span>
-                  <div className="flex-1 flex items-center justify-center">
-                    <span className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
-                      {String(pokemon.id).padStart(3, '0')}
-                    </span>
-                  </div>
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1">Pokédex #</span>
+                  <span className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
+                    {String(pokemon.id).padStart(3, '0')}
+                  </span>
                 </div>
-                
-                {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
-                
-                {/* Height and Weight - Stacked with Label */}
-                <div className="flex flex-col items-center justify-between min-w-[50px] sm:min-w-[60px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Size</span>
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center gap-1">
-                        <FaRuler className="w-3 h-3 text-blue-500 drop-shadow-sm" />
-                        <span className="text-xs sm:text-sm font-bold">{height.meters}m</span>
-                      </div>
-                      <div className="flex items-center gap-1 mt-1">
-                        <FaWeight className="w-3 h-3 text-purple-500 drop-shadow-sm" />
-                        <span className="text-xs sm:text-sm font-bold">{weight.kg}kg</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
-                
-                {/* Capture Rate with Label */}
-                <div className="flex flex-col items-center justify-between min-w-[60px] sm:min-w-[80px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Capture</span>
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <div className="relative w-8 h-8 sm:w-10 sm:h-10">
-                        <svg viewBox="0 0 40 40" className="w-full h-full">
-                          <circle cx="20" cy="20" r="15" fill="white" stroke="#374151" strokeWidth="2" />
-                          <path d={`M 5 20 A 15 15 0 0 1 35 20`} fill="#dc2626" stroke="none" />
-                          <path
-                            d={`M 5 20 A 15 15 0 0 1 ${20 + 15 * Math.cos(Math.PI - (catchRate.percentage / 100) * Math.PI)} ${20 - 15 * Math.sin(Math.PI - (catchRate.percentage / 100) * Math.PI)}`}
-                            fill="none"
-                            stroke="#7f1d1d"
-                            strokeWidth="2"
-                            className="transition-all duration-700"
-                          />
-                          <rect x="5" y="19" width="30" height="2" fill="#374151" />
-                          <circle cx="20" cy="20" r="5" fill="white" stroke="#374151" strokeWidth="2" />
-                          <circle cx="20" cy="20" r="2" fill="#374151" />
-                        </svg>
-                      </div>
-                      <span className="text-sm font-bold text-green-600 dark:text-green-400">{catchRate.percentage}%</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
-                
-                {/* Gender Ratio with Label */}
-                <div className="flex flex-col items-center justify-between min-w-[70px] sm:min-w-[100px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Gender</span>
-                  <div className="flex-1 flex items-center justify-center">
+
+                {/* Height and Weight */}
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1">Size</span>
+                  <div className="flex flex-col items-center gap-0.5">
                     <div className="flex items-center gap-1">
-                      {genderRatio.genderless ? (
-                        <span className="text-stone-500 text-xs sm:text-sm font-semibold">Genderless</span>
-                      ) : (
-                        <>
-                          <FaMars className="text-blue-500 w-3 h-3 sm:w-4 sm:h-4 drop-shadow-sm" />
-                          <span className="font-bold text-xs sm:text-sm">{genderRatio.male}%</span>
-                          <span className="text-stone-400 text-xs sm:text-sm">/</span>
-                          <FaVenus className="text-pink-500 w-3 h-3 sm:w-4 sm:h-4 drop-shadow-sm" />
-                          <span className="font-bold text-xs sm:text-sm">{genderRatio.female}%</span>
-                        </>
-                      )}
+                      <FaRuler className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-blue-500" />
+                      <span className="text-xs sm:text-sm font-bold">{height.meters}m</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <FaWeight className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-purple-500" />
+                      <span className="text-xs sm:text-sm font-bold">{weight.kg}kg</span>
                     </div>
                   </div>
                 </div>
-                
-                {/* Vertical Divider */}
-                <div className="hidden sm:block w-px bg-stone-300 dark:bg-stone-600 self-stretch"></div>
-                
-                {/* Generation Badge with Label */}
-                <div className="flex flex-col items-center justify-between min-w-[80px] sm:min-w-[120px]">
-                  <span className="text-xs text-stone-500 dark:text-stone-300 uppercase tracking-wider mb-1 sm:mb-2">Region</span>
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-xs sm:text-sm font-bold shadow-sm">
-                      {regionName} (Gen {generation})
+
+                {/* Capture Rate */}
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1">Capture</span>
+                  <div className="flex items-center gap-1">
+                    <div className="relative w-6 h-6 sm:w-8 sm:h-8">
+                      <svg viewBox="0 0 40 40" className="w-full h-full">
+                        <circle cx="20" cy="20" r="15" fill="white" stroke="#374151" strokeWidth="2" />
+                        <path d={`M 5 20 A 15 15 0 0 1 35 20`} fill="#dc2626" stroke="none" />
+                        <path
+                          d={`M 5 20 A 15 15 0 0 1 ${20 + 15 * Math.cos(Math.PI - (catchRate.percentage / 100) * Math.PI)} ${20 - 15 * Math.sin(Math.PI - (catchRate.percentage / 100) * Math.PI)}`}
+                          fill="none"
+                          stroke="#7f1d1d"
+                          strokeWidth="2"
+                        />
+                        <rect x="5" y="19" width="30" height="2" fill="#374151" />
+                        <circle cx="20" cy="20" r="5" fill="white" stroke="#374151" strokeWidth="2" />
+                        <circle cx="20" cy="20" r="2" fill="#374151" />
+                      </svg>
                     </div>
+                    <span className="text-xs sm:text-sm font-bold text-green-600 dark:text-green-400">{catchRate.percentage}%</span>
                   </div>
                 </div>
-              </motion.div>
-            </div>
+
+                {/* Gender Ratio */}
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1">Gender</span>
+                  <div className="flex items-center gap-0.5 sm:gap-1">
+                    {genderRatio.genderless ? (
+                      <span className="text-stone-500 text-[10px] sm:text-xs font-semibold">Genderless</span>
+                    ) : (
+                      <>
+                        <FaMars className="text-blue-500 w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                        <span className="font-bold text-[10px] sm:text-xs">{genderRatio.male}%</span>
+                        <span className="text-stone-400 text-[10px] sm:text-xs">/</span>
+                        <FaVenus className="text-pink-500 w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                        <span className="font-bold text-[10px] sm:text-xs">{genderRatio.female}%</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Region - spans 2 cols on mobile */}
+                <div className="col-span-2 sm:col-span-2 flex flex-col items-center text-center">
+                  <span className="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1">Region</span>
+                  <div className="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white text-[10px] sm:text-xs font-bold shadow-sm">
+                    {regionName} (Gen {generation})
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </Container>
