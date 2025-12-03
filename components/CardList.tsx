@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback, memo, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import Modal from '@/components/ui/Modal';
 import logger from "@/utils/logger";
 import { SkeletonGrid as CardGridSkeleton } from "./ui/Skeleton";
@@ -9,8 +8,6 @@ import performanceMonitor from "../utils/performanceMonitor";
 import { createGlassStyle } from './ui/design-system/glass-constants';
 
 type SortOption = "price" | "releaseDate" | "rarity";
-
-// Note: Type converter moved to cardTypeGuards.ts for reusability and type safety
 
 interface CardListProps {
   cards?: TCGCard[];
@@ -37,13 +34,11 @@ interface CardItemProps {
 }
 
 const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScrolling = false }) => {
-  logger.debug('Rendering card', { id: card.id, name: card.name });
-  
   // Get price for the card
   const price = card.currentPrice || 0;
   const setNumber = card.number || '???';
   const setId = card.set?.id || '';
-  
+
   // Determine rarity color
   const getRarityPillColor = (rarity?: string) => {
     if (!rarity) return 'from-stone-100/80 to-stone-200/80';
@@ -56,21 +51,11 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
     if (lower.includes('uncommon')) return 'from-green-100/80 to-green-200/80';
     return 'from-stone-100/80 to-stone-200/80';
   };
-  
+
   return (
-    <motion.div 
-      className="group relative"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        type: "spring",
-        stiffness: 300,
-        damping: 24,
-        duration: 0.4
-      }}
-    >
-      {/* Main Card Container with Glass Effect */}
-      <motion.div
+    <div className="group relative animate-fadeIn">
+      {/* Main Card Container */}
+      <div
         className="
           bg-white dark:bg-stone-800/95
           rounded-xl p-4
@@ -78,12 +63,9 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
           shadow-lg hover:shadow-2xl
           transform transition-all duration-300
           cursor-pointer
+          hover:scale-[1.02] hover:-translate-y-1
+          active:scale-[0.98]
         "
-        whileHover={!isScrolling ? {
-          scale: 1.02,
-          y: -4
-        } : undefined}
-        whileTap={!isScrolling ? { scale: 0.98 } : undefined}
         onClick={() => onCardClick(card)}
       >
         {/* Card Image Container */}
@@ -95,8 +77,8 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             loading="lazy"
             decoding="async"
           />
-          
-          {/* Rarity Badge - Solid bg for iOS */}
+
+          {/* Rarity Badge */}
           {card.rarity && (
             <div className="absolute top-2 right-2">
               <div className={`
@@ -111,7 +93,7 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             </div>
           )}
 
-          {/* Magnify Button - proper touch target for mobile */}
+          {/* Magnify Button */}
           <button
             className="
               absolute bottom-2 right-2
@@ -141,7 +123,7 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             {card.name}
           </h3>
 
-          {/* Glass Divider */}
+          {/* Divider */}
           <div className="h-px bg-gradient-to-r from-transparent via-stone-200/30 to-transparent" />
 
           {/* Price & Set Info */}
@@ -168,8 +150,8 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             </div>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 });
 
@@ -188,27 +170,16 @@ const MemoizedCardItem = memo(CardItem, areCardItemPropsEqual);
 
 // Custom comparison function for React.memo
 const arePropsEqual = (prevProps: CardListProps, nextProps: CardListProps): boolean => {
-  // Check if cards array length changed
   if (prevProps.cards?.length !== nextProps.cards?.length) return false;
-  
-  // Check if loading/error states changed
   if (prevProps.loading !== nextProps.loading) return false;
   if (prevProps.error !== nextProps.error) return false;
-  
-  // Check if sort option changed
   if (prevProps.initialSortOption !== nextProps.initialSortOption) return false;
-  
-  // For cards array, only check if the array reference changed
-  // Individual card updates will be handled by UnifiedCard's own memoization
   if (prevProps.cards !== nextProps.cards) return false;
-  
-  // Check if callback functions changed (they should be stable with useCallback)
   if (prevProps.onCardClick !== nextProps.onCardClick) return false;
   if (prevProps.onRarityClick !== nextProps.onRarityClick) return false;
   if (prevProps.getPrice !== nextProps.getPrice) return false;
   if (prevProps.getReleaseDate !== nextProps.getReleaseDate) return false;
   if (prevProps.getRarityRank !== nextProps.getRarityRank) return false;
-  
   return true;
 };
 
@@ -222,91 +193,61 @@ const CardList = memo<CardListProps>(({
   getReleaseDate = () => "0000-00-00",
   getRarityRank = () => 0,
 }) => {
-  // Local sort state
   const [sortOption, setSortOption] = useState<SortOption>(initialSortOption);
   const [zoomedCard, setZoomedCard] = useState<TCGCard | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const mountTimeRef = useRef(performance.now());
-  
-  // Memoized callbacks to prevent unnecessary re-renders
+
   const handleSortChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value as SortOption);
   }, []);
-  
+
   const handleMagnifyClick = useCallback((card: TCGCard) => {
     setZoomedCard(card);
   }, []);
-  
+
   const handleCloseModal = useCallback(() => {
     setZoomedCard(null);
   }, []);
-  
+
   const handleCardClick = useCallback((card: TCGCard) => {
     onCardClick(card);
   }, [onCardClick]);
-  
-  // Scroll performance optimization with monitoring
+
+  // Scroll performance optimization
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    
+
     let rafId: number;
-    let frameCount = 0;
-    let lastTime = performance.now();
-    
+
     const handleScroll = () => {
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-      
+      if (rafId) cancelAnimationFrame(rafId);
+
       rafId = requestAnimationFrame(() => {
-        const currentTime = performance.now();
-        const deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-        frameCount++;
-        
-        // Track FPS during scroll
-        if (frameCount % 30 === 0) {
-          const fps = 1000 / deltaTime;
-          performanceMonitor.recordMetric({
-            name: 'scroll-fps',
-            value: fps,
-            unit: 'fps',
-            timestamp: Date.now()
-          });
-        }
-        
         setIsScrolling(true);
-        
+
         if (scrollTimeoutRef.current) {
           clearTimeout(scrollTimeoutRef.current);
         }
-        
+
         scrollTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
-          frameCount = 0;
         }, 150);
-        
-        // Note: Virtual scrolling removed - all cards render for better reliability
       });
     };
-    
-    // Add passive scroll listener
+
     container.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     return () => {
       container.removeEventListener('scroll', handleScroll);
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
+      if (rafId) cancelAnimationFrame(rafId);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
   }, [cards.length]);
-  
+
   // Track initial render performance
   useEffect(() => {
     const renderTime = performance.now() - mountTimeRef.current;
@@ -316,7 +257,7 @@ const CardList = memo<CardListProps>(({
       unit: 'ms',
       timestamp: Date.now()
     });
-    
+
     if (renderTime > 100) {
       logger.warn(`Slow CardList render: ${renderTime.toFixed(2)}ms for ${cards.length} cards`);
     }
@@ -324,7 +265,7 @@ const CardList = memo<CardListProps>(({
 
   // Sorting logic
   const sortedCards = useMemo(() => {
-    logger.debug('CardList received cards', { count: cards.length }); // Debug log
+    logger.debug('CardList received cards', { count: cards.length });
     return [...cards].sort((a, b) => {
       if (sortOption === "price") {
         return getPrice(b) - getPrice(a);
@@ -344,7 +285,7 @@ const CardList = memo<CardListProps>(({
 
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="w-full mx-auto px-2 sm:px-4 scroll-smooth"
       style={{
@@ -356,13 +297,13 @@ const CardList = memo<CardListProps>(({
 
       {!loading && (
         <div className="flex justify-center mb-8">
-          <div className={createGlassStyle({ 
-            blur: 'md', 
-            opacity: 'medium', 
-            gradient: false, 
+          <div className={createGlassStyle({
+            blur: 'md',
+            opacity: 'medium',
+            gradient: false,
             rounded: 'full',
             shadow: 'lg'
-          })} style={{ 
+          })} style={{
             padding: '0.75rem 1.5rem',
             display: 'inline-flex',
             alignItems: 'center',
@@ -385,7 +326,7 @@ const CardList = memo<CardListProps>(({
 
       {/* Show skeleton loading when loading */}
       {loading ? (
-        <CardGridSkeleton 
+        <CardGridSkeleton
           count={24}
           cols={{ default: 2, sm: 3, md: 5, lg: 8 }}
           cardProps={{
@@ -396,28 +337,15 @@ const CardList = memo<CardListProps>(({
           className=""
         />
       ) : (
-        /* Card grid with improved spacing for glass cards */
-        <motion.div 
+        /* Card grid */
+        <div
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 p-6"
           style={{
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden'
           }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                delayChildren: 0.1,
-                staggerChildren: 0.03
-              }
-            }
-          }}
-          initial="hidden"
-          animate="visible"
         >
-          {sortedCards.map((card, _index) => {
-            // Add current price to card object for UnifiedCard to access
+          {sortedCards.map((card) => {
             const cardWithPrice: CardWithPrice = {
               ...card,
               currentPrice: getPrice(card)
@@ -433,23 +361,18 @@ const CardList = memo<CardListProps>(({
               />
             );
           })}
-        </motion.div>
+        </div>
       )}
 
       {!loading && !error && cards.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mt-12"
-        >
-          <div className={createGlassStyle({ 
-            blur: 'xl', 
-            opacity: 'strong', 
-            gradient: false, 
+        <div className="text-center mt-12 animate-fadeIn">
+          <div className={createGlassStyle({
+            blur: 'xl',
+            opacity: 'strong',
+            gradient: false,
             rounded: 'xl',
             shadow: 'xl'
-          })} style={{ 
+          })} style={{
             maxWidth: '24rem',
             margin: '0 auto',
             padding: '2rem'
@@ -463,16 +386,11 @@ const CardList = memo<CardListProps>(({
               No cards found
             </p>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {!loading && cards.length > 0 && (
-        <motion.div 
-          className="text-center mt-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
+        <div className="text-center mt-12 animate-fadeIn">
           <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-stone-800/80 rounded-full px-6 py-3 shadow-lg border border-stone-200/50 dark:border-stone-700/50">
             <svg className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -481,7 +399,7 @@ const CardList = memo<CardListProps>(({
               {cards.length} cards displayed
             </span>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Modal for zoomed card */}
@@ -499,7 +417,7 @@ const CardList = memo<CardListProps>(({
               sizes="400px"
             />
             <button
-              className="mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+              className="mt-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
               onClick={handleCloseModal}
             >
               Close
