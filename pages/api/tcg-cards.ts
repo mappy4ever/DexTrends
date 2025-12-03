@@ -172,9 +172,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return `https://assets.tcgdex.net/en/${series}/${setId}/${localId}`;
     };
 
+    // Filter out Pocket cards - they have their own API at /api/pocket-cards
+    // Pocket card IDs start with: A1, A2, A3, A4, P-A, B1, etc.
+    const POCKET_CARD_PATTERNS = /^(A[0-9]|P-A|B[0-9])/i;
+    const tcgOnlyCards = briefCards.filter(card => !POCKET_CARD_PATTERNS.test(card.id));
+
+    logger.debug('Filtered out Pocket cards', {
+      before: briefCards.length,
+      after: tcgOnlyCards.length,
+      removed: briefCards.length - tcgOnlyCards.length
+    });
+
     // Transform brief cards to app format (quick response for list view)
     // Full details can be fetched when user clicks on a specific card
-    let cards = briefCards.slice(0, 100).map(briefCard => {
+    let cards = tcgOnlyCards.slice(0, 100).map(briefCard => {
       const localId = briefCard.localId || briefCard.id.split('-')[1] || '';
       // Use provided image or construct from card ID
       const imageBase = briefCard.image || constructImageUrl(briefCard.id, localId);
