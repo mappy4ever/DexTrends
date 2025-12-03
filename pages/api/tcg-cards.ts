@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
-import type { TCGDexCard, TCGDexCardBrief } from '../../types/api/tcgdex';
-import { transformCard, TCGDexEndpoints } from '../../utils/tcgdex-adapter';
+import type { TCGDexCardBrief } from '../../types/api/tcgdex';
+import { TCGDexEndpoints } from '../../utils/tcgdex-adapter';
 
 /**
  * Enhanced TCG Card Search API
@@ -149,49 +149,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     logger.debug('TCGDex returned brief cards', { pokemonName, count: briefCards.length });
 
-    // Fetch full card details for each brief card (limit to 50 for performance)
-    const cardIdsToFetch = briefCards.slice(0, 50).map(c => c.id);
-    const fullCards: TCGDexCard[] = [];
+    // Transform brief cards to app format (quick response for list view)
+    // Full details can be fetched when user clicks on a specific card
+    let cards = briefCards.slice(0, 100).map(briefCard => ({
+      id: briefCard.id,
+      name: briefCard.name,
+      supertype: 'Pokémon' as const,
+      number: briefCard.localId || '',
+      images: {
+        small: briefCard.image ? `${briefCard.image}/low.png` : '',
+        large: briefCard.image ? `${briefCard.image}/high.png` : '',
+      },
+      set: {
+        id: briefCard.id.split('-')[0] || '',
+        name: '',
+        series: '',
+        printedTotal: 0,
+        total: 0,
+        releaseDate: '',
+        updatedAt: '',
+        images: { symbol: '', logo: '' }
+      }
+    }));
 
-    // Fetch in parallel batches of 10
-    const BATCH_SIZE = 10;
-    for (let i = 0; i < cardIdsToFetch.length; i += BATCH_SIZE) {
-      const batch = cardIdsToFetch.slice(i, i + BATCH_SIZE);
-      const batchResults = await Promise.all(
-        batch.map(async (cardId) => {
-          try {
-            const cardUrl = TCGDexEndpoints.card(cardId, 'en');
-            const fullCard = await fetchJSON<TCGDexCard>(cardUrl, {
-              useCache: true,
-              cacheTime: 24 * 60 * 60 * 1000, // Cache card details for 24 hours
-              timeout: 8000,
-              throwOnError: false
-            });
-            return fullCard;
-          } catch {
-            return null;
-          }
-        })
-      );
-      fullCards.push(...batchResults.filter((c): c is TCGDexCard => c !== null));
-    }
-
-    // Transform full cards to app format
-    let cards = fullCards.map(transformCard);
-
-    // Apply maxHp filter client-side (TCGDex doesn't support multiple HP conditions in one query)
-    if (maxHp) {
-      const maxHpNum = parseInt(maxHp, 10);
-      cards = cards.filter(card => {
-        const cardHp = card.hp ? parseInt(card.hp, 10) : 0;
-        return cardHp <= maxHpNum;
-      });
-    }
+    // Note: HP filter not available with brief cards - would need full card fetch
+    // For now, HP filtering is skipped for performance
 
     logger.debug('TCGDex API response transformed', {
       pokemonName,
       cardCount: cards.length,
-      filters: { type: typeFilter, rarity: rarityFilter, hpMin: minHp, hpMax: maxHp }
+      filters: { type: typeFilter, rarity: rarityFilter }
     });
 
     // Add cache-control headers for better edge caching
