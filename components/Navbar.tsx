@@ -232,6 +232,16 @@ export default function Navbar() {
                       ${isActive
                         ? 'bg-amber-600 text-white'
                         : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
+                    onClick={(e) => {
+                      // On touch devices, toggle dropdown on click instead of navigating
+                      if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                        e.preventDefault();
+                        setDropdownStates(prev => ({
+                          ...Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {}),
+                          [item.href]: !prev[item.href]
+                        }));
+                      }
+                    }}
                     onMouseEnter={() => {
                       // Close all other dropdowns first, then open this one
                       setDropdownStates({ [item.href]: true });
@@ -264,11 +274,10 @@ export default function Navbar() {
 
                   {/* Dropdown menu - clean warm design */}
                   <div
-                    className={`dropdown-menu absolute top-full left-0 mt-1 w-64 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] overflow-hidden ${
+                    className={`dropdown-menu absolute top-full left-0 mt-1 w-64 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] overflow-hidden z-50 ${
                       dropdownStates[item.href] ? 'block opacity-100 translate-y-0' : 'hidden opacity-0 -translate-y-1'
                     } transition-all duration-150`}
                     style={{
-                      zIndex: 9999,
                       pointerEvents: dropdownStates[item.href] ? 'auto' : 'none'
                     }}
                     onMouseEnter={() => {

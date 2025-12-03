@@ -431,6 +431,28 @@ export const TYPE_GRADIENTS = {
   steel: 'from-stone-400 to-stone-600',
 } as const;
 
+// Solid type colors for dots/indicators/backgrounds
+export const TYPE_COLORS: Record<string, string> = {
+  normal: '#A8A878',
+  fire: '#F08030',
+  water: '#6890F0',
+  electric: '#F8D030',
+  grass: '#78C850',
+  ice: '#98D8D8',
+  fighting: '#C03028',
+  poison: '#A040A0',
+  ground: '#E0C068',
+  flying: '#A890F0',
+  psychic: '#F85888',
+  bug: '#A8B820',
+  rock: '#B8A038',
+  ghost: '#705898',
+  dragon: '#7038F8',
+  dark: '#705848',
+  steel: '#B8B8D0',
+  fairy: '#EE99AC',
+} as const;
+
 // ===========================================
 // TYPOGRAPHY - Consistent text styling
 // ===========================================
@@ -896,6 +918,7 @@ export default {
   // Presets
   GLASS_STYLES,
   TYPE_GRADIENTS,
+  TYPE_COLORS,
   REGION_ACCENTS,
   // Card interactions (Sprint 3)
   CARD_INTERACTIONS,

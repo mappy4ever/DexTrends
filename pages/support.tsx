@@ -113,7 +113,7 @@ export default function SupportPage() {
         <meta name="description" content="Get help with using DexTrends - keyboard shortcuts, tips, and page-specific guides." />
       </Head>
 
-      <div className="min-h-screen bg-stone-50 dark:bg-stone-900 pb-24">
+      <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
         {/* Header */}
         <div className="bg-gradient-to-b from-amber-50 to-stone-50 dark:from-stone-800 dark:to-stone-900 border-b border-stone-200 dark:border-stone-700">
           <div className="max-w-4xl mx-auto px-4 py-12">

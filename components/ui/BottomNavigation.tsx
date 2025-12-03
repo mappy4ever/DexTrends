@@ -160,12 +160,12 @@ export const BottomNavigation: React.FC = () => {
         style={{ height: 'calc(68px + env(safe-area-inset-bottom, 0px))' }}
       />
 
-      {/* Bottom Navigation Bar - solid bg for iOS performance */}
+      {/* Bottom Navigation Bar - warm cream bg matching Navbar */}
       <nav
         className={cn(
           "fixed bottom-0 left-0 right-0 md:hidden",
-          "bg-white dark:bg-stone-900",
-          "border-t border-stone-200 dark:border-stone-700",
+          "bg-[#FFFDF7] dark:bg-stone-900",
+          "border-t border-stone-200 dark:border-stone-800",
           "pb-safe px-safe" // Safe area for iOS home indicator + sides
         )}
         style={{ zIndex: Z_INDEX.bottomNav }}

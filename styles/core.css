@@ -297,29 +297,47 @@ img, picture, video, canvas, svg {
 }
 
 /* ============================================
-   Focus Management
+   Focus Management - WCAG Accessible
    ============================================ */
 
-/* Remove default focus outlines */
-*:focus {
+/* Remove focus outlines for mouse users only */
+*:focus:not(:focus-visible) {
   outline: none;
 }
 
-/* Keyboard navigation focus styles */
-.focus-visible:focus-visible {
-  outline: 2px solid var(--color-focus);
+/* Keyboard navigation focus styles - amber ring for warm palette */
+:focus-visible {
+  outline: 2px solid #d97706; /* amber-600 */
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
 }
 
-/* Interactive element focus */
+/* Interactive element focus (keyboard users) */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
-select:focus-visible {
-  outline: 2px solid var(--color-focus);
+select:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #d97706; /* amber-600 */
   outline-offset: 2px;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px 16px;
+  background: #d97706;
+  color: white;
+  z-index: 100;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
 }
 
 /* ============================================

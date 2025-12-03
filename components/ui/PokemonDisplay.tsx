@@ -30,11 +30,11 @@ import { motion } from 'framer-motion';
 import { TypeBadge } from './TypeBadge';
 import { cn } from '@/utils/cn';
 import { cardHover } from '@/utils/animations';
+import { TYPE_COLORS } from '@/components/ui/design-system/glass-constants';
 
 const FALLBACK_IMAGE = '/dextrendslogo.png';
 
 // Type color mappings for gradients - Official Pokemon colors
-// Removed /60 opacity for more vibrant colors
 const typeGradients: Record<string, string> = {
   normal: 'from-stone-400 via-stone-300 to-stone-200',
   fire: 'from-orange-500 via-orange-400 to-amber-300',
@@ -54,28 +54,6 @@ const typeGradients: Record<string, string> = {
   dark: 'from-stone-700 via-stone-600 to-stone-500',
   steel: 'from-slate-400 via-slate-300 to-slate-200',
   fairy: 'from-pink-400 via-rose-300 to-pink-200',
-};
-
-// Solid type colors for dots/indicators
-const typeColors: Record<string, string> = {
-  normal: '#A8A878',
-  fire: '#F08030',
-  water: '#6890F0',
-  electric: '#F8D030',
-  grass: '#78C850',
-  ice: '#98D8D8',
-  fighting: '#C03028',
-  poison: '#A040A0',
-  ground: '#E0C068',
-  flying: '#A890F0',
-  psychic: '#F85888',
-  bug: '#A8B820',
-  rock: '#B8A038',
-  ghost: '#705898',
-  dragon: '#7038F8',
-  dark: '#705848',
-  steel: '#B8B8D0',
-  fairy: '#EE99AC',
 };
 
 interface PokemonType {
@@ -472,7 +450,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
               <span
                 key={type}
                 className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full"
-                style={{ backgroundColor: typeColors[type] || '#A8A878' }}
+                style={{ backgroundColor: TYPE_COLORS[type] || '#A8A878' }}
                 title={type}
               />
             ))}

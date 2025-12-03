@@ -4,8 +4,8 @@
  * Provides clear 2px focus rings for accessibility
  */
 
-/* Remove default outline, we'll provide custom focus-visible styles */
-*:focus {
+/* Remove focus outline for mouse/touch users only */
+*:focus:not(:focus-visible) {
   outline: none;
 }
 
