@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('TCG Set Performance - sv8 Loading', () => {
-  test('sv8 set page loads efficiently with progressive loading', async ({ page }) => {
+test.describe('TCG Set Performance - sv08 Loading', () => {
+  test('sv08 set page loads efficiently with progressive loading', async ({ page }) => {
     // Start monitoring performance
     const startTime = Date.now();
     
-    // Navigate to sv8 set page
-    await page.goto('http://localhost:3001/tcgexpansions/sv8');
+    // Navigate to sv08 set page
+    await page.goto('http://localhost:3001/tcgexpansions/sv08');
     
     // Check that set info loads quickly (within 3 seconds)
     await expect(page.locator('h1:has-text("Surging Sparks")')).toBeVisible({ timeout: 3000 });
@@ -61,7 +61,7 @@ test.describe('TCG Set Performance - sv8 Loading', () => {
   });
 
   test('filters work correctly while cards are loading', async ({ page }) => {
-    await page.goto('http://localhost:3001/tcgexpansions/sv8');
+    await page.goto('http://localhost:3001/tcgexpansions/sv08');
     
     // Wait for filters to be available
     await expect(page.locator('h2:has-text("Filter Cards")')).toBeVisible({ timeout: 5000 });

@@ -7,12 +7,10 @@
 export const API_CONFIG = {
   // PokeAPI Configuration
   POKEAPI_BASE_URL: process.env.NEXT_PUBLIC_POKEAPI_URL || 'https://pokeapi.co/api/v2',
-  
-  // Pokemon TCG API Configuration (deprecated - use TCGDex instead)
-  POKEMON_TCG_API_URL: process.env.NEXT_PUBLIC_POKEMON_TCG_API_URL || 'https://api.pokemontcg.io/v2',
-  
-  // TCGDex API Configuration
+
+  // TCGDex API Configuration (primary TCG data source - no API key required)
   TCGDEX_API_URL: process.env.NEXT_PUBLIC_TCGDEX_API_URL || 'https://api.tcgdex.net/v2',
+  TCGDEX_ASSETS_URL: 'https://assets.tcgdex.net',
   
   // Application API URL (for internal API routes)
   APP_API_URL: process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'),
@@ -45,27 +43,8 @@ export const POKEAPI = {
   itemList: (limit = 20, offset = 0) => `${API_CONFIG.POKEAPI_BASE_URL}/item?limit=${limit}&offset=${offset}`,
 } as const;
 
-/**
- * @deprecated Use TCGDEX instead - pokemontcg.io requires API key and has rate limits.
- * TCGDex (api.tcgdex.net) is now the primary source for all TCG card data.
- * Keeping this for reference/fallback only.
- */
-export const POKEMON_TCG = {
-  cards: (query?: string) => {
-    const baseUrl = `${API_CONFIG.POKEMON_TCG_API_URL}/cards`;
-    return query ? `${baseUrl}?${query}` : baseUrl;
-  },
-  card: (id: string) => `${API_CONFIG.POKEMON_TCG_API_URL}/cards/${id}`,
-  sets: (query?: string) => {
-    const baseUrl = `${API_CONFIG.POKEMON_TCG_API_URL}/sets`;
-    return query ? `${baseUrl}?${query}` : baseUrl;
-  },
-  set: (id: string) => `${API_CONFIG.POKEMON_TCG_API_URL}/sets/${id}`,
-  types: () => `${API_CONFIG.POKEMON_TCG_API_URL}/types`,
-  subtypes: () => `${API_CONFIG.POKEMON_TCG_API_URL}/subtypes`,
-  supertypes: () => `${API_CONFIG.POKEMON_TCG_API_URL}/supertypes`,
-  rarities: () => `${API_CONFIG.POKEMON_TCG_API_URL}/rarities`,
-} as const;
+// POKEMON_TCG endpoints removed - pokemontcg.io API is deprecated
+// All TCG data now comes from TCGDex (api.tcgdex.net)
 
 // TCGDex API Endpoints (primary TCG data source - no API key required)
 export const TCGDEX = {
@@ -129,7 +108,6 @@ export const TEST_URLS = {
 // Export type for TypeScript support
 export type ApiConfig = typeof API_CONFIG;
 export type PokeApiEndpoints = typeof POKEAPI;
-export type PokemonTcgEndpoints = typeof POKEMON_TCG;
 export type TcgDexEndpoints = typeof TCGDEX;
 export type AppApiEndpoints = typeof APP_API;
 export type TestUrls = typeof TEST_URLS;

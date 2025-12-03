@@ -48,11 +48,11 @@ class MyDocument extends Document {
           <meta name="twitter:description" content="Track Pokemon TCG card prices, market trends, and build your collection with real-time data and analytics." />
           <meta name="twitter:image" content="/dextrendslogo.png" />
 
-          {/* Performance and SEO */}
-          <link rel="preconnect" href="https://api.pokemontcg.io" />
-          <link rel="preconnect" href="https://images.pokemontcg.io" />
-          <link rel="dns-prefetch" href="https://api.pokemontcg.io" />
-          <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
+          {/* Performance and SEO - TCGDex API and assets */}
+          <link rel="preconnect" href="https://api.tcgdex.net" />
+          <link rel="preconnect" href="https://assets.tcgdex.net" />
+          <link rel="dns-prefetch" href="https://api.tcgdex.net" />
+          <link rel="dns-prefetch" href="https://assets.tcgdex.net" />
           
           {/* Google Fonts - Montserrat Black for Pokémon names */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />

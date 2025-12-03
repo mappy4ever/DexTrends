@@ -86,7 +86,7 @@ export const productionSecurityHeaders: SecurityOptions = {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https: blob:",
     "font-src 'self' data:",
-    "connect-src 'self' https://raw.githubusercontent.com https://api.tcgdex.net https://api.pokemontcg.io",
+    "connect-src 'self' https://raw.githubusercontent.com https://api.tcgdex.net https://assets.tcgdex.net",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",

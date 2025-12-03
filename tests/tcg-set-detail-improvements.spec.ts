@@ -224,7 +224,7 @@ test.describe('TCG Set Detail Page Improvements', () => {
 test.describe('Performance Tests', () => {
   test('should load large set efficiently', async ({ page }) => {
     // Test with a large set
-    const largeSetId = 'swsh12pt5'; // Crown Zenith - has 200+ cards
+    const largeSetId = 'swsh12.5'; // Crown Zenith - has 200+ cards
     
     const startTime = Date.now();
     

@@ -125,8 +125,8 @@ const AppContent: React.FC<AppContentProps> = ({
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
           <meta name="format-detection" content="telephone=no" />
           <link rel="preconnect" href="https://pokeapi.co" />
-          <link rel="preconnect" href="https://api.pokemontcg.io" />
-          <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
+          <link rel="preconnect" href="https://api.tcgdex.net" />
+          <link rel="dns-prefetch" href="https://assets.tcgdex.net" />
           <link rel="prefetch" href="/back-card.png" />
           <link rel="manifest" href="/manifest.json" />
           <link rel="icon" href="/favicon.ico" />

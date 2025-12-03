@@ -66,7 +66,7 @@ test.describe('TCG Set Detail Quick Test', () => {
   test('performance: loads quickly with many cards', async ({ page }) => {
     const startTime = Date.now();
     
-    await page.goto('/tcgexpansions/swsh12pt5', { timeout: 30000 }); // Crown Zenith - large set
+    await page.goto('/tcgexpansions/swsh12.5', { timeout: 30000 }); // Crown Zenith - large set (TCGDex format)
     
     // Wait for cards to appear
     await page.waitForSelector('[class*="card"], img[alt*="card"]', { timeout: 15000 });

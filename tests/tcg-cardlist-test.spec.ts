@@ -6,8 +6,8 @@ test.describe('TCG Set Detail - CardList Component Test', () => {
     test.setTimeout(60000);
   });
 
-  test('CardList handles sv8 set (>50 cards)', async ({ page }) => {
-    await page.goto('http://localhost:3002/tcgexpansions/sv8');
+  test('CardList handles sv08 set (>50 cards)', async ({ page }) => {
+    await page.goto('http://localhost:3002/tcgexpansions/sv08');
     
     // Wait for the cards to load
     await page.waitForSelector('.grid.grid-cols-2', { timeout: 30000 });
@@ -48,7 +48,7 @@ test.describe('TCG Set Detail - CardList Component Test', () => {
   });
 
   test('Manual Load All Cards button works', async ({ page }) => {
-    await page.goto('http://localhost:3002/tcgexpansions/sv8');
+    await page.goto('http://localhost:3002/tcgexpansions/sv08');
     
     // Look for Load All Cards button
     const loadAllButton = page.locator('button:has-text("Load All Cards")');

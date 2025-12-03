@@ -151,10 +151,10 @@ const nextConfig = {
         source: '/proxy/pokeapi/:path*',
         destination: 'https://pokeapi.co/api/v2/:path*'
       },
-      // Pokemon TCG API proxy
+      // TCGDex API proxy (no API key required)
       {
-        source: '/proxy/pokemontcg/:path*',
-        destination: 'https://api.pokemontcg.io/v2/:path*'
+        source: '/proxy/tcgdex/:path*',
+        destination: 'https://api.tcgdex.net/v2/:path*'
       },
       // Limitless TCG proxy
       {
@@ -205,12 +205,8 @@ const nextConfig = {
   // Your environment variables go directly here
   // NEXT_PUBLIC_ prefixed variables are automatically exposed by Next.js
   env: {
-    // NEXT_PUBLIC_KV_REST_API_URL: process.env.NEXT_PUBLIC_KV_REST_API_URL,
-    // NEXT_PUBLIC_KV_REST_API_TOKEN: process.env.NEXT_PUBLIC_KV_REST_API_TOKEN,
-    // NEXT_PUBLIC_KV_URL: process.env.NEXT_PUBLIC_KV_URL,
-    // NEXT_PUBLIC_KV_REST_API_READ_ONLY_TOKEN: process.env.NEXT_PUBLIC_KV_REST_API_READ_ONLY_TOKEN,
-    // Add your Pokémon API key here for explicit clarity in next.config.js
-    NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY: process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY,
+    // TCGDex API doesn't require an API key
+    // No additional environment variables needed for TCG data
   },
   images: {
     // DISABLE VERCEL IMAGE OPTIMIZATION to avoid quota limits
@@ -220,8 +216,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.pokemontcg.io',
-        pathname: '/**', // Allow all paths from Pokemon TCG
+        hostname: 'assets.tcgdex.net',
+        pathname: '/**', // Allow all paths from TCGDex
       },
       {
         protocol: 'https',

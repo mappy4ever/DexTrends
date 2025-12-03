@@ -52,7 +52,7 @@ test.describe('Comprehensive Favorites Functionality', () => {
 
     test('should add TCG card to favorites from card detail page', async ({ page, consoleLogger }) => {
       // Navigate to a specific card page
-      await page.goto('/tcgexpansions/sv1'); // Base Set Scarlet & Violet
+      await page.goto('/tcgexpansions/sv01'); // Base Set Scarlet & Violet
       await waitForNetworkIdle(page);
       await pageHelpers.waitForLoadingComplete();
 

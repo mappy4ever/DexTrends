@@ -179,13 +179,14 @@ const FavoritesPage: NextPage = () => {
           const batch = items.slice(i, i + BATCH_SIZE);
           const batchPromises = batch.map(async (item) => {
             try {
-              const response = await fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${item.id}`, {
+              // Use internal API that fetches from TCGDex
+              const response = await fetchJSON<{ card: TCGCard }>(`/api/tcg-cards/${item.id}`, {
                 useCache: true,
                 cacheTime: 15 * 60 * 1000,
                 timeout: 10000,
                 retries: 2
               });
-              return response?.data || null;
+              return response?.card || null;
             } catch (err) {
               logger.error(`Error fetching card ${item.id}:`, { error: err, id: item.id });
               return null;

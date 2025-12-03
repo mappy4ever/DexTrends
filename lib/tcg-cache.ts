@@ -27,30 +27,32 @@ const CACHE_TTL = {
   IMAGES: 7 * 24 * 60 * 60,      // 7 days for image URLs (they rarely change)
 } as const;
 
-// Popular sets that should be pre-warmed
+// Popular sets that should be pre-warmed (TCGDex format)
 export const POPULAR_SETS = [
   'base1',           // Base Set
   'base2',           // Jungle
   'base3',           // Fossil
-  'swsh12pt5',       // Crown Zenith
+  'swsh12.5',        // Crown Zenith
   'swsh10',          // Astral Radiance
   'swsh11',          // Lost Origin
   'swsh9',           // Brilliant Stars
   'sm12',            // Cosmic Eclipse
   'xy12',            // Evolutions
   'swsh1',           // Sword & Shield Base
-  'sv1',             // Scarlet & Violet Base
-  'sv2',             // Paldea Evolved
-  'sv3',             // Obsidian Flames
-  'sv3pt5',          // 151
-  'sv4',             // Paradox Rift
-  'sv4pt5',          // Paldean Fates
-  'sv5',             // Temporal Forces
-  'sv6',             // Twilight Masquerade
-  'sv6pt5',          // Shrouded Fable
-  'sv7',             // Stellar Crown
-  'sv8',             // Surging Sparks
-  'sv8pt5',          // Prismatic Evolutions
+  'sv01',            // Scarlet & Violet Base
+  'sv02',            // Paldea Evolved
+  'sv03',            // Obsidian Flames
+  'sv03.5',          // 151
+  'sv04',            // Paradox Rift
+  'sv04.5',          // Paldean Fates
+  'sv05',            // Temporal Forces
+  'sv06',            // Twilight Masquerade
+  'sv06.5',          // Shrouded Fable
+  'sv07',            // Stellar Crown
+  'sv08',            // Surging Sparks
+  'sv08.5',          // Prismatic Evolutions
+  'sv09',            // Journey Together
+  'sv10',            // Destined Rivals
 ];
 
 // Core cache interfaces
@@ -783,57 +785,59 @@ class TCGCacheService {
           logger.debug(`[TCG Cache] Sets list ${page}:${pageSize} already cached`);
           continue;
         }
-        
-        // Fetch fresh data
-        const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-        const headers: Record<string, string> = {
-          'Content-Type': 'application/json',
-        };
-        
-        if (apiKey) {
-          headers['X-Api-Key'] = apiKey;
-        }
-        
-        const apiUrl = `https://api.pokemontcg.io/v2/sets?page=${page}&pageSize=${pageSize}&orderBy=-releaseDate`;
-        
-        const data = await fetch(apiUrl, { 
-          headers
+
+        // Fetch fresh data from TCGDex API (no API key required)
+        const apiUrl = `https://api.tcgdex.net/v2/en/sets`;
+
+        const data = await fetch(apiUrl, {
+          headers: { 'Content-Type': 'application/json' }
         }).then(res => res.json());
-        
-        if (!data?.data) {
-          throw new Error('Invalid API response');
+
+        if (!Array.isArray(data)) {
+          throw new Error('Invalid API response from TCGDex');
         }
-        
+
+        // TCGDex returns array directly, sort by release date (newest first)
+        const sortedSets = data.sort((a: { releaseDate?: string }, b: { releaseDate?: string }) => {
+          const dateA = a.releaseDate || '';
+          const dateB = b.releaseDate || '';
+          return dateB.localeCompare(dateA);
+        });
+
+        // Apply pagination
+        const startIdx = (page - 1) * pageSize;
+        const paginatedSets = sortedSets.slice(startIdx, startIdx + pageSize);
+
         // Format response like the main API does
         const response = {
-          data: data.data,
+          data: paginatedSets,
           pagination: {
             page: page,
             pageSize: pageSize,
-            count: data.count || data.data.length,
-            totalCount: data.totalCount || data.data.length,
-            hasMore: (data.count || data.data.length) === pageSize
+            count: paginatedSets.length,
+            totalCount: sortedSets.length,
+            hasMore: startIdx + pageSize < sortedSets.length
           },
           meta: {
             responseTime: 0,
             cached: false
           }
         };
-        
+
         // Cache the response
         await this.cacheSetsList(page, pageSize, response);
         results.successful++;
-        
-        logger.info(`[TCG Cache] Warmed sets list cache ${page}:${pageSize}`, {
-          setCount: data.data.length
+
+        logger.info(`[TCG Cache] Warmed sets list cache ${page}:${pageSize} from TCGDex`, {
+          setCount: paginatedSets.length
         });
-        
-        // Small delay between requests to be nice to the API
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
+
+        // Small delay between requests
+        await new Promise(resolve => setTimeout(resolve, 200));
+
       } catch (error: unknown) {
         results.failed++;
-        logger.error(`[TCG Cache] Failed to warm sets list ${page}:${pageSize}:`, 
+        logger.error(`[TCG Cache] Failed to warm sets list ${page}:${pageSize}:`,
           error instanceof Error ? { error: error.message, stack: error.stack } : { error: String(error) });
       }
     }
