@@ -139,7 +139,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     // Transform all sets from series (includes series name and release date)
-    const allSets = transformSetsFromSeries(validSeries);
+    let allSets = transformSetsFromSeries(validSeries);
+
+    // Filter out TCG Pocket sets - they have their own dedicated page at /pocketmode
+    // Pocket set IDs start with: A1, A2, A3, A4, P-A (promos)
+    const POCKET_SET_PATTERNS = /^(A[0-9]|P-A)/i;
+    allSets = allSets.filter(set => !POCKET_SET_PATTERNS.test(set.id));
+
+    logger.debug('Filtered out Pocket sets', {
+      beforeFilter: transformSetsFromSeries(validSeries).length,
+      afterFilter: allSets.length
+    });
 
     // Sort by set ID (which correlates with release order for recent sets)
     // Modern sets: sv10, sv09, sv08 etc - higher = newer
