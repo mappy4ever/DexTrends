@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
-import { motion } from 'framer-motion';
-import { Container } from '../../components/ui/Container';
-import { PageHeader } from '../../components/ui/BreadcrumbNavigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import { TypeBadge } from '../../components/ui/TypeBadge';
-import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import { cn } from '../../utils/cn';
 import logger from '../../utils/logger';
 import { fetchJSON } from '../../utils/unifiedFetch';
-import { FaSearch, FaLeaf, FaClock, FaFire, FaShieldAlt, FaHeart, FaBolt, FaAppleAlt } from 'react-icons/fa';
+import { FiSearch, FiChevronLeft, FiChevronDown, FiX, FiClock, FiDroplet, FiHeart, FiShield, FiZap, FiInfo } from 'react-icons/fi';
 
 interface Berry {
   id: number;
@@ -30,6 +28,7 @@ interface Berry {
 }
 
 interface BerryCategory {
+  key: string;
   name: string;
   icon: React.ReactNode;
   color: string;
@@ -39,87 +38,90 @@ interface BerryCategory {
 
 const BERRY_CATEGORIES: BerryCategory[] = [
   {
+    key: 'all',
+    name: 'All',
+    icon: <FiDroplet className="w-4 h-4" />,
+    color: 'from-stone-500 to-stone-600',
+    berries: [],
+    description: 'All berries in the game'
+  },
+  {
+    key: 'healing',
     name: 'Healing',
-    icon: <FaHeart className="w-4 h-4" />,
-    color: 'from-pink-400 to-rose-500',
+    icon: <FiHeart className="w-4 h-4" />,
+    color: 'from-pink-500 to-rose-500',
     berries: ['oran', 'sitrus', 'figy', 'wiki', 'mago', 'aguav', 'iapapa'],
     description: 'Restore HP when health is low'
   },
   {
+    key: 'status',
     name: 'Status Cure',
-    icon: <FaShieldAlt className="w-4 h-4" />,
-    color: 'from-green-400 to-emerald-500',
+    icon: <FiShield className="w-4 h-4" />,
+    color: 'from-emerald-500 to-teal-500',
     berries: ['cheri', 'chesto', 'pecha', 'rawst', 'aspear', 'persim', 'lum'],
     description: 'Cure status conditions like paralysis, sleep, etc.'
   },
   {
+    key: 'boost',
     name: 'Stat Boost',
-    icon: <FaBolt className="w-4 h-4" />,
-    color: 'from-amber-400 to-orange-500',
+    icon: <FiZap className="w-4 h-4" />,
+    color: 'from-amber-500 to-orange-500',
     berries: ['liechi', 'ganlon', 'salac', 'petaya', 'apicot', 'lansat', 'starf', 'micle', 'custap', 'jaboca', 'rowap'],
     description: 'Boost stats when HP is low'
   },
   {
+    key: 'resist',
     name: 'Type Resist',
-    icon: <FaShieldAlt className="w-4 h-4" />,
-    color: 'from-blue-400 to-cyan-500',
+    icon: <FiShield className="w-4 h-4" />,
+    color: 'from-blue-500 to-indigo-500',
     berries: ['occa', 'passho', 'wacan', 'rindo', 'yache', 'chople', 'kebia', 'shuca', 'coba', 'payapa', 'tanga', 'charti', 'kasib', 'haban', 'colbur', 'babiri', 'chilan', 'roseli'],
     description: 'Reduce damage from super effective moves'
   },
   {
+    key: 'ev',
     name: 'EV Reducing',
-    icon: <FaLeaf className="w-4 h-4" />,
-    color: 'from-purple-400 to-violet-500',
+    icon: <FiDroplet className="w-4 h-4" />,
+    color: 'from-purple-500 to-violet-500',
     berries: ['pomeg', 'kelpsy', 'qualot', 'hondew', 'grepa', 'tamato'],
     description: 'Reduce EVs and increase friendship'
   },
 ];
 
-const FLAVOR_COLORS: Record<string, string> = {
-  spicy: 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400',
-  dry: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
-  sweet: 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400',
-  bitter: 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400',
-  sour: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400',
+const FLAVOR_CONFIG: Record<string, { color: string; bgLight: string; bgDark: string; stat: string }> = {
+  spicy: { color: 'text-red-600', bgLight: 'bg-red-100', bgDark: 'dark:bg-red-900/40', stat: 'Attack' },
+  dry: { color: 'text-blue-600', bgLight: 'bg-blue-100', bgDark: 'dark:bg-blue-900/40', stat: 'Sp. Atk' },
+  sweet: { color: 'text-pink-600', bgLight: 'bg-pink-100', bgDark: 'dark:bg-pink-900/40', stat: 'Speed' },
+  bitter: { color: 'text-emerald-600', bgLight: 'bg-emerald-100', bgDark: 'dark:bg-emerald-900/40', stat: 'Sp. Def' },
+  sour: { color: 'text-amber-600', bgLight: 'bg-amber-100', bgDark: 'dark:bg-amber-900/40', stat: 'Defense' },
 };
 
 const FIRMNESS_COLORS: Record<string, string> = {
-  'very-soft': 'bg-pink-100 text-pink-700',
-  'soft': 'bg-green-100 text-green-700',
-  'hard': 'bg-amber-100 text-amber-700',
-  'very-hard': 'bg-red-100 text-red-700',
-  'super-hard': 'bg-purple-100 text-purple-700',
+  'very-soft': 'bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400',
+  'soft': 'bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400',
+  'hard': 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400',
+  'very-hard': 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400',
+  'super-hard': 'bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400',
 };
 
-/**
- * Berry Database Page
- *
- * Features:
- * - Complete list of all berries
- * - Category filtering
- * - Flavor profiles
- * - Natural Gift type and power
- * - Growth time information
- */
 const BerriesPage: NextPage = () => {
+  const router = useRouter();
   const [berries, setBerries] = useState<Berry[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState<'name' | 'power' | 'growth'>('name');
+  const [showFlavorLegend, setShowFlavorLegend] = useState(false);
 
   useEffect(() => {
     const fetchBerries = async () => {
       setLoading(true);
       try {
-        // Fetch all berries list
         const listData = await fetchJSON<{ results: Array<{ name: string; url: string }> }>(
           'https://pokeapi.co/api/v2/berry?limit=100',
           { useCache: true, cacheTime: 60 * 60 * 1000 }
         );
 
         if (listData?.results) {
-          // Fetch details for each berry (in parallel)
           const berryPromises = listData.results.map(async (berry) => {
             const data = await fetchJSON<Berry>(
               `https://pokeapi.co/api/v2/berry/${berry.name}`,
@@ -153,8 +155,8 @@ const BerriesPage: NextPage = () => {
     }
 
     // Category filter
-    if (selectedCategory) {
-      const category = BERRY_CATEGORIES.find(c => c.name === selectedCategory);
+    if (selectedCategory !== 'all') {
+      const category = BERRY_CATEGORIES.find(c => c.key === selectedCategory);
       if (category) {
         filtered = filtered.filter(berry =>
           category.berries.includes(berry.name.toLowerCase())
@@ -177,13 +179,17 @@ const BerriesPage: NextPage = () => {
     return filtered;
   }, [berries, searchQuery, selectedCategory, sortBy]);
 
-  const getBerrySprite = (berryName: string) => {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${berryName}-berry.png`;
-  };
+  const stats = useMemo(() => ({
+    total: berries.length,
+    healing: berries.filter(b => BERRY_CATEGORIES[1].berries.includes(b.name.toLowerCase())).length,
+    resist: berries.filter(b => BERRY_CATEGORIES[4].berries.includes(b.name.toLowerCase())).length,
+  }), [berries]);
 
-  const formatBerryName = (name: string): string => {
-    return name.charAt(0).toUpperCase() + name.slice(1) + ' Berry';
-  };
+  const getBerrySprite = (berryName: string) =>
+    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${berryName}-berry.png`;
+
+  const formatBerryName = (name: string): string =>
+    name.charAt(0).toUpperCase() + name.slice(1) + ' Berry';
 
   const getMainFlavor = (berry: Berry): { name: string; potency: number } | null => {
     const flavorsWithPotency = berry.flavors.filter(f => f.potency > 0);
@@ -194,280 +200,324 @@ const BerriesPage: NextPage = () => {
     );
   };
 
-  const renderBerryCard = (berry: Berry, index: number) => {
-    const mainFlavor = getMainFlavor(berry);
-
-    return (
-      <motion.div
-        key={berry.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.02 }}
-      >
-        <Container variant="elevated" className="p-4 h-full hover:shadow-lg transition-shadow">
-          <div className="flex items-start gap-3">
-            {/* Berry Image */}
-            <div className="w-16 h-16 flex-shrink-0 bg-stone-50 dark:bg-stone-700 rounded-xl flex items-center justify-center">
-              <img
-                src={getBerrySprite(berry.name)}
-                alt={berry.name}
-                className="w-12 h-12 object-contain pixelated"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/placeholder-item.png';
-                }}
-              />
-            </div>
-
-            {/* Berry Info */}
-            <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-stone-800 dark:text-white truncate">
-                {formatBerryName(berry.name)}
-              </h3>
-
-              {/* Type Badge */}
-              {berry.natural_gift_type && (
-                <div className="flex items-center gap-2 mt-1">
-                  <TypeBadge type={berry.natural_gift_type.name} size="xs" />
-                  <span className="text-xs text-stone-500 dark:text-stone-300">
-                    Power: {berry.natural_gift_power}
-                  </span>
-                </div>
-              )}
-
-              {/* Flavor */}
-              {mainFlavor && (
-                <div className="mt-2">
-                  <span className={cn(
-                    'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium',
-                    FLAVOR_COLORS[mainFlavor.name]
-                  )}>
-                    {mainFlavor.name.charAt(0).toUpperCase() + mainFlavor.name.slice(1)}
-                    <span className="opacity-70">({mainFlavor.potency})</span>
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-2 mt-4 text-center">
-            <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
-              <FaClock className="w-3 h-3 mx-auto text-stone-400 mb-1" />
-              <div className="text-xs text-stone-500 dark:text-stone-300">Growth</div>
-              <div className="font-semibold text-stone-800 dark:text-white text-sm">
-                {berry.growth_time}h
-              </div>
-            </div>
-            <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
-              <FaAppleAlt className="w-3 h-3 mx-auto text-stone-400 mb-1" />
-              <div className="text-xs text-stone-500 dark:text-stone-300">Harvest</div>
-              <div className="font-semibold text-stone-800 dark:text-white text-sm">
-                {berry.max_harvest}
-              </div>
-            </div>
-            <div className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
-              <FaLeaf className="w-3 h-3 mx-auto text-stone-400 mb-1" />
-              <div className="text-xs text-stone-500 dark:text-stone-300">Size</div>
-              <div className="font-semibold text-stone-800 dark:text-white text-sm">
-                {berry.size}mm
-              </div>
-            </div>
-          </div>
-
-          {/* Firmness Badge */}
-          <div className="mt-3 flex justify-center">
-            <span className={cn(
-              'px-2 py-1 rounded-full text-xs font-medium capitalize',
-              FIRMNESS_COLORS[berry.firmness.name] || 'bg-stone-100 text-stone-700'
-            )}>
-              {berry.firmness.name.replace('-', ' ')}
-            </span>
-          </div>
-        </Container>
-      </motion.div>
-    );
-  };
-
   return (
-    <FullBleedWrapper gradient="pokedex">
+    <>
       <Head>
         <title>Berry Database | DexTrends</title>
         <meta name="description" content="Complete guide to all Pokemon berries - effects, flavors, growth times, and Natural Gift types." />
       </Head>
 
-      {/* Header */}
-      <div className="container mx-auto px-4 py-6">
-        <PageHeader
-          title="Berry Database"
-          description="Complete guide to all Pokemon berries"
-          breadcrumbs={[
-            { title: 'Home', href: '/', icon: '🏠', isActive: false },
-            { title: 'Pokemon', href: '/pokemon', icon: '📖', isActive: false },
-            { title: 'Berries', href: '/pokemon/berries', icon: '🍓', isActive: true },
-          ]}
-        />
-      </div>
+      <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-emerald-50 dark:from-stone-950 dark:via-stone-900 dark:to-emerald-950">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 opacity-30 dark:opacity-20">
+            <div className="absolute top-10 left-10 w-64 h-64 bg-green-400 rounded-full blur-3xl" />
+            <div className="absolute top-20 right-20 w-48 h-48 bg-emerald-400 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-1/3 w-56 h-56 bg-teal-400 rounded-full blur-3xl" />
+          </div>
 
-      <div className="container mx-auto px-4 pb-8">
-        {/* Category Pills */}
-        <Container variant="elevated" className="p-4 mb-6">
-          <div className="flex flex-wrap gap-2">
-            <motion.button
-              onClick={() => setSelectedCategory(null)}
-              whileTap={{ scale: 0.95 }}
-              className={cn(
-                'px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2',
-                !selectedCategory
-                  ? 'bg-amber-500 text-white'
-                  : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300'
-              )}
+          <div className="relative container mx-auto px-4 pt-6 pb-4">
+            <button
+              onClick={() => router.push('/pokemon')}
+              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors mb-4"
             >
-              <FaAppleAlt className="w-4 h-4" />
-              All Berries
-              <span className="bg-white/20 px-1.5 py-0.5 rounded text-xs">
-                {berries.length}
-              </span>
-            </motion.button>
+              <FiChevronLeft className="w-4 h-4" />
+              Pokémon Hub
+            </button>
 
-            {BERRY_CATEGORIES.map(category => {
-              const count = berries.filter(b =>
-                category.berries.includes(b.name.toLowerCase())
-              ).length;
+            <div className="text-center mb-6">
+              <motion.h1
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black mb-3"
+              >
+                <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                  Berry Database
+                </span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-stone-600 dark:text-stone-400 max-w-2xl mx-auto"
+              >
+                Discover all berries and their unique effects
+              </motion.p>
+            </div>
 
-              return (
-                <motion.button
-                  key={category.name}
-                  onClick={() => setSelectedCategory(
-                    selectedCategory === category.name ? null : category.name
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex justify-center gap-4 sm:gap-8 mb-4"
+            >
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-green-600 dark:text-green-400">{stats.total}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Total</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-pink-600 dark:text-pink-400">{stats.healing}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Healing</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400">{stats.resist}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Type Resist</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Sticky Search & Filters */}
+        <div className="sticky top-14 md:top-16 z-30 bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex flex-col sm:flex-row gap-3 mb-3">
+              <div className="flex-1 relative">
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search berries..."
+                  className={cn(
+                    "w-full pl-10 pr-10 py-2.5 rounded-xl",
+                    "bg-stone-100 dark:bg-stone-800",
+                    "border border-stone-200 dark:border-stone-700",
+                    "focus:ring-2 focus:ring-green-500 focus:border-transparent",
+                    "text-stone-900 dark:text-white placeholder-stone-400",
+                    "transition-all text-sm"
                   )}
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                  >
+                    <FiX className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                className={cn(
+                  "px-4 py-2.5 rounded-xl text-sm",
+                  "bg-stone-100 dark:bg-stone-800",
+                  "border border-stone-200 dark:border-stone-700",
+                  "focus:ring-2 focus:ring-green-500 focus:border-transparent",
+                  "text-stone-900 dark:text-white"
+                )}
+              >
+                <option value="name">Sort by Name</option>
+                <option value="power">Sort by Power</option>
+                <option value="growth">Sort by Growth</option>
+              </select>
+            </div>
+
+            <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+              {BERRY_CATEGORIES.map(category => (
+                <motion.button
+                  key={category.key}
+                  onClick={() => setSelectedCategory(category.key)}
                   whileTap={{ scale: 0.95 }}
                   className={cn(
-                    'px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2',
-                    selectedCategory === category.name
-                      ? `bg-gradient-to-r ${category.color} text-white`
-                      : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300'
+                    "flex items-center gap-1.5 px-3 py-2 rounded-full whitespace-nowrap text-xs sm:text-sm font-medium transition-all",
+                    selectedCategory === category.key
+                      ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
+                      : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700"
                   )}
                 >
                   {category.icon}
                   {category.name}
-                  <span className={cn(
-                    'px-1.5 py-0.5 rounded text-xs',
-                    selectedCategory === category.name
-                      ? 'bg-white/20'
-                      : 'bg-stone-200 dark:bg-stone-600'
-                  )}>
-                    {count}
-                  </span>
                 </motion.button>
-              );
-            })}
+              ))}
+            </div>
           </div>
-
-          {/* Category Description */}
-          {selectedCategory && (
-            <motion.p
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-3 text-sm text-stone-500 dark:text-stone-300"
-            >
-              {BERRY_CATEGORIES.find(c => c.name === selectedCategory)?.description}
-            </motion.p>
-          )}
-        </Container>
-
-        {/* Search and Sort */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          {/* Search */}
-          <div className="flex-1 relative">
-            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search berries..."
-              className="w-full pl-11 pr-4 py-3 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 outline-none focus:ring-2 focus:ring-amber-500 transition-all"
-            />
-          </div>
-
-          {/* Sort */}
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            className="px-4 py-3 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 outline-none focus:ring-2 focus:ring-amber-500"
-          >
-            <option value="name">Sort by Name</option>
-            <option value="power">Sort by Power</option>
-            <option value="growth">Sort by Growth Time</option>
-          </select>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Array.from({ length: 12 }).map((_, i) => (
-              <Container key={i} variant="elevated" className="p-4 animate-pulse">
-                <div className="flex items-start gap-3">
-                  <div className="w-16 h-16 bg-stone-200 dark:bg-stone-700 rounded-xl" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-5 bg-stone-200 dark:bg-stone-700 rounded w-3/4" />
-                    <div className="h-4 bg-stone-200 dark:bg-stone-700 rounded w-1/2" />
+        {/* Category Description & Flavor Legend */}
+        <div className="container mx-auto px-4 py-3">
+          {selectedCategory !== 'all' && (
+            <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
+              {BERRY_CATEGORIES.find(c => c.key === selectedCategory)?.description}
+            </p>
+          )}
+
+          <button
+            onClick={() => setShowFlavorLegend(!showFlavorLegend)}
+            className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors"
+          >
+            <FiInfo className="w-4 h-4" />
+            {showFlavorLegend ? 'Hide' : 'Show'} Flavor Legend
+          </button>
+
+          <AnimatePresence>
+            {showFlavorLegend && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-3 p-4 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">
+                    Flavors affect which Pokémon like or dislike a berry based on their Nature
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {Object.entries(FLAVOR_CONFIG).map(([flavor, config]) => (
+                      <div key={flavor} className="flex items-center gap-2">
+                        <span className={cn('px-2 py-1 rounded-lg text-xs font-medium capitalize', config.bgLight, config.bgDark, config.color)}>
+                          {flavor}
+                        </span>
+                        <span className="text-xs text-stone-500 dark:text-stone-400">→ {config.stat}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </Container>
-            ))}
-          </div>
-        )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Results Count */}
+        <div className="container mx-auto px-4 pb-2">
+          <p className="text-sm text-stone-500 dark:text-stone-400">
+            Showing <span className="font-semibold text-stone-700 dark:text-stone-200">{filteredBerries.length}</span> berries
+            {selectedCategory !== 'all' && ` in ${BERRY_CATEGORIES.find(c => c.key === selectedCategory)?.name}`}
+            {searchQuery && ` matching "${searchQuery}"`}
+          </p>
+        </div>
 
         {/* Berry Grid */}
-        {!loading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredBerries.map((berry, index) => renderBerryCard(berry, index))}
-          </div>
-        )}
-
-        {/* No Results */}
-        {!loading && filteredBerries.length === 0 && (
-          <Container variant="elevated" className="p-8 text-center">
-            <FaSearch className="w-12 h-12 text-stone-300 dark:text-stone-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-2">
-              No berries found
-            </h3>
-            <p className="text-stone-500 dark:text-stone-300">
-              Try adjusting your search or filter criteria
-            </p>
-          </Container>
-        )}
-
-        {/* Flavor Legend */}
-        <Container variant="elevated" className="p-4 mt-6">
-          <h3 className="font-semibold text-stone-800 dark:text-white mb-3">
-            Flavor Legend
-          </h3>
-          <p className="text-sm text-stone-500 dark:text-stone-300 mb-3">
-            Flavors affect which Pokemon like or dislike a berry based on their Nature
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {Object.entries(FLAVOR_COLORS).map(([flavor, colorClass]) => (
-              <div key={flavor} className="flex items-center gap-2">
-                <span className={cn(
-                  'px-2 py-1 rounded text-xs font-medium capitalize',
-                  colorClass
-                )}>
-                  {flavor}
-                </span>
-                <span className="text-xs text-stone-500 dark:text-stone-300">
-                  {flavor === 'spicy' ? '→ Attack' :
-                   flavor === 'dry' ? '→ Sp. Atk' :
-                   flavor === 'sweet' ? '→ Speed' :
-                   flavor === 'bitter' ? '→ Sp. Def' : '→ Defense'}
-                </span>
+        <div className="container mx-auto px-4 pb-8">
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {[...Array(12)].map((_, i) => (
+                <div key={i} className="animate-pulse bg-white dark:bg-stone-800 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-16 h-16 bg-stone-200 dark:bg-stone-700 rounded-xl" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-5 bg-stone-200 dark:bg-stone-700 rounded w-3/4" />
+                      <div className="h-4 bg-stone-200 dark:bg-stone-700 rounded w-1/2" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredBerries.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center">
+                <FiSearch className="w-8 h-8 text-stone-400" />
               </div>
-            ))}
-          </div>
-        </Container>
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-2">No berries found</h3>
+              <p className="text-stone-500 dark:text-stone-400">Try adjusting your search or filters</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {filteredBerries.map((berry, index) => {
+                const mainFlavor = getMainFlavor(berry);
+
+                return (
+                  <motion.div
+                    key={berry.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: Math.min(index * 0.02, 0.3) }}
+                    className={cn(
+                      "bg-white dark:bg-stone-800 rounded-xl overflow-hidden",
+                      "border border-stone-200 dark:border-stone-700",
+                      "hover:shadow-lg hover:border-green-300 dark:hover:border-green-600",
+                      "transition-all duration-200"
+                    )}
+                  >
+                    <div className="p-4">
+                      <div className="flex items-start gap-3">
+                        {/* Berry Image */}
+                        <div className="w-16 h-16 flex-shrink-0 bg-stone-100 dark:bg-stone-700 rounded-xl flex items-center justify-center">
+                          <img
+                            src={getBerrySprite(berry.name)}
+                            alt={berry.name}
+                            className="w-12 h-12 object-contain"
+                            style={{ imageRendering: 'pixelated' }}
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/images/placeholder-item.png';
+                            }}
+                          />
+                        </div>
+
+                        {/* Berry Info */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-stone-900 dark:text-white truncate">
+                            {formatBerryName(berry.name)}
+                          </h3>
+
+                          {berry.natural_gift_type && (
+                            <div className="flex items-center gap-2 mt-1">
+                              <TypeBadge type={berry.natural_gift_type.name} size="xs" />
+                              <span className="text-xs text-stone-500 dark:text-stone-400">
+                                Power {berry.natural_gift_power}
+                              </span>
+                            </div>
+                          )}
+
+                          {mainFlavor && (
+                            <div className="mt-2">
+                              <span className={cn(
+                                'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium capitalize',
+                                FLAVOR_CONFIG[mainFlavor.name].bgLight,
+                                FLAVOR_CONFIG[mainFlavor.name].bgDark,
+                                FLAVOR_CONFIG[mainFlavor.name].color
+                              )}>
+                                {mainFlavor.name}
+                                <span className="opacity-70">({mainFlavor.potency})</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Stats Row */}
+                      <div className="grid grid-cols-3 gap-2 mt-4">
+                        <div className="text-center bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
+                          <FiClock className="w-3 h-3 mx-auto text-stone-400 mb-1" />
+                          <div className="text-[10px] text-stone-500 dark:text-stone-400">Growth</div>
+                          <div className="font-bold text-sm text-stone-900 dark:text-white">{berry.growth_time}h</div>
+                        </div>
+                        <div className="text-center bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
+                          <FiDroplet className="w-3 h-3 mx-auto text-stone-400 mb-1" />
+                          <div className="text-[10px] text-stone-500 dark:text-stone-400">Harvest</div>
+                          <div className="font-bold text-sm text-stone-900 dark:text-white">{berry.max_harvest}</div>
+                        </div>
+                        <div className="text-center bg-stone-50 dark:bg-stone-700/50 rounded-lg p-2">
+                          <FiChevronDown className="w-3 h-3 mx-auto text-stone-400 mb-1" />
+                          <div className="text-[10px] text-stone-500 dark:text-stone-400">Size</div>
+                          <div className="font-bold text-sm text-stone-900 dark:text-white">{berry.size}mm</div>
+                        </div>
+                      </div>
+
+                      {/* Firmness */}
+                      <div className="mt-3 flex justify-center">
+                        <span className={cn(
+                          'px-2 py-1 rounded-full text-xs font-medium capitalize',
+                          FIRMNESS_COLORS[berry.firmness.name] || 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-400'
+                        )}>
+                          {berry.firmness.name.replace('-', ' ')}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
-    </FullBleedWrapper>
+    </>
   );
 };
+
+// Full bleed layout
+(BerriesPage as NextPage & { fullBleed?: boolean }).fullBleed = true;
 
 export default BerriesPage;

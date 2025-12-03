@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Container } from '../../components/ui/Container';
-import { PageHeader } from '../../components/ui/BreadcrumbNavigation';
-import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import { cn } from '../../utils/cn';
 import {
-  FaLevelUpAlt, FaGem, FaUserFriends, FaExchangeAlt, FaMoon, FaSun,
-  FaMapMarkerAlt, FaCrown, FaHeart, FaQuestion, FaBolt, FaSearch,
-  FaVenusMars, FaRandom, FaShieldAlt, FaMagic
-} from 'react-icons/fa';
+  FiChevronLeft, FiChevronDown, FiSearch, FiX, FiZap, FiInfo,
+  FiTrendingUp, FiStar, FiHeart, FiRefreshCw, FiSun, FiMapPin,
+  FiPackage, FiUsers, FiDatabase, FiShuffle
+} from 'react-icons/fi';
 
 interface EvolutionMethod {
+  key: string;
   name: string;
   icon: React.ReactNode;
+  color: string;
   description: string;
   examples: Array<{
     from: string;
@@ -29,8 +29,10 @@ interface EvolutionMethod {
 
 const EVOLUTION_METHODS: EvolutionMethod[] = [
   {
+    key: 'level',
     name: 'Level Up',
-    icon: <FaLevelUpAlt className="w-5 h-5" />,
+    icon: <FiTrendingUp className="w-5 h-5" />,
+    color: 'from-blue-500 to-cyan-500',
     description: 'The most common evolution method. Pokemon evolve when they reach a certain level.',
     examples: [
       { from: 'Charmander', to: 'Charmeleon', fromId: 4, toId: 5, condition: 'Level 16' },
@@ -44,8 +46,10 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'stone',
     name: 'Evolution Stone',
-    icon: <FaGem className="w-5 h-5" />,
+    icon: <FiStar className="w-5 h-5" />,
+    color: 'from-purple-500 to-pink-500',
     description: 'Some Pokemon require special stones to evolve. These can be found or purchased.',
     examples: [
       { from: 'Pikachu', to: 'Raichu', fromId: 25, toId: 26, condition: 'Thunder Stone' },
@@ -59,8 +63,10 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'friendship',
     name: 'Friendship',
-    icon: <FaHeart className="w-5 h-5" />,
+    icon: <FiHeart className="w-5 h-5" />,
+    color: 'from-pink-500 to-rose-500',
     description: 'Pokemon evolve when they have high friendship with their trainer.',
     examples: [
       { from: 'Pichu', to: 'Pikachu', fromId: 172, toId: 25, condition: 'High Friendship' },
@@ -75,8 +81,10 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'trade',
     name: 'Trade',
-    icon: <FaExchangeAlt className="w-5 h-5" />,
+    icon: <FiRefreshCw className="w-5 h-5" />,
+    color: 'from-amber-500 to-orange-500',
     description: 'Some Pokemon only evolve when traded to another player.',
     examples: [
       { from: 'Kadabra', to: 'Alakazam', fromId: 64, toId: 65, condition: 'Trade' },
@@ -90,13 +98,15 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'time',
     name: 'Time of Day',
-    icon: <FaSun className="w-5 h-5" />,
+    icon: <FiSun className="w-5 h-5" />,
+    color: 'from-yellow-500 to-amber-500',
     description: 'Certain Pokemon evolve only during specific times of day.',
     examples: [
       { from: 'Eevee', to: 'Espeon', fromId: 133, toId: 196, condition: 'Day + High Friendship' },
       { from: 'Eevee', to: 'Umbreon', fromId: 133, toId: 197, condition: 'Night + High Friendship' },
-      { from: 'Rockruff', to: 'Lycanroc (Midday)', fromId: 744, toId: 745, condition: 'Day' },
+      { from: 'Rockruff', to: 'Lycanroc', fromId: 744, toId: 745, condition: 'Day / Night / Dusk' },
     ],
     tips: [
       'Day is typically 6:00 AM to 6:00 PM',
@@ -105,11 +115,13 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'location',
     name: 'Location',
-    icon: <FaMapMarkerAlt className="w-5 h-5" />,
+    icon: <FiMapPin className="w-5 h-5" />,
+    color: 'from-emerald-500 to-teal-500',
     description: 'Some Pokemon evolve in specific locations or near special objects.',
     examples: [
-      { from: 'Magneton', to: 'Magnezone', fromId: 82, toId: 462, condition: 'Level up at Mt. Coronet / Magnetic Field' },
+      { from: 'Magneton', to: 'Magnezone', fromId: 82, toId: 462, condition: 'Magnetic Field / Thunder Stone' },
       { from: 'Eevee', to: 'Leafeon', fromId: 133, toId: 470, condition: 'Near Moss Rock / Leaf Stone' },
       { from: 'Eevee', to: 'Glaceon', fromId: 133, toId: 471, condition: 'Near Ice Rock / Ice Stone' },
     ],
@@ -120,13 +132,15 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'item',
     name: 'Held Item',
-    icon: <FaShieldAlt className="w-5 h-5" />,
+    icon: <FiPackage className="w-5 h-5" />,
+    color: 'from-indigo-500 to-blue-500',
     description: 'Pokemon evolve while holding specific items, usually combined with leveling or trading.',
     examples: [
-      { from: 'Slowpoke', to: 'Slowking', fromId: 79, toId: 199, condition: 'Trade holding King\'s Rock' },
-      { from: 'Onix', to: 'Steelix', fromId: 95, toId: 208, condition: 'Trade holding Metal Coat' },
-      { from: 'Rhydon', to: 'Rhyperior', fromId: 112, toId: 464, condition: 'Trade holding Protector' },
+      { from: 'Slowpoke', to: 'Slowking', fromId: 79, toId: 199, condition: 'Trade + King\'s Rock' },
+      { from: 'Onix', to: 'Steelix', fromId: 95, toId: 208, condition: 'Trade + Metal Coat' },
+      { from: 'Rhydon', to: 'Rhyperior', fromId: 112, toId: 464, condition: 'Trade + Protector' },
     ],
     tips: [
       'Items are often found in late-game areas',
@@ -135,8 +149,10 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'gender',
     name: 'Gender-Specific',
-    icon: <FaVenusMars className="w-5 h-5" />,
+    icon: <FiUsers className="w-5 h-5" />,
+    color: 'from-rose-500 to-pink-500',
     description: 'Some Pokemon have different evolutions based on their gender.',
     examples: [
       { from: 'Kirlia', to: 'Gallade', fromId: 281, toId: 475, condition: 'Male + Dawn Stone' },
@@ -150,8 +166,10 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'move',
     name: 'Special Moves',
-    icon: <FaMagic className="w-5 h-5" />,
+    icon: <FiDatabase className="w-5 h-5" />,
+    color: 'from-violet-500 to-purple-500',
     description: 'Pokemon evolve when they know a specific move and level up.',
     examples: [
       { from: 'Piloswine', to: 'Mamoswine', fromId: 221, toId: 473, condition: 'Know Ancient Power' },
@@ -165,12 +183,14 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
     ]
   },
   {
+    key: 'unique',
     name: 'Unique Methods',
-    icon: <FaRandom className="w-5 h-5" />,
+    icon: <FiShuffle className="w-5 h-5" />,
+    color: 'from-red-500 to-orange-500',
     description: 'Some Pokemon have completely unique evolution methods.',
     examples: [
-      { from: 'Inkay', to: 'Malamar', fromId: 686, toId: 687, condition: 'Level 30+ with console upside down' },
-      { from: 'Pancham', to: 'Pangoro', fromId: 674, toId: 675, condition: 'Level 32+ with Dark-type in party' },
+      { from: 'Inkay', to: 'Malamar', fromId: 686, toId: 687, condition: 'Level 30+ upside down' },
+      { from: 'Pancham', to: 'Pangoro', fromId: 674, toId: 675, condition: 'Level 32+ with Dark-type' },
       { from: 'Sliggoo', to: 'Goodra', fromId: 705, toId: 706, condition: 'Level 50+ while raining' },
     ],
     tips: [
@@ -182,303 +202,358 @@ const EVOLUTION_METHODS: EvolutionMethod[] = [
 ];
 
 const EEVEE_EVOLUTIONS = [
-  { name: 'Vaporeon', type: 'water', method: 'Water Stone', id: 134 },
-  { name: 'Jolteon', type: 'electric', method: 'Thunder Stone', id: 135 },
-  { name: 'Flareon', type: 'fire', method: 'Fire Stone', id: 136 },
-  { name: 'Espeon', type: 'psychic', method: 'High Friendship (Day)', id: 196 },
-  { name: 'Umbreon', type: 'dark', method: 'High Friendship (Night)', id: 197 },
-  { name: 'Leafeon', type: 'grass', method: 'Leaf Stone / Moss Rock', id: 470 },
-  { name: 'Glaceon', type: 'ice', method: 'Ice Stone / Ice Rock', id: 471 },
-  { name: 'Sylveon', type: 'fairy', method: 'High Friendship + Fairy move', id: 700 },
+  { name: 'Vaporeon', type: 'water', method: 'Water Stone', id: 134, color: 'from-blue-400 to-cyan-400' },
+  { name: 'Jolteon', type: 'electric', method: 'Thunder Stone', id: 135, color: 'from-yellow-400 to-amber-400' },
+  { name: 'Flareon', type: 'fire', method: 'Fire Stone', id: 136, color: 'from-orange-400 to-red-400' },
+  { name: 'Espeon', type: 'psychic', method: 'Friendship (Day)', id: 196, color: 'from-pink-400 to-purple-400' },
+  { name: 'Umbreon', type: 'dark', method: 'Friendship (Night)', id: 197, color: 'from-indigo-400 to-stone-600' },
+  { name: 'Leafeon', type: 'grass', method: 'Leaf Stone', id: 470, color: 'from-green-400 to-emerald-400' },
+  { name: 'Glaceon', type: 'ice', method: 'Ice Stone', id: 471, color: 'from-cyan-400 to-blue-400' },
+  { name: 'Sylveon', type: 'fairy', method: 'Fairy Move', id: 700, color: 'from-pink-400 to-rose-400' },
 ];
 
-/**
- * Evolution Guide Page
- *
- * Features:
- * - Comprehensive evolution method guide
- * - Visual examples with sprites
- * - Tips for each method
- * - Eevee evolution showcase
- */
 const EvolutionGuidePage: NextPage = () => {
-  const [expandedMethod, setExpandedMethod] = useState<string | null>('Level Up');
+  const router = useRouter();
+  const [expandedMethod, setExpandedMethod] = useState<string | null>('level');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showQuickTips, setShowQuickTips] = useState(false);
 
-  const filteredMethods = EVOLUTION_METHODS.filter(method =>
-    method.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    method.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    method.examples.some(ex =>
-      ex.from.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ex.to.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+  const filteredMethods = useMemo(() =>
+    EVOLUTION_METHODS.filter(method =>
+      method.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      method.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      method.examples.some(ex =>
+        ex.from.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        ex.to.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    ),
+    [searchQuery]
   );
 
+  const stats = useMemo(() => ({
+    methods: EVOLUTION_METHODS.length,
+    eeveelutions: EEVEE_EVOLUTIONS.length,
+    examples: EVOLUTION_METHODS.reduce((sum, m) => sum + m.examples.length, 0),
+  }), []);
+
   return (
-    <FullBleedWrapper gradient="pokedex">
+    <>
       <Head>
-        <title>Pokemon Evolution Guide | DexTrends</title>
+        <title>Pokémon Evolution Guide | DexTrends</title>
         <meta name="description" content="Complete guide to Pokemon evolution methods - level up, stones, trading, friendship, and more." />
       </Head>
 
-      {/* Header */}
-      <div className="container mx-auto px-4 py-6">
-        <PageHeader
-          title="Evolution Guide"
-          description="Master all Pokemon evolution methods"
-          breadcrumbs={[
-            { title: 'Home', href: '/', icon: '🏠', isActive: false },
-            { title: 'Pokemon', href: '/pokemon', icon: '📖', isActive: false },
-            { title: 'Evolution Guide', href: '/pokemon/evolution-guide', icon: '🔄', isActive: true },
-          ]}
-        />
-      </div>
+      <div className="min-h-screen bg-gradient-to-b from-cyan-50 via-white to-blue-50 dark:from-stone-950 dark:via-stone-900 dark:to-cyan-950">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 opacity-30 dark:opacity-20">
+            <div className="absolute top-10 left-10 w-64 h-64 bg-cyan-400 rounded-full blur-3xl" />
+            <div className="absolute top-20 right-20 w-48 h-48 bg-blue-400 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-1/3 w-56 h-56 bg-indigo-400 rounded-full blur-3xl" />
+          </div>
 
-      <div className="container mx-auto px-4 pb-8">
-        {/* Eevee Showcase */}
-        <Container variant="gradient" className="p-4 sm:p-6 mb-6">
-          <h3 className="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-            <FaCrown className="text-amber-500" />
-            Eevee: The Evolution Pokemon
-          </h3>
-          <p className="text-sm text-stone-600 dark:text-stone-300 mb-4">
-            Eevee has the most branching evolutions of any Pokemon, showcasing many different evolution methods.
-          </p>
+          <div className="relative container mx-auto px-4 pt-6 pb-4">
+            <button
+              onClick={() => router.push('/pokemon')}
+              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors mb-4"
+            >
+              <FiChevronLeft className="w-4 h-4" />
+              Pokémon Hub
+            </button>
 
-          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {/* Eevee */}
-            <div className="flex-shrink-0 text-center">
-              <div className="w-20 h-20 bg-white dark:bg-stone-700 rounded-xl flex items-center justify-center mb-2">
-                <img
-                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png"
-                  alt="Eevee"
-                  className="w-16 h-16 object-contain"
-                />
-              </div>
-              <span className="text-xs font-medium text-stone-800 dark:text-white">Eevee</span>
+            <div className="text-center mb-6">
+              <motion.h1
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black mb-3"
+              >
+                <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Evolution Guide
+                </span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-stone-600 dark:text-stone-400 max-w-2xl mx-auto"
+              >
+                Master every evolution method in Pokémon
+              </motion.p>
             </div>
 
-            <div className="flex items-center text-stone-300 dark:text-stone-600 text-2xl">→</div>
-
-            {/* Eeveelutions */}
-            {EEVEE_EVOLUTIONS.map(evo => (
-              <Link key={evo.name} href={`/pokedex/${evo.id}`}>
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  className="flex-shrink-0 text-center cursor-pointer"
-                >
-                  <div className={cn(
-                    'w-20 h-20 rounded-xl flex items-center justify-center mb-2',
-                    'bg-white dark:bg-stone-700 hover:shadow-lg transition-shadow'
-                  )}>
-                    <img
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
-                      alt={evo.name}
-                      className="w-16 h-16 object-contain"
-                    />
-                  </div>
-                  <span className="text-xs font-medium text-stone-800 dark:text-white block">
-                    {evo.name}
-                  </span>
-                  <span className="text-[10px] text-stone-500 dark:text-stone-300">
-                    {evo.method}
-                  </span>
-                </motion.div>
-              </Link>
-            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex justify-center gap-4 sm:gap-8 mb-4"
+            >
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-cyan-600 dark:text-cyan-400">{stats.methods}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Methods</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400">{stats.eeveelutions}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Eeveelutions</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400">{stats.examples}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Examples</div>
+              </div>
+            </motion.div>
           </div>
-        </Container>
+        </div>
 
-        {/* Search */}
-        <div className="relative mb-6">
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search evolution methods or Pokemon..."
-            className="w-full pl-11 pr-4 py-3 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 outline-none focus:ring-2 focus:ring-amber-500 transition-all"
-          />
+        {/* Eevee Showcase */}
+        <div className="container mx-auto px-4 py-4">
+          <div className="bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-4 border border-amber-200 dark:border-amber-800">
+            <h3 className="font-bold text-stone-900 dark:text-white mb-3 flex items-center gap-2">
+              <FiStar className="text-amber-500" />
+              Eevee: The Evolution Pokémon
+            </h3>
+            <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+              {/* Eevee */}
+              <div className="flex-shrink-0 text-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white dark:bg-stone-700 rounded-xl flex items-center justify-center mb-1">
+                  <img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png"
+                    alt="Eevee"
+                    className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+                  />
+                </div>
+                <span className="text-xs font-medium text-stone-900 dark:text-white">Eevee</span>
+              </div>
+
+              <div className="flex items-center text-stone-400 text-xl sm:text-2xl">→</div>
+
+              {EEVEE_EVOLUTIONS.map(evo => (
+                <Link key={evo.name} href={`/pokedex/${evo.id}`}>
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -4 }}
+                    className="flex-shrink-0 text-center cursor-pointer"
+                  >
+                    <div className={cn(
+                      'w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center mb-1',
+                      'bg-gradient-to-br opacity-90 hover:opacity-100 transition-opacity',
+                      evo.color
+                    )}>
+                      <img
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
+                        alt={evo.name}
+                        className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+                      />
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-medium text-stone-900 dark:text-white block">
+                      {evo.name}
+                    </span>
+                    <span className="text-[8px] sm:text-[10px] text-stone-500 dark:text-stone-400">
+                      {evo.method}
+                    </span>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="sticky top-14 md:top-16 z-30 bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
+          <div className="container mx-auto px-4 py-3">
+            <div className="relative">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search evolution methods or Pokémon..."
+                className={cn(
+                  "w-full pl-10 pr-10 py-2.5 rounded-xl",
+                  "bg-stone-100 dark:bg-stone-800",
+                  "border border-stone-200 dark:border-stone-700",
+                  "focus:ring-2 focus:ring-cyan-500 focus:border-transparent",
+                  "text-stone-900 dark:text-white placeholder-stone-400",
+                  "transition-all text-sm"
+                )}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                >
+                  <FiX className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Tips Toggle */}
+        <div className="container mx-auto px-4 py-3">
+          <button
+            onClick={() => setShowQuickTips(!showQuickTips)}
+            className="flex items-center gap-2 text-sm text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
+          >
+            <FiInfo className="w-4 h-4" />
+            {showQuickTips ? 'Hide' : 'Show'} Quick Tips
+          </button>
+
+          <AnimatePresence>
+            {showQuickTips && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                  {[
+                    { title: 'Cancel Evolution', desc: 'Press B during animation to cancel. Some Pokemon learn moves earlier when unevolved.' },
+                    { title: 'Everstone', desc: 'Pokemon holding an Everstone won\'t evolve. Useful for breeding natures.' },
+                    { title: 'Regional Variants', desc: 'Some Pokemon have regional forms with different evolution methods.' },
+                    { title: 'Mega/Dynamax', desc: 'These are temporary battle transformations, not permanent evolutions.' },
+                  ].map((tip, i) => (
+                    <div key={i} className="bg-white dark:bg-stone-800 rounded-xl p-3 border border-stone-200 dark:border-stone-700">
+                      <h4 className="font-semibold text-stone-900 dark:text-white text-sm mb-1">{tip.title}</h4>
+                      <p className="text-xs text-stone-600 dark:text-stone-400">{tip.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Results Count */}
+        <div className="container mx-auto px-4 pb-2">
+          <p className="text-sm text-stone-500 dark:text-stone-400">
+            Showing <span className="font-semibold text-stone-700 dark:text-stone-200">{filteredMethods.length}</span> evolution methods
+            {searchQuery && ` matching "${searchQuery}"`}
+          </p>
         </div>
 
         {/* Evolution Methods */}
-        <div className="space-y-4">
-          {filteredMethods.map((method, index) => (
-            <motion.div
-              key={method.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <Container variant="elevated" className="overflow-hidden">
-                {/* Method Header */}
-                <button
-                  onClick={() => setExpandedMethod(
-                    expandedMethod === method.name ? null : method.name
+        <div className="container mx-auto px-4 pb-8">
+          {filteredMethods.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center">
+                <FiSearch className="w-8 h-8 text-stone-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-2">No methods found</h3>
+              <p className="text-stone-500 dark:text-stone-400">Try a different search term</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {filteredMethods.map((method, index) => (
+                <motion.div
+                  key={method.key}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: Math.min(index * 0.03, 0.2) }}
+                  className={cn(
+                    "bg-white dark:bg-stone-800 rounded-xl overflow-hidden",
+                    "border border-stone-200 dark:border-stone-700",
+                    expandedMethod === method.key && "ring-2 ring-cyan-500"
                   )}
-                  className="w-full p-4 sm:p-6 flex items-center gap-4 hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center text-white">
-                    {method.icon}
-                  </div>
-                  <div className="flex-1 text-left">
-                    <h3 className="font-bold text-stone-800 dark:text-white">
-                      {method.name}
-                    </h3>
-                    <p className="text-sm text-stone-500 dark:text-stone-300 line-clamp-1">
-                      {method.description}
-                    </p>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: expandedMethod === method.name ? 180 : 0 }}
-                    className="text-stone-400"
+                  {/* Method Header */}
+                  <button
+                    onClick={() => setExpandedMethod(expandedMethod === method.key ? null : method.key)}
+                    className="w-full p-4 flex items-center gap-4 hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors"
                   >
-                    ▼
-                  </motion.div>
-                </button>
-
-                {/* Expanded Content */}
-                <AnimatePresence>
-                  {expandedMethod === method.name && (
+                    <div className={cn(
+                      "w-12 h-12 rounded-xl flex items-center justify-center text-white bg-gradient-to-br",
+                      method.color
+                    )}>
+                      {method.icon}
+                    </div>
+                    <div className="flex-1 text-left">
+                      <h3 className="font-bold text-stone-900 dark:text-white">
+                        {method.name}
+                      </h3>
+                      <p className="text-sm text-stone-500 dark:text-stone-400 line-clamp-1">
+                        {method.description}
+                      </p>
+                    </div>
                     <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
+                      animate={{ rotate: expandedMethod === method.key ? 180 : 0 }}
+                      className="text-stone-400"
                     >
-                      <div className="px-4 pb-4 sm:px-6 sm:pb-6 space-y-4">
-                        {/* Full Description */}
-                        <p className="text-stone-600 dark:text-stone-300">
-                          {method.description}
-                        </p>
+                      <FiChevronDown className="w-5 h-5" />
+                    </motion.div>
+                  </button>
 
-                        {/* Examples */}
-                        <div>
-                          <h4 className="font-semibold text-stone-800 dark:text-white mb-3">
-                            Examples
-                          </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            {method.examples.map((ex, i) => (
-                              <div
-                                key={i}
-                                className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-3"
-                              >
-                                <div className="flex items-center gap-2 justify-center mb-2">
-                                  <Link href={`/pokedex/${ex.fromId}`}>
-                                    <div className="text-center hover:scale-110 transition-transform">
+                  {/* Expanded Content */}
+                  <AnimatePresence>
+                    {expandedMethod === method.key && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-4 pb-4 space-y-4 border-t border-stone-100 dark:border-stone-700 pt-4">
+                          {/* Examples */}
+                          <div>
+                            <h4 className="text-sm font-semibold text-stone-900 dark:text-white mb-3">Examples</h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              {method.examples.map((ex, i) => (
+                                <div key={i} className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-3">
+                                  <div className="flex items-center gap-2 justify-center mb-2">
+                                    <Link href={`/pokedex/${ex.fromId}`} className="text-center hover:scale-110 transition-transform">
                                       <img
                                         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${ex.fromId}.png`}
                                         alt={ex.from}
                                         className="w-12 h-12 mx-auto"
                                       />
-                                      <span className="text-xs text-stone-600 dark:text-stone-300">
-                                        {ex.from}
-                                      </span>
-                                    </div>
-                                  </Link>
-                                  <span className="text-stone-400">→</span>
-                                  <Link href={`/pokedex/${ex.toId}`}>
-                                    <div className="text-center hover:scale-110 transition-transform">
+                                      <span className="text-xs text-stone-700 dark:text-stone-300">{ex.from}</span>
+                                    </Link>
+                                    <span className="text-stone-400 dark:text-stone-500">→</span>
+                                    <Link href={`/pokedex/${ex.toId}`} className="text-center hover:scale-110 transition-transform">
                                       <img
                                         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${ex.toId}.png`}
                                         alt={ex.to}
                                         className="w-12 h-12 mx-auto"
                                       />
-                                      <span className="text-xs text-stone-600 dark:text-stone-300">
-                                        {ex.to}
-                                      </span>
-                                    </div>
-                                  </Link>
+                                      <span className="text-xs text-stone-700 dark:text-stone-300">{ex.to}</span>
+                                    </Link>
+                                  </div>
+                                  <p className="text-xs text-center text-cyan-600 dark:text-cyan-400 font-medium">
+                                    {ex.condition}
+                                  </p>
                                 </div>
-                                <p className="text-xs text-center text-amber-600 dark:text-amber-400 font-medium">
-                                  {ex.condition}
-                                </p>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Tips */}
+                          <div>
+                            <h4 className="text-sm font-semibold text-stone-900 dark:text-white mb-2">Tips</h4>
+                            <ul className="space-y-1">
+                              {method.tips.map((tip, i) => (
+                                <li key={i} className="flex items-start gap-2 text-sm text-stone-600 dark:text-stone-400">
+                                  <FiZap className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                                  {tip}
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
-
-                        {/* Tips */}
-                        <div>
-                          <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
-                            Tips
-                          </h4>
-                          <ul className="space-y-1">
-                            {method.tips.map((tip, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-stone-600 dark:text-stone-300">
-                                <span className="text-amber-500 mt-1">•</span>
-                                {tip}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Container>
-            </motion.div>
-          ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
-
-        {/* No Results */}
-        {filteredMethods.length === 0 && (
-          <Container variant="elevated" className="p-8 text-center">
-            <FaSearch className="w-12 h-12 text-stone-300 dark:text-stone-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-2">
-              No evolution methods found
-            </h3>
-            <p className="text-stone-500 dark:text-stone-300">
-              Try a different search term
-            </p>
-          </Container>
-        )}
-
-        {/* Quick Tips */}
-        <Container variant="elevated" className="p-4 sm:p-6 mt-6">
-          <h3 className="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-            <FaBolt className="text-yellow-500" />
-            Quick Tips
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4">
-              <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
-                Cancel Evolution
-              </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-300">
-                Press B during evolution animation to cancel. Some Pokemon benefit from staying unevolved longer to learn moves earlier.
-              </p>
-            </div>
-            <div className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4">
-              <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
-                Everstone
-              </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-300">
-                Pokemon holding an Everstone won't evolve. Useful for keeping a pre-evolution or for breeding natures.
-              </p>
-            </div>
-            <div className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4">
-              <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
-                Regional Variants
-              </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-300">
-                Some Pokemon have regional forms that evolve differently. Check the specific region's requirements.
-              </p>
-            </div>
-            <div className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4">
-              <h4 className="font-semibold text-stone-800 dark:text-white mb-2">
-                Mega Evolution & Dynamax
-              </h4>
-              <p className="text-sm text-stone-600 dark:text-stone-300">
-                These are temporary battle transformations, not permanent evolutions. They require special items.
-              </p>
-            </div>
-          </div>
-        </Container>
       </div>
-    </FullBleedWrapper>
+    </>
   );
 };
+
+// Full bleed layout
+(EvolutionGuidePage as NextPage & { fullBleed?: boolean }).fullBleed = true;
 
 export default EvolutionGuidePage;
