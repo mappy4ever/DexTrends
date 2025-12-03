@@ -150,28 +150,56 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     logger.debug('TCGDex returned brief cards', { pokemonName, count: briefCards.length });
 
+    // Helper to construct image URL from card ID when image is missing
+    // TCGDex image format: https://assets.tcgdex.net/en/{series}/{setId}/{localId}
+    const constructImageUrl = (cardId: string, localId: string): string => {
+      const setId = cardId.split('-')[0] || '';
+      // Derive series from setId prefix
+      const seriesMap: Record<string, string> = {
+        'sv': 'sv', 'swsh': 'swsh', 'sm': 'sm', 'xy': 'xy', 'bw': 'bw',
+        'hgss': 'hgss', 'dp': 'dp', 'ex': 'ex', 'neo': 'neo', 'gym': 'gym',
+        'base': 'base', 'det': 'sm', 'cel': 'swsh', 'pop': 'pop', 'pl': 'pl',
+        'mcd': 'mcd', 'tk': 'swsh', 'fut': 'swsh'
+      };
+      // Find matching prefix
+      let series = 'sm'; // default fallback
+      for (const [prefix, seriesName] of Object.entries(seriesMap)) {
+        if (setId.toLowerCase().startsWith(prefix)) {
+          series = seriesName;
+          break;
+        }
+      }
+      return `https://assets.tcgdex.net/en/${series}/${setId}/${localId}`;
+    };
+
     // Transform brief cards to app format (quick response for list view)
     // Full details can be fetched when user clicks on a specific card
-    let cards = briefCards.slice(0, 100).map(briefCard => ({
-      id: briefCard.id,
-      name: briefCard.name,
-      supertype: 'Pokémon' as const,
-      number: briefCard.localId || '',
-      images: {
-        small: briefCard.image ? `${briefCard.image}/low.png` : '',
-        large: briefCard.image ? `${briefCard.image}/high.png` : '',
-      },
-      set: {
-        id: briefCard.id.split('-')[0] || '',
-        name: '',
-        series: '',
-        printedTotal: 0,
-        total: 0,
-        releaseDate: '',
-        updatedAt: '',
-        images: { symbol: '', logo: '' }
-      }
-    }));
+    let cards = briefCards.slice(0, 100).map(briefCard => {
+      const localId = briefCard.localId || briefCard.id.split('-')[1] || '';
+      // Use provided image or construct from card ID
+      const imageBase = briefCard.image || constructImageUrl(briefCard.id, localId);
+
+      return {
+        id: briefCard.id,
+        name: briefCard.name,
+        supertype: 'Pokémon' as const,
+        number: localId,
+        images: {
+          small: `${imageBase}/low.png`,
+          large: `${imageBase}/high.png`,
+        },
+        set: {
+          id: briefCard.id.split('-')[0] || '',
+          name: '',
+          series: '',
+          printedTotal: 0,
+          total: 0,
+          releaseDate: '',
+          updatedAt: '',
+          images: { symbol: '', logo: '' }
+        }
+      };
+    });
 
     // Note: HP filter not available with brief cards - would need full card fetch
     // For now, HP filtering is skipped for performance
