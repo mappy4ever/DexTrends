@@ -23,7 +23,7 @@ const VirtualizedGrid = dynamic(
 );
 
 // Card display variant type
-type CardVariant = 'default' | 'clean';
+type CardVariant = 'default' | 'clean' | 'zone';
 
 // TCG Card wrapper props
 interface TCGCardProps {
@@ -129,6 +129,74 @@ const TCGCardItem = memo<TCGCardProps>(({
 
     return typeColors[primaryType] || '';
   };
+
+  // Zone variant - Pokemon Zone inspired with prominent prices
+  if (variant === 'zone') {
+    return (
+      <div
+        className="zone-card"
+        onClick={() => onCardClick?.(card)}
+      >
+        <div className="zone-card-image-container">
+          <img
+            src={card.images?.small || '/back-card.png'}
+            alt={card.name}
+            className="zone-card-image"
+            loading="lazy"
+          />
+          {/* Card number badge */}
+          {showSet && (
+            <span className="zone-card-number">#{cardNumber}</span>
+          )}
+          {/* Rarity indicator */}
+          {showRarity && card.rarity && (
+            <div className="zone-card-rarity">
+              <RarityIcon
+                rarity={getActualRarity(card)}
+                size="xs"
+                showLabel={false}
+              />
+            </div>
+          )}
+          {/* Magnify Button */}
+          {setZoomedCard && (
+            <button
+              className="zone-card-magnify"
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoomedCard(card);
+              }}
+              aria-label="View larger image"
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              </svg>
+            </button>
+          )}
+        </div>
+        {/* Card info below image */}
+        <div className="zone-card-info">
+          <button
+            className="zone-card-name"
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/cards/${card.id}`);
+            }}
+          >
+            {card.name}
+          </button>
+          {showPrice && (
+            <div className={`zone-card-price ${price <= 0 ? 'no-price' : ''}`}>
+              {price > 0 ? `$${price.toFixed(2)}` : 'No price'}
+            </div>
+          )}
+          {showSet && setName && (
+            <div className="zone-card-set">{setName}</div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   // Clean variant - minimal, space-efficient design with subtle black outline
   if (variant === 'clean') {
@@ -620,7 +688,7 @@ function TCGCardListInner({
       </div>
     )}
     
-    <div className={gridClassName || (variant === 'clean' ? "clean-card-grid" : "grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 min-420:gap-3 sm:gap-4")}>
+    <div className={gridClassName || (variant === 'zone' ? "zone-card-grid" : variant === 'clean' ? "clean-card-grid" : "grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 min-420:gap-3 sm:gap-4")}>
       {displayedCards.map((card) => {
         return (
           <TCGCardItem
