@@ -1,11 +1,58 @@
 import React, { useState, useMemo, useCallback, memo, useRef, useEffect } from "react";
 import Image from "next/image";
-import Modal from '@/components/ui/Modal';
 import logger from "@/utils/logger";
 import { SkeletonGrid as CardGridSkeleton } from "./ui/Skeleton";
 import { TCGCard } from "../types/api/cards";
 import performanceMonitor from "../utils/performanceMonitor";
 import { createGlassStyle } from './ui/design-system/glass-constants';
+
+// Simple inline modal to avoid framer-motion dependency issues
+interface SimpleModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+const SimpleModal: React.FC<SimpleModalProps> = ({ isOpen, onClose, children }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      {/* Content */}
+      <div
+        className="relative z-10 bg-white dark:bg-stone-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-auto animate-fadeIn"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors z-10"
+          onClick={onClose}
+        >
+          <svg className="w-5 h-5 text-stone-600 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        {children}
+      </div>
+    </div>
+  );
+};
 
 type SortOption = "price" | "releaseDate" | "rarity";
 
@@ -403,9 +450,9 @@ const CardList = memo<CardListProps>(({
       )}
 
       {/* Modal for zoomed card */}
-      {zoomedCard && (
-        <Modal isOpen={!!zoomedCard} onClose={handleCloseModal}>
-          <div className="flex flex-col items-center p-4">
+      <SimpleModal isOpen={!!zoomedCard} onClose={handleCloseModal}>
+        {zoomedCard && (
+          <div className="flex flex-col items-center p-6">
             <Image
               src={zoomedCard.images?.large || '/back-card.png'}
               alt={zoomedCard.name}
@@ -416,15 +463,13 @@ const CardList = memo<CardListProps>(({
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
               sizes="400px"
             />
-            <button
-              className="mt-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
-              onClick={handleCloseModal}
-            >
-              Close
-            </button>
+            <h3 className="text-lg font-bold text-stone-800 dark:text-white mb-2">{zoomedCard.name}</h3>
+            {zoomedCard.rarity && (
+              <span className="text-sm text-stone-600 dark:text-stone-400 mb-4">{zoomedCard.rarity}</span>
+            )}
           </div>
-        </Modal>
-      )}
+        )}
+      </SimpleModal>
     </div>
   );
 }, arePropsEqual);
