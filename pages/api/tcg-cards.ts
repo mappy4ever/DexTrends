@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
-import type { TCGDexCard } from '../../types/api/tcgdex';
+import type { TCGDexCard, TCGDexCardBrief } from '../../types/api/tcgdex';
 import { transformCard, TCGDexEndpoints } from '../../utils/tcgdex-adapter';
 
 /**
@@ -121,17 +121,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     logger.debug('Fetching TCG cards from TCGDex', { url: apiUrl, pokemonName });
 
-    const tcgdexData = await fetchJSON<TCGDexCard[]>(apiUrl, {
+    // TCGDex /cards endpoint returns BRIEF cards (id, name, image only)
+    const briefCards = await fetchJSON<TCGDexCardBrief[]>(apiUrl, {
       useCache: true,
-      cacheTime: 30 * 60 * 1000, // Cache for 30 minutes (cards don't change often)
+      cacheTime: 30 * 60 * 1000,
       timeout: 15000,
       retries: 2,
       retryDelay: 500,
-      throwOnError: false // Don't throw, handle errors gracefully
+      throwOnError: false
     });
 
     // Handle null/undefined response gracefully
-    if (!tcgdexData || !Array.isArray(tcgdexData)) {
+    if (!briefCards || !Array.isArray(briefCards)) {
       logger.warn('TCGDex API returned null/undefined', { pokemonName, apiUrl });
       res.status(200).json({
         data: [],
@@ -146,8 +147,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    // Transform TCGDex cards to app format
-    let cards = tcgdexData.map(transformCard);
+    logger.debug('TCGDex returned brief cards', { pokemonName, count: briefCards.length });
+
+    // Fetch full card details for each brief card (limit to 50 for performance)
+    const cardIdsToFetch = briefCards.slice(0, 50).map(c => c.id);
+    const fullCards: TCGDexCard[] = [];
+
+    // Fetch in parallel batches of 10
+    const BATCH_SIZE = 10;
+    for (let i = 0; i < cardIdsToFetch.length; i += BATCH_SIZE) {
+      const batch = cardIdsToFetch.slice(i, i + BATCH_SIZE);
+      const batchResults = await Promise.all(
+        batch.map(async (cardId) => {
+          try {
+            const cardUrl = TCGDexEndpoints.card(cardId, 'en');
+            const fullCard = await fetchJSON<TCGDexCard>(cardUrl, {
+              useCache: true,
+              cacheTime: 24 * 60 * 60 * 1000, // Cache card details for 24 hours
+              timeout: 8000,
+              throwOnError: false
+            });
+            return fullCard;
+          } catch {
+            return null;
+          }
+        })
+      );
+      fullCards.push(...batchResults.filter((c): c is TCGDexCard => c !== null));
+    }
+
+    // Transform full cards to app format
+    let cards = fullCards.map(transformCard);
 
     // Apply maxHp filter client-side (TCGDex doesn't support multiple HP conditions in one query)
     if (maxHp) {
