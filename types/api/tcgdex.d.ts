@@ -181,6 +181,7 @@ export interface TCGDexSerieBrief {
 
 export interface TCGDexSerie extends TCGDexSerieBrief {
   sets?: TCGDexSetBrief[];
+  releaseDate?: string;
 }
 
 // ============================================================================

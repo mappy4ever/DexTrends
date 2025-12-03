@@ -612,29 +612,120 @@ function TCGCardListInner({
       </div>
     )}
     
-    {/* Zoom Modal */}
+    {/* Zoom Modal - Enhanced Design */}
     {zoomedCard && (
-      <Modal 
-        isOpen={true} 
+      <Modal
+        isOpen={true}
         onClose={() => setZoomedCard(null)}
         showCloseButton={true}
         closeOnBackdrop={true}
       >
-        <div className="flex flex-col items-center">
-          <Image
-            src={zoomedCard.images?.large || "/back-card.png"}
-            alt={zoomedCard.name}
-            width={400}
-            height={560}
-            className="rounded-lg shadow-lg"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-            sizes="400px"
-          />
-          <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
-          {zoomedCard.set?.name && (
-            <p className="text-stone-600 dark:text-stone-300 mt-2">{zoomedCard.set.name}</p>
-          )}
+        <div className="flex flex-col md:flex-row gap-6 p-2 sm:p-4 max-w-4xl">
+          {/* Card Image */}
+          <div className="flex-shrink-0 flex justify-center">
+            <div className="relative">
+              <Image
+                src={zoomedCard.images?.large || "/back-card.png"}
+                alt={zoomedCard.name}
+                width={300}
+                height={420}
+                className="rounded-xl shadow-2xl"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+                sizes="(max-width: 768px) 250px, 300px"
+              />
+              {/* Glow effect */}
+              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-amber-400/30 to-orange-500/30 blur-2xl rounded-full scale-75" />
+            </div>
+          </div>
+
+          {/* Card Details */}
+          <div className="flex-1 min-w-0 space-y-4">
+            {/* Name and Set */}
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-stone-800 dark:text-white">
+                {zoomedCard.name}
+              </h3>
+              <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
+                {zoomedCard.set?.name} • #{zoomedCard.number}/{zoomedCard.set?.printedTotal || '?'}
+              </p>
+            </div>
+
+            {/* Quick Info Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Rarity */}
+              {zoomedCard.rarity && (
+                <div className="bg-stone-100 dark:bg-stone-700/50 rounded-lg p-3">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">Rarity</p>
+                  <div className="flex items-center gap-2">
+                    <RarityIcon rarity={getActualRarity(zoomedCard)} size="sm" showLabel={true} />
+                  </div>
+                </div>
+              )}
+
+              {/* HP */}
+              {zoomedCard.hp && (
+                <div className="bg-stone-100 dark:bg-stone-700/50 rounded-lg p-3">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">HP</p>
+                  <p className="font-bold text-red-600 dark:text-red-400">{zoomedCard.hp}</p>
+                </div>
+              )}
+
+              {/* Type */}
+              {zoomedCard.types && zoomedCard.types.length > 0 && (
+                <div className="bg-stone-100 dark:bg-stone-700/50 rounded-lg p-3">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">Type</p>
+                  <p className="font-medium text-stone-800 dark:text-stone-200">{zoomedCard.types.join(', ')}</p>
+                </div>
+              )}
+
+              {/* Artist */}
+              {zoomedCard.artist && (
+                <div className="bg-stone-100 dark:bg-stone-700/50 rounded-lg p-3">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-1">Artist</p>
+                  <p className="font-medium text-stone-800 dark:text-stone-200 text-sm truncate">{zoomedCard.artist}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Price Section */}
+            {zoomedCard.tcgplayer?.prices && Object.keys(zoomedCard.tcgplayer.prices).length > 0 && (
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-4 border border-green-200 dark:border-green-700/50">
+                <p className="text-xs font-semibold text-green-700 dark:text-green-400 mb-2 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                  </svg>
+                  Market Prices
+                </p>
+                <div className="space-y-1">
+                  {Object.entries(zoomedCard.tcgplayer.prices || {})
+                    .filter(([, prices]) => prices && prices.market)
+                    .map(([type, prices]) => (
+                      <div key={type} className="flex justify-between items-center text-sm">
+                        <span className="text-stone-600 dark:text-stone-300 capitalize">
+                          {type.replace(/([A-Z])/g, ' $1').trim()}
+                        </span>
+                        <span className="font-bold text-green-600 dark:text-green-400">
+                          ${prices?.market?.toFixed(2) || '0.00'}
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* View Full Details Button */}
+            <button
+              onClick={() => {
+                setZoomedCard(null);
+                window.location.href = `/cards/${zoomedCard.id}`;
+              }}
+              className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium rounded-xl transition-all duration-150 shadow-lg hover:shadow-xl"
+            >
+              View Full Details
+            </button>
+          </div>
         </div>
       </Modal>
     )}

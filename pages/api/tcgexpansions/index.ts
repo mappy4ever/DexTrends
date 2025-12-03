@@ -3,8 +3,7 @@ import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { createFallbackResponse } from '../../../lib/static-sets-fallback';
 import type { TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
-import type { TCGDexSetBrief } from '../../../types/api/tcgdex';
-import { transformSets, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
+import { transformSetsFromSeries, TCGDexEndpoints, TCGDexSeriesWithSets } from '../../../utils/tcgdex-adapter';
 
 // Lazy import tcgCache to avoid module loading errors
 let tcgCacheModule: typeof import('../../../lib/tcg-cache') | null = null;
@@ -78,18 +77,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // TCGDex API - no API key required, faster responses
-    const apiUrl = TCGDexEndpoints.sets('en');
-    logger.info('Fetching TCG sets from TCGDex', {
-      url: apiUrl,
+    // TCGDex API - fetch all series to get sets WITH series names
+    const seriesUrl = TCGDexEndpoints.series('en');
+    logger.info('Fetching TCG series from TCGDex', {
+      url: seriesUrl,
       page: pageNum,
       pageSize: pageSizeNum
     });
 
-    // TCGDex is fast and free - no API key needed
-    const tcgdexData = await fetchJSON<TCGDexSetBrief[]>(apiUrl, {
+    // First get the list of series
+    const seriesList = await fetchJSON<{ id: string; name: string }[]>(seriesUrl, {
       useCache: true,
-      cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - sets rarely change
+      cacheTime: 24 * 60 * 60 * 1000,
       forceRefresh: shouldForceRefresh,
       timeout: 15000,
       retries: 2,
@@ -97,14 +96,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       throwOnError: false
     });
 
-    // If API failed or timed out, use static fallback immediately
-    if (!tcgdexData || !Array.isArray(tcgdexData)) {
+    // If API failed, use static fallback
+    if (!seriesList || !Array.isArray(seriesList)) {
       logger.info('TCGDex API unavailable, using static fallback', {
         duration: Date.now() - startTime
       });
 
       const fallback = createFallbackResponse(pageNum, pageSizeNum);
-
       res.setHeader('X-Cache-Status', 'static-fallback');
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
       res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
@@ -112,12 +110,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json(fallback);
     }
 
-    // Transform TCGDex sets to existing app format
-    const allSets = transformSets(tcgdexData);
+    // Fetch each series detail in parallel to get sets with series info
+    const seriesDetails = await Promise.all(
+      seriesList.map(async (series) => {
+        try {
+          const serieUrl = `${TCGDexEndpoints.series('en')}/${series.id}`;
+          const detail = await fetchJSON<TCGDexSeriesWithSets>(serieUrl, {
+            useCache: true,
+            cacheTime: 24 * 60 * 60 * 1000,
+            timeout: 10000,
+            throwOnError: false
+          });
+          return detail;
+        } catch {
+          return null;
+        }
+      })
+    );
 
-    // Sort by release date (newest first) - TCGDex may not sort by default
-    // Note: transformSetBrief sets releaseDate to empty, so we sort by id which often correlates with release
-    allSets.sort((a, b) => b.id.localeCompare(a.id));
+    // Filter out nulls and transform
+    const validSeries = seriesDetails.filter((s): s is TCGDexSeriesWithSets => s !== null);
+    const allSets = transformSetsFromSeries(validSeries);
+
+    // Sort by set ID (which correlates with release order for recent sets)
+    // Modern sets: sv10, sv09, sv08 etc - higher = newer
+    allSets.sort((a, b) => {
+      // Try to sort by release date first if available
+      if (a.releaseDate && b.releaseDate) {
+        return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
+      }
+      // Fall back to ID comparison (reverse alphabetical puts newer sets first)
+      return b.id.localeCompare(a.id);
+    });
 
     // Paginate the results (TCGDex returns all sets at once)
     const startIndex = (pageNum - 1) * pageSizeNum;

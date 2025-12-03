@@ -44,8 +44,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    // Transform sets to app format
-    const sets = serieData.sets?.map(transformSetBrief) || [];
+    // Transform sets to app format (include series name and release date)
+    const sets = serieData.sets?.map(set =>
+      transformSetBrief(set, serieData.name, serieData.releaseDate)
+    ) || [];
 
     const responseTime = Date.now() - startTime;
 

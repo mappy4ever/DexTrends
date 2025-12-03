@@ -84,15 +84,22 @@ export function transformCards(tcgdexCards: TCGDexCard[]): TCGCard[] {
 
 /**
  * Transform a TCGDex set brief to CardSet format
+ * @param tcgdexSet - The set data from TCGDex
+ * @param seriesName - Optional series name (from parent series)
+ * @param seriesReleaseDate - Optional release date (from parent series)
  */
-export function transformSetBrief(tcgdexSet: TCGDexSetBrief): CardSet {
+export function transformSetBrief(
+  tcgdexSet: TCGDexSetBrief,
+  seriesName?: string,
+  seriesReleaseDate?: string
+): CardSet {
   return {
     id: tcgdexSet.id,
     name: tcgdexSet.name,
-    series: '', // TCGDex uses separate serie object
+    series: seriesName || '',
     printedTotal: tcgdexSet.cardCount?.official || 0,
     total: tcgdexSet.cardCount?.total || 0,
-    releaseDate: '',
+    releaseDate: seriesReleaseDate || '',
     updatedAt: new Date().toISOString(),
     images: {
       symbol: tcgdexSet.symbol || '',
@@ -123,10 +130,38 @@ export function transformSet(tcgdexSet: TCGDexSet): CardSet {
 }
 
 /**
- * Transform multiple sets
+ * Transform multiple sets (without series info)
  */
 export function transformSets(tcgdexSets: TCGDexSetBrief[]): CardSet[] {
-  return tcgdexSets.map(transformSetBrief);
+  return tcgdexSets.map(set => transformSetBrief(set));
+}
+
+/**
+ * TCGDex Series with sets response type
+ */
+export interface TCGDexSeriesWithSets {
+  id: string;
+  name: string;
+  logo?: string;
+  releaseDate?: string;
+  sets?: TCGDexSetBrief[];
+}
+
+/**
+ * Transform sets from all series responses (provides series name for each set)
+ */
+export function transformSetsFromSeries(seriesArray: TCGDexSeriesWithSets[]): CardSet[] {
+  const allSets: CardSet[] = [];
+
+  for (const series of seriesArray) {
+    if (series.sets && Array.isArray(series.sets)) {
+      for (const set of series.sets) {
+        allSets.push(transformSetBrief(set, series.name, series.releaseDate));
+      }
+    }
+  }
+
+  return allSets;
 }
 
 // ============================================================================
