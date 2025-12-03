@@ -4,7 +4,7 @@ import logger from '../../../utils/logger';
 import { createFallbackResponse } from '../../../lib/static-sets-fallback';
 import type { TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
 import type { TCGDexSetBrief } from '../../../types/api/tcgdex';
-import { transformSetBrief, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
+import { transformSetBrief, transformSetsFromSeries, TCGDexEndpoints, type TCGDexSeriesWithSets } from '../../../utils/tcgdex-adapter';
 
 // Lazy import tcgCache to avoid module loading errors
 let tcgCacheModule: typeof import('../../../lib/tcg-cache') | null = null;
@@ -34,10 +34,10 @@ const ALLOWED_ORIGINS = [
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
 
-  // Parse query params with defaults - allow up to 200 sets per page
-  const { page = '1', pageSize = '100', forceRefresh = 'false' } = req.query;
+  // Parse query params with defaults - allow up to 300 sets per page (TCGDex has ~200)
+  const { page = '1', pageSize = '300', forceRefresh = 'false' } = req.query;
   const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1;
-  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 100, 200);
+  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 300, 300);
   const shouldForceRefresh = (Array.isArray(forceRefresh) ? forceRefresh[0] : forceRefresh) === 'true';
 
   // Set CORS headers with origin whitelist (security: prevent cross-origin abuse)
@@ -78,27 +78,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // TCGDex API - fetch sets directly (faster, more reliable)
-    const setsUrl = TCGDexEndpoints.sets('en');
-    logger.info('Fetching TCG sets from TCGDex', {
-      url: setsUrl,
+    // TCGDex API - fetch all series in parallel to get complete set data
+    // This gives us series names and release dates for proper sorting
+    const seriesListUrl = TCGDexEndpoints.series('en');
+    logger.info('Fetching TCG series list from TCGDex', {
+      url: seriesListUrl,
       page: pageNum,
       pageSize: pageSizeNum
     });
 
-    // Fetch all sets in one call
-    const tcgdexSets = await fetchJSON<TCGDexSetBrief[]>(setsUrl, {
+    // First get the list of all series
+    const seriesList = await fetchJSON<{ id: string; name: string }[]>(seriesListUrl, {
       useCache: true,
       cacheTime: 24 * 60 * 60 * 1000,
       forceRefresh: shouldForceRefresh,
-      timeout: 15000,
+      timeout: 10000,
       retries: 2,
-      retryDelay: 1000,
       throwOnError: false
     });
 
     // If API failed, use static fallback
-    if (!tcgdexSets || !Array.isArray(tcgdexSets)) {
+    if (!seriesList || !Array.isArray(seriesList)) {
       logger.info('TCGDex API unavailable, using static fallback', {
         duration: Date.now() - startTime
       });
@@ -111,8 +111,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json(fallback);
     }
 
-    // Transform sets to app format
-    const allSets = tcgdexSets.map(set => transformSetBrief(set));
+    // Fetch all series details in parallel (21 series = 21 calls, but parallel)
+    const seriesPromises = seriesList.map(async (series) => {
+      try {
+        const seriesDetail = await fetchJSON<TCGDexSeriesWithSets>(
+          TCGDexEndpoints.serie(series.id, 'en'),
+          {
+            useCache: true,
+            cacheTime: 24 * 60 * 60 * 1000,
+            timeout: 10000,
+            throwOnError: false
+          }
+        );
+        return seriesDetail;
+      } catch (err) {
+        logger.warn(`Failed to fetch series ${series.id}`, { error: err });
+        return null;
+      }
+    });
+
+    const seriesDetails = await Promise.all(seriesPromises);
+    const validSeries = seriesDetails.filter((s): s is TCGDexSeriesWithSets => s !== null);
+
+    logger.debug('Fetched series details', {
+      requested: seriesList.length,
+      received: validSeries.length
+    });
+
+    // Transform all sets from series (includes series name and release date)
+    const allSets = transformSetsFromSeries(validSeries);
 
     // Sort by set ID (which correlates with release order for recent sets)
     // Modern sets: sv10, sv09, sv08 etc - higher = newer

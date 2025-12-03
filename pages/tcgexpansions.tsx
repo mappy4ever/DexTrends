@@ -54,24 +54,25 @@ const TcgSetsContent: React.FC = () => {
 
   const fetchSets = async (page = 1, append = false) => {
       logger.debug(`Fetching TCG sets page ${page}...`);
-      
+
       if (!append) {
         setLoading(true);
         setLoadingMessage("Loading TCG sets...");
       } else {
         setLoadingMore(true);
       }
-      
+
       setError(null);
-      
+
       try {
-        // Request 150 sets per page to load most sets in one request
+        // Request 300 sets to get ALL sets in one request (TCGDex has ~200 sets)
+        // The API fetches from series endpoint which includes release dates
         const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
-          `/api/tcgexpansions?page=${page}&pageSize=150`,
+          `/api/tcgexpansions?page=${page}&pageSize=300`,
           {
-            useCache: false, // Disable cache to ensure fresh data on initial load
-            cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
-            timeout: 30000, // 30 second timeout
+            useCache: true, // Enable cache - sets don't change often
+            cacheTime: 10 * 60 * 1000, // Cache for 10 minutes
+            timeout: 45000, // 45 second timeout (fetching 21 series in parallel)
             retries: 2,
             retryDelay: 1000
           }
@@ -117,9 +118,9 @@ const TcgSetsContent: React.FC = () => {
           
           setTotalSetsCount(res.pagination?.totalCount || res.data.length);
           setCurrentPage(page);
-          
-          // Check if there are more pages (using 50 as page size now)
-          const hasMore = res.pagination?.hasMore || (res.data.length === 50);
+
+          // Check if there are more pages
+          const hasMore = res.pagination?.hasMore || false;
           setHasMorePages(hasMore);
           
           logger.debug(`✓ Successfully fetched ${res.data.length} sets from page ${page}`);
