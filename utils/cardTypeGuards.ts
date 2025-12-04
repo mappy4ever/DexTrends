@@ -1,9 +1,15 @@
 /**
- * Card type guards and converters to ensure type safety between internal and SDK card types
+ * Card type guards and converters to ensure type safety between internal card types
+ * Note: No longer depends on pokemontcgsdk - uses internal types only
  */
 
-import type { Card, TCGPlayerPricing, PriceRange } from "pokemontcgsdk";
-import type { TCGCard, TCGPlayer, PriceData } from "../types/api/cards";
+import type { TCGCard, TCGPlayer, PriceData, PriceData as PriceRange } from "../types/api/cards";
+
+// Re-export Card type alias for backwards compatibility
+export type Card = TCGCard;
+
+// TCGPlayerPricing type for SDK compatibility (matches TCGPlayer interface)
+export type TCGPlayerPricing = TCGPlayer;
 
 /**
  * Valid supertype values according to pokemontcgsdk

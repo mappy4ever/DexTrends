@@ -16,21 +16,26 @@ const nextConfig = {
   // Headers for PWA, mobile optimization, and security
   async headers() {
     return [
-      // CORS headers for external API calls
+      // CORS headers for API calls - restricted to configured origins in production
       {
         source: '/api/:path*',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: '*'
+            // Use CORS_ORIGIN env var in production, fallback to localhost for dev
+            value: process.env.CORS_ORIGIN || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001')
           },
           {
             key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS'
+            value: 'GET, POST, OPTIONS'
           },
           {
             key: 'Access-Control-Allow-Headers',
-            value: 'X-Requested-With, Content-Type, Authorization'
+            value: 'Content-Type, Authorization'
+          },
+          {
+            key: 'Access-Control-Allow-Credentials',
+            value: 'true'
           }
         ]
       },

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
 import { ErrorResponse } from '@/types/api/api-responses';
+import { withRateLimit, RateLimitPresets } from '../../lib/api-middleware';
 
 interface PocketCard {
   id?: string;
@@ -42,7 +43,7 @@ interface PocketCard {
 }
 
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<PocketCard[] | ErrorResponse>
 ) {
@@ -133,9 +134,12 @@ export default async function handler(
       pokemonName: nameStr, 
       error: errorMessage 
     });
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to fetch pocket cards',
-      message: errorMessage 
+      message: errorMessage
     });
   }
 }
+
+// Export with rate limiting: 60 requests/minute (search endpoint)
+export default withRateLimit(handler, { ...RateLimitPresets.search, keyPrefix: 'pocket-cards' });

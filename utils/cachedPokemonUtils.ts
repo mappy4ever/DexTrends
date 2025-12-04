@@ -1,6 +1,7 @@
 // Cached Pokemon utilities with Supabase integration
 import { SupabaseCache } from '../lib/supabase';
 import { fetchJSON } from './unifiedFetch';
+import { TCGDexEndpoints } from './tcgdex-adapter';
 import type { Pokemon, PokemonSpecies, PokemonListResponse } from "../types/pokemon";
 import type { TCGCard } from '../types/api/cards';
 
@@ -103,14 +104,42 @@ export async function fetchPokemonCardWithCache(cardId: string): Promise<TCGCard
       return cachedData as unknown as TCGCard;
     }
 
-    // If not in cache, fetch from Pokemon TCG API
-    const pokemon = await import('pokemontcgsdk');
-    const cardData = await pokemon.card.find(cardId);
-    
+    // If not in cache, fetch from TCGDex API
+    const url = `${TCGDexEndpoints.card('en', cardId)}`;
+    const cardData = await fetchJSON<any>(url);
+
+    if (!cardData) {
+      throw new Error(`Card with ID ${cardId} not found`);
+    }
+
+    // Transform to TCGCard format
+    const transformedCard: TCGCard = {
+      id: cardData.id,
+      name: cardData.name,
+      supertype: 'Pokémon',
+      rarity: cardData.rarity,
+      images: {
+        small: cardData.image ? `${cardData.image}/low.png` : '/back-card.png',
+        large: cardData.image ? `${cardData.image}/high.png` : '/back-card.png'
+      },
+      set: {
+        id: cardData.id?.split('-')[0] || '',
+        name: cardData.set?.name || '',
+        series: '',
+        printedTotal: 0,
+        total: 0,
+        releaseDate: '',
+        updatedAt: '',
+        images: { symbol: '', logo: '' }
+      },
+      number: cardData.localId || '',
+      artist: cardData.illustrator
+    };
+
     // Cache the result for 24 hours
-    await SupabaseCache.setCachedCard(cardId, cardData as unknown as Record<string, unknown>, `card_${cardId}`);
-    
-    return cardData as TCGCard;
+    await SupabaseCache.setCachedCard(cardId, transformedCard as unknown as Record<string, unknown>, `card_${cardId}`);
+
+    return transformedCard;
   } catch (error) {
     throw error;
   }
@@ -127,7 +156,7 @@ export async function searchPokemonCardsWithCache(query: string, filters: Search
   const filterString = JSON.stringify(filters);
   const cacheKey = `search_${query}_${Buffer.from(filterString).toString('base64')}`;
   const searchId = `search_${cacheKey}`;
-  
+
   try {
     // Try to get from cache first (shorter cache time for searches)
     const cachedData = await SupabaseCache.getCachedCard(searchId);
@@ -135,20 +164,38 @@ export async function searchPokemonCardsWithCache(query: string, filters: Search
       return cachedData as unknown as TCGCard[];
     }
 
-    // If not in cache, fetch from Pokemon TCG API
-    const pokemon = await import('pokemontcgsdk');
-    
-    const searchQuery = {
-      q: query,
-      ...filters
-    };
-    
-    const searchData = await pokemon.card.where(searchQuery);
-    
+    // If not in cache, fetch from TCGDex API
+    const searchUrl = `${TCGDexEndpoints.cards('en')}?name=like:${encodeURIComponent(query)}&pagination:itemsPerPage=50`;
+    const searchData = await fetchJSON<any[]>(searchUrl);
+
+    // Transform to TCGCard format
+    const transformedCards: TCGCard[] = (searchData || []).map((card: any) => ({
+      id: card.id,
+      name: card.name,
+      supertype: 'Pokémon',
+      rarity: card.rarity,
+      images: {
+        small: card.image ? `${card.image}/low.png` : '/back-card.png',
+        large: card.image ? `${card.image}/high.png` : '/back-card.png'
+      },
+      set: {
+        id: card.id?.split('-')[0] || '',
+        name: '',
+        series: '',
+        printedTotal: 0,
+        total: 0,
+        releaseDate: '',
+        updatedAt: '',
+        images: { symbol: '', logo: '' }
+      },
+      number: card.localId || '',
+      artist: card.illustrator
+    }));
+
     // Cache search results for 1 hour (searches change more frequently)
-    await SupabaseCache.setCachedCard(searchId, searchData as unknown as Record<string, unknown>, searchId);
-    
-    return searchData.data as unknown as TCGCard[];
+    await SupabaseCache.setCachedCard(searchId, transformedCards as unknown as Record<string, unknown>, searchId);
+
+    return transformedCards;
   } catch (error) {
     throw error;
   }

@@ -4,7 +4,8 @@ import Head from 'next/head';
 import { useTheme } from '../context/UnifiedAppContext';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import logger from '../utils/logger';
-import { getPokemonSDK } from '../utils/pokemonSDK';
+import { fetchJSON } from '../utils/unifiedFetch';
+import { TCGDexEndpoints } from '../utils/tcgdex-adapter';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { Container } from '../components/ui/Container';
 import { PageHeader } from '../components/ui/BreadcrumbNavigation';
@@ -23,8 +24,6 @@ interface TrendingData {
   rising: TrendingCard[];
   falling: TrendingCard[];
 }
-
-const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 
 const TrendingPage: NextPage = () => {
   const { theme } = useTheme();
@@ -75,67 +74,77 @@ const TrendingPage: NextPage = () => {
     return rarityOrder[card.rarity || ''] || 0;
   }
   
-  // Fetch cards to analyze trends - moved outside useEffect for retry logic
+  // Fetch cards to analyze trends using TCGDex API
   const fetchTrendingCards = useCallback(async () => {
       try {
         setLoading(true);
         setError(null);
         setIsRetrying(false);
-        
-        // Check if API key is available
-        if (!pokemonKey) {
-          const errorMessage = "Pokemon TCG API key is not configured. Please check your environment variables.";
-          logger.error("Missing API key", { service: "Pokemon TCG API" });
-          setError(errorMessage);
-          setLoading(false);
-          return;
-        }
-        
-        // Get configured Pokemon SDK
-        const pokemon = getPokemonSDK();
-        
-        // In a real app, we would fetch cards with price history
-        // Here we'll fetch a mix of popular cards and simulate trends
+
+        // Popular Pokemon to fetch for trending display
         const popularPokemon = [
           'charizard', 'pikachu', 'mew', 'mewtwo', 'lugia',
           'rayquaza', 'blastoise', 'venusaur', 'eevee', 'gengar',
           'gyarados', 'dragonite', 'alakazam', 'snorlax', 'jigglypuff'
         ];
-        
+
         // Choose some random popular Pokémon using Fisher-Yates shuffle
-        // Fix DELTA-001: Math.random() sort comparator is biased - use proper shuffle
         const shuffled = [...popularPokemon];
         for (let i = shuffled.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
         const selectedPokemon = shuffled.slice(0, 5);
-        
-        // Fetch cards for these Pokémon
+
+        // Fetch cards for these Pokémon using TCGDex
         const promises = selectedPokemon.map(async (name) => {
           try {
-            return await pokemon.card.where({ q: `name:${name}*` });
+            const url = `${TCGDexEndpoints.cards('en')}?name=like:${name}&pagination:itemsPerPage=20`;
+            const cards = await fetchJSON<any[]>(url, {
+              useCache: true,
+              cacheTime: 30 * 60 * 1000, // 30 minute cache
+              timeout: 10000,
+              retries: 2
+            });
+            return cards || [];
           } catch (error) {
             logger.error('Failed to fetch cards for Pokemon', { name, error });
-            return { data: [] };
+            return [];
           }
         });
-        
+
         const results = await Promise.all(promises);
         let allCards: TCGCard[] = [];
-        
-        results.forEach(result => {
-          const cards = Array.isArray(result) ? result : result?.data || [];
+
+        results.forEach(cards => {
           if (cards && cards.length > 0) {
-            // Only include cards with price data
-            const cardsWithPrices = cards.filter((card: { tcgplayer?: { prices?: { holofoil?: { market?: number }, normal?: { market?: number }, reverseHolofoil?: { market?: number }, '1stEditionHolofoil'?: { market?: number }, [key: string]: unknown } } }) => 
-              card.tcgplayer?.prices?.holofoil?.market || 
-              card.tcgplayer?.prices?.normal?.market ||
-              card.tcgplayer?.prices?.reverseHolofoil?.market ||
-              card.tcgplayer?.prices?.['1stEditionHolofoil']?.market
-            );
-            
-            allCards = [...allCards, ...(cardsWithPrices as TCGCard[])];
+            // Transform TCGDex cards to our format with simulated prices
+            const transformedCards = cards.map((card: any) => {
+              const imageBase = card.image || `https://assets.tcgdex.net/en/${card.id.split('-')[0]}/${card.id}`;
+              return {
+                id: card.id,
+                name: card.name,
+                supertype: 'Pokémon',
+                rarity: card.rarity || 'Unknown',
+                images: {
+                  small: `${imageBase}/low.png`,
+                  large: `${imageBase}/high.png`
+                },
+                set: {
+                  id: card.id.split('-')[0] || '',
+                  name: '',
+                  series: ''
+                },
+                // Simulate price data for trending display
+                // In production, would integrate with real pricing API
+                tcgplayer: {
+                  prices: {
+                    holofoil: { market: Math.random() * 50 + 5 }
+                  }
+                }
+              } as TCGCard;
+            });
+            allCards = [...allCards, ...transformedCards];
           }
         });
         
@@ -220,7 +229,7 @@ const TrendingPage: NextPage = () => {
         setRetryCount(0);
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pokemonKey, retryCount]);
+  }, [retryCount]);
 
   // Retry logic helper
   const retryFetch = async (retries = 3, delay = 1000) => {

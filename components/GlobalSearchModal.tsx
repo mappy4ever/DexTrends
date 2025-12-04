@@ -1,11 +1,12 @@
 import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import pokemon from "pokemontcgsdk";
 import { fetchJSON } from "../utils/unifiedFetch";
+import { TCGDexEndpoints } from "../utils/tcgdex-adapter";
 import { useDebounce } from "../hooks/useDebounce";
 import type { TCGCard, CardSet } from "../types/api/cards";
 import { Container } from "./ui/Container";
+import logger from "../utils/logger";
 
 const POKE_API = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
 
@@ -130,22 +131,49 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
       return;
     }
     setLoading(true);
-      
-      // Card search
+
+      // Card search using TCGDex
       let cards: TCGCard[] = [];
       try {
-        const res = await pokemon.card.where({ q: `name:${q}*` });
-        cards = (res?.data?.slice(0, 5) || []) as TCGCard[];
-      } catch {}
-      
-      // Set search
+        const url = `${TCGDexEndpoints.cards('en')}?name=like:${encodeURIComponent(q)}&pagination:itemsPerPage=5`;
+        const res = await fetchJSON<any[]>(url, {
+          useCache: true,
+          cacheTime: 5 * 60 * 1000,
+          timeout: 5000
+        });
+        cards = (res || []).map((card: any) => ({
+          id: card.id,
+          name: card.name,
+          images: {
+            small: card.image ? `${card.image}/low.png` : undefined,
+            large: card.image ? `${card.image}/high.png` : undefined
+          },
+          set: { id: card.id?.split('-')[0] || '', name: '', series: '' }
+        } as TCGCard));
+      } catch (err) {
+        logger.debug('Card search failed', { error: err });
+      }
+
+      // Set search using TCGDex
       let sets: CardSet[] = [];
       try {
-        const allSets = await pokemon.set.all();
-        sets = (allSets.data as CardSet[])
-          .filter((s: CardSet) => s.name.toLowerCase().includes(q.toLowerCase()))
-          .slice(0, 5);
-      } catch {}
+        const setsUrl = TCGDexEndpoints.sets('en');
+        const allSets = await fetchJSON<any[]>(setsUrl, {
+          useCache: true,
+          cacheTime: 60 * 60 * 1000 // 1 hour cache
+        });
+        sets = (allSets || [])
+          .filter((s: any) => s.name?.toLowerCase().includes(q.toLowerCase()))
+          .slice(0, 5)
+          .map((s: any) => ({
+            id: s.id,
+            name: s.name,
+            series: s.serie?.name || '',
+            images: { logo: s.logo, symbol: s.symbol }
+          } as CardSet));
+      } catch (err) {
+        logger.debug('Set search failed', { error: err });
+      }
       
       // Pokémon search
       let pokemonResults: PokemonResult[] = [];

@@ -38,10 +38,11 @@ export function validateAdminAuth(
   const authHeader = req.headers.authorization;
   const expectedToken = process.env.CACHE_WARM_TOKEN;
 
-  // If no token is configured, allow access (development mode)
+  // SECURITY: Token is mandatory - reject if not configured
   if (!expectedToken) {
-    logger.warn(`[${endpointName}] No CACHE_WARM_TOKEN configured - endpoint accessible without auth`);
-    return true;
+    logger.error(`[${endpointName}] CACHE_WARM_TOKEN not configured - blocking request for security`);
+    res.status(503).json({ error: 'Service unavailable - admin authentication not configured' });
+    return false;
   }
 
   // Only accept Bearer tokens from Authorization header

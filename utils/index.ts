@@ -16,7 +16,7 @@ export {
 } from './apiutils';
 export * from './unifiedFetch';
 export * from './UnifiedCacheManager';
-export * from './pokemonSDK';
+// pokemonSDK removed - migrated to TCGDex (see utils/tcgdex-adapter.ts)
 export * from './pocketData';
 
 // === Pokemon-specific utilities ===

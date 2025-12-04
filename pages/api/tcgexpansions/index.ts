@@ -5,6 +5,7 @@ import { createFallbackResponse } from '../../../lib/static-sets-fallback';
 import type { TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
 import type { TCGDexSetBrief } from '../../../types/api/tcgdex';
 import { transformSetBrief, transformSetsFromSeries, TCGDexEndpoints, type TCGDexSeriesWithSets } from '../../../utils/tcgdex-adapter';
+import { withRateLimit, RateLimitPresets } from '../../../lib/api-middleware';
 
 // Lazy import tcgCache to avoid module loading errors
 let tcgCacheModule: typeof import('../../../lib/tcg-cache') | null = null;
@@ -31,7 +32,7 @@ const ALLOWED_ORIGINS = [
 ].filter(Boolean) as string[];
 
 // TCG Sets list endpoint - /api/tcgexpansions
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
 
   // Parse query params with defaults - allow up to 300 sets per page (TCGDex has ~200)
@@ -229,3 +230,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json(fallback);
   }
 }
+
+// Export with rate limiting: 30 requests/minute (heavy endpoint - makes 21 parallel API calls)
+export default withRateLimit(handler, { ...RateLimitPresets.heavy, keyPrefix: 'tcgexpansions' });

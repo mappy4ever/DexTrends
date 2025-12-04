@@ -3,6 +3,7 @@ import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
 import type { TCGDexCardBrief } from '../../types/api/tcgdex';
 import { TCGDexEndpoints } from '../../utils/tcgdex-adapter';
+import { withRateLimit, RateLimitPresets } from '../../lib/api-middleware';
 
 /**
  * Enhanced TCG Card Search API
@@ -22,7 +23,7 @@ import { TCGDexEndpoints } from '../../utils/tcgdex-adapter';
  * - page: Page number (default 1)
  * - pageSize: Items per page (default 50, max 100)
  */
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
 
   // Extract all query params
@@ -269,9 +270,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined 
     });
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to fetch TCG cards',
-      message: error instanceof Error ? error.message : String(error) 
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }
+
+// Export with rate limiting: 60 requests/minute (search endpoint)
+export default withRateLimit(handler, { ...RateLimitPresets.search, keyPrefix: 'tcg-cards' });

@@ -10,7 +10,7 @@ import Link from 'next/link';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { getPokemonSDK } from '../../utils/pokemonSDK';
+import { fetchJSON } from '../../utils/unifiedFetch';
 import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
 import logger from '../../utils/logger';
 import { TypeBadge } from '../../components/ui/TypeBadge';
@@ -64,7 +64,7 @@ const AdvancedTeamBuilder: NextPage = () => {
   const [activeTab, setActiveTab] = useState<'builder' | 'analysis' | 'export'>('builder');
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
-  // Search for Pokemon
+  // Search for Pokemon using PokeAPI
   const searchPokemon = useCallback(async (query: string) => {
     if (query.length < 2) {
       setSearchResults([]);
@@ -73,22 +73,29 @@ const AdvancedTeamBuilder: NextPage = () => {
 
     setLoading(true);
     try {
-      const sdk = getPokemonSDK();
-      // @ts-ignore - Pokemon SDK types issue
-      const results = await sdk.pokemon.list({ limit: 20 });
-      
+      // Use PokeAPI to get Pokemon list
+      const listData = await fetchJSON<{ results: { name: string; url: string }[] }>(
+        'https://pokeapi.co/api/v2/pokemon?limit=1000',
+        { useCache: true, cacheTime: 60 * 60 * 1000 } // 1 hour cache
+      );
+
       // Filter by name
-      const filtered = results.results.filter((p: { name: string }) => 
+      const filtered = (listData?.results || []).filter((p: { name: string }) =>
         p.name.toLowerCase().includes(query.toLowerCase())
       );
-      
-      // Fetch details for filtered results
+
+      // Fetch details for filtered results (max 6)
       const detailedResults = await Promise.all(
-        // @ts-ignore - Pokemon SDK types issue
-        filtered.slice(0, 6).map(p => sdk.pokemon.get(p.name))
+        filtered.slice(0, 6).map(async (p) => {
+          const pokemon = await fetchJSON<Pokemon>(
+            `https://pokeapi.co/api/v2/pokemon/${p.name}`,
+            { useCache: true, cacheTime: 60 * 60 * 1000 }
+          );
+          return pokemon;
+        })
       );
-      
-      setSearchResults(detailedResults as Pokemon[]);
+
+      setSearchResults(detailedResults.filter(Boolean) as Pokemon[]);
     } catch (error) {
       logger.error('Error searching Pokemon:', { error });
       setSearchResults([]);

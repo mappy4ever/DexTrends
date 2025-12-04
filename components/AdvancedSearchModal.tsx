@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Modal from './ui/Modal';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
-import { getPokemonSDK } from '../utils/pokemonSDK';
+import { fetchJSON } from '../utils/unifiedFetch';
+import { TCGDexEndpoints } from '../utils/tcgdex-adapter';
 import type { TCGCard, CardSet } from '../types/api/cards';
-import type { CardSet as SdkCardSet } from 'pokemontcgsdk';
+import logger from '../utils/logger';
 
 interface SearchParams {
   name: string;
@@ -48,15 +49,23 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<TCGCard[]>([]);
 
-  // Load sets for dropdown
+  // Load sets for dropdown using TCGDex
   useEffect(() => {
     const loadSets = async () => {
       try {
-        const pokemon = getPokemonSDK();
-        const setsData = await pokemon.set.all();
-        setSets(setsData.data.sort((a: SdkCardSet, b: SdkCardSet) => a.name.localeCompare(b.name)) as CardSet[]);
+        const setsData = await fetchJSON<any[]>(TCGDexEndpoints.sets('en'), {
+          useCache: true,
+          cacheTime: 60 * 60 * 1000 // 1 hour cache
+        });
+        const transformedSets = (setsData || []).map((s: any) => ({
+          id: s.id,
+          name: s.name,
+          series: s.serie?.name || '',
+          images: { logo: s.logo, symbol: s.symbol }
+        })).sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        setSets(transformedSets as CardSet[]);
       } catch (error) {
-        // Error loading sets
+        logger.error('Error loading sets', { error });
       }
     };
     loadSets();
@@ -90,21 +99,43 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
   const handleSearch = async () => {
     setIsLoading(true);
     try {
-      const pokemon = getPokemonSDK();
-      const query = buildSearchQuery();
-      let searchResults: TCGCard[] = [];
+      // Build TCGDex query parameters
+      const queryParams: string[] = [];
+      if (searchParams.name) queryParams.push(`name=like:${encodeURIComponent(searchParams.name)}`);
+      if (searchParams.set) queryParams.push(`set=${searchParams.set}`);
+      if (searchParams.type) queryParams.push(`types=${searchParams.type}`);
+      if (searchParams.rarity) queryParams.push(`rarity=eq:${encodeURIComponent(searchParams.rarity)}`);
+      if (searchParams.hp) queryParams.push(`hp=gte:${searchParams.hp}`);
+      if (searchParams.artist) queryParams.push(`illustrator=${encodeURIComponent(searchParams.artist)}`);
+      queryParams.push('pagination:itemsPerPage=100');
 
-      if (query) {
-        const response = await pokemon.card.where({
-          q: query,
-          pageSize: 100
-        });
-        searchResults = (response as any) || [];
-      } else {
-        // If no specific query, get recent cards
-        const response = await pokemon.card.all();
-        searchResults = ((response as any) || []).slice(0, 50);
-      }
+      const url = `${TCGDexEndpoints.cards('en')}${queryParams.length > 0 ? '?' + queryParams.join('&') : ''}`;
+
+      const response = await fetchJSON<any[]>(url, {
+        useCache: true,
+        cacheTime: 5 * 60 * 1000,
+        timeout: 15000
+      });
+
+      // Transform TCGDex response to our format
+      let searchResults: TCGCard[] = (response || []).map((card: any) => ({
+        id: card.id,
+        name: card.name,
+        rarity: card.rarity,
+        supertype: 'Pokémon',
+        images: {
+          small: card.image ? `${card.image}/low.png` : undefined,
+          large: card.image ? `${card.image}/high.png` : undefined
+        },
+        set: {
+          id: card.id?.split('-')[0] || '',
+          name: '',
+          series: '',
+          releaseDate: ''
+        },
+        artist: card.illustrator,
+        hp: card.hp?.toString()
+      } as TCGCard));
 
       // Apply price filtering
       if (searchParams.priceMin || searchParams.priceMax || searchParams.hasPrice) {

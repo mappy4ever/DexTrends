@@ -33,8 +33,8 @@ const simpleFetch = async (url: string, options?: RequestInit) => {
 // Cache configuration
 export const CONFIG = {
   // Memory cache settings
-  MEMORY_MAX_SIZE: 150, // Increased for better performance
-  MEMORY_TTL: 15 * 60 * 1000, // 15 minutes (increased)
+  MEMORY_MAX_SIZE: 500, // Increased for production scale (was 150)
+  MEMORY_TTL: 15 * 60 * 1000, // 15 minutes
   
   // Local storage settings
   LOCAL_TTL: 6 * 60 * 60 * 1000, // 6 hours (increased)
@@ -734,28 +734,22 @@ export const tcgCache = {
     return cacheManager.cachedFetch(
       `cards-${pokemonName}`,
       async () => {
-        // Use dynamic import to ensure proper loading
-        const pokemonModule = await import('pokemontcgsdk');
-        const pokemon = pokemonModule.default || pokemonModule;
-        
-        // Configure the SDK with API key if available
-        const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-        if (apiKey) {
-          try {
-            pokemon.configure({ apiKey });
-          } catch (e) {
-            logger.warn('[TCG Cache] Failed to configure SDK:', e);
-          }
-        }
-        
-        logger.debug('[TCG Cache] Querying Pokemon TCG API for', { pokemonName });
+        // Use TCGDex API instead of pokemontcgsdk
+        const url = `https://api.tcgdex.net/v2/en/cards?name=like:${encodeURIComponent(pokemonName)}&pagination:itemsPerPage=50`;
+        logger.debug('[TCG Cache] Querying TCGDex API for', { pokemonName, url });
         try {
-          const result = await pokemon.card.where({ q: `name:${pokemonName}` });
-          logger.debug('[TCG Cache] API Response:', result);
-          // The SDK returns an object with data property containing the cards array
-          const cards = result.data || [];
-          logger.debug('[TCG Cache] Extracted cards:', { count: cards.length });
-          return cards;
+          const response = await simpleFetch(url, {
+            signal: AbortSignal.timeout(15000),
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (!response.ok) {
+            throw new Error(`TCGDex API error: ${response.status}`);
+          }
+
+          const cards = await response.json();
+          logger.debug('[TCG Cache] API Response:', { count: Array.isArray(cards) ? cards.length : 0 });
+          return Array.isArray(cards) ? cards : [];
         } catch (error) {
           logger.error('[TCG Cache] API Error:', error);
           return [];

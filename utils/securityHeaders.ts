@@ -77,26 +77,43 @@ export const withSecurity = (
 
 /**
  * Default security headers for production use
+ *
+ * CSP Notes:
+ * - 'unsafe-inline' for styles is needed for styled-jsx and Tailwind
+ * - 'unsafe-eval' REMOVED for security (was XSS risk)
+ * - Next.js uses inline scripts, so we use 'unsafe-inline' for scripts
+ *   In future, consider nonce-based CSP for better security
  */
 export const productionSecurityHeaders: SecurityOptions = {
   enableCSP: true,
   cspDirectives: [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",
+    // Script sources - removed unsafe-eval for security
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+    // Style sources - unsafe-inline needed for styled-jsx/Tailwind
     "style-src 'self' 'unsafe-inline'",
+    // Image sources - allow all HTTPS for card images
     "img-src 'self' data: https: blob:",
+    // Font sources
     "font-src 'self' data:",
-    "connect-src 'self' https://raw.githubusercontent.com https://api.tcgdex.net https://assets.tcgdex.net",
+    // API connections - all external APIs used
+    "connect-src 'self' https://raw.githubusercontent.com https://api.tcgdex.net https://assets.tcgdex.net https://pokeapi.co https://api.pokemontcg.io https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com wss://*.supabase.co https://*.supabase.co",
+    // Worker sources for service workers
+    "worker-src 'self' blob:",
+    // Frame ancestors - prevent clickjacking
     "frame-ancestors 'none'",
+    // Base URI restriction
     "base-uri 'self'",
+    // Form submission restriction
     "form-action 'self'",
+    // Upgrade HTTP to HTTPS
     "upgrade-insecure-requests"
   ].join('; '),
   enableHSTS: true,
   hstsMaxAge: 31536000,
   hstsIncludeSubDomains: true,
-  hstsPreload: false,
-  permissionsPolicy: 'camera=(), microphone=(), geolocation=()'
+  hstsPreload: true, // Enable preload for HSTS
+  permissionsPolicy: 'camera=(), microphone=(), geolocation=(), payment=()'
 };
 
 /**

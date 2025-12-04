@@ -4,10 +4,11 @@ import fs from 'fs';
 import path from 'path';
 
 // ============================================
-// REDIS TOGGLE - Set to false to disable Redis
-// Set back to true when you re-enable Redis
+// REDIS TOGGLE - Controlled via environment variable
+// Set REDIS_ENABLED=true in production environment
+// Defaults to false in development unless explicitly set
 // ============================================
-export const REDIS_ENABLED = false;
+export const REDIS_ENABLED = process.env.REDIS_ENABLED === 'true';
 // ============================================
 
 // Redis connection configuration

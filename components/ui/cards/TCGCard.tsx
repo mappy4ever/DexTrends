@@ -13,7 +13,7 @@ import { getPrice } from "../../../utils/pokemonutils";
 import OptimizedImage from "../OptimizedImage";
 import { useFavorites } from "../../../context/UnifiedAppContext";
 import { useToast } from "../../providers/ToastProvider";
-import type { Card as SdkCard } from "pokemontcgsdk";
+import type { Card as SdkCard } from "../../../utils/cardTypeGuards";
 import { ensureSdkCompatibleCard } from "../../../utils/cardTypeGuards";
 import type { FavoriteCard } from "../../../context/modules/types";
 
