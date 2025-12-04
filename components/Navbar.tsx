@@ -67,11 +67,10 @@ export default function Navbar() {
       dropdownItems: [
         { href: "/tcgexpansions", label: "Sets", icon: <BsCardList size={18} />, description: "Browse all TCG sets" },
         { href: "/cards", label: "Cards", icon: <BsCardList size={18} />, description: "Browse and search Pokemon cards" },
+        { href: "/collection", label: "Collection Tracker", icon: <BsHeart size={18} />, description: "Track your card collection" },
+        { href: "/deck-sharing", label: "Deck Sharing", icon: <GiCardPickup size={18} />, description: "Build and share deck lists" },
+        { href: "/price-alerts", label: "Price Alerts", icon: <FiTrendingUp size={18} />, description: "Get notified on price changes" },
         { href: "/market", label: "Market Analytics", icon: <FiTrendingUp size={18} />, description: "Market trends and insights" },
-        { href: "/analytics", label: "Site Analytics", icon: <FiBarChart2 size={18} />, description: "DexTrends usage analytics" },
-        { href: "/trending", label: "Price Tracker", icon: <FiTrendingUp size={18} />, description: "Track card prices" },
-        { href: "/collections", label: "Collections", icon: <BsHeart size={18} />, description: "Manage your collection" },
-        { href: "/trending", label: "Leaderboard", icon: <RiGovernmentFill size={18} />, description: "Top collectors and rankings" },
       ]
     },
     { href: "/pokedex", label: "Pokédex", icon: <PokeballSVG size={18} />, color: "text-poke-fairy" },
@@ -98,9 +97,8 @@ export default function Navbar() {
       hasDropdown: true,
       dropdownItems: [
         { href: "/battle-simulator", label: "Battle Simulator", icon: <GiCrossedSwords size={18} />, description: "Simulate Pokemon battles" },
+        { href: "/team-builder", label: "Team Builder", icon: <GiPokerHand size={18} />, description: "Build balanced teams" },
         { href: "/type-effectiveness", label: "Type Effectiveness", icon: <BsBook size={18} />, description: "Interactive type chart" },
-        { href: "/team-builder/advanced", label: "Team Builder", icon: <GiPokerHand size={18} />, description: "Build competitive teams" },
-        { href: "/team-builder/ev-optimizer", label: "EV Optimizer", icon: <AiOutlineBulb size={18} />, description: "Optimize EVs and stats" },
       ]
     },
     {

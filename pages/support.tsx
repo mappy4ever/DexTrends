@@ -115,7 +115,7 @@ const featureIdeas: FeatureIdea[] = [
     title: 'Deck Sharing & Export',
     description: 'Share decks via links, export as images for social media, QR codes for quick import',
     priority: 'high',
-    status: 'planned',
+    status: 'completed',
     category: 'tcg'
   },
   {
@@ -123,7 +123,7 @@ const featureIdeas: FeatureIdea[] = [
     title: 'Card Collection Tracker',
     description: 'Track owned cards, completion percentage per set, wish lists, and trade lists',
     priority: 'high',
-    status: 'planned',
+    status: 'completed',
     category: 'tcg'
   },
   {
@@ -131,7 +131,7 @@ const featureIdeas: FeatureIdea[] = [
     title: 'Price Drop Alerts',
     description: 'Get notified when card prices drop below target, daily/weekly price digests via email',
     priority: 'high',
-    status: 'in-progress',
+    status: 'completed',
     category: 'tcg'
   },
   {
@@ -139,7 +139,7 @@ const featureIdeas: FeatureIdea[] = [
     title: 'Pokemon Team Builder',
     description: 'Build competitive teams with type coverage analysis, weakness/resistance calculator',
     priority: 'high',
-    status: 'planned',
+    status: 'completed',
     category: 'pokedex'
   },
   // Medium Priority
