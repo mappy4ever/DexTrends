@@ -14,6 +14,7 @@ import { TYPOGRAPHY, TRANSITION } from '../../components/ui/design-system/glass-
 import { fetchJSON } from '../../utils/unifiedFetch';
 import { API_CONFIG } from '../../config/api';
 import { IoAdd, IoClose, IoSearch, IoShieldCheckmark, IoFlash, IoSwapHorizontal, IoTrash, IoDownload, IoShareSocial } from 'react-icons/io5';
+import logger from '@/utils/logger';
 
 // ===========================================
 // TYPES
@@ -59,7 +60,7 @@ function PokemonSearchModal({ isOpen, onClose, onSelect, excludeIds }: SearchMod
           setResults(data.results.slice(0, 20));
         }
       } catch (err) {
-        console.error('Failed to load Pokemon list:', err);
+        logger.error('Failed to load Pokemon list', { error: err });
       }
     };
     if (isOpen) loadPokemon();
@@ -90,7 +91,7 @@ function PokemonSearchModal({ isOpen, onClose, onSelect, excludeIds }: SearchMod
         onClose();
       }
     } catch (err) {
-      console.error('Failed to load Pokemon:', err);
+      logger.error('Failed to load Pokemon', { error: err });
     } finally {
       setLoading(false);
     }

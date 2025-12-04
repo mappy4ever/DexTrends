@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion, useInView, useSpring, useTransform } from 'framer-motion';
@@ -395,15 +395,15 @@ const HomePage: NextPage = () => {
           <footer className="border-t border-stone-100 dark:border-stone-800 mt-8 md:mt-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
               <div className="text-center text-stone-500 dark:text-stone-300">
-                <p className="mb-2 text-sm">© 2024 DexTrends. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+                <p className="mb-2 text-sm">© {new Date().getFullYear()} DexTrends. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
                 <p className="text-xs">
                   Data provided by{' '}
                   <a href="https://pokeapi.co" className="text-amber-600 hover:text-amber-700 dark:text-amber-400 transition-colors" target="_blank" rel="noopener noreferrer">
                     PokéAPI
                   </a>{' '}
                   and{' '}
-                  <a href="https://pokemontcg.io" className="text-amber-600 hover:text-amber-700 dark:text-amber-400 transition-colors" target="_blank" rel="noopener noreferrer">
-                    Pokémon TCG API
+                  <a href="https://tcgdex.dev" className="text-amber-600 hover:text-amber-700 dark:text-amber-400 transition-colors" target="_blank" rel="noopener noreferrer">
+                    TCGDex
                   </a>
                 </p>
               </div>

@@ -50,6 +50,7 @@ export const GlobalSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -88,6 +89,7 @@ export const GlobalSearch: React.FC = () => {
 
   const performSearch = async (query: string) => {
     setLoading(true);
+    setError(null);
     try {
       const response = await fetchJSON<SearchResponse>(
         `/api/search/global?q=${encodeURIComponent(query)}&limit=10`
@@ -96,9 +98,10 @@ export const GlobalSearch: React.FC = () => {
         setResults(response.results);
         setShowResults(true);
       }
-    } catch (error) {
-      logger.error('Search error:', { error });
+    } catch (err) {
+      logger.error('Search error:', { error: err });
       setResults([]);
+      setError('Search unavailable. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -274,8 +277,21 @@ export const GlobalSearch: React.FC = () => {
               </div>
             )}
 
+            {/* Error State */}
+            {error && (
+              <div className="p-6 text-center">
+                <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>
+                <button
+                  onClick={() => performSearch(searchTerm)}
+                  className="mt-2 text-sm text-amber-600 hover:text-amber-700 dark:text-amber-400 font-medium"
+                >
+                  Try again
+                </button>
+              </div>
+            )}
+
             {/* No Results */}
-            {searchTerm.length >= 2 && results.length === 0 && !loading && (
+            {searchTerm.length >= 2 && results.length === 0 && !loading && !error && (
               <div className="p-8 text-center">
                 <p className="text-stone-500 dark:text-stone-300">No results found for "{searchTerm}"</p>
               </div>

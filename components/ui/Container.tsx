@@ -248,22 +248,68 @@ export const ContainerFooter: React.FC<{
 /**
  * ContainerGrid - Container for Container grid layouts
  */
+// Column class mapping for Tailwind (must be explicit for JIT compilation)
+const COL_CLASSES = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+  4: 'grid-cols-4',
+  5: 'grid-cols-5',
+  6: 'grid-cols-6',
+} as const;
+
+const SM_COL_CLASSES = {
+  1: 'sm:grid-cols-1',
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-3',
+  4: 'sm:grid-cols-4',
+  5: 'sm:grid-cols-5',
+  6: 'sm:grid-cols-6',
+} as const;
+
+const MD_COL_CLASSES = {
+  1: 'md:grid-cols-1',
+  2: 'md:grid-cols-2',
+  3: 'md:grid-cols-3',
+  4: 'md:grid-cols-4',
+  5: 'md:grid-cols-5',
+  6: 'md:grid-cols-6',
+} as const;
+
+const LG_COL_CLASSES = {
+  1: 'lg:grid-cols-1',
+  2: 'lg:grid-cols-2',
+  3: 'lg:grid-cols-3',
+  4: 'lg:grid-cols-4',
+  5: 'lg:grid-cols-5',
+  6: 'lg:grid-cols-6',
+} as const;
+
+const XL_COL_CLASSES = {
+  1: 'xl:grid-cols-1',
+  2: 'xl:grid-cols-2',
+  3: 'xl:grid-cols-3',
+  4: 'xl:grid-cols-4',
+  5: 'xl:grid-cols-5',
+  6: 'xl:grid-cols-6',
+} as const;
+
 export const ContainerGrid: React.FC<{
   children: React.ReactNode;
   cols?: {
-    default?: number;
-    sm?: number;
-    md?: number;
-    lg?: number;
-    xl?: number;
+    default?: 1 | 2 | 3 | 4 | 5 | 6;
+    sm?: 1 | 2 | 3 | 4 | 5 | 6;
+    md?: 1 | 2 | 3 | 4 | 5 | 6;
+    lg?: 1 | 2 | 3 | 4 | 5 | 6;
+    xl?: 1 | 2 | 3 | 4 | 5 | 6;
   };
   gap?: 'sm' | 'md' | 'lg';
   className?: string;
-}> = ({ 
-  children, 
+}> = ({
+  children,
   cols = { default: 1, sm: 2, md: 3, lg: 4 },
   gap = 'md',
-  className 
+  className
 }) => {
   const gapStyles = {
     sm: 'gap-2 sm:gap-3',
@@ -271,17 +317,17 @@ export const ContainerGrid: React.FC<{
     lg: 'gap-4 sm:gap-6 md:gap-8'
   };
 
-  const colStyles = cn(
-    'grid',
-    cols.default && `grid-cols-${cols.default}`,
-    cols.sm && `sm:grid-cols-${cols.sm}`,
-    cols.md && `md:grid-cols-${cols.md}`,
-    cols.lg && `lg:grid-cols-${cols.lg}`,
-    cols.xl && `xl:grid-cols-${cols.xl}`
-  );
-
   return (
-    <div className={cn(colStyles, gapStyles[gap], className)}>
+    <div className={cn(
+      'grid',
+      cols.default && COL_CLASSES[cols.default],
+      cols.sm && SM_COL_CLASSES[cols.sm],
+      cols.md && MD_COL_CLASSES[cols.md],
+      cols.lg && LG_COL_CLASSES[cols.lg],
+      cols.xl && XL_COL_CLASSES[cols.xl],
+      gapStyles[gap],
+      className
+    )}>
       {children}
     </div>
   );
