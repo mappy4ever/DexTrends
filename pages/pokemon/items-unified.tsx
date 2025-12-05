@@ -3,14 +3,12 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { motion } from 'framer-motion';
-import { CircularButton } from '../../components/ui/design-system';
-import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
-import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import logger from '../../utils/logger';
 import { fetchShowdownItems, getItemSpriteUrl, getItemCategory, ShowdownItem } from '../../utils/showdownData';
 import { requestCache } from '../../utils/UnifiedCacheManager';
 import { UnifiedDataTable, Column } from '../../components/unified/UnifiedDataTable';
 import { cn } from '@/utils/cn';
+import { FiChevronLeft, FiPackage, FiHeart, FiZap, FiStar } from 'react-icons/fi';
 
 interface Item {
   id: number;
@@ -52,15 +50,6 @@ const UnifiedItemsPage: NextPage = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
-  const glassStyle = createGlassStyle({
-    blur: '2xl',
-    opacity: 'medium',
-    gradient: true,
-    border: 'subtle',
-    shadow: 'lg',
-    rounded: 'sm'
-  });
 
   useEffect(() => {
     const fetchAllItems = async () => {
@@ -275,92 +264,143 @@ const UnifiedItemsPage: NextPage = () => {
     </motion.div>
   );
 
+  // Calculate stats
+  const stats = useMemo(() => ({
+    total: items.length,
+    medicine: items.filter(i => i.category === 'medicine').length,
+    competitive: items.filter(i => i.is_competitive).length,
+    berries: items.filter(i => i.category === 'berries').length,
+  }), [items]);
+
   return (
-    <FullBleedWrapper gradient="pokedex">
+    <>
       <Head>
-        <title>Items Collection | DexTrends</title>
+        <title>Items Database | DexTrends</title>
         <meta name="description" content="Browse the complete collection of Pokemon items, berries, and hold items" />
       </Head>
 
-      {/* Header - Responsive, positioned below navbar */}
-      <motion.div
-        className={cn('sticky top-14 md:top-16 z-20 bg-[#FFFDF7] dark:bg-stone-900 shadow-sm')}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div className="container mx-auto px-4 py-4 sm:py-6">
-          <div className="flex items-center justify-between">
-            <CircularButton
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-pink-50 dark:from-stone-950 dark:via-stone-900 dark:to-amber-950">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute inset-0 opacity-30 dark:opacity-20">
+            <div className="absolute top-10 left-10 w-64 h-64 bg-amber-400 rounded-full blur-3xl" />
+            <div className="absolute top-20 right-20 w-48 h-48 bg-pink-400 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-1/3 w-56 h-56 bg-red-400 rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative container mx-auto px-4 pt-6 pb-4">
+            {/* Back Button */}
+            <button
               onClick={() => router.push('/pokemon')}
-              variant="secondary"
-              size="sm"
-              className="scale-90 sm:scale-100"
+              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors mb-4"
             >
-              ← Back
-            </CircularButton>
-            
-            <div className="text-center">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
-                Items
-              </h1>
-              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-300 hidden sm:block">
-                Browse Pokemon items and equipment
-              </p>
-            </div>
-            
-            <div className={cn(
-              createGlassStyle({ blur: 'sm', opacity: 'subtle' }),
-              'px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-center'
-            )}>
-              <div className="text-sm sm:text-lg font-bold text-amber-600 dark:text-amber-400">
-                {filteredItems.length}
-              </div>
-              <div className="text-xs text-stone-600 dark:text-stone-300">Items</div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
+              <FiChevronLeft className="w-4 h-4" />
+              Pokémon Hub
+            </button>
 
-      {/* Category Filter - Responsive scrollable */}
-      <div className="sticky top-[73px] sm:top-[89px] z-40 bg-white/80 dark:bg-stone-900/80 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
-        <div className="container mx-auto px-4 py-3 sm:py-4">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar">
-            {ITEM_CATEGORIES.map(category => (
-              <motion.button
-                key={category.key}
-                onClick={() => setSelectedCategory(category.key)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={cn(
-                  'px-3 sm:px-4 py-1.5 sm:py-2 rounded-full whitespace-nowrap text-xs sm:text-sm font-medium transition-all',
-                  selectedCategory === category.key
-                    ? 'bg-gradient-to-r text-white shadow-lg ' + category.color
-                    : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
-                )}
+            {/* Hero Content */}
+            <div className="text-center mb-6">
+              <motion.h1
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black mb-3"
               >
-                {category.name}
-              </motion.button>
-            ))}
+                <span className="bg-gradient-to-r from-amber-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
+                  Items Database
+                </span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-stone-600 dark:text-stone-400 max-w-2xl mx-auto"
+              >
+                Explore all Pokémon items, hold items, and equipment
+              </motion.p>
+            </div>
+
+            {/* Quick Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex justify-center gap-4 sm:gap-8 mb-4"
+            >
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400">{stats.total}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Total</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-green-600 dark:text-green-400">{stats.medicine}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Medicine</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400">{stats.competitive}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Competitive</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400">{stats.berries}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Berries</div>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 py-6 sm:py-8">
-        <UnifiedDataTable
-          data={filteredItems}
-          columns={columns}
-          loading={loading}
-          virtualize={true}
-          itemHeight={80}
-          searchable={true}
-          searchPlaceholder="Search items by name or effect..."
-          getItemKey={(item) => item.id.toString()}
-          renderMobileCard={renderMobileCard}
-        />
+        {/* Sticky Category Filter */}
+        <div className="sticky top-14 md:top-16 z-30 bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+              {ITEM_CATEGORIES.map(category => (
+                <motion.button
+                  key={category.key}
+                  onClick={() => setSelectedCategory(category.key)}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    'flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full whitespace-nowrap text-xs sm:text-sm font-medium transition-all',
+                    selectedCategory === category.key
+                      ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
+                      : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                  )}
+                >
+                  {category.name}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Results Count */}
+        <div className="container mx-auto px-4 py-3">
+          <p className="text-sm text-stone-500 dark:text-stone-400">
+            Showing <span className="font-semibold text-stone-700 dark:text-stone-200">{filteredItems.length}</span> items
+            {selectedCategory !== 'all' && ` in ${ITEM_CATEGORIES.find(c => c.key === selectedCategory)?.name}`}
+          </p>
+        </div>
+
+        {/* Content */}
+        <div className="container mx-auto px-4 pb-8">
+          <UnifiedDataTable
+            data={filteredItems}
+            columns={columns}
+            loading={loading}
+            virtualize={true}
+            itemHeight={80}
+            searchable={true}
+            searchPlaceholder="Search items by name or effect..."
+            getItemKey={(item) => item.id.toString()}
+            renderMobileCard={renderMobileCard}
+          />
+        </div>
       </div>
-    </FullBleedWrapper>
+    </>
   );
 };
+
+// Full bleed layout
+(UnifiedItemsPage as NextPage & { fullBleed?: boolean }).fullBleed = true;
 
 export default UnifiedItemsPage;

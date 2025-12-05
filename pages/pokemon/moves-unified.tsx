@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { NextPage } from "next";
+import { motion, AnimatePresence } from "framer-motion";
 import { TypeBadge } from "@/components/ui/TypeBadge";
 import { CategoryIcon } from "@/components/ui/CategoryIcon";
 import { UnifiedDataTable, Column } from "@/components/unified/UnifiedDataTable";
@@ -11,6 +12,7 @@ import { showdownQueries, PokemonLearnsetRecord } from "@/utils/supabase";
 import { getPokemonIdFromName } from "@/utils/pokemonNameIdMap";
 import logger from "@/utils/logger";
 import { cn } from "@/utils/cn";
+import { FiChevronLeft, FiZap, FiTarget, FiActivity } from 'react-icons/fi';
 
 /**
  * Unified Moves Page - Production-ready responsive design
@@ -369,67 +371,165 @@ const MovesPage: NextPage = () => {
     );
   }, [moveLearners, learnersLoading]);
 
+  // Calculate stats
+  const stats = useMemo(() => ({
+    total: moves.length,
+    physical: moves.filter(m => m.category === 'physical').length,
+    special: moves.filter(m => m.category === 'special').length,
+    status: moves.filter(m => m.category === 'status').length,
+  }), [moves]);
+
   return (
     <>
       <Head>
-        <title>Pokémon Moves - DexTrends</title>
+        <title>Pokémon Moves | DexTrends</title>
         <meta name="description" content="Browse all Pokémon moves with details on power, accuracy, type, and effects" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
-        <div className="container mx-auto px-4 py-6">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-              Pokémon Moves
-            </h1>
-            <p className="text-stone-600 dark:text-stone-300">
-              {filteredMoves.length} moves available
-            </p>
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-amber-50 dark:from-stone-950 dark:via-stone-900 dark:to-orange-950">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute inset-0 opacity-30 dark:opacity-20">
+            <div className="absolute top-10 left-10 w-64 h-64 bg-orange-400 rounded-full blur-3xl" />
+            <div className="absolute top-20 right-20 w-48 h-48 bg-amber-400 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-1/3 w-56 h-56 bg-red-400 rounded-full blur-3xl" />
           </div>
 
-          {/* Filters */}
-          <div className="mb-6 bg-white/80 dark:bg-stone-800/80 backdrop-blur rounded-2xl p-4 shadow-lg">
-            <div className="flex flex-wrap gap-4">
-              {/* Type Filter */}
-              <div className="flex-1 min-w-[200px]">
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
-                  Type
-                </label>
-                <select
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-stone-700 border border-stone-300 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">All Types</option>
-                  {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
-                    <option key={type} value={type} className="capitalize">
+          <div className="relative container mx-auto px-4 pt-6 pb-4">
+            {/* Back Button */}
+            <button
+              onClick={() => router.push('/pokemon')}
+              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors mb-4"
+            >
+              <FiChevronLeft className="w-4 h-4" />
+              Pokémon Hub
+            </button>
+
+            {/* Hero Content */}
+            <div className="text-center mb-6">
+              <motion.h1
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black mb-3"
+              >
+                <span className="bg-gradient-to-r from-orange-600 via-amber-600 to-red-600 bg-clip-text text-transparent">
+                  Moves Database
+                </span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-stone-600 dark:text-stone-400 max-w-2xl mx-auto"
+              >
+                Explore all Pokémon moves with power, accuracy, and effects
+              </motion.p>
+            </div>
+
+            {/* Quick Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex justify-center gap-4 sm:gap-8 mb-4"
+            >
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-orange-600 dark:text-orange-400">{stats.total}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Total</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400">{stats.physical}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Physical</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400">{stats.special}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Special</div>
+              </div>
+              <div className="w-px bg-stone-300 dark:bg-stone-600" />
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-black text-stone-600 dark:text-stone-400">{stats.status}</div>
+                <div className="text-xs sm:text-sm text-stone-500">Status</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Sticky Filter Bar */}
+        <div className="sticky top-14 md:top-16 z-30 bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex flex-col sm:flex-row gap-3">
+              {/* Type Filter Pills */}
+              <div className="flex-1">
+                <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                  <button
+                    onClick={() => setSelectedType('')}
+                    className={cn(
+                      'flex-shrink-0 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all',
+                      selectedType === ''
+                        ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg'
+                        : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                    )}
+                  >
+                    All Types
+                  </button>
+                  {['fire', 'water', 'grass', 'electric', 'psychic', 'fighting', 'dark', 'dragon', 'fairy', 'steel'].map(type => (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(selectedType === type ? '' : type)}
+                      className={cn(
+                        'flex-shrink-0 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all capitalize',
+                        selectedType === type
+                          ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg'
+                          : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                      )}
+                    >
                       {type}
-                    </option>
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
 
-              {/* Category Filter */}
-              <div className="flex-1 min-w-[200px]">
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
-                  Category
-                </label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-stone-700 border border-stone-300 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">All Categories</option>
-                  <option value="physical">Physical</option>
-                  <option value="special">Special</option>
-                  <option value="status">Status</option>
-                </select>
+              {/* Category Buttons */}
+              <div className="flex gap-2">
+                {[
+                  { key: '', label: 'All', icon: FiTarget },
+                  { key: 'physical', label: 'Physical', icon: FiZap },
+                  { key: 'special', label: 'Special', icon: FiActivity },
+                  { key: 'status', label: 'Status', icon: FiTarget },
+                ].map(cat => (
+                  <button
+                    key={cat.key}
+                    onClick={() => setSelectedCategory(cat.key)}
+                    className={cn(
+                      'flex items-center gap-1 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all',
+                      selectedCategory === cat.key
+                        ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
+                        : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                    )}
+                  >
+                    <cat.icon className="w-3 h-3" />
+                    <span className="hidden sm:inline">{cat.label}</span>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Unified Data Table */}
+        {/* Results Count */}
+        <div className="container mx-auto px-4 py-3">
+          <p className="text-sm text-stone-500 dark:text-stone-400">
+            Showing <span className="font-semibold text-stone-700 dark:text-stone-200">{filteredMoves.length}</span> moves
+            {selectedType && ` of type ${selectedType}`}
+            {selectedCategory && ` (${selectedCategory})`}
+          </p>
+        </div>
+
+        {/* Unified Data Table */}
+        <div className="container mx-auto px-4 pb-8">
           <UnifiedDataTable
             data={filteredMoves}
             columns={columns}
@@ -445,12 +545,14 @@ const MovesPage: NextPage = () => {
             virtualize={true}
             striped={true}
             hover={true}
-            className="mt-6"
           />
         </div>
       </div>
     </>
   );
 };
+
+// Full bleed layout
+(MovesPage as NextPage & { fullBleed?: boolean }).fullBleed = true;
 
 export default MovesPage;

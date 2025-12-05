@@ -214,13 +214,22 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
         shadow: 'xl'
       })} style={{ padding: '1rem' }}>
         
-        {/* Header */}
+        {/* Region Header - Clickable */}
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 via-amber-600 to-amber-600 bg-clip-text text-transparent mb-3">
-            Choose Your Partner
-          </h2>
-          <p className="text-lg text-stone-600 dark:text-stone-300">
+          <Link
+            href={`/pokemon/starters/${region.toLowerCase()}`}
+            className="group inline-flex items-center gap-2 mb-3"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-600 via-amber-600 to-amber-600 bg-clip-text text-transparent group-hover:from-amber-500 group-hover:to-orange-500 transition-all">
+              {region} Starters
+            </h2>
+            <BsArrowRight className="text-amber-600 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <p className="text-base sm:text-lg text-stone-600 dark:text-stone-300">
             Select your starter and explore their evolution journey
+          </p>
+          <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+            Click to see full {region} starter details
           </p>
         </div>
 
