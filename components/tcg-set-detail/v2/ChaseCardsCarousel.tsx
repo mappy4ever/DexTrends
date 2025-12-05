@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { cn } from '@/utils/cn';
 import type { TCGCard } from '@/types/api/cards';
+
+const CARD_FALLBACK = '/back-card.png';
 
 interface ChaseCardsCarouselProps {
   cards: TCGCard[];
@@ -8,6 +10,28 @@ interface ChaseCardsCarouselProps {
   getPrice: (card: TCGCard) => number;
   maxCards?: number;
 }
+
+// Card image component with fallback handling
+const ChaseCardImage: React.FC<{ card: TCGCard }> = ({ card }) => {
+  const [imgSrc, setImgSrc] = useState(card.images?.small || card.images?.large || CARD_FALLBACK);
+
+  const handleError = useCallback(() => {
+    if (imgSrc !== CARD_FALLBACK) {
+      setImgSrc(CARD_FALLBACK);
+    }
+  }, [imgSrc]);
+
+  return (
+    <img
+      src={imgSrc}
+      alt={card.name}
+      className="w-full aspect-[245/342] object-cover"
+      loading="lazy"
+      draggable={false}
+      onError={handleError}
+    />
+  );
+};
 
 /**
  * ChaseCardsCarousel - Premium horizontal showcase of top value cards
@@ -108,14 +132,8 @@ export const ChaseCardsCarousel: React.FC<ChaseCardsCarouselProps> = ({
                   {index + 1}
                 </div>
 
-                {/* Card image */}
-                <img
-                  src={card.images.small}
-                  alt={card.name}
-                  className="w-full aspect-[245/342] object-cover"
-                  loading="lazy"
-                  draggable={false}
-                />
+                {/* Card image with fallback */}
+                <ChaseCardImage card={card} />
 
                 {/* Price overlay - always visible */}
                 <div className={cn(

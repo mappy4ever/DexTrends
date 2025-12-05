@@ -1,8 +1,39 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { cn } from '@/utils/cn';
 import { RarityIcon } from '@/components/ui/RarityIcon';
 import type { TCGCard } from '@/types/api/cards';
+
+const CARD_FALLBACK = '/back-card.png';
+
+// Preview image component with fallback handling
+const PreviewCardImage: React.FC<{ card: TCGCard }> = ({ card }) => {
+  const [imgSrc, setImgSrc] = useState(card.images?.large || card.images?.small || CARD_FALLBACK);
+
+  const handleError = useCallback(() => {
+    if (imgSrc !== CARD_FALLBACK) {
+      setImgSrc(CARD_FALLBACK);
+    }
+  }, [imgSrc]);
+
+  return (
+    <div className="relative bg-gradient-to-b from-stone-100 to-white dark:from-stone-800 dark:to-stone-900 p-4 sm:p-6 flex justify-center">
+      <img
+        src={imgSrc}
+        alt={card.name}
+        className={cn(
+          'w-auto h-auto',
+          'max-w-[200px] sm:max-w-[240px]',
+          'max-h-[280px] sm:max-h-[340px]',
+          'rounded-lg shadow-2xl',
+          'object-contain'
+        )}
+        draggable={false}
+        onError={handleError}
+      />
+    </div>
+  );
+};
 
 interface CardPreviewSheetProps {
   card: TCGCard | null;
@@ -119,21 +150,8 @@ export const CardPreviewSheet: React.FC<CardPreviewSheetProps> = ({
 
           {/* Content area */}
           <div className="flex-1 overflow-y-auto overscroll-contain">
-            {/* Card image */}
-            <div className="relative bg-gradient-to-b from-stone-100 to-white dark:from-stone-800 dark:to-stone-900 p-4 sm:p-6 flex justify-center">
-              <img
-                src={card.images.large || card.images.small}
-                alt={card.name}
-                className={cn(
-                  'w-auto h-auto',
-                  'max-w-[200px] sm:max-w-[240px]',
-                  'max-h-[280px] sm:max-h-[340px]',
-                  'rounded-lg shadow-2xl',
-                  'object-contain'
-                )}
-                draggable={false}
-              />
-            </div>
+            {/* Card image with fallback */}
+            <PreviewCardImage card={card} />
 
             {/* Card info */}
             <div className="px-4 sm:px-6 pb-4 sm:pb-6">

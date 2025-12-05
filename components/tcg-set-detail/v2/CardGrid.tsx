@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { cn } from '@/utils/cn';
 import type { TCGCard } from '@/types/api/cards';
+
+const CARD_FALLBACK = '/back-card.png';
 
 interface CardGridProps {
   cards: TCGCard[];
@@ -8,6 +10,28 @@ interface CardGridProps {
   getPrice: (card: TCGCard) => number;
   showPrices?: boolean;
 }
+
+// Card image component with fallback handling
+const CardImage: React.FC<{ card: TCGCard }> = ({ card }) => {
+  const [imgSrc, setImgSrc] = useState(card.images?.small || card.images?.large || CARD_FALLBACK);
+
+  const handleError = useCallback(() => {
+    if (imgSrc !== CARD_FALLBACK) {
+      setImgSrc(CARD_FALLBACK);
+    }
+  }, [imgSrc]);
+
+  return (
+    <img
+      src={imgSrc}
+      alt={card.name}
+      className="w-full aspect-[245/342] object-cover"
+      loading="lazy"
+      draggable={false}
+      onError={handleError}
+    />
+  );
+};
 
 /**
  * CardGrid - Dense, mobile-first card grid
@@ -64,14 +88,8 @@ export const CardGrid: React.FC<CardGridProps> = ({
               'touch-manipulation'
             )}
           >
-            {/* Card image */}
-            <img
-              src={card.images.small}
-              alt={card.name}
-              className="w-full aspect-[245/342] object-cover"
-              loading="lazy"
-              draggable={false}
-            />
+            {/* Card image with fallback */}
+            <CardImage card={card} />
 
             {/* Always-visible info bar at bottom with card name and price */}
             <div className={cn(

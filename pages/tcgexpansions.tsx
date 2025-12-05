@@ -529,17 +529,27 @@ const TcgSetsContent: React.FC = () => {
                     }`}
                   >
                     {/* Set Image Background - Clean and minimal */}
-                    {set.images?.logo && (
-                      <div className="relative h-32 xs:h-36 sm:h-44 w-full bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-750 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+                    <div className="relative h-32 xs:h-36 sm:h-44 w-full bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-750 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+                      {set.images?.logo ? (
                         <ProgressiveImage
                           src={set.images.logo}
                           alt={set.name}
                           className="max-h-16 xs:max-h-20 sm:max-h-24 max-w-[85%] z-10"
                           imgClassName="object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-200"
+                          fallback="/dextrendslogo.png"
                           aspectRatio="16/9"
                         />
-                      </div>
-                    )}
+                      ) : (
+                        <div className="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500">
+                          <svg className="w-12 h-12 sm:w-16 sm:h-16 mb-2 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="3" width="18" height="18" rx="2" strokeWidth="1.5" />
+                            <path d="M3 15l5-5 4 4 5-5 4 4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                          </svg>
+                          <span className="text-xs font-medium opacity-75">{set.name}</span>
+                        </div>
+                      )}
+                    </div>
                 
                     {/* Set Info - Clean and minimal */}
                     <div className="p-3 xs:p-4 sm:p-5 flex-1 flex flex-col">
