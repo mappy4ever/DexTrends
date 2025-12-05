@@ -30,6 +30,7 @@ npm test             # Playwright tests
   /ui           # Reusable UI components (Button, Modal, Container, etc.)
   /pokemon      # Pokemon-specific components
   /tcg          # Trading card components
+  /pocket       # Pokemon Pocket deck builder components
   /regions      # Pokemon region components
 /pages          # Next.js pages and API routes
 /utils          # Utility functions
@@ -42,7 +43,7 @@ npm test             # Playwright tests
   /archive      # Historical documentation
 ```
 
-## Canonical Components (Source of Truth)
+## Canonical Components
 
 Use these as the single source for each purpose:
 
@@ -58,26 +59,20 @@ Use these as the single source for each purpose:
 | **Hero Section** | `PokemonHeroSectionV3` | `/components/pokemon/PokemonHeroSectionV3.tsx` |
 | **Starter Showcase** | `StarterShowcaseComplete` | `/components/regions/StarterShowcaseComplete.tsx` |
 | **Empty States** | `EmptyState` | `/components/ui/EmptyState.tsx` |
-| **Form Inputs** | `Select`, `Checkbox`, `Radio` | `/components/ui/` |
 | **Pagination** | `Pagination`, `PageInfo` | `/components/ui/Pagination.tsx` |
-
-### Deprecated Components (Deleted)
-All deprecated components have been removed:
-- ~~`PokemonHeroSection`~~ (deleted)
-- ~~`PokemonHeroSectionV2`~~ (deleted)
-- ~~`StarterShowcase`~~ (deleted)
-- ~~`StarterShowcaseEnhanced`~~ (deleted)
-- ~~`StarterPokemonShowcaseGlass`~~ (deleted)
-- `GlassContainer` → Use `Container`
 
 ## Design System
 
-The design system uses consistent values defined in `/components/ui/design-system/glass-constants.ts`:
+Located in `/components/ui/design-system/glass-constants.ts`:
 
 - **Border Radius**: 12px for buttons/cards, 16px for modals
 - **Shadows**: Subtle, layered shadows
-- **Colors**: Blue-based accents, clean white/gray glass effects
+- **Colors**: Stone-based neutrals, amber accents
 - **Transitions**: 200ms ease-out
+- **Glass effects**: Modals/sheets ONLY (not content cards)
+
+### Container Variants
+`default`, `elevated`, `outline`, `ghost`, `gradient`, `featured`, `glass`
 
 ## Development Rules
 
@@ -93,6 +88,7 @@ The design system uses consistent values defined in `/components/ui/design-syste
 - Use `console.log` (use logger)
 - Create separate mobile/desktop components
 - Add `any` types without justification
+- Use glass effects on content cards (only modals/sheets)
 
 ## Key Utilities
 
@@ -105,8 +101,6 @@ import { useViewport } from '@/hooks/useViewport';   // Viewport detection
 
 ## Caching Architecture
 
-The app has multiple caching layers:
-
 | Layer | Location | TTL | Use Case |
 |-------|----------|-----|----------|
 | UnifiedCacheManager (Memory) | Server | 15 min | Fast lookups |
@@ -114,7 +108,7 @@ The app has multiple caching layers:
 | Redis (tcgCache) | Server | 7 days | TCG set data |
 | Supabase | Database | 48 hours | Critical data |
 
-To bypass cache on API calls:
+To bypass cache:
 ```typescript
 fetchJSON(url, { useCache: false, forceRefresh: true })
 ```
@@ -125,125 +119,45 @@ fetchJSON(url, { useCache: false, forceRefresh: true })
 |----------|-------------|
 | `/api/tcgexpansions` | TCG card sets (paginated) |
 | `/api/tcgexpansions/[setId]` | Set details with cards |
-| `/api/tcg-cards` | Card search with filters (type, rarity, HP, etc.) |
+| `/api/tcg-cards` | Card search with filters |
 | `/api/tcg-cards/[cardId]` | Individual card details |
-| `/api/tcg-series` | Series list (Scarlet & Violet, Sword & Shield, etc.) |
-| `/api/tcg-series/[serieId]` | Series detail with its sets |
+| `/api/tcg-series` | Series list |
+| `/api/tcg-series/[serieId]` | Series detail with sets |
 | `/api/pocket-expansions` | Pokemon Pocket sets |
 | `/api/pocket-cards` | Pocket card database |
 
-### Card Search Filters
-`/api/tcg-cards` supports these query parameters:
-- `name` - Card name (required, supports wildcards: `*chu`, `pika*`)
+### Card Search Filters (`/api/tcg-cards`)
+- `name` - Card name (supports wildcards: `*chu`, `pika*`)
 - `type` - Energy type (Fire, Water, Grass, etc.)
 - `rarity` - Rarity level
 - `hpMin` / `hpMax` - HP range
 - `illustrator` - Artist name
 - `category` - Pokemon | Trainer | Energy
 - `stage` - Basic | Stage1 | Stage2 | V | VMAX | ex
-- `legal` - standard | expanded (tournament legality)
-- `sort` / `order` - Sort field and direction (ASC/DESC)
+- `legal` - standard | expanded
+- `sort` / `order` - Sort field and direction
 - `page` / `pageSize` - Pagination
 
 ## External APIs
 
-- **PokeAPI**: Pokemon data (pokeapi.co)
-- **TCGDex**: TCG + Pocket card data (api.tcgdex.net) - Primary source for all trading card data
-  - No API key required
-  - **Includes pricing data**: TCGPlayer (USD) + CardMarket (EUR) built into card responses
-  - Adapter: `/utils/tcgdex-adapter.ts`
-  - Types: `/types/api/tcgdex.d.ts`
-  - Price extraction: `extractBestPrice()` from adapter
+### PokeAPI
+- URL: pokeapi.co
+- Use: Pokemon data (stats, moves, abilities, sprites)
 
-### Pricing Architecture (Dec 2024)
+### TCGDex
+- URL: api.tcgdex.net
+- Use: TCG + Pocket card data (primary source)
+- No API key required
+- Includes pricing: TCGPlayer (USD) + CardMarket (EUR)
+- Adapter: `/utils/tcgdex-adapter.ts`
+- Types: `/types/api/tcgdex.d.ts`
 
-Pricing data is now provided directly by TCGDex API (no external pricing service required).
-
-| Scenario | Source | Performance |
-|----------|--------|-------------|
-| Card detail view | TCGDex `/cards/{id}` | ~100ms (includes pricing) |
-| Set card list | TCGDex `/sets/{id}` | ~200ms (brief cards, no pricing) |
-| Card search | TCGDex `/cards` | ~300ms (brief cards, no pricing) |
-
-**Note**: Pricing is only available on individual card detail pages. Set listings and search results show card images/names only for fast loading.
-
-**Removed** (Dec 2024): pokemontcg.io integration was removed due to slow API (~10s/card) - TCGDex provides the same pricing data faster.
-
-## Current Work: QA & Design Audit
-
-**Status:** ✅ Complete
-**Active Plan:** `~/.claude/plans/swift-greeting-hedgehog.md`
-
-### Overview
-Comprehensive site audit covering 45+ pages, 130+ components, and design system improvements.
-
-### Progress Status
-
-| Phase | Status | Description |
-|-------|--------|-------------|
-| 1. Delete Deprecated | ✅ Complete | Removed PokemonHeroSection V1/V2, StarterShowcase variants |
-| 1b. Fix Mobile Grid | ✅ Complete | Fixed card overlap in UnifiedGrid + PokemonDisplay |
-| 2. Fix Focus States | ✅ Complete | WCAG compliance - focus-visible with amber rings |
-| 3. Dark Mode Contrast | ✅ Complete | Changed stone-400 → stone-300 (6.3:1 contrast) |
-| 4. Reduced Motion | ✅ Complete | CSS + useReducedMotion hook for accessibility |
-| 5. Pagination Component | ✅ Complete | /components/ui/Pagination.tsx with PageInfo |
-| 6. Design Polish | ✅ Complete | Added COLORS.status (success/warning/error/info) |
-
-### Critical Issues (FIXED)
-- ✅ **Focus States**: Now uses focus-visible with amber rings
-- ✅ **Dark Mode Contrast**: Changed stone-400 → stone-300 (6.3:1 contrast)
-- ✅ **Reduced Motion**: Added prefers-reduced-motion CSS + React hook
-
-### Files Deleted (Phase 1 Complete)
-- ✅ `/components/pokemon/PokemonHeroSection.tsx`
-- ✅ `/components/pokemon/PokemonHeroSectionV2.tsx`
-- ✅ `/components/regions/StarterShowcase.tsx`
-- ✅ `/components/regions/StarterPokemonShowcaseGlass.tsx`
-- ✅ `/components/regions/StarterShowcaseEnhanced.tsx`
-
-### Files to Modify
-- `/styles/focus-overrides.css` - Remove blanket focus override
-- `/styles/design-system.css` - Add accessible focus ring styles
-- `/components/ui/design-system/glass-constants.ts` - Add focus tokens
-
-### New Components
-- `/components/ui/Pagination.tsx` - Page navigation for large lists
-
----
-
-## Previous Work: Mobile Experience Redesign
-
-**Status:** ✅ Complete
-
-### Completed Phases
-- ✅ Navigation (BottomNav + MoreSheet + Navbar)
-- ✅ Pokedex Cards ("listing" variant)
-- ✅ Search/Filters (prominent search + type pills)
-- ✅ Section Components (SectionDivider + SectionHeader)
-- ✅ Spacing (SPACING + TOUCH_TARGET tokens)
-- ✅ Visual Consistency (colors, radius, shadows)
-- ✅ Touch Fixes (44px+ targets)
-
----
-
-## Previous Work: UI/UX Redesign (Reference)
-
-**Plan:** `~/.claude/plans/glistening-pondering-cerf.md`
-
-### Completed
-- GlassContainer removed from all 12 page files
-- Type gradients fixed in PokemonDisplay.tsx
-- Gray → Stone color migration (51 files)
-- Build passes, TypeScript passes
-
-### Design Decisions (Still Apply)
-- **Glass effects** = Modals/sheets ONLY (not content cards)
-- **Container variants**: `default`, `elevated`, `outline`, `ghost`, `gradient`, `featured`, `glass`
-- **Animations**: Subtle, Apple-like (150-250ms, ease-out)
-- **Types**: Use EnergyIcon component with official TCG symbols
+### Pokemon Showdown
+- URL: play.pokemonshowdown.com
+- Use: Item sprites, competitive data
+- Utility: `/utils/showdownData.ts`
 
 ## Documentation
 
 - **README.md** - Project overview and setup
-- **docs/UI-PROGRESS-NOTES.md** - Current UI work progress and remaining tasks
-- **docs/archive/** - Historical documentation and phase reports
+- **docs/archive/** - Historical documentation and completed work

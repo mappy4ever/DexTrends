@@ -59,6 +59,10 @@ playwright-report/
 test-results/
 coverage/
 
+# Security audit files (keep local only)
+docs/PROJECT-SECURE.md
+*-SECURE.md
+
 # Debug and demo pages (uncomment if needed)
 # pages/*-demo.tsx
 # pages/*-test.tsx
