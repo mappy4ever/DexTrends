@@ -127,8 +127,8 @@ async function handler(
       filteredCount: filteredCards.length 
     });
 
-    // Edge cache for 30 minutes, stale for 1 hour
-    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
+    // Edge cache for 1 week, stale for 30 days (card data is stable)
+    res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
     res.status(200).json(filteredCards);
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';

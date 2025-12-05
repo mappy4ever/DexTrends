@@ -206,7 +206,7 @@ export default async function handler(
       sets: expansions.map(e => e.id)
     });
 
-    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 1 week cache, 30 day stale
     res.status(200).json(expansions);
 
   } catch (error) {

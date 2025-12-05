@@ -4,6 +4,7 @@ import logger from '../../utils/logger';
 import type { TCGDexCardBrief } from '../../types/api/tcgdex';
 import { TCGDexEndpoints } from '../../utils/tcgdex-adapter';
 import { withRateLimit, RateLimitPresets } from '../../lib/api-middleware';
+// Pricing is available via individual card detail endpoints (TCGDex includes pricing)
 
 /**
  * Enhanced TCG Card Search API
@@ -22,6 +23,8 @@ import { withRateLimit, RateLimitPresets } from '../../lib/api-middleware';
  * - order: ASC | DESC
  * - page: Page number (default 1)
  * - pageSize: Items per page (default 50, max 100)
+ *
+ * Note: Pricing is available via /api/tcg-cards/[cardId] endpoint (TCGDex includes pricing)
  */
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
@@ -185,8 +188,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
 
     // Transform brief cards to app format (quick response for list view)
-    // Full details can be fetched when user clicks on a specific card
-    let cards = tcgOnlyCards.slice(0, 100).map(briefCard => {
+    // Full details (including pricing) can be fetched via /api/tcg-cards/[cardId]
+    const cards = tcgOnlyCards.slice(0, 100).map(briefCard => {
       const localId = briefCard.localId || briefCard.id.split('-')[1] || '';
       // Use provided image or construct from card ID
       const imageBase = briefCard.image || constructImageUrl(briefCard.id, localId);
@@ -215,6 +218,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // Note: HP filter not available with brief cards - would need full card fetch
     // For now, HP filtering is skipped for performance
+    // Pricing is available via individual card detail endpoint (/api/tcg-cards/[cardId])
 
     logger.debug('TCGDex API response transformed', {
       pokemonName,
@@ -223,7 +227,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
 
     // Add cache-control headers for better edge caching
-    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600'); // 30min cache, 1hr stale
+    res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 1 week cache, 30 day stale
     res.setHeader('Vary', 'Accept-Encoding'); // Support compression
 
     // Add performance headers

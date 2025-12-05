@@ -5,8 +5,9 @@ import { tcgCache } from '../../../lib/tcg-cache';
 import performanceMonitor from '../../../utils/performanceMonitor';
 import type { TCGCard } from '../../../types/api/cards';
 import type { TCGDexCard } from '../../../types/api/tcgdex';
-import { transformCard, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
+import { transformCard, TCGDexEndpoints, extractBestPrice } from '../../../utils/tcgdex-adapter';
 import { isTCGCard } from '../../../utils/typeGuards';
+// Pricing is now provided directly by TCGDex API (no pokemontcg.io dependency)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { cardId } = req.query;
@@ -23,18 +24,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const cachedCard = await tcgCache.getCard(id);
     if (cachedCard) {
       const responseTime = Date.now() - startTime;
-      logger.info('[TCG Card API] Cache hit', { 
-        cardId: id, 
+      logger.info('[TCG Card API] Cache hit', {
+        cardId: id,
         responseTime,
-        cached: true 
+        cached: true,
+        hasPrice: !!cachedCard.currentPrice
       });
-      
+
       res.setHeader('X-Cache-Status', 'hit');
       res.setHeader('X-Response-Time', `${responseTime}ms`);
-      res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
-      
+      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 1 week cache, 30 day stale
+
       return res.status(200).json({
         card: cachedCard,
+        pricing: cachedCard.tcgplayer || cachedCard.cardmarket ? {
+          source: cachedCard.tcgplayer ? 'tcgplayer' : 'cardmarket',
+          tcgplayer: cachedCard.tcgplayer,
+          cardmarket: cachedCard.cardmarket
+        } : null,
         cached: true,
         responseTime
       });
@@ -68,14 +75,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ error: 'Card not found', cardId: id });
     }
 
-    // Transform TCGDex card to app format
+    // Transform TCGDex card to app format (includes pricing from TCGDex)
     const card = transformCard(tcgdexCard);
-    
+
+    // Extract best price from TCGDex pricing data
+    if (tcgdexCard.pricing) {
+      card.currentPrice = extractBestPrice(tcgdexCard.pricing);
+      logger.debug('[TCG Card API] Card has pricing from TCGDex', {
+        cardId: id,
+        price: card.currentPrice,
+        hasTcgPlayer: !!tcgdexCard.pricing.tcgplayer,
+        hasCardMarket: !!tcgdexCard.pricing.cardmarket
+      });
+    }
+
     // Cache the card for future requests (ensure card exists)
     if (card) {
       await tcgCache.cacheCard(id, card as TCGCard);
     }
-    
+
     // Also cache related data
     if (card.images) {
       await tcgCache.cacheImageUrls(id, {
@@ -83,7 +101,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         large: card.images.large
       });
     }
-    
+
     if (card.tcgplayer?.prices) {
       await tcgCache.cachePriceData(id, card.tcgplayer.prices);
     }
@@ -99,10 +117,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     res.setHeader('X-Cache-Status', 'miss');
     res.setHeader('X-Response-Time', `${responseTime}ms`);
-    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 1 week cache, 30 day stale
     
     res.status(200).json({
       card,
+      pricing: card.tcgplayer || card.cardmarket ? {
+        source: card.tcgplayer ? 'tcgplayer' : 'cardmarket',
+        tcgplayer: card.tcgplayer,
+        cardmarket: card.cardmarket
+      } : null,
       cached: false,
       responseTime
     });

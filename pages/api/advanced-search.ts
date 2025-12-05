@@ -192,8 +192,8 @@ async function handleSearchRequest(
       }
     };
 
-    // Edge cache for 30 minutes, stale for 1 hour
-    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
+    // Edge cache for 1 day, stale for 1 week (search results are stable)
+    res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
     return res.status(200).json(response);
 
   } catch (error) {
@@ -294,8 +294,8 @@ async function handleAdvancedSearchRequest(
       }
     };
 
-    // Edge cache for 30 minutes, stale for 1 hour
-    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
+    // Edge cache for 1 day, stale for 1 week (search results are stable)
+    res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
     return res.status(200).json(response);
 
   } catch (error) {

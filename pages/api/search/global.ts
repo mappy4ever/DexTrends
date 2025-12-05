@@ -126,8 +126,8 @@ export default async function handler(
       }
     }
 
-    // Edge cache for 30 minutes, stale for 1 hour
-    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
+    // Edge cache for 1 day, stale for 1 week (search results are stable)
+    res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
     res.status(200).json(response);
   } catch (error) {
     logger.error('[Global Search] Error:', { error: error instanceof Error ? error.message : String(error) });

@@ -7,9 +7,11 @@ import type { TCGCardListApiResponse } from '../../../types/api/enhanced-respons
 import type { CardSet, TCGCard } from '../../../types/api/cards';
 import type { TCGDexSet } from '../../../types/api/tcgdex';
 import { transformSet, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
+// NOTE: Pricing removed from set listings for performance (was pokemontcg.io - too slow ~10s/card)
+// Pricing is now available via TCGDex on individual card detail pages
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { setId, page = '1', pageSize = '250' } = req.query; // Increased default
+  const { setId, page = '1', pageSize = '250' } = req.query;
   const id = Array.isArray(setId) ? setId[0] : setId;
   const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10);
   const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10), 250); // Max 250 per request
@@ -17,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!id) {
     return res.status(400).json({ error: 'Set ID is required' });
   }
-  
+
   // Log the set ID being requested
   logger.info('Set detail requested', { setId: id, rawSetId: setId });
 
@@ -38,10 +40,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const startIdx = (pageNum - 1) * pageSizeNum;
         const endIdx = startIdx + pageSizeNum;
         const paginatedCards = completeSet.cards.slice(startIdx, endIdx);
-        
+
         res.setHeader('X-Cache-Status', 'hit-complete');
-        res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
-        
+        res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 1 week cache, 30 day stale
+
         return res.status(200).json({
           set: completeSet.set,
           cards: paginatedCards,
@@ -55,13 +57,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       }
     }
-    
+
     // Check page-specific cache
     const cachedPage = await tcgCache.getSetWithCards(id, pageNum, pageSizeNum);
     if (cachedPage) {
       logger.info('Returning cached page', { setId: id, page: pageNum });
+
       res.setHeader('X-Cache-Status', 'hit-page');
-      res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 1 week cache, 30 day stale
       return res.status(200).json(cachedPage);
     }
     
@@ -148,7 +151,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       setName: set.name,
       totalCards: allCards.length
     });
-    
+
     // Paginate cards (TCGDex returns all cards at once)
     const startIndex = (pageNum - 1) * pageSizeNum;
     const paginatedCards = allCards.slice(startIndex, startIndex + pageSizeNum);
@@ -179,7 +182,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Add cache-control headers
-    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 1 week cache, 30 day stale
     res.setHeader('X-Cache-Status', 'miss');
     res.setHeader('X-Data-Source', 'tcgdex');
 
