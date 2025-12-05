@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { RarityIcon } from '@/components/ui/RarityIcon';
 import type { TCGCard } from '@/types/api/cards';
@@ -158,9 +159,13 @@ export const CardPreviewSheet: React.FC<CardPreviewSheetProps> = ({
               {/* Title row */}
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-bold text-stone-900 dark:text-white">
+                  <Link
+                    href={`/cards/${card.id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-xl font-bold text-stone-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                  >
                     {card.name}
-                  </h2>
+                  </Link>
                   <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
                     {card.set.name} · #{card.number}
                   </p>

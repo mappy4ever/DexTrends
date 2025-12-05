@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
+import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import type { TCGCard } from '@/types/api/cards';
 
@@ -147,10 +148,14 @@ export const ChaseCardsCarousel: React.FC<ChaseCardsCarouselProps> = ({
                 </div>
               </div>
 
-              {/* Card name below */}
-              <p className="mt-1.5 text-xs font-medium text-stone-700 dark:text-stone-300 text-center line-clamp-1 px-1">
+              {/* Card name below - clickable link to card details */}
+              <Link
+                href={`/cards/${card.id}`}
+                onClick={(e) => e.stopPropagation()}
+                className="mt-1.5 text-xs font-medium text-stone-700 dark:text-stone-300 text-center line-clamp-1 px-1 hover:text-amber-600 dark:hover:text-amber-400 hover:underline transition-colors block"
+              >
                 {card.name}
-              </p>
+              </Link>
             </button>
           ))}
         </div>

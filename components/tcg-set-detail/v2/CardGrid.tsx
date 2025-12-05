@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import type { TCGCard } from '@/types/api/cards';
 
@@ -98,9 +99,13 @@ export const CardGrid: React.FC<CardGridProps> = ({
               'px-1.5 py-1',
               'flex flex-col gap-0.5'
             )}>
-              <p className="text-white text-[10px] sm:text-xs font-semibold line-clamp-1 leading-tight">
+              <Link
+                href={`/cards/${card.id}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-white text-[10px] sm:text-xs font-semibold line-clamp-1 leading-tight hover:text-amber-400 hover:underline transition-colors"
+              >
                 {card.name}
-              </p>
+              </Link>
               {showPrices && price > 0 && (
                 <p className="text-green-400 text-[10px] sm:text-xs font-bold leading-tight">
                   ${price.toFixed(2)}
