@@ -1,20 +1,24 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
-import { fetchPocketData } from '../../../utils/pocketData';
-import StyledBackButton from '../../../components/ui/StyledBackButton';
-import { createGlassStyle, GradientButton, CircularButton } from '../../../components/ui/design-system';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../../components/ui/glass-components';
-import { FaCrown } from 'react-icons/fa';
-import FullBleedWrapper from '../../../components/ui/FullBleedWrapper';
-import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
-import PocketCardList from '../../../components/PocketCardList';
-import type { PocketCard } from '../../../types/api/pocket-cards';
-import logger from '../../../utils/logger';
+import { fetchPocketData } from '@/utils/pocketData';
+import { useDebounce } from '@/hooks/useDebounce';
+import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
+import logger from '@/utils/logger';
 
-// Extended PocketCard type with additional properties from actual data
+// V2 Components - Matching TCG set detail style
+import {
+  PocketSetHero,
+  PocketQuickStats,
+  FeaturedCardsCarousel,
+  PocketSearchBar,
+  PocketCardGrid,
+  PocketCardPreviewSheet
+} from '@/components/pocket-set-detail/v2';
+
+import type { PocketCard } from '@/types/api/pocket-cards';
+
+// Extended PocketCard type with additional properties
 interface ExtendedPocketCard extends PocketCard {
   pack?: string;
   type?: string;
@@ -31,16 +35,16 @@ interface SetInfo {
   cardCount: number;
 }
 
-// Set themes with pastel colors matching the app theme
+// Set themes with details
 const setThemes: Record<string, { name: string; description: string; emoji: string }> = {
   'genetic-apex': {
     name: 'Genetic Apex',
-    description: 'The first expansion set for Pokémon TCG Pocket featuring legendary Pokémon.',
+    description: 'The first expansion set for Pokemon TCG Pocket featuring legendary Pokemon.',
     emoji: '🧬'
   },
   'mythical-island': {
     name: 'Mythical Island',
-    description: 'Discover mystical Pokémon from the legendary Mythical Island.',
+    description: 'Discover mystical Pokemon from the legendary Mythical Island.',
     emoji: '🏝️'
   },
   'space-time-smackdown': {
@@ -50,12 +54,12 @@ const setThemes: Record<string, { name: string; description: string; emoji: stri
   },
   'triumphant-light': {
     name: 'Triumphant Light',
-    description: 'Illuminate your path to victory with brilliant light-type Pokémon.',
+    description: 'Illuminate your path to victory with brilliant light-type Pokemon.',
     emoji: '✨'
   },
   'shining-revelry': {
     name: 'Shining Revelry',
-    description: 'Experience the ultimate rivalry with shining rare Pokémon cards.',
+    description: 'Experience the ultimate rivalry with shining rare Pokemon cards.',
     emoji: '🌟'
   },
   'celestial-guardians': {
@@ -65,7 +69,7 @@ const setThemes: Record<string, { name: string; description: string; emoji: stri
   },
   'extradimensional-crisis': {
     name: 'Extradimensional Crisis',
-    description: 'Battle across dimensions with ultra-rare interdimensional Pokémon.',
+    description: 'Battle across dimensions with ultra-rare interdimensional Pokemon.',
     emoji: '🌀'
   },
   'eevee-grove': {
@@ -80,86 +84,37 @@ const setThemes: Record<string, { name: string; description: string; emoji: stri
   }
 };
 
-function SetView() {
+// Rarity ranking for sorting
+const rarityRank: Record<string, number> = {
+  '👑': 10, '♕': 10,
+  '★★★': 9, '★★': 8, '☆☆': 8, '★': 7, '☆': 7,
+  '◊◊◊◊': 6, '◊◊◊': 5, '◊◊': 4, '◊': 3
+};
+
+function PocketSetView() {
   const router = useRouter();
   const { setId } = router.query;
-  
-  // Data state
+
+  // Core state
   const [allCards, setAllCards] = useState<ExtendedPocketCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [setInfo, setSetInfo] = useState<SetInfo | null>(null);
-  const [search, setSearch] = useState<string>('');
-  
-  // Load cards and set info on component mount
-  useEffect(() => {
-    const loadData = async () => {
-      if (!setId || typeof setId !== 'string') return;
-      logger.debug('SetView loading set', { setId });
-      
-      // Handle old URL format (e.g., a2b-107) by redirecting to the expansion page
-      if (/^[a-z]\d+[a-z]?-\d+$/i.test(setId)) {
-        const expansionCode = setId.split('-')[0].toLowerCase();
-        const expansionMapping: Record<string, string> = {
-          'a1': 'genetic-apex',
-          'a1a': 'mythical-island', 
-          'a2': 'space-time-smackdown',
-          'a2a': 'triumphant-light',
-          'a2b': 'shining-revelry',
-          'a3': 'celestial-guardians',
-          'a3a': 'extradimensional-crisis',
-          'a4': 'eevee-grove',
-          'pa': 'promo-a'
-        };
-        
-        const correctSetName = expansionMapping[expansionCode] || expansionCode;
-        router.replace(`/pocketmode/set/${correctSetName}`);
-        return;
-      }
-      
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Load cards data
-        const cards = await fetchPocketData() as ExtendedPocketCard[];
-        logger.debug('SetView cards loaded', { setId, totalCards: cards.length });
-        
-        // Get set theme info
-        const theme = setThemes[setId] || {
-          name: setId.split('-').map(word => 
-            word.charAt(0).toUpperCase() + word.slice(1)
-          ).join(' '),
-          description: 'Browse cards from this Pokémon TCG Pocket expansion.',
-          emoji: '📦'
-        };
-        
-        // Filter cards based on set
-        const setCards = filterCardsBySet(cards, setId);
-        
-        setAllCards(setCards);
-        setSetInfo({
-          id: setId,
-          name: theme.name,
-          description: theme.description,
-          emoji: theme.emoji,
-          cardCount: setCards.length
-        });
-        
-        setLoading(false);
-      } catch (err) {
-        logger.error("Error loading set data:", err);
-        setError("Failed to load expansion data");
-        setLoading(false);
-      }
-    };
-    
-    loadData();
-  }, [setId, router]);
-  
+
+  // Filter & search state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterRarity, setFilterRarity] = useState('');
+  const [filterSupertype, setFilterSupertype] = useState('');
+  const [filterType, setFilterType] = useState('');
+  const [sortBy, setSortBy] = useState('number');
+  const debouncedSearch = useDebounce(searchQuery, 300);
+
+  // Modal state
+  const [selectedCard, setSelectedCard] = useState<ExtendedPocketCard | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   // Filter cards based on set ID
-  const filterCardsBySet = (cards: ExtendedPocketCard[], setId: string): ExtendedPocketCard[] => {
-    // Map set names to pack names
+  const filterCardsBySet = useCallback((cards: ExtendedPocketCard[], targetSetId: string): ExtendedPocketCard[] => {
     const packMappings: Record<string, string[]> = {
       'genetic-apex': ['Mewtwo', 'Charizard', 'Pikachu'],
       'mythical-island': ['Mythical Island'],
@@ -169,17 +124,16 @@ function SetView() {
       'celestial-guardians': ['Solgaleo', 'Lunala'],
       'extradimensional-crisis': ['Extradimensional Crisis'],
       'eevee-grove': ['Eevee Grove'],
-      'promo-a': [] // Promo cards filtered differently
+      'promo-a': []
     };
-    
-    const packNames = packMappings[setId] || [];
-    
-    if (setId === 'promo-a') {
-      // Filter promo cards
+
+    const packNames = packMappings[targetSetId] || [];
+
+    if (targetSetId === 'promo-a') {
       return cards.filter((card: ExtendedPocketCard) => {
         const packName = (card.pack || '').toLowerCase();
-        return packName.includes('promo') || 
-               packName.includes('promotional') || 
+        return packName.includes('promo') ||
+               packName.includes('promotional') ||
                packName.includes('special') ||
                packName.includes('shop') ||
                packName.includes('campaign') ||
@@ -187,242 +141,325 @@ function SetView() {
                packName.includes('wonder');
       });
     }
-    
-    // Filter by pack names
-    const filtered = cards.filter((card: ExtendedPocketCard) => 
+
+    const filtered = cards.filter((card: ExtendedPocketCard) =>
       packNames.includes(card.pack || '')
     );
-    
-    // Remove duplicates based on card ID
+
     return Array.from(new Map(filtered.map(card => [card.id, card])).values());
+  }, []);
+
+  // Load data
+  useEffect(() => {
+    if (!router.isReady || !setId || typeof setId !== 'string') return;
+
+    // Handle old URL format (e.g., a2b-107) by redirecting
+    if (/^[a-z]\d+[a-z]?-\d+$/i.test(setId)) {
+      const expansionCode = setId.split('-')[0].toLowerCase();
+      const expansionMapping: Record<string, string> = {
+        'a1': 'genetic-apex',
+        'a1a': 'mythical-island',
+        'a2': 'space-time-smackdown',
+        'a2a': 'triumphant-light',
+        'a2b': 'shining-revelry',
+        'a3': 'celestial-guardians',
+        'a3a': 'extradimensional-crisis',
+        'a4': 'eevee-grove',
+        'pa': 'promo-a'
+      };
+
+      const correctSetName = expansionMapping[expansionCode] || expansionCode;
+      router.replace(`/pocketmode/set/${correctSetName}`);
+      return;
+    }
+
+    let mounted = true;
+
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const cards = await fetchPocketData() as ExtendedPocketCard[];
+        if (!mounted) return;
+
+        logger.debug('PocketSetView cards loaded', { setId, totalCards: cards.length });
+
+        const theme = setThemes[setId] || {
+          name: setId.split('-').map(word =>
+            word.charAt(0).toUpperCase() + word.slice(1)
+          ).join(' '),
+          description: 'Browse cards from this Pokemon TCG Pocket expansion.',
+          emoji: '📦'
+        };
+
+        const setCards = filterCardsBySet(cards, setId);
+
+        setAllCards(setCards);
+        setSetInfo({
+          id: setId,
+          name: theme.name,
+          description: theme.description,
+          emoji: theme.emoji,
+          cardCount: setCards.length
+        });
+
+        setLoading(false);
+      } catch (err) {
+        if (!mounted) return;
+        logger.error("Error loading set data:", err);
+        setError("Failed to load expansion data");
+        setLoading(false);
+      }
+    };
+
+    loadData();
+
+    return () => { mounted = false; };
+  }, [router.isReady, setId, router, filterCardsBySet]);
+
+  // Filter options
+  const filterOptions = useMemo(() => {
+    const rarities = new Set<string>();
+    const supertypes = new Set<string>();
+    const types = new Set<string>();
+
+    const energyTypeOrder: Record<string, number> = {
+      'grass': 1, 'fire': 2, 'water': 3, 'lightning': 4, 'psychic': 5,
+      'fighting': 6, 'darkness': 7, 'metal': 8, 'dragon': 9, 'colorless': 10, 'fairy': 11
+    };
+
+    allCards.forEach(card => {
+      if (card.rarity) rarities.add(card.rarity);
+      if (card.supertype) supertypes.add(card.supertype);
+      if (card.types && card.types.length > 0) {
+        card.types.forEach(type => {
+          if (type) types.add(type.toLowerCase());
+        });
+      }
+      // Also check the type field for backward compatibility
+      if (card.type) types.add(card.type.toLowerCase());
+    });
+
+    return {
+      rarities: Array.from(rarities).sort((a, b) => (rarityRank[b] || 0) - (rarityRank[a] || 0)),
+      supertypes: Array.from(supertypes),
+      types: Array.from(types).sort((a, b) =>
+        (energyTypeOrder[a] || 99) - (energyTypeOrder[b] || 99)
+      )
+    };
+  }, [allCards]);
+
+  // Filtered & sorted cards
+  const filteredCards = useMemo(() => {
+    let result = allCards.filter(card => {
+      // Search filter
+      if (debouncedSearch) {
+        const q = debouncedSearch.toLowerCase();
+        if (!card.name.toLowerCase().includes(q)) return false;
+      }
+
+      // Rarity filter
+      if (filterRarity && card.rarity !== filterRarity) return false;
+
+      // Supertype filter
+      if (filterSupertype && card.supertype !== filterSupertype) return false;
+
+      // Type filter
+      if (filterType) {
+        const cardTypes = card.types?.map(t => t.toLowerCase()) || [];
+        const cardType = card.type?.toLowerCase() || '';
+        if (!cardTypes.includes(filterType.toLowerCase()) && cardType !== filterType.toLowerCase()) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    // Sort
+    result.sort((a, b) => {
+      switch (sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'name-desc':
+          return b.name.localeCompare(a.name);
+        case 'rarity':
+          return (rarityRank[b.rarity] || 0) - (rarityRank[a.rarity] || 0);
+        case 'rarity-asc':
+          return (rarityRank[a.rarity] || 0) - (rarityRank[b.rarity] || 0);
+        case 'hp-desc': {
+          const hpA = parseInt(String(a.hp || a.health || 0)) || 0;
+          const hpB = parseInt(String(b.hp || b.health || 0)) || 0;
+          if (hpA === 0 && hpB === 0) return 0;
+          if (hpA === 0) return 1;
+          if (hpB === 0) return -1;
+          return hpB - hpA;
+        }
+        case 'hp-asc': {
+          const hpA = parseInt(String(a.hp || a.health || 0)) || 0;
+          const hpB = parseInt(String(b.hp || b.health || 0)) || 0;
+          if (hpA === 0 && hpB === 0) return 0;
+          if (hpA === 0) return 1;
+          if (hpB === 0) return -1;
+          return hpA - hpB;
+        }
+        case 'type': {
+          const typeA = (a.types && a.types[0]) || a.type || 'zzz';
+          const typeB = (b.types && b.types[0]) || b.type || 'zzz';
+          return typeA.localeCompare(typeB);
+        }
+        case 'number-desc': {
+          const numA = parseInt(a.id?.split('-')[1] || a.number || '0') || 0;
+          const numB = parseInt(b.id?.split('-')[1] || b.number || '0') || 0;
+          return numB - numA;
+        }
+        case 'number':
+        default: {
+          const numA = parseInt(a.id?.split('-')[1] || a.number || '0') || 0;
+          const numB = parseInt(b.id?.split('-')[1] || b.number || '0') || 0;
+          return numA - numB;
+        }
+      }
+    });
+
+    return result;
+  }, [allCards, debouncedSearch, filterRarity, filterSupertype, filterType, sortBy]);
+
+  // Stats
+  const stats = useMemo(() => {
+    const exCount = allCards.filter(c => (c as ExtendedPocketCard).ex === 'Yes').length;
+    return {
+      cardCount: allCards.length,
+      typeCount: filterOptions.types.length,
+      rarityCount: filterOptions.rarities.length,
+      exCount
+    };
+  }, [allCards, filterOptions]);
+
+  // Handlers
+  const handleCardClick = (card: PocketCard) => {
+    setSelectedCard(card as ExtendedPocketCard);
+    setSheetOpen(true);
   };
 
-  if (loading) {
+  const handleCloseSheet = () => {
+    setSheetOpen(false);
+    setSelectedCard(null);
+  };
+
+  // Loading state
+  if (!router.isReady || loading) {
     return (
-      <FullBleedWrapper gradient="pokedex">
-        <div className="min-h-screen flex items-center justify-center">
-          <LoadingStateGlass 
-            type="spinner" 
-            message="Loading expansion cards..."
-            size="lg"
-          />
-        </div>
-      </FullBleedWrapper>
+      <div className="min-h-screen bg-white dark:bg-stone-900">
+        <DetailPageSkeleton
+          variant="tcgset"
+          showHeader={true}
+          showImage={true}
+          showStats={true}
+          showTabs={false}
+          showRelated={true}
+        />
+      </div>
     );
   }
 
-  if (error) {
+  // Error state
+  if (error || !setInfo) {
     return (
-      <FullBleedWrapper gradient="pokedex">
-        <div className="min-h-screen flex items-center justify-center">
-          <EmptyStateGlass 
-            type="error"
-            title="Failed to Load Expansion"
-            message={error}
-            actionButton={{
-              text: "Back to Expansions",
-              onClick: () => router.push('/pocketmode/expansions'),
-              variant: "primary"
-            }}
-            className="max-w-md"
-          />
+      <div className="min-h-screen bg-white dark:bg-stone-900 flex items-center justify-center p-4">
+        <div className="text-center max-w-sm">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+            <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-semibold text-stone-900 dark:text-white mb-2">
+            {error ? 'Error Loading Set' : 'Set Not Found'}
+          </h2>
+          <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">
+            {error || "The set you're looking for couldn't be found."}
+          </p>
+          <button
+            onClick={() => router.push('/pocketmode/expansions')}
+            className="px-4 py-2 bg-stone-900 dark:bg-white text-white dark:text-stone-900 rounded-lg text-sm font-medium hover:bg-stone-800 dark:hover:bg-stone-100 transition-colors"
+          >
+            Back to Expansions
+          </button>
         </div>
-      </FullBleedWrapper>
+      </div>
     );
   }
 
   return (
-    <FullBleedWrapper gradient="pokedex">
+    <>
       <Head>
-        <title>{setInfo?.name || 'Loading'} | Pokémon Pocket | DexTrends</title>
-        <meta name="description" content={setInfo?.description || 'Browse Pokémon TCG Pocket cards'} />
+        <title>{setInfo.name} | Pokemon Pocket | DexTrends</title>
+        <meta name="description" content={`Browse all ${allCards.length} cards from ${setInfo.name}. ${setInfo.description}`} />
       </Head>
-      
-      <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto pt-8">
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          {/* Back Button */}
-          <div className="mb-6">
-            <StyledBackButton 
-              variant="pocket" 
-              text="Back to Expansions"
-              onClick={() => router.push('/pocketmode/expansions')}
+
+      <div className="min-h-screen bg-white dark:bg-stone-900">
+        {/* Hero section */}
+        <PocketSetHero setInfo={setInfo} />
+
+        {/* Quick stats bar */}
+        <PocketQuickStats
+          cardCount={stats.cardCount}
+          typeCount={stats.typeCount}
+          rarityCount={stats.rarityCount}
+          exCount={stats.exCount}
+        />
+
+        {/* Featured cards carousel */}
+        {allCards.length > 0 && (
+          <div className="py-4">
+            <FeaturedCardsCarousel
+              cards={allCards}
+              onCardClick={handleCardClick}
+              maxCards={12}
             />
           </div>
-          
-          {/* Enhanced Set Header with Glass Morphism */}
-          {setInfo && (
-            <motion.div 
-              className={`${createGlassStyle({
-                blur: 'xl',
-                opacity: 'medium',
-                gradient: true,
-                border: 'medium',
-                shadow: 'xl',
-                rounded: 'xl'
-              })} p-6 md:p-8 rounded-xl`}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="text-center mb-6">
-                <motion.div 
-                  className="inline-flex items-center gap-3 mb-3"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  <span className="text-3xl">{setInfo.emoji}</span>
-                  <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">
-                    {setInfo.name}
-                  </h1>
-                </motion.div>
-                <motion.p
-                  className="text-sm text-stone-600 dark:text-stone-300 max-w-2xl mx-auto leading-relaxed"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                  {setInfo.description}
-                </motion.p>
-              </div>
-              
-              {/* Enhanced Stats Pills */}
-              <motion.div 
-                className="flex justify-center gap-3 flex-wrap"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-              >
-                <div className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: true,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} px-4 py-2`}>
-                  <span className="text-sm font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
-                    {setInfo.cardCount} Cards
-                  </span>
-                </div>
-                
-                <div className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: true,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} px-4 py-2`}>
-                  <span className="text-sm font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                    {[...new Set(allCards.map(c => c.type).filter(Boolean))].length} Types
-                  </span>
-                </div>
-                
-                <div className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: true,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} px-4 py-2`}>
-                  <span className="text-sm font-bold bg-gradient-to-r from-pink-600 to-amber-600 bg-clip-text text-transparent">
-                    {[...new Set(allCards.map(c => c.rarity).filter(Boolean))].length} Rarities
-                  </span>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </motion.div>
-        
-        {/* Enhanced Cards Display with Glass Morphism */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          {/* Glass Container for Cards */}
-          <div className={`${createGlassStyle({
-            blur: 'xl',
-            opacity: 'medium',
-            gradient: true,
-            border: 'medium',
-            shadow: 'xl',
-            rounded: 'xl'
-          })} p-6 md:p-8 rounded-xl`}>
-            {/* Search Bar with Glass Styling */}
-            <motion.div 
-              className="mb-6"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
-            >
-              <UnifiedSearchBar
-                value={search}
-                onChange={setSearch}
-                placeholder={`Search ${setInfo?.name || 'expansion'} cards...`}
-                className="w-full"
-                showSearchButton
-              />
-            </motion.div>
+        )}
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.7 }}
-            >
-              {allCards.filter(card => 
-                card.name.toLowerCase().includes(search.toLowerCase())
-              ).length === 0 ? (
-                <EmptyStateGlass 
-                  type="search"
-                  title="No Cards Found"
-                  message={search 
-                    ? `No cards match "${search}" in ${setInfo?.name || 'this expansion'}.`
-                    : `No cards found in ${setInfo?.name || 'this expansion'}.`
-                  }
-                  actionButton={search ? {
-                    text: "Clear Search",
-                    onClick: () => setSearch(''),
-                    variant: "secondary"
-                  } : undefined}
-                />
-              ) : (
-                <PocketCardList
-                  cards={allCards.filter(card =>
-                    card.name.toLowerCase().includes(search.toLowerCase())
-                  )}
-                  loading={false}
-                  error={undefined}
-                  emptyMessage={`No cards found in ${setInfo?.name || 'this expansion'}.`}
-                  showPack={false}
-                  showRarity={true}
-                  showHP={true}
-                  showSort={true}
-                  imageWidth={110}
-                  imageHeight={154}
-                  selectedRarityFilter="all"
-                  searchValue={search}
-                  onSearchChange={setSearch}
-                  variant="clean"
-                />
-              )}
-            </motion.div>
-          </div>
-        </motion.div>
+        {/* Sticky search & filters */}
+        <PocketSearchBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          rarities={filterOptions.rarities}
+          selectedRarity={filterRarity}
+          onRarityChange={setFilterRarity}
+          types={filterOptions.types}
+          selectedType={filterType}
+          onTypeChange={setFilterType}
+          supertypes={filterOptions.supertypes}
+          selectedSupertype={filterSupertype}
+          onSupertypeChange={setFilterSupertype}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+          totalCards={allCards.length}
+          filteredCount={filteredCards.length}
+        />
+
+        {/* Card grid */}
+        <div className="pb-safe">
+          <PocketCardGrid
+            cards={filteredCards}
+            onCardClick={handleCardClick}
+          />
+        </div>
+
+        {/* Card preview sheet */}
+        <PocketCardPreviewSheet
+          card={selectedCard}
+          isOpen={sheetOpen}
+          onClose={handleCloseSheet}
+        />
       </div>
-    </FullBleedWrapper>
+    </>
   );
 }
 
-// Mark this page as full bleed to remove Layout padding
-(SetView as any).fullBleed = true;
+// Full bleed layout
+(PocketSetView as any).fullBleed = true;
 
-export default SetView;
+export default PocketSetView;
