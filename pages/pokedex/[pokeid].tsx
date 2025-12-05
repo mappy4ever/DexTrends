@@ -193,6 +193,21 @@ const PokemonDetail: NextPage = () => {
     }
   }, [pokeid, selectedForm, species, router]);
 
+  // Loading timeout to prevent stuck loading states
+  useEffect(() => {
+    if (!loading) return;
+
+    const timeoutId = setTimeout(() => {
+      if (loading && !pokemon && !species) {
+        logger.warn('Pokemon detail page loading timeout - forcing error state');
+        setError('Loading timed out. Please try refreshing the page.');
+        setLoading(false);
+      }
+    }, 15000); // 15 second timeout
+
+    return () => clearTimeout(timeoutId);
+  }, [loading, pokemon, species]);
+
   useEffect(() => {
     // Wait for router to be ready and pokeid to be available
     if (!router.isReady || !pokeid) return;
@@ -234,15 +249,35 @@ const PokemonDetail: NextPage = () => {
 
         // Load Pokemon data
         const pokemonData = await fetchJSON<Pokemon>(POKEAPI.pokemon(sanitizedId));
-        if (!pokemonData) {
+        if (!pokemonData || typeof pokemonData !== 'object') {
           throw new Error(`Pokemon not found: ${sanitizedId}`);
         }
-        
+
+        // Validate essential Pokemon data fields
+        if (!pokemonData.id || !pokemonData.name) {
+          logger.warn('Pokemon data missing essential fields, retrying without cache');
+          const freshData = await fetchJSON<Pokemon>(POKEAPI.pokemon(sanitizedId), { forceRefresh: true });
+          if (!freshData || !freshData.id || !freshData.name) {
+            throw new Error(`Invalid Pokemon data received for: ${sanitizedId}`);
+          }
+          Object.assign(pokemonData, freshData);
+        }
+
         // For species, always use the base Pokemon ID (numeric part)
         const baseSpeciesId = pokemonData.species?.url?.split('/').filter(Boolean).pop() || (typeof pokeid === 'string' ? pokeid : pokeid[0]);
         const speciesData = await fetchJSON<PokemonSpecies>(POKEAPI.species(baseSpeciesId));
-        if (!speciesData) {
+        if (!speciesData || typeof speciesData !== 'object') {
           throw new Error(`Species not found: ${baseSpeciesId}`);
+        }
+
+        // Validate essential species data fields
+        if (!speciesData.name) {
+          logger.warn('Species data missing essential fields, retrying without cache');
+          const freshSpecies = await fetchJSON<PokemonSpecies>(POKEAPI.species(baseSpeciesId), { forceRefresh: true });
+          if (!freshSpecies || !freshSpecies.name) {
+            throw new Error(`Invalid species data received for: ${baseSpeciesId}`);
+          }
+          Object.assign(speciesData, freshSpecies);
         }
 
         setPokemon(pokemonData);
