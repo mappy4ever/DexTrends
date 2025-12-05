@@ -192,13 +192,15 @@ async function handleSearchRequest(
       }
     };
 
+    // Edge cache for 30 minutes, stale for 1 hour
+    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
     return res.status(200).json(response);
 
   } catch (error) {
     logger.error('Search execution error:', { error: error instanceof Error ? error.message : String(error) });
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Search failed',
-      message: error instanceof Error ? error.message : String(error) 
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }
@@ -292,13 +294,15 @@ async function handleAdvancedSearchRequest(
       }
     };
 
+    // Edge cache for 30 minutes, stale for 1 hour
+    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
     return res.status(200).json(response);
 
   } catch (error) {
     logger.error('Advanced search execution error:', { error: error instanceof Error ? error.message : String(error) });
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Advanced search failed',
-      message: error instanceof Error ? error.message : String(error) 
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

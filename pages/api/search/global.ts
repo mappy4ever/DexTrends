@@ -126,6 +126,8 @@ export default async function handler(
       }
     }
 
+    // Edge cache for 30 minutes, stale for 1 hour
+    res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
     res.status(200).json(response);
   } catch (error) {
     logger.error('[Global Search] Error:', { error: error instanceof Error ? error.message : String(error) });

@@ -13,6 +13,8 @@ export default function handler(
   _req: NextApiRequest,
   res: NextApiResponse<PocketTypeCard[]>
 ) {
+  // Edge cache for 1 day (static data), stale for 7 days
+  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
   res.status(200).json([
     { id: "pock-card-001", name: "Pocket Pikachu", image: "/placeholder-card.png", types: ["Electric"], rarity: "Rare Holo V" },
     { id: "pock-card-002", name: "Pocket Charmander", image: null, types: ["Fire"], rarity: "Common" },

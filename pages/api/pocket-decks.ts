@@ -27,6 +27,8 @@ export default function handler(
   _req: NextApiRequest,
   res: NextApiResponse<PocketDeck[]>
 ) {
+  // Edge cache for 1 hour, stale for 24 hours
+  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
   res.status(200).json([
     {
       id: "pika-zapdos",
