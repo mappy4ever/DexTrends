@@ -29,6 +29,8 @@ export interface TCGCard {
   images: CardImages;
   tcgplayer?: TCGPlayer;
   cardmarket?: CardMarket;
+  /** Current market price (computed from tcgplayer/cardmarket data) */
+  currentPrice?: number;
 }
 
 export interface AncientTrait {

@@ -18,6 +18,9 @@ import type {
   TCGDexCardMarketPricing,
 } from '../types/api/tcgdex';
 
+// Re-export TCGDexPricing for use in other modules
+export type { TCGDexPricing } from '../types/api/tcgdex';
+
 import type {
   TCGCard,
   CardSet,
@@ -379,6 +382,41 @@ function transformResistance(resistance: TCGDexResistance): Resistance {
 // Pricing Transformations
 // ============================================================================
 
+/**
+ * Extract the best available price from TCGDex pricing data
+ * Priority: TCGPlayer market > TCGPlayer mid > CardMarket trend
+ * This replaces the pricing-service.ts extractBestPrice function
+ */
+export function extractBestPrice(pricing?: TCGDexPricing | null): number | undefined {
+  if (!pricing) return undefined;
+
+  // Try TCGPlayer prices first (most common for US)
+  const tcgPrices = pricing.tcgplayer;
+  if (tcgPrices) {
+    // Check holofoil first (usually more valuable)
+    if (tcgPrices.holofoil?.marketPrice) return tcgPrices.holofoil.marketPrice;
+    if (tcgPrices.holofoil?.midPrice) return tcgPrices.holofoil.midPrice;
+
+    // Then normal
+    if (tcgPrices.normal?.marketPrice) return tcgPrices.normal.marketPrice;
+    if (tcgPrices.normal?.midPrice) return tcgPrices.normal.midPrice;
+
+    // Then reverse holofoil
+    if (tcgPrices.reverse?.marketPrice) return tcgPrices.reverse.marketPrice;
+    if (tcgPrices.reverse?.midPrice) return tcgPrices.reverse.midPrice;
+  }
+
+  // Fall back to CardMarket (EU)
+  const cmPrices = pricing.cardmarket;
+  if (cmPrices) {
+    if (cmPrices.trend) return cmPrices.trend;
+    if (cmPrices.avg) return cmPrices.avg;
+    if (cmPrices.low) return cmPrices.low;
+  }
+
+  return undefined;
+}
+
 function transformTCGPlayerPricing(pricing?: TCGDexTCGPlayerPricing): TCGPlayer | undefined {
   if (!pricing) return undefined;
 
@@ -396,7 +434,7 @@ function transformTCGPlayerPricing(pricing?: TCGDexTCGPlayerPricing): TCGPlayer 
 
   return {
     url: '', // TCGDex doesn't provide direct URLs
-    updatedAt: pricing.updatedAt || new Date().toISOString(),
+    updatedAt: pricing.updated || new Date().toISOString(),  // TCGDex uses 'updated'
     prices: Object.keys(prices).length > 0 ? prices : undefined,
   };
 }
@@ -420,9 +458,12 @@ function transformTCGPlayerPriceData(data: {
 function transformCardMarketPricing(pricing?: TCGDexCardMarketPricing): CardMarket | undefined {
   if (!pricing) return undefined;
 
+  // TCGDex uses kebab-case for holo/reverse fields
+  const pricingAny = pricing as Record<string, number | string | null | undefined>;
+
   return {
     url: '', // TCGDex doesn't provide direct URLs
-    updatedAt: pricing.updatedAt || new Date().toISOString(),
+    updatedAt: pricing.updated || new Date().toISOString(),  // TCGDex uses 'updated'
     prices: {
       averageSellPrice: pricing.avg ?? null,
       lowPrice: pricing.low ?? null,
@@ -430,9 +471,10 @@ function transformCardMarketPricing(pricing?: TCGDexCardMarketPricing): CardMark
       avg1: pricing.avg1 ?? null,
       avg7: pricing.avg7 ?? null,
       avg30: pricing.avg30 ?? null,
-      reverseHoloSell: pricing.avgReverse ?? null,
-      reverseHoloLow: pricing.lowReverse ?? null,
-      reverseHoloTrend: pricing.trendReverse ?? null,
+      // Holo variants (kebab-case in TCGDex API)
+      reverseHoloSell: (pricingAny['avg-holo'] as number | null) ?? null,
+      reverseHoloLow: (pricingAny['low-holo'] as number | null) ?? null,
+      reverseHoloTrend: (pricingAny['trend-holo'] as number | null) ?? null,
     },
   };
 }

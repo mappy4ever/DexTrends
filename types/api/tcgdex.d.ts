@@ -104,7 +104,8 @@ export interface TCGDexPricing {
 }
 
 export interface TCGDexTCGPlayerPricing {
-  updatedAt?: string;
+  updated?: string;  // TCGDex uses 'updated' not 'updatedAt'
+  unit?: string;     // Currency unit (USD)
   normal?: TCGDexTCGPlayerPriceData;
   reverse?: TCGDexTCGPlayerPriceData;
   holofoil?: TCGDexTCGPlayerPriceData;
@@ -119,21 +120,25 @@ export interface TCGDexTCGPlayerPriceData {
 }
 
 export interface TCGDexCardMarketPricing {
-  updatedAt?: string;
+  updated?: string;  // TCGDex uses 'updated' not 'updatedAt'
+  unit?: string;     // Currency unit (EUR)
   avg?: number;
   low?: number;
   trend?: number;
   avg1?: number;
   avg7?: number;
   avg30?: number;
-  // Holo variants
-  avgHolo?: number;
-  lowHolo?: number;
-  trendHolo?: number;
-  // Reverse variants
-  avgReverse?: number;
-  lowReverse?: number;
-  trendReverse?: number;
+  // Holo variants (kebab-case in API response)
+  'avg-holo'?: number | null;
+  'low-holo'?: number | null;
+  'trend-holo'?: number | null;
+  'avg1-holo'?: number | null;
+  'avg7-holo'?: number | null;
+  'avg30-holo'?: number | null;
+  // Reverse variants (kebab-case in API response)
+  'avg-reverse'?: number | null;
+  'low-reverse'?: number | null;
+  'trend-reverse'?: number | null;
 }
 
 // ============================================================================
