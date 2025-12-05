@@ -107,8 +107,8 @@ async function checkDatabase(): Promise<DatabaseHealth> {
  */
 async function checkExternalAPIs(): Promise<Record<string, APIHealth>> {
   const apis = {
-    pokemonTCG: {
-      url: 'https://api.pokemontcg.io/v2/cards?pageSize=1',
+    tcgdex: {
+      url: 'https://api.tcgdex.net/v2/en/cards?pagination:itemsPerPage=1',
       timeout: 5000
     },
     pokeAPI: {

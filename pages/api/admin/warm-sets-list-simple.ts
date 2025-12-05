@@ -72,35 +72,43 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
       });
     }
     
-    // Fetch fresh data
-    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-    
-    if (apiKey) {
-      headers['X-Api-Key'] = apiKey;
-    }
-    
-    const apiUrl = `https://api.pokemontcg.io/v2/sets?page=${page}&pageSize=${pageSize}&orderBy=-releaseDate`;
-    
-    logger.info(`[Warm Sets Simple] Fetching from ${apiUrl}`);
-    
-    const data = await fetchJSON<SetsListResponse>(apiUrl, { 
-      headers,
+    // Fetch fresh data from TCGDex (no API key required)
+    const apiUrl = `https://api.tcgdex.net/v2/en/sets`;
+
+    logger.info(`[Warm Sets Simple] Fetching from TCGDex: ${apiUrl}`);
+
+    const tcgdexSets = await fetchJSON<Array<{ id: string; name: string; logo?: string; symbol?: string }>>(apiUrl, {
       timeout: 60000,
       retries: 2
     });
-    
-    if (!data?.data) {
-      throw new Error('Invalid API response');
+
+    if (!tcgdexSets || !Array.isArray(tcgdexSets)) {
+      throw new Error('Invalid API response from TCGDex');
     }
+
+    // TCGDex returns all sets, so we paginate client-side
+    const startIndex = (page - 1) * pageSize;
+    const paginatedSets = tcgdexSets.slice(startIndex, startIndex + pageSize);
+
+    // Transform TCGDex format to match expected format
+    const data = {
+      data: paginatedSets.map(set => ({
+        id: set.id,
+        name: set.name,
+        images: {
+          symbol: set.symbol || '',
+          logo: set.logo || ''
+        }
+      })),
+      count: paginatedSets.length,
+      totalCount: tcgdexSets.length
+    };
     
     // Format response like the main API does
     // Add updatedAt field to each set to match CardSet interface
     const processedData = data.data.map(set => ({
       ...set,
-      updatedAt: set.updatedAt || new Date().toISOString()
+      updatedAt: new Date().toISOString()
     }));
     
     const response = {

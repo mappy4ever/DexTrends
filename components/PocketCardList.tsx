@@ -346,7 +346,7 @@ function PocketCardListInner({
         case "number":
           const parsedA = parseCardId(a.id);
           const parsedB = parseCardId(b.id);
-          
+
           // Promos go to the end
           if (parsedA.isPromo !== parsedB.isPromo) {
             result = parsedA.isPromo ? 1 : -1;
@@ -364,10 +364,19 @@ function PocketCardListInner({
         case "hp":
           const hpA = parseInt(String(a.health || a.hp || 0)) || 0;
           const hpB = parseInt(String(b.health || b.hp || 0)) || 0;
-          result = hpA - hpB; // Will be reversed if desc
+          // Cards without HP (Trainers) go to end
+          if (hpA === 0 && hpB === 0) {
+            result = 0;
+          } else if (hpA === 0) {
+            result = 1;
+          } else if (hpB === 0) {
+            result = -1;
+          } else {
+            result = hpA - hpB;
+          }
           break;
         case "rarity":
-          const rarityOrder: Record<string, number> = { 
+          const rarityOrder: Record<string, number> = {
             '👑': 8,     // Crown - highest
             '★★★': 7,   // Three stars
             '★★': 6,    // Two stars
@@ -379,11 +388,63 @@ function PocketCardListInner({
           };
           result = (rarityOrder[a.rarity] || 0) - (rarityOrder[b.rarity] || 0); // Will be reversed if desc
           break;
-        case "type":
-          const typeA = a.type || '';
-          const typeB = b.type || '';
-          result = typeA.localeCompare(typeB);
+        case "category": {
+          // Sort by supertype: Pokemon first, then Trainer, then Energy
+          const categoryOrder: Record<string, number> = {
+            'Pokémon': 1,
+            'Pokemon': 1,
+            'Trainer': 2,
+            'Energy': 3
+          };
+          const supertypeA = String(a.supertype || '');
+          const supertypeB = String(b.supertype || '');
+          const catA = categoryOrder[supertypeA] || 4;
+          const catB = categoryOrder[supertypeB] || 4;
+          if (catA !== catB) {
+            result = catA - catB;
+          } else if (supertypeA.toLowerCase() === 'trainer') {
+            // Within Trainers, sort by subtype: Supporter > Item > Tool > Fossil
+            const trainerOrder: Record<string, number> = {
+              'supporter': 1, 'Supporter': 1,
+              'item': 2, 'Item': 2,
+              'tool': 3, 'Tool': 3,
+              'fossil': 4, 'Fossil': 4
+            };
+            const subA = trainerOrder[(a.subtypes?.[0] || a.type || '').toLowerCase()] || 5;
+            const subB = trainerOrder[(b.subtypes?.[0] || b.type || '').toLowerCase()] || 5;
+            result = subA - subB;
+          } else {
+            result = 0;
+          }
           break;
+        }
+        case "type": {
+          // Sort by energy type with proper ordering
+          const typeOrder: Record<string, number> = {
+            'grass': 1, 'Grass': 1,
+            'fire': 2, 'Fire': 2,
+            'water': 3, 'Water': 3,
+            'lightning': 4, 'Lightning': 4, 'electric': 4, 'Electric': 4,
+            'psychic': 5, 'Psychic': 5,
+            'fighting': 6, 'Fighting': 6,
+            'darkness': 7, 'Darkness': 7, 'dark': 7, 'Dark': 7,
+            'metal': 8, 'Metal': 8, 'steel': 8, 'Steel': 8,
+            'dragon': 9, 'Dragon': 9,
+            'colorless': 10, 'Colorless': 10,
+            'fairy': 11, 'Fairy': 11,
+            // Trainer types go after energy types
+            'supporter': 20, 'Supporter': 20,
+            'item': 21, 'Item': 21,
+            'tool': 22, 'Tool': 22,
+            'fossil': 23, 'Fossil': 23
+          };
+          const typeA = a.types?.[0] || a.type || '';
+          const typeB = b.types?.[0] || b.type || '';
+          const orderA = typeOrder[typeA] || typeOrder[typeA.toLowerCase()] || 99;
+          const orderB = typeOrder[typeB] || typeOrder[typeB.toLowerCase()] || 99;
+          result = orderA - orderB;
+          break;
+        }
         case "pack":
           const packA = a.pack || '';
           const packB = b.pack || '';
@@ -619,6 +680,30 @@ function PocketCardListInner({
           >
             <span>HP</span>
             {sortOption === 'hp' && (
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={sortDirection === 'asc' ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+              </svg>
+            )}
+          </button>
+
+          {/* Sort by Category (Pokemon/Trainer/Energy) */}
+          <button
+            onClick={() => {
+              if (sortOption === 'category') {
+                setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+              } else {
+                setSortOption('category');
+                setSortDirection('asc'); // Pokemon first, then Trainer, then Energy
+              }
+            }}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
+              sortOption === 'category'
+                ? 'bg-gradient-to-r from-amber-100/80 to-amber-100/80 dark:from-amber-900/30 dark:to-amber-900/30 border-amber-300/50 text-amber-700 dark:text-amber-300'
+                : 'bg-white/60 dark:bg-stone-800/60 border-white/30 text-stone-600 dark:text-stone-300 hover:bg-white/80'
+            }`}
+          >
+            <span>Category</span>
+            {sortOption === 'category' && (
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={sortDirection === 'asc' ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
               </svg>

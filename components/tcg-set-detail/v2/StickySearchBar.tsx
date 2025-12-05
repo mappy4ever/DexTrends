@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/utils/cn';
 import { RarityIcon } from '@/components/ui/RarityIcon';
+import { EnergyIcon } from '@/components/ui/EnergyIcon';
 
 interface StickySearchBarProps {
   searchQuery: string;
@@ -15,6 +16,11 @@ interface StickySearchBarProps {
   selectedSupertype: string;
   onSupertypeChange: (type: string) => void;
 
+  // Energy type filter props
+  energyTypes?: string[];
+  selectedEnergyType?: string;
+  onEnergyTypeChange?: (type: string) => void;
+
   // Sort props
   sortBy: string;
   onSortChange: (sort: string) => void;
@@ -26,10 +32,16 @@ interface StickySearchBarProps {
 
 const SORT_OPTIONS = [
   { value: 'number', label: 'Card #' },
-  { value: 'name', label: 'Name' },
+  { value: 'number-desc', label: 'Card # (Desc)' },
+  { value: 'name', label: 'Name A-Z' },
+  { value: 'name-desc', label: 'Name Z-A' },
   { value: 'price-desc', label: 'Price: High' },
   { value: 'price-asc', label: 'Price: Low' },
-  { value: 'rarity', label: 'Rarity' },
+  { value: 'rarity', label: 'Rarity: Rare' },
+  { value: 'rarity-asc', label: 'Rarity: Common' },
+  { value: 'hp-desc', label: 'HP: High' },
+  { value: 'hp-asc', label: 'HP: Low' },
+  { value: 'type', label: 'Type A-Z' },
 ];
 
 /**
@@ -45,6 +57,9 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
   supertypes,
   selectedSupertype,
   onSupertypeChange,
+  energyTypes = [],
+  selectedEnergyType = '',
+  onEnergyTypeChange,
   sortBy,
   onSortChange,
   totalCards,
@@ -52,13 +67,14 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
 }) => {
   const [showFilters, setShowFilters] = useState(false);
 
-  const hasActiveFilters = selectedRarity !== '' || selectedSupertype !== '' || searchQuery !== '';
+  const hasActiveFilters = selectedRarity !== '' || selectedSupertype !== '' || selectedEnergyType !== '' || searchQuery !== '';
   const isFiltered = filteredCount !== totalCards;
 
   const clearAllFilters = () => {
     onSearchChange('');
     onRarityChange('');
     onSupertypeChange('');
+    onEnergyTypeChange?.('');
   };
 
   return (
@@ -215,11 +231,11 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
               </div>
             )}
 
-            {/* Type filters */}
+            {/* Card Type filters (Pokemon/Trainer/Energy) */}
             {supertypes.length > 0 && (
               <div>
                 <label className="block text-[10px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">
-                  Type
+                  Card Type
                 </label>
                 <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
                   <button
@@ -247,6 +263,45 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
                       )}
                     >
                       {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Energy Type filters with icons */}
+            {energyTypes.length > 0 && onEnergyTypeChange && (
+              <div>
+                <label className="block text-[10px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">
+                  Energy Type
+                </label>
+                <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+                  <button
+                    onClick={() => onEnergyTypeChange('')}
+                    className={cn(
+                      'flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium',
+                      'transition-all touch-manipulation',
+                      selectedEnergyType === ''
+                        ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
+                        : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400'
+                    )}
+                  >
+                    All
+                  </button>
+                  {energyTypes.map((energyType) => (
+                    <button
+                      key={energyType}
+                      onClick={() => onEnergyTypeChange(selectedEnergyType === energyType ? '' : energyType)}
+                      className={cn(
+                        'flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium',
+                        'transition-all touch-manipulation',
+                        selectedEnergyType === energyType
+                          ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
+                          : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400'
+                      )}
+                    >
+                      <EnergyIcon type={energyType} size="xs" />
+                      <span className="capitalize">{energyType}</span>
                     </button>
                   ))}
                 </div>

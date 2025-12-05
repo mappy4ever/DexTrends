@@ -150,9 +150,24 @@ fetchJSON(url, { useCache: false, forceRefresh: true })
 - **PokeAPI**: Pokemon data (pokeapi.co)
 - **TCGDex**: TCG + Pocket card data (api.tcgdex.net) - Primary source for all trading card data
   - No API key required
-  - Includes pricing data (TCGPlayer + CardMarket)
+  - **Includes pricing data**: TCGPlayer (USD) + CardMarket (EUR) built into card responses
   - Adapter: `/utils/tcgdex-adapter.ts`
   - Types: `/types/api/tcgdex.d.ts`
+  - Price extraction: `extractBestPrice()` from adapter
+
+### Pricing Architecture (Dec 2024)
+
+Pricing data is now provided directly by TCGDex API (no external pricing service required).
+
+| Scenario | Source | Performance |
+|----------|--------|-------------|
+| Card detail view | TCGDex `/cards/{id}` | ~100ms (includes pricing) |
+| Set card list | TCGDex `/sets/{id}` | ~200ms (brief cards, no pricing) |
+| Card search | TCGDex `/cards` | ~300ms (brief cards, no pricing) |
+
+**Note**: Pricing is only available on individual card detail pages. Set listings and search results show card images/names only for fast loading.
+
+**Removed** (Dec 2024): pokemontcg.io integration was removed due to slow API (~10s/card) - TCGDex provides the same pricing data faster.
 
 ## Current Work: QA & Design Audit
 

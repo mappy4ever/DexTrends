@@ -67,6 +67,7 @@ const SetDetailPage: NextPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterRarity, setFilterRarity] = useState("");
   const [filterSupertype, setFilterSupertype] = useState("");
+  const [filterEnergyType, setFilterEnergyType] = useState("");
   const [sortBy, setSortBy] = useState("number");
   const debouncedSearch = useDebounce(searchQuery, 300);
 
@@ -153,16 +154,32 @@ const SetDetailPage: NextPage = () => {
   const filterOptions = useMemo(() => {
     const rarities = new Set<string>();
     const supertypes = new Set<string>();
+    const energyTypes = new Set<string>();
+
+    // Energy type order for sorting
+    const energyTypeOrder: Record<string, number> = {
+      'grass': 1, 'fire': 2, 'water': 3, 'lightning': 4, 'psychic': 5,
+      'fighting': 6, 'darkness': 7, 'metal': 8, 'dragon': 9, 'colorless': 10, 'fairy': 11
+    };
 
     cards.forEach(card => {
       const rarity = getActualRarity(card);
       if (rarity) rarities.add(rarity);
       if (card.supertype) supertypes.add(card.supertype);
+      // Collect energy types from card types array
+      if (card.types && card.types.length > 0) {
+        card.types.forEach(type => {
+          if (type) energyTypes.add(type.toLowerCase());
+        });
+      }
     });
 
     return {
       rarities: Array.from(rarities).sort((a, b) => getRarityRank(a) - getRarityRank(b)),
-      supertypes: Array.from(supertypes)
+      supertypes: Array.from(supertypes),
+      energyTypes: Array.from(energyTypes).sort((a, b) =>
+        (energyTypeOrder[a] || 99) - (energyTypeOrder[b] || 99)
+      )
     };
   }, [cards]);
 
@@ -181,6 +198,12 @@ const SetDetailPage: NextPage = () => {
       // Supertype filter
       if (filterSupertype && card.supertype !== filterSupertype) return false;
 
+      // Energy type filter
+      if (filterEnergyType) {
+        const cardTypes = card.types?.map(t => t.toLowerCase()) || [];
+        if (!cardTypes.includes(filterEnergyType.toLowerCase())) return false;
+      }
+
       return true;
     });
 
@@ -189,12 +212,41 @@ const SetDetailPage: NextPage = () => {
       switch (sortBy) {
         case 'name':
           return a.name.localeCompare(b.name);
+        case 'name-desc':
+          return b.name.localeCompare(a.name);
         case 'price-desc':
           return getCardPrice(b) - getCardPrice(a);
         case 'price-asc':
           return getCardPrice(a) - getCardPrice(b);
         case 'rarity':
           return getRarityRank(b.rarity || '') - getRarityRank(a.rarity || '');
+        case 'rarity-asc':
+          return getRarityRank(a.rarity || '') - getRarityRank(b.rarity || '');
+        case 'hp-desc': {
+          // Parse HP as number, cards without HP (Trainer/Energy) go to end
+          const hpA = parseInt(a.hp || '0') || 0;
+          const hpB = parseInt(b.hp || '0') || 0;
+          if (hpA === 0 && hpB === 0) return 0;
+          if (hpA === 0) return 1; // a goes after b
+          if (hpB === 0) return -1; // b goes after a
+          return hpB - hpA;
+        }
+        case 'hp-asc': {
+          const hpA = parseInt(a.hp || '0') || 0;
+          const hpB = parseInt(b.hp || '0') || 0;
+          if (hpA === 0 && hpB === 0) return 0;
+          if (hpA === 0) return 1;
+          if (hpB === 0) return -1;
+          return hpA - hpB;
+        }
+        case 'type': {
+          // Sort by first type alphabetically
+          const typeA = (a.types && a.types[0]) || 'zzz'; // Cards without types go to end
+          const typeB = (b.types && b.types[0]) || 'zzz';
+          return typeA.localeCompare(typeB);
+        }
+        case 'number-desc':
+          return parseInt(b.number) - parseInt(a.number);
         case 'number':
         default:
           return parseInt(a.number) - parseInt(b.number);
@@ -202,7 +254,7 @@ const SetDetailPage: NextPage = () => {
     });
 
     return result;
-  }, [cards, debouncedSearch, filterRarity, filterSupertype, sortBy, getCardPrice]);
+  }, [cards, debouncedSearch, filterRarity, filterSupertype, filterEnergyType, sortBy, getCardPrice]);
 
   // Stats
   const stats = useMemo(() => {
@@ -344,6 +396,9 @@ const SetDetailPage: NextPage = () => {
           supertypes={filterOptions.supertypes}
           selectedSupertype={filterSupertype}
           onSupertypeChange={setFilterSupertype}
+          energyTypes={filterOptions.energyTypes}
+          selectedEnergyType={filterEnergyType}
+          onEnergyTypeChange={setFilterEnergyType}
           sortBy={sortBy}
           onSortChange={setSortBy}
           totalCards={cards.length}

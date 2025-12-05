@@ -704,6 +704,151 @@ const cards = await fetchJSON(
 
 ---
 
+---
+
+# PROJECT 3: Pricing Service Implementation
+
+> Real-time pricing data from pokemontcg.io API
+> Status: ✅ COMPLETED
+
+---
+
+## Overview
+
+Implemented a dedicated pricing service that fetches price data from the pokemontcg.io API. TCGDex is used for card metadata (fast, no rate limits), while pokemontcg.io provides pricing data (TCGPlayer + CardMarket prices).
+
+---
+
+## Architecture
+
+```
+Card Request → TCGDex (card data) → pokemontcg.io (pricing) → Combined Response
+                    ↓                        ↓
+               (fast, free)            (daily updated prices)
+```
+
+---
+
+## Files Created/Modified
+
+| File | Purpose |
+|------|---------|
+| `/lib/pricing-service.ts` | **NEW** - Core pricing service |
+| `/pages/api/pricing.ts` | **NEW** - Pricing API endpoint |
+| `/pages/api/tcg-cards/[cardId].ts` | **MODIFIED** - Card detail with pricing |
+| `/pages/api/tcg-cards.ts` | **MODIFIED** - Optional bulk pricing |
+| `.env.example` | **MODIFIED** - Added pricing env vars |
+
+---
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PRICING_ENABLED` | No | Set to `'false'` to disable pricing (default: enabled) |
+| `POKEMON_TCG_API_KEY` | No | API key for higher rate limits (20K vs 1K/day) |
+
+---
+
+## API Usage
+
+### Get Single Card Pricing
+```
+GET /api/pricing?cardId=swsh1-1
+```
+
+### Get Bulk Pricing (max 100)
+```
+GET /api/pricing?cardIds=swsh1-1,swsh1-2,swsh1-3
+```
+
+### Check Pricing Status
+```
+GET /api/pricing?status
+```
+
+### Card Search with Pricing
+```
+GET /api/tcg-cards?name=pikachu&withPricing=true
+```
+Note: `withPricing=true` is optional and slower (adds pricing API calls)
+
+---
+
+## Pricing Data Structure
+
+```typescript
+interface PricingData {
+  tcgplayer?: {
+    url?: string;
+    updatedAt?: string;
+    prices?: {
+      normal?: { low, mid, high, market, directLow };
+      holofoil?: { ... };
+      reverseHolofoil?: { ... };
+      '1stEditionHolofoil'?: { ... };
+      '1stEditionNormal'?: { ... };
+    };
+  };
+  cardmarket?: {
+    url?: string;
+    updatedAt?: string;
+    prices?: {
+      averageSellPrice, lowPrice, trendPrice,
+      reverseHoloAvg1, reverseHoloTrend,
+      avg1, avg7, avg30
+    };
+  };
+}
+```
+
+---
+
+## Caching Strategy
+
+| Layer | TTL | Purpose |
+|-------|-----|---------|
+| UnifiedCacheManager | 6 hours | Individual card pricing |
+| Next.js revalidate | 6 hours | API response caching |
+
+---
+
+## Rate Limits
+
+| Tier | Limit | How to Get |
+|------|-------|-----------|
+| No API key | 1,000/day | Default |
+| With API key | 20,000/day | Free at https://dev.pokemontcg.io/ |
+| Enterprise | Unlimited | Contact pokemontcg.io |
+
+---
+
+## Easy Disable
+
+To disable pricing without code changes:
+
+```bash
+# In .env.local or Vercel env vars
+PRICING_ENABLED=false
+```
+
+When disabled:
+- No pokemontcg.io API calls are made
+- Cards return without pricing data
+- No errors, graceful fallback
+
+---
+
+## Future Migration Path
+
+If you need to switch from pokemontcg.io to another pricing source (JustTCG, CardMarket API, etc.):
+
+1. Create new adapter in `/lib/pricing-service.ts`
+2. Implement same interface: `fetchCardPricing()`, `fetchBulkPricing()`
+3. No changes needed to API endpoints or frontend
+
+---
+
 ## Revision History
 
 | Date | Change |
@@ -711,3 +856,5 @@ const cards = await fetchJSON(
 | 2025-12-04 | Initial assessment created |
 | 2025-12-04 | Added API integration documentation |
 | 2025-12-04 | Added Project 2: Legacy SDK Migration |
+| 2025-12-04 | Completed Project 2: Removed pokemontcgsdk |
+| 2025-12-04 | Added Project 3: Pricing Service Implementation |
