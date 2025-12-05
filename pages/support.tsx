@@ -183,6 +183,14 @@ const featureIdeas: FeatureIdea[] = [
     status: 'planned',
     category: 'pokedex'
   },
+  {
+    id: 'mega-regional-forms',
+    title: 'Mega Evolutions & Regional Forms',
+    description: 'Browse Mega Evolutions, Alolan forms, Galarian forms, Hisuian forms, and Paldean forms with stats and comparisons',
+    priority: 'medium',
+    status: 'planned',
+    category: 'pokedex'
+  },
   // Low Priority / Ideas
   {
     id: 'trading-marketplace',

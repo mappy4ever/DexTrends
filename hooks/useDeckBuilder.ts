@@ -10,6 +10,7 @@ export interface ExtendedPocketCard extends PocketCard {
   health?: string;
   type?: string;
   pack?: string;
+  category?: string;
 }
 
 /**
@@ -79,6 +80,7 @@ interface UseDeckBuilderReturn {
   removeCard: (cardId: string) => void;
   setCardCount: (cardId: string, count: number) => void;
   getCardCount: (cardId: string) => number;
+  getBaseNameCountForCard: (card: ExtendedPocketCard) => number;
   clearDeck: () => void;
 
   // Deck persistence
@@ -107,6 +109,42 @@ interface UseDeckBuilderReturn {
 const DEFAULT_MAX_DECK_SIZE = 20;
 const DEFAULT_MAX_COPIES_PER_CARD = 2;
 const DEFAULT_STORAGE_KEY = 'pocketDecks';
+
+/**
+ * Get the base name for deck limit checking
+ * Pokemon TCG Pocket rules:
+ * - Max 2 copies of cards with the same NAME
+ * - "ex" versions are considered DIFFERENT from regular (e.g., "Pikachu" vs "Pikachu ex")
+ * - For Trainers: All variants (FA, regular, etc.) of same card name count together
+ */
+function getBaseName(card: ExtendedPocketCard): string {
+  const name = card.name.trim();
+
+  // For Pokemon: Check if it's an "ex" variant - these are separate
+  // "Pikachu ex" stays as "Pikachu ex", "Pikachu" stays as "Pikachu"
+  // They can coexist in the deck
+
+  // For Trainers (Supporter, Item, Tool): Remove art variants
+  // "Professor's Research" and "Professor's Research (Full Art)" = same card
+  const type = (card.type || '').toLowerCase();
+  const category = (card.category || '').toLowerCase();
+
+  if (type === 'trainer' || type === 'supporter' || type === 'item' || type === 'tool' ||
+      category === 'trainer' || category === 'supporter' || category === 'item' || category === 'tool') {
+    // Remove common art variant suffixes for trainers
+    return name
+      .replace(/\s*\(Full Art\)/i, '')
+      .replace(/\s*\(Illustration Rare\)/i, '')
+      .replace(/\s*\(Special Art Rare\)/i, '')
+      .replace(/\s*\(SAR\)/i, '')
+      .replace(/\s*\(FA\)/i, '')
+      .replace(/\s*\(IR\)/i, '')
+      .trim();
+  }
+
+  // For Pokemon: Keep the name as-is (ex variants are different cards)
+  return name;
+}
 
 /**
  * Custom hook for managing Pokemon Pocket deck building state
@@ -187,6 +225,18 @@ export function useDeckBuilder(
     }
   }, [deck]);
 
+  // Get count of cards with the same base name in the deck
+  // This enforces the rule: max 2 copies of cards with same NAME
+  const getBaseNameCount = useCallback((deck: DeckEntry[], card: ExtendedPocketCard): number => {
+    const baseName = getBaseName(card);
+    return deck.reduce((sum, entry) => {
+      if (getBaseName(entry.card) === baseName) {
+        return sum + entry.count;
+      }
+      return sum;
+    }, 0);
+  }, []);
+
   // Add card to deck
   const addCard = useCallback((card: ExtendedPocketCard): boolean => {
     let added = false;
@@ -195,18 +245,21 @@ export function useDeckBuilder(
       const existingIndex = prevDeck.findIndex(entry => entry.card.id === card.id);
       const totalCards = prevDeck.reduce((sum, entry) => sum + entry.count, 0);
 
-      // Can't add if deck is full and card isn't already in deck
-      if (totalCards >= maxDeckSize && existingIndex === -1) {
+      // Can't add if deck is full
+      if (totalCards >= maxDeckSize) {
+        return prevDeck;
+      }
+
+      // Check by BASE NAME count - this enforces the 2-copy rule by Pokemon/card name
+      // Example: "Pikachu" from set A + "Pikachu" from set B = 2 total (at limit)
+      // But "Pikachu" + "Pikachu ex" = allowed (different base names)
+      const baseNameCount = getBaseNameCount(prevDeck, card);
+      if (baseNameCount >= maxCopiesPerCard) {
         return prevDeck;
       }
 
       if (existingIndex >= 0) {
-        const currentCount = prevDeck[existingIndex].count;
-        // Can't add if already at max copies or deck is full
-        if (currentCount >= maxCopiesPerCard || totalCards >= maxDeckSize) {
-          return prevDeck;
-        }
-
+        // Card already exists by ID, increment its count
         const newDeck = [...prevDeck];
         newDeck[existingIndex] = {
           ...newDeck[existingIndex],
@@ -215,13 +268,14 @@ export function useDeckBuilder(
         added = true;
         return newDeck;
       } else {
+        // Add new card entry
         added = true;
         return [...prevDeck, { card, count: 1 }];
       }
     });
 
     return added;
-  }, [maxDeckSize, maxCopiesPerCard]);
+  }, [maxDeckSize, maxCopiesPerCard, getBaseNameCount]);
 
   // Remove one copy of a card from deck
   const removeCard = useCallback((cardId: string) => {
@@ -271,10 +325,22 @@ export function useDeckBuilder(
     });
   }, [maxCopiesPerCard]);
 
-  // Get count of a specific card in deck
+  // Get count of a specific card in deck (by card ID)
   const getCardCount = useCallback((cardId: string): number => {
     const entry = deck.find(entry => entry.card.id === cardId);
     return entry ? entry.count : 0;
+  }, [deck]);
+
+  // Get count of cards with the same base name (for limit checking)
+  // This returns the total count of all cards that share the same base name
+  const getBaseNameCountForCard = useCallback((card: ExtendedPocketCard): number => {
+    const baseName = getBaseName(card);
+    return deck.reduce((sum, entry) => {
+      if (getBaseName(entry.card) === baseName) {
+        return sum + entry.count;
+      }
+      return sum;
+    }, 0);
   }, [deck]);
 
   // Clear entire deck
@@ -611,6 +677,7 @@ export function useDeckBuilder(
     removeCard,
     setCardCount,
     getCardCount,
+    getBaseNameCountForCard,
     clearDeck,
 
     // Deck persistence

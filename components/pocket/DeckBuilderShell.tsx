@@ -38,6 +38,7 @@ export function DeckBuilderShell({ cards, loading = false, error = null }: DeckB
     addCard,
     removeCard,
     getCardCount,
+    getBaseNameCountForCard,
     clearDeck,
     generateShareUrl,
     exportToText,
@@ -187,6 +188,7 @@ export function DeckBuilderShell({ cards, loading = false, error = null }: DeckB
             onCardClick={handleCardClick}
             onCardLongPress={handleCardLongPress}
             getCardCount={getCardCount}
+            getBaseNameCount={getBaseNameCountForCard}
             maxCopies={MAX_COPIES_PER_CARD}
             hasMore={hasMore}
             onLoadMore={loadMore}
@@ -196,8 +198,8 @@ export function DeckBuilderShell({ cards, loading = false, error = null }: DeckB
         </div>
       </div>
 
-      {/* Sticky Deck Panel */}
-      <div className="fixed right-0 top-16 bottom-0 lg:block hidden">
+      {/* Sticky Deck Panel - Desktop */}
+      <div className="fixed right-0 top-16 bottom-0 z-30 lg:block hidden shadow-xl">
         <StickyDeckPanel
           deck={deck}
           deckName={deckName}

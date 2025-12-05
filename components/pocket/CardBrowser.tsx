@@ -18,6 +18,7 @@ interface CardBrowserProps {
   onCardClick: (card: ExtendedPocketCard) => void;
   onCardLongPress?: (card: ExtendedPocketCard) => void;
   getCardCount: (cardId: string) => number;
+  getBaseNameCount: (card: ExtendedPocketCard) => number;
   maxCopies: number;
   hasMore: boolean;
   onLoadMore: () => void;
@@ -30,12 +31,14 @@ interface CardBrowserProps {
 const CardItem = memo(function CardItem({
   card,
   count,
+  baseNameCount,
   maxCopies,
   onClick,
   onLongPress
 }: {
   card: ExtendedPocketCard;
   count: number;
+  baseNameCount: number;
   maxCopies: number;
   onClick: () => void;
   onLongPress?: () => void;
@@ -65,7 +68,8 @@ const CardItem = memo(function CardItem({
     onClick();
   }, [onClick]);
 
-  const isAtMax = count >= maxCopies;
+  // Use baseNameCount to check if at max - this respects the name-based limit rule
+  const isAtMax = baseNameCount >= maxCopies;
   const imageUrl = card.image || card.thumbnail || '/placeholder-card.png';
 
   return (
@@ -76,14 +80,14 @@ const CardItem = memo(function CardItem({
       onTouchEnd={handleTouchEnd}
       onTouchCancel={() => longPressTimer.current && clearTimeout(longPressTimer.current)}
       className={cn(
-        'relative group rounded-lg overflow-hidden',
+        'relative group rounded-md overflow-hidden',
         'aspect-[2.5/3.5] w-full',
         'bg-stone-100 dark:bg-stone-800',
-        'transition-all duration-200 ease-out',
-        'hover:scale-[1.02] hover:shadow-lg',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2',
-        'active:scale-[0.98]',
-        isAtMax && 'opacity-60'
+        'transition-all duration-150 ease-out',
+        'hover:brightness-110 hover:shadow-md',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-inset',
+        'active:scale-[0.97]',
+        isAtMax && 'opacity-50 saturate-50'
       )}
       aria-label={`Add ${card.name} to deck${count > 0 ? ` (${count}/${maxCopies} in deck)` : ''}`}
     >
@@ -99,14 +103,14 @@ const CardItem = memo(function CardItem({
         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAQMDBAMBAAAAAAAAAAAAAQIDBAAFEQYSITFBUWFx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAYEQEAAwEAAAAAAAAAAAAAAAABAAIRMf/aAAwDAQACEQMRAD8A0HUurpVs1FcLPCt8RyPBkOMJkSHVJU4lKgNyQnJ54/ar2nb9MvbTrsm3w4biHC2Q0+pxJI7yCBg9UqwTI7R//9k="
       />
 
-      {/* Count Badge */}
+      {/* Count Badge - Compact for dense grid */}
       {count > 0 && (
         <div className={cn(
-          'absolute top-1 right-1 z-10',
-          'min-w-[24px] h-6 px-1.5',
+          'absolute top-0.5 right-0.5 z-10',
+          'min-w-[18px] h-[18px] px-1',
           'flex items-center justify-center',
-          'rounded-full text-xs font-bold',
-          'shadow-md',
+          'rounded-full text-[10px] font-bold',
+          'shadow-sm',
           isAtMax
             ? 'bg-amber-500 text-white'
             : 'bg-blue-500 text-white'
@@ -115,33 +119,15 @@ const CardItem = memo(function CardItem({
         </div>
       )}
 
-      {/* Add indicator on hover */}
-      <div className={cn(
-        'absolute inset-0 z-10',
-        'flex items-center justify-center',
-        'bg-black/40 opacity-0 group-hover:opacity-100',
-        'transition-opacity duration-200',
-        isAtMax && 'hidden'
-      )}>
-        <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">
-          <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Card name overlay (mobile) */}
-      <div className={cn(
-        'absolute bottom-0 left-0 right-0',
-        'bg-gradient-to-t from-black/80 to-transparent',
-        'p-2 pt-6',
-        'md:opacity-0 md:group-hover:opacity-100',
-        'transition-opacity duration-200'
-      )}>
-        <p className="text-white text-xs font-medium truncate">
-          {card.name}
-        </p>
-      </div>
+      {/* Simple hover indicator - just a subtle overlay */}
+      {!isAtMax && (
+        <div className={cn(
+          'absolute inset-0 z-10',
+          'bg-green-500/20 opacity-0 group-hover:opacity-100',
+          'transition-opacity duration-100',
+          'pointer-events-none'
+        )} />
+      )}
     </button>
   );
 });
@@ -151,6 +137,7 @@ export function CardBrowser({
   onCardClick,
   onCardLongPress,
   getCardCount,
+  getBaseNameCount,
   maxCopies,
   hasMore,
   onLoadMore,
@@ -210,16 +197,17 @@ export function CardBrowser({
         </span>
       </div>
 
-      {/* Card Grid */}
+      {/* Card Grid - Dense layout to show more cards */}
       <div className={cn(
-        'grid gap-2 sm:gap-3',
-        'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-6'
+        'grid gap-1.5 sm:gap-2',
+        'grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8'
       )}>
         {cards.map((card) => (
           <CardItem
             key={card.id}
             card={card}
             count={getCardCount(card.id)}
+            baseNameCount={getBaseNameCount(card)}
             maxCopies={maxCopies}
             onClick={() => onCardClick(card)}
             onLongPress={onCardLongPress ? () => onCardLongPress(card) : undefined}
