@@ -98,39 +98,6 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
             : '0 2px 8px rgba(0, 0, 0, 0.05)'
         }}
       >
-        {/* Search Icon with Pulse */}
-        <motion.div
-          className="search-icon"
-          animate={{
-            scale: isFocused ? [1, 1.2, 1] : 1,
-            color: isFocused ? '#d97706' : '#9ca3af'
-          }}
-          transition={{
-            scale: { duration: 0.3 },
-            color: { duration: 0.2 }
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <motion.path
-              d="M9 17A8 8 0 109 1a8 8 0 000 16z"
-              stroke="currentColor"
-              strokeWidth="2"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.5 }}
-            />
-            <motion.path
-              d="M15 15l4 4"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.3, delay: 0.5 }}
-            />
-          </svg>
-        </motion.div>
-
         {/* Input Field */}
         <div className="input-wrapper">
           <input

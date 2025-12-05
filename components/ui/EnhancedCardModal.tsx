@@ -209,14 +209,15 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
 
       {/* Modal content - mobile optimized */}
       <div
-        className={`relative ${isFullscreen ? 'w-full h-full' : 'max-w-6xl w-full'} bg-white dark:bg-stone-900 rounded-lg overflow-hidden shadow-2xl transform-gpu`}
+        className={`relative flex flex-col ${isFullscreen ? 'w-full h-full' : 'max-w-lg w-full mx-4'} bg-white dark:bg-stone-900 rounded-2xl overflow-hidden shadow-2xl transform-gpu`}
         style={{
           // Hardware acceleration for mobile rendering
           WebkitBackfaceVisibility: 'hidden',
           backfaceVisibility: 'hidden',
           // Proper max height for mobile viewports
-          maxHeight: isFullscreen ? '100%' : 'calc(100dvh - 1rem)',
+          maxHeight: isFullscreen ? '100%' : 'calc(100dvh - 2rem)',
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header with controls */}
         <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/50 to-transparent p-4">
@@ -315,7 +316,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
         {/* Image container - mobile responsive */}
         <div
           ref={containerRef}
-          className="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing"
+          className="relative flex-1 overflow-hidden cursor-grab active:cursor-grabbing bg-stone-100 dark:bg-stone-800"
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -326,12 +327,12 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
           onTouchEnd={handleMouseUp}
           onDoubleClick={handleDoubleClick}
         >
-          <div className="flex items-center justify-center h-full min-h-[250px] md:min-h-[400px]">
+          <div className="flex items-center justify-center h-full min-h-[400px] p-4 pt-16 pb-20">
             <img
               ref={imageRef}
-              src={card.images.large}
+              src={card.images.large || card.images.small}
               alt={card.name}
-              className="max-w-none transition-transform duration-200 select-none"
+              className="max-h-full max-w-full object-contain transition-transform duration-200 select-none rounded-lg shadow-lg"
               style={{
                 transform: `scale(${zoom}) translate(${dragPosition.x / zoom}px, ${dragPosition.y / zoom}px)`,
                 transformOrigin: 'center center'

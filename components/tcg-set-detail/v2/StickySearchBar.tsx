@@ -88,18 +88,13 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
         <div className="flex items-center gap-2">
           {/* Search input */}
           <div className="flex-1 relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
             <input
               type="text"
               placeholder="Search cards..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               className={cn(
-                'w-full h-10 pl-9 pr-9',
+                'w-full h-10 px-4 pr-9',
                 'bg-stone-100 dark:bg-stone-800',
                 'border-0 rounded-lg',
                 'text-sm text-stone-900 dark:text-white',

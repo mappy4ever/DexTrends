@@ -15,22 +15,29 @@ interface CardGridProps {
 // Card image component with fallback handling
 const CardImage: React.FC<{ card: TCGCard }> = ({ card }) => {
   const [imgSrc, setImgSrc] = useState(card.images?.small || card.images?.large || CARD_FALLBACK);
+  const [isError, setIsError] = useState(false);
 
   const handleError = useCallback(() => {
     if (imgSrc !== CARD_FALLBACK) {
       setImgSrc(CARD_FALLBACK);
+      setIsError(true);
     }
   }, [imgSrc]);
 
   return (
-    <img
-      src={imgSrc}
-      alt={card.name}
-      className="w-full aspect-[245/342] object-cover"
-      loading="lazy"
-      draggable={false}
-      onError={handleError}
-    />
+    <div className="w-full aspect-[245/342] bg-stone-200 dark:bg-stone-700">
+      <img
+        src={imgSrc}
+        alt={card.name}
+        className={cn(
+          "w-full h-full",
+          isError ? "object-contain p-2" : "object-cover"
+        )}
+        loading="lazy"
+        draggable={false}
+        onError={handleError}
+      />
+    </div>
   );
 };
 
