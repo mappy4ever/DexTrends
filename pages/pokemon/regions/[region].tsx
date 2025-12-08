@@ -1517,7 +1517,7 @@ export default function RegionDetailPage() {
               <p className="text-stone-600 dark:text-stone-300 mb-6 text-sm">
                 Click on any {region.id === 'alola' ? 'Trial Captain' : 'Gym Leader'} to see their team, strategy tips, and fun facts!
               </p>
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4 items-start">
                 {region.gymLeaders.map((leader, index) => (
                   <GymLeaderCard key={leader.name} leader={leader} gymNumber={index + 1} />
                 ))}
