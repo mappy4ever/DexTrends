@@ -67,8 +67,10 @@ const StyledBackButton: React.FC<StyledBackButtonProps> = ({
   return (
     <button
       onClick={handleClick}
+      aria-label="Go back"
       className={`
         inline-flex items-center gap-2 font-medium rounded-lg
+        min-h-[44px] touch-manipulation
         transition-all duration-200 ease-in-out
         transform hover:scale-105 active:scale-95
         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500

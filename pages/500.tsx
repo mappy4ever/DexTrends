@@ -1,11 +1,9 @@
 import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
 import { Container } from '../components/ui/Container';
-import { CircularButton } from '../components/ui/design-system';
+import Button from '../components/ui/Button';
 import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
-import { FiRefreshCw } from 'react-icons/fi';
-import { AiOutlineHome } from 'react-icons/ai';
-import { FaBolt } from 'react-icons/fa';
+import { FiRefreshCw, FiHome, FiZap } from 'react-icons/fi';
 import Head from 'next/head';
 import DexTrendsLogo from '../components/ui/DexTrendsLogo';
 
@@ -99,7 +97,7 @@ const Custom500: NextPage = () => {
                 repeat: Infinity,
               }}
             >
-              <FaBolt className="text-4xl text-yellow-400" />
+              <FiZap className="text-4xl text-yellow-400" />
             </motion.div>
           </motion.div>
 
@@ -114,7 +112,7 @@ const Custom500: NextPage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <CircularButton
+            <Button
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   window.location.reload();
@@ -134,9 +132,9 @@ const Custom500: NextPage = () => {
                   <FiRefreshCw className="w-5 h-5" />
                 </motion.span>
               </span>
-            </CircularButton>
-            
-            <CircularButton
+            </Button>
+
+            <Button
               onClick={() => {
                 // Use window.location for reliable navigation in error states (SSR safe)
                 if (typeof window !== 'undefined') {
@@ -147,10 +145,10 @@ const Custom500: NextPage = () => {
               size="lg"
             >
               <span className="flex items-center gap-2">
-                <AiOutlineHome className="w-5 h-5" />
+                <FiHome className="w-5 h-5" />
                 Flee to Pokemon Center
               </span>
-            </CircularButton>
+            </Button>
           </div>
 
           {/* Fun Pokemon quote */}
@@ -170,7 +168,7 @@ const Custom500: NextPage = () => {
             transition={{ delay: 1.5 }}
             className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 rounded-full text-sm"
           >
-            <FaBolt className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+            <FiZap className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
             Server is paralyzed! It may be unable to move!
           </motion.div>
         </Container>

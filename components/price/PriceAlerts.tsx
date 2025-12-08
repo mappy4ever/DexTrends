@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container, ContainerHeader, ContainerTitle, ContainerDescription, ContainerFooter } from '@/components/ui/Container';
 import Button, { ButtonGroup, IconButton } from '@/components/ui/Button';
@@ -575,8 +576,8 @@ const AlertItem: React.FC<{
       )}
     >
       {/* Card Image */}
-      <div className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0">
-        <img src={alert.cardImage} alt={alert.cardName} className="w-full h-full object-cover" />
+      <div className="relative w-12 h-16 rounded-lg overflow-hidden flex-shrink-0">
+        <Image src={alert.cardImage} alt={alert.cardName} fill className="object-cover" sizes="48px" loading="lazy" />
       </div>
 
       {/* Alert Info */}
@@ -838,7 +839,9 @@ const CreateAlertModal: React.FC<{
                       hasExistingAlert && 'opacity-50 cursor-not-allowed'
                     )}
                   >
-                    <img src={card.image} alt={card.name} className="w-10 h-14 rounded object-cover" />
+                    <div className="relative w-10 h-14 rounded overflow-hidden flex-shrink-0">
+                      <Image src={card.image} alt={card.name} fill className="object-cover" sizes="40px" loading="lazy" />
+                    </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-medium text-stone-800 dark:text-white truncate">{card.name}</div>
                       <div className="text-xs text-stone-500 dark:text-stone-400">{card.set} #{card.number}</div>
@@ -860,7 +863,9 @@ const CreateAlertModal: React.FC<{
           {/* Selected Card */}
           {selectedCard && (
             <div className="flex items-center gap-4 p-3 rounded-lg bg-stone-50 dark:bg-stone-800">
-              <img src={selectedCard.image} alt={selectedCard.name} className="w-16 h-22 rounded-lg object-cover" />
+              <div className="relative w-16 h-22 rounded-lg overflow-hidden flex-shrink-0">
+                <Image src={selectedCard.image} alt={selectedCard.name} fill className="object-cover" sizes="64px" loading="lazy" />
+              </div>
               <div>
                 <h4 className="font-semibold text-stone-800 dark:text-white">{selectedCard.name}</h4>
                 <p className="text-sm text-stone-500 dark:text-stone-400">{selectedCard.set} #{selectedCard.number}</p>
@@ -1104,7 +1109,9 @@ const PriceHistoryModal: React.FC<{
       <div className="space-y-6">
         {/* Card Info */}
         <div className="flex items-center gap-4">
-          <img src={alert.cardImage} alt={alert.cardName} className="w-16 h-22 rounded-lg object-cover" />
+          <div className="relative w-16 h-22 rounded-lg overflow-hidden flex-shrink-0">
+            <Image src={alert.cardImage} alt={alert.cardName} fill className="object-cover" sizes="64px" loading="lazy" />
+          </div>
           <div>
             <h4 className="font-semibold text-stone-800 dark:text-white">{alert.cardName}</h4>
             <p className="text-sm text-stone-500 dark:text-stone-400">{alert.cardSet}</p>

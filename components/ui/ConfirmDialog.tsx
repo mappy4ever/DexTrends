@@ -20,7 +20,7 @@ import React from 'react';
 import Modal from './Modal';
 import Button from './Button';
 import { cn } from '@/utils/cn';
-import { HiExclamation, HiInformationCircle, HiCheckCircle, HiXCircle } from 'react-icons/hi';
+import { FiAlertTriangle, FiInfo, FiCheckCircle, FiXCircle } from 'react-icons/fi';
 
 export interface ConfirmDialogProps {
   /** Whether the dialog is open */
@@ -49,25 +49,25 @@ export interface ConfirmDialogProps {
 
 const variantConfig = {
   default: {
-    icon: HiInformationCircle,
+    icon: FiInfo,
     iconClass: 'text-blue-500 dark:text-blue-400',
     iconBg: 'bg-blue-100 dark:bg-blue-900/30',
     buttonVariant: 'primary' as const,
   },
   danger: {
-    icon: HiXCircle,
+    icon: FiXCircle,
     iconClass: 'text-red-500 dark:text-red-400',
     iconBg: 'bg-red-100 dark:bg-red-900/30',
     buttonVariant: 'danger' as const,
   },
   warning: {
-    icon: HiExclamation,
+    icon: FiAlertTriangle,
     iconClass: 'text-amber-500 dark:text-amber-400',
     iconBg: 'bg-amber-100 dark:bg-amber-900/30',
     buttonVariant: 'primary' as const,
   },
   success: {
-    icon: HiCheckCircle,
+    icon: FiCheckCircle,
     iconClass: 'text-green-500 dark:text-green-400',
     iconBg: 'bg-green-100 dark:bg-green-900/30',
     buttonVariant: 'primary' as const,

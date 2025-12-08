@@ -9,7 +9,7 @@ import { TypeBadge } from '@/components/ui/TypeBadge';
 import { PageHeader } from '@/components/ui/BreadcrumbNavigation';
 import Container from '@/components/ui/Container';
 import Modal from '@/components/ui/Modal';
-import { IoClose, IoFilter, IoSearch } from 'react-icons/io5';
+import { FiX, FiFilter, FiSearch } from 'react-icons/fi';
 import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
 import { getGeneration } from '@/utils/pokemonutils';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -349,7 +349,7 @@ const UnifiedPokedex: NextPage = () => {
           <div className="sticky top-[48px] md:top-[64px] z-20 -mx-3 sm:-mx-4 lg:-mx-6 px-3 sm:px-4 lg:px-6 py-3 bg-page-bg dark:bg-stone-900 shadow-sm mb-4">
             {/* Search Input - Prominent, full width */}
             <div className="relative mb-3">
-              <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-amber-500" />
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-amber-500" />
               <input
                 type="text"
                 placeholder="Search Pokemon by name or number..."
@@ -364,7 +364,7 @@ const UnifiedPokedex: NextPage = () => {
                   onClick={() => setSearchTerm('')}
                   className="absolute right-14 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full transition-colors active:scale-95"
                 >
-                  <IoClose className="w-4 h-4 text-stone-400" />
+                  <FiX className="w-4 h-4 text-stone-400" />
                 </button>
               ) : null}
               {/* Filter button inside search bar */}
@@ -377,7 +377,7 @@ const UnifiedPokedex: NextPage = () => {
                     : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
                 )}
               >
-                <IoFilter className="w-5 h-5" />
+                <FiFilter className="w-5 h-5" />
                 {activeFilterCount > 0 && (
                   <span className="absolute -top-1 -right-1 w-5 h-5 bg-amber-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
                     {activeFilterCount}
@@ -418,7 +418,7 @@ const UnifiedPokedex: NextPage = () => {
                     className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
                   >
                     Gen {selectedGeneration}
-                    <IoClose className="w-3.5 h-3.5" />
+                    <FiX className="w-3.5 h-3.5" />
                   </button>
                 )}
                 {selectedCategory && (
@@ -427,7 +427,7 @@ const UnifiedPokedex: NextPage = () => {
                     className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors capitalize"
                   >
                     {selectedCategory}
-                    <IoClose className="w-3.5 h-3.5" />
+                    <FiX className="w-3.5 h-3.5" />
                   </button>
                 )}
                 {sortBy !== 'id' && (
@@ -436,7 +436,7 @@ const UnifiedPokedex: NextPage = () => {
                     className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 rounded-full text-sm hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
                   >
                     Sort: {sortBy === 'name' ? 'A-Z' : 'Stats'}
-                    <IoClose className="w-3.5 h-3.5" />
+                    <FiX className="w-3.5 h-3.5" />
                   </button>
                 )}
                 {hasActiveFilters && (

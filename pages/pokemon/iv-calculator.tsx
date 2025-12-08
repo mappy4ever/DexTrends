@@ -9,9 +9,9 @@ import { cn } from '../../utils/cn';
 import logger from '../../utils/logger';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import {
-  FaCalculator, FaSearch, FaInfoCircle, FaCheck, FaTimes,
-  FaChartBar, FaQuestion, FaDna, FaStar
-} from 'react-icons/fa';
+  FiHash, FiSearch, FiInfo, FiCheck, FiX,
+  FiBarChart2, FiHelpCircle, FiActivity, FiStar
+} from 'react-icons/fi';
 
 interface Pokemon {
   id: number;
@@ -281,7 +281,7 @@ const IVCalculatorPage: NextPage = () => {
         <Container variant="gradient" className="p-4 sm:p-6 mb-6">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-              <FaInfoCircle className="w-5 h-5 text-blue-500" />
+              <FiInfo className="w-5 h-5 text-blue-500" />
             </div>
             <div>
               <h3 className="font-semibold text-stone-800 dark:text-white mb-1">
@@ -301,7 +301,7 @@ const IVCalculatorPage: NextPage = () => {
             {/* Pokemon Selection */}
             <Container variant="elevated" className="p-4 sm:p-6">
               <h3 className="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-                <FaSearch className="text-amber-500" />
+                <FiSearch className="text-amber-500" />
                 Select Pokemon
               </h3>
 
@@ -331,12 +331,12 @@ const IVCalculatorPage: NextPage = () => {
                     onClick={() => setSelectedPokemon(null)}
                     className="p-2 rounded-full bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600"
                   >
-                    <FaTimes className="w-4 h-4" />
+                    <FiX className="w-4 h-4" />
                   </button>
                 </div>
               ) : (
                 <div className="relative">
-                  <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
+                  <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
                   <input
                     type="text"
                     value={searchQuery}
@@ -430,7 +430,7 @@ const IVCalculatorPage: NextPage = () => {
             {selectedPokemon && (
               <Container variant="elevated" className="p-4 sm:p-6">
                 <h3 className="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-                  <FaChartBar className="text-amber-500" />
+                  <FiBarChart2 className="text-amber-500" />
                   Enter Current Stats
                 </h3>
 
@@ -492,7 +492,7 @@ const IVCalculatorPage: NextPage = () => {
                   whileTap={{ scale: 0.98 }}
                   className="w-full mt-6 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl shadow-lg flex items-center justify-center gap-2"
                 >
-                  <FaCalculator className="w-4 h-4" />
+                  <FiHash className="w-4 h-4" />
                   Calculate IVs
                 </motion.button>
               </Container>
@@ -509,7 +509,7 @@ const IVCalculatorPage: NextPage = () => {
               >
                 <Container variant="elevated" className="p-4 sm:p-6">
                   <h3 className="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-                    <FaDna className="text-purple-500" />
+                    <FiActivity className="text-purple-500" />
                     IV Results
                   </h3>
 
@@ -537,7 +537,7 @@ const IVCalculatorPage: NextPage = () => {
                               {getIVRangeText(result.possibleIVs)}
                             </span>
                             {result.possibleIVs.includes(31) && (
-                              <FaStar className="w-5 h-5 text-amber-500" />
+                              <FiStar className="w-5 h-5 text-amber-500" />
                             )}
                           </div>
 
@@ -593,7 +593,7 @@ const IVCalculatorPage: NextPage = () => {
             {/* IV Guide */}
             <Container variant="elevated" className="p-4 sm:p-6">
               <h3 className="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-                <FaQuestion className="text-blue-500" />
+                <FiHelpCircle className="text-blue-500" />
                 IV Rating Guide
               </h3>
 
@@ -625,19 +625,19 @@ const IVCalculatorPage: NextPage = () => {
               </h3>
               <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-300">
                 <li className="flex items-start gap-2">
-                  <FaCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <FiCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                   Use Pokemon at higher levels for more accurate results
                 </li>
                 <li className="flex items-start gap-2">
-                  <FaCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <FiCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                   Enter EVs as accurately as possible
                 </li>
                 <li className="flex items-start gap-2">
-                  <FaCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <FiCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                   Make sure you've selected the correct nature
                 </li>
                 <li className="flex items-start gap-2">
-                  <FaCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <FiCheck className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                   If no match is found, double-check your stat values
                 </li>
               </ul>

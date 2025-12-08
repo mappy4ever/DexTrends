@@ -5,15 +5,10 @@ import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { Container } from '../components/ui/Container';
 import { PageHeader } from '../components/ui/BreadcrumbNavigation';
+import { TabPills, type TabItem } from '../components/ui/TabPills';
 import { DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
-import { IoFolderOpen, IoNotifications, IoPieChart } from 'react-icons/io5';
+import { FiFolder, FiBell, FiPieChart } from 'react-icons/fi';
 import type { NextPage } from 'next';
-
-interface Tab {
-  id: string;
-  label: string;
-  icon: string;
-}
 
 interface TopCard {
   name: string;
@@ -45,10 +40,10 @@ interface DistributionItem {
 const CollectionsPage: NextPage = () => {
   const [activeTab, setActiveTab] = useState('collections');
 
-  const tabs: Tab[] = [
-    { id: 'collections', label: 'My Collections', icon: '' },
-    { id: 'alerts', label: 'Price Alerts', icon: '' },
-    { id: 'portfolio', label: 'Portfolio', icon: '' }
+  const tabs: TabItem[] = [
+    { id: 'collections', label: 'My Collections', shortLabel: 'Collections', icon: <FiFolder className="w-4 h-4" /> },
+    { id: 'alerts', label: 'Price Alerts', shortLabel: 'Alerts', icon: <FiBell className="w-4 h-4" /> },
+    { id: 'portfolio', label: 'Portfolio', icon: <FiPieChart className="w-4 h-4" /> }
   ];
 
   return (
@@ -69,27 +64,14 @@ const CollectionsPage: NextPage = () => {
             { title: 'Collections', href: '/collections', icon: '💎', isActive: true },
           ]}
         >
-          {/* Tab Navigation as Pills - Scrollable on mobile */}
-          <div className="overflow-x-auto -mx-4 px-4 pb-2 scrollbar-hide">
-            <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full w-fit min-w-full sm:min-w-0">
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap min-h-[44px] ${
-                    activeTab === tab.id
-                      ? 'bg-amber-600 text-white'
-                      : 'text-stone-600 dark:text-stone-300 hover:text-amber-600'
-                  }`}
-                >
-                  {tab.id === 'collections' && <IoFolderOpen className="w-4 h-4 flex-shrink-0" />}
-                  {tab.id === 'alerts' && <IoNotifications className="w-4 h-4 flex-shrink-0" />}
-                  {tab.id === 'portfolio' && <IoPieChart className="w-4 h-4 flex-shrink-0" />}
-                  <span className="hidden xs:inline sm:inline">{tab.label.split(' ').pop()}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Tab Navigation using TabPills component */}
+          <TabPills
+            tabs={tabs}
+            activeTab={activeTab}
+            onChange={setActiveTab}
+            ariaLabel="Collections navigation"
+            className="pb-2"
+          />
         </PageHeader>
 
         {/* Tab Content */}

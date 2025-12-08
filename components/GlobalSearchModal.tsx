@@ -1,14 +1,74 @@
 import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { FiClock, FiTrendingUp, FiX, FiSearch } from "react-icons/fi";
 import { fetchJSON } from "../utils/unifiedFetch";
 import { TCGDexEndpoints } from "../utils/tcgdex-adapter";
 import { useDebounce } from "../hooks/useDebounce";
 import type { TCGCard, CardSet } from "../types/api/cards";
 import { Container } from "./ui/Container";
 import logger from "../utils/logger";
+import { cn } from "../utils/cn";
 
 const POKE_API = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
+
+// Search history management
+const SEARCH_HISTORY_KEY = 'dextrends_search_history';
+const MAX_HISTORY_ITEMS = 8;
+
+function getSearchHistory(): string[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const history = localStorage.getItem(SEARCH_HISTORY_KEY);
+    return history ? JSON.parse(history) : [];
+  } catch {
+    return [];
+  }
+}
+
+function addToSearchHistory(query: string): void {
+  if (typeof window === 'undefined' || !query.trim()) return;
+  try {
+    const history = getSearchHistory();
+    // Remove if exists, add to front
+    const filtered = history.filter(h => h.toLowerCase() !== query.toLowerCase());
+    const updated = [query.trim(), ...filtered].slice(0, MAX_HISTORY_ITEMS);
+    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
+  } catch {
+    // Silent fail
+  }
+}
+
+function removeFromSearchHistory(query: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const history = getSearchHistory();
+    const updated = history.filter(h => h.toLowerCase() !== query.toLowerCase());
+    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
+  } catch {
+    // Silent fail
+  }
+}
+
+function clearSearchHistory(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(SEARCH_HISTORY_KEY);
+  } catch {
+    // Silent fail
+  }
+}
+
+// Popular/trending suggestions (static for now, could be API-driven)
+const POPULAR_SEARCHES = [
+  { name: 'Charizard', type: 'pokemon' as const },
+  { name: 'Pikachu', type: 'pokemon' as const },
+  { name: 'Mewtwo', type: 'pokemon' as const },
+  { name: 'Scarlet & Violet', type: 'set' as const },
+  { name: 'Crown Zenith', type: 'set' as const },
+  { name: 'Obsidian Flames', type: 'set' as const },
+];
 
 // Type definitions
 interface SearchResults {
@@ -106,17 +166,57 @@ const SearchResultPokemon = memo(({ pokemon }: { pokemon: PokemonResult }) => {
 SearchResultPokemon.displayName = 'SearchResultPokemon';
 
 const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSearchModal(_, ref) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResults>({ cards: [], sets: [], pokemon: [] });
   const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState<string[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  // Load history on mount
+  useEffect(() => {
+    if (open) {
+      setHistory(getSearchHistory());
+    }
+  }, [open]);
 
   const handleOpen = useCallback(() => setOpen(true), []);
   const handleClose = useCallback(() => {
-    setOpen(false); 
-    setQuery(""); 
-    setResults({ cards: [], sets: [], pokemon: [] }); 
+    setOpen(false);
+    setQuery("");
+    setResults({ cards: [], sets: [], pokemon: [] });
+    setSelectedIndex(-1);
+  }, []);
+
+  // Save to history when navigating to a result
+  const handleResultClick = useCallback((searchTerm: string) => {
+    if (searchTerm) {
+      addToSearchHistory(searchTerm);
+    }
+    handleClose();
+  }, [handleClose]);
+
+  // Remove item from history
+  const handleRemoveHistoryItem = useCallback((item: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    removeFromSearchHistory(item);
+    setHistory(getSearchHistory());
+  }, []);
+
+  // Clear all history
+  const handleClearHistory = useCallback(() => {
+    clearSearchHistory();
+    setHistory([]);
+  }, []);
+
+  // Use suggestion
+  const handleUseSuggestion = useCallback((suggestion: string) => {
+    setQuery(suggestion);
+    addToSearchHistory(suggestion);
   }, []);
 
   useImperativeHandle(ref, () => ({ 
@@ -215,10 +315,76 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
     setQuery(e.target.value);
   }, []);
 
-  const hasResults = useMemo(() => 
+  const hasResults = useMemo(() =>
     results.cards.length > 0 || results.sets.length > 0 || results.pokemon.length > 0,
     [results]
   );
+
+  // Build flat list of all navigable items for keyboard nav
+  const navigableItems = useMemo(() => {
+    const items: { type: 'card' | 'set' | 'pokemon' | 'history' | 'suggestion'; id: string; href: string; label: string }[] = [];
+
+    if (query) {
+      results.cards.forEach(card => items.push({ type: 'card', id: card.id, href: `/cards/${card.id}`, label: card.name }));
+      results.sets.forEach(set => items.push({ type: 'set', id: set.id, href: `/tcgexpansions/${set.id}`, label: set.name }));
+      results.pokemon.forEach(p => {
+        const id = p.url.split('/').slice(-2, -1)[0];
+        items.push({ type: 'pokemon', id, href: `/pokedex/${id}`, label: p.name });
+      });
+    } else {
+      history.forEach(h => items.push({ type: 'history', id: h, href: '', label: h }));
+      POPULAR_SEARCHES.forEach(s => items.push({ type: 'suggestion', id: s.name, href: '', label: s.name }));
+    }
+
+    return items;
+  }, [query, results, history]);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleClose();
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex(prev => Math.min(prev + 1, navigableItems.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex(prev => Math.max(prev - 1, -1));
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault();
+      const item = navigableItems[selectedIndex];
+      if (item) {
+        if (item.type === 'history' || item.type === 'suggestion') {
+          handleUseSuggestion(item.label);
+          setSelectedIndex(-1);
+        } else {
+          addToSearchHistory(query);
+          router.push(item.href);
+          handleClose();
+        }
+      }
+    }
+  }, [handleClose, navigableItems, selectedIndex, handleUseSuggestion, query, router]);
+
+  // Reset selection when results change
+  useEffect(() => {
+    setSelectedIndex(-1);
+  }, [results, history]);
+
+  // Calculate index offsets for keyboard navigation highlighting
+  const getItemIndex = useCallback((type: string, itemIndex: number): number => {
+    if (query) {
+      if (type === 'card') return itemIndex;
+      if (type === 'set') return results.cards.length + itemIndex;
+      if (type === 'pokemon') return results.cards.length + results.sets.length + itemIndex;
+    } else {
+      if (type === 'history') return itemIndex;
+      if (type === 'suggestion') return history.length + itemIndex;
+    }
+    return -1;
+  }, [query, results.cards.length, results.sets.length, history.length]);
 
   return open ? (
     <div
@@ -235,7 +401,6 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
         style={{
           outline: 'none',
           maxHeight: 'calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
-          // Hardware acceleration for mobile rendering
           WebkitBackfaceVisibility: 'hidden',
           backfaceVisibility: 'hidden',
         } as React.CSSProperties}
@@ -255,23 +420,137 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
             placeholder="Search cards, Pokémon, sets..."
             value={query}
             onChange={handleInputChange}
-            onKeyDown={e => { if (e.key === "Escape") handleClose(); }}
+            onKeyDown={handleKeyDown}
             tabIndex={0}
             spellCheck={false}
             autoComplete="off"
           />
+          {/* Keyboard hints */}
+          <div className="text-xs text-stone-400 flex items-center gap-3">
+            <span><kbd className="px-1.5 py-0.5 bg-stone-200 dark:bg-stone-700 rounded text-[10px]">↑↓</kbd> navigate</span>
+            <span><kbd className="px-1.5 py-0.5 bg-stone-200 dark:bg-stone-700 rounded text-[10px]">Enter</kbd> select</span>
+            <span><kbd className="px-1.5 py-0.5 bg-stone-200 dark:bg-stone-700 rounded text-[10px]">Esc</kbd> close</span>
+          </div>
         </div>
-        <div className="min-h-[120px] w-full">
-          {loading && <div className="text-center text-stone-400 py-4">Searching...</div>}
-          {!loading && !hasResults && (
-            <div className="text-stone-400 text-center py-4">Type to search...</div>
+
+        <div ref={resultsRef} className="min-h-[200px] max-h-[50vh] overflow-y-auto w-full">
+          {loading && (
+            <div className="text-center text-stone-400 py-4 flex items-center justify-center gap-2">
+              <FiSearch className="w-4 h-4 animate-pulse" />
+              Searching...
+            </div>
           )}
+
+          {/* Empty state: show history and suggestions */}
+          {!loading && !query && (
+            <div className="space-y-4">
+              {/* Recent Searches */}
+              {history.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2 text-sm font-medium text-stone-600 dark:text-stone-300">
+                      <FiClock className="w-4 h-4" />
+                      Recent Searches
+                    </div>
+                    <button
+                      onClick={handleClearHistory}
+                      className="text-xs text-stone-400 hover:text-red-500 transition-colors"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                  <div className="space-y-1">
+                    {history.map((item, idx) => (
+                      <button
+                        key={item}
+                        onClick={() => handleUseSuggestion(item)}
+                        className={cn(
+                          "w-full flex items-center justify-between p-2 rounded-lg transition-colors text-left group",
+                          selectedIndex === getItemIndex('history', idx)
+                            ? "bg-amber-100 dark:bg-amber-900/30"
+                            : "hover:bg-stone-100 dark:hover:bg-stone-700"
+                        )}
+                      >
+                        <div className="flex items-center gap-2">
+                          <FiClock className="w-4 h-4 text-stone-400" />
+                          <span className="text-sm text-stone-700 dark:text-stone-200">{item}</span>
+                        </div>
+                        <button
+                          onClick={(e) => handleRemoveHistoryItem(item, e)}
+                          className="opacity-0 group-hover:opacity-100 p-1 hover:bg-stone-200 dark:hover:bg-stone-600 rounded transition-all"
+                          aria-label={`Remove ${item} from history`}
+                        >
+                          <FiX className="w-3 h-3 text-stone-400" />
+                        </button>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Popular Searches */}
+              <div>
+                <div className="flex items-center gap-2 text-sm font-medium text-stone-600 dark:text-stone-300 mb-2">
+                  <FiTrendingUp className="w-4 h-4" />
+                  Popular Searches
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {POPULAR_SEARCHES.map((suggestion, idx) => (
+                    <button
+                      key={suggestion.name}
+                      onClick={() => handleUseSuggestion(suggestion.name)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-sm transition-colors",
+                        selectedIndex === getItemIndex('suggestion', idx)
+                          ? "bg-amber-500 text-white"
+                          : "bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-600"
+                      )}
+                    >
+                      {suggestion.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* No results state */}
+          {!loading && query && !hasResults && (
+            <div className="text-center py-8">
+              <div className="text-stone-400 mb-3">No results found for "{query}"</div>
+              <div className="text-sm text-stone-500">
+                Try searching for:
+                <div className="flex flex-wrap justify-center gap-2 mt-2">
+                  {POPULAR_SEARCHES.slice(0, 3).map((s) => (
+                    <button
+                      key={s.name}
+                      onClick={() => handleUseSuggestion(s.name)}
+                      className="px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors text-sm"
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Search Results */}
           {results.cards.length > 0 && (
             <div>
               <div className="font-bold text-primary mb-1">Cards</div>
               <div className="space-y-1">
-                {results.cards.map((card) => (
-                  <SearchResultCard key={card.id} card={card} />
+                {results.cards.map((card, idx) => (
+                  <div
+                    key={card.id}
+                    onClick={() => handleResultClick(card.name)}
+                    className={cn(
+                      "rounded-lg transition-colors",
+                      selectedIndex === getItemIndex('card', idx) && "bg-amber-100 dark:bg-amber-900/30"
+                    )}
+                  >
+                    <SearchResultCard card={card} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -280,8 +559,17 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
             <div className="mt-3">
               <div className="font-bold text-primary mb-1">Sets</div>
               <div className="space-y-1">
-                {results.sets.map((set) => (
-                  <SearchResultSet key={set.id} set={set} />
+                {results.sets.map((set, idx) => (
+                  <div
+                    key={set.id}
+                    onClick={() => handleResultClick(set.name)}
+                    className={cn(
+                      "rounded-lg transition-colors",
+                      selectedIndex === getItemIndex('set', idx) && "bg-amber-100 dark:bg-amber-900/30"
+                    )}
+                  >
+                    <SearchResultSet set={set} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -290,8 +578,17 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
             <div className="mt-3">
               <div className="font-bold text-primary mb-1">Pokémon</div>
               <div className="space-y-1">
-                {results.pokemon.map((poke) => (
-                  <SearchResultPokemon key={poke.name} pokemon={poke} />
+                {results.pokemon.map((poke, idx) => (
+                  <div
+                    key={poke.name}
+                    onClick={() => handleResultClick(poke.name)}
+                    className={cn(
+                      "rounded-lg transition-colors",
+                      selectedIndex === getItemIndex('pokemon', idx) && "bg-amber-100 dark:bg-amber-900/30"
+                    )}
+                  >
+                    <SearchResultPokemon pokemon={poke} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -299,10 +596,10 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
         </div>
         <button
           onClick={handleClose}
-          className="absolute top-2 right-2 text-stone-400 hover:text-primary text-2xl font-bold bg-white/80 dark:bg-stone-800/80 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
+          className="absolute top-2 right-2 text-stone-400 hover:text-primary text-2xl font-bold bg-white/80 dark:bg-stone-800/80 rounded-full w-10 h-10 flex items-center justify-center shadow-md min-h-[44px] min-w-[44px]"
           aria-label="Close search"
         >
-          &times;
+          <FiX className="w-5 h-5" />
         </button>
       </Container>
     </div>

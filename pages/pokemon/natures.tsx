@@ -5,6 +5,10 @@ import { NextPage } from 'next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import { FiChevronLeft, FiSearch, FiChevronUp, FiChevronDown, FiInfo, FiX, FiGrid, FiList } from 'react-icons/fi';
+import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
+import PageErrorBoundary from '../../components/ui/PageErrorBoundary';
+import { PageHeader } from '../../components/ui/BreadcrumbNavigation';
+import StyledBackButton from '../../components/ui/StyledBackButton';
 
 interface Nature {
   name: string;
@@ -121,60 +125,42 @@ const NaturesPage: NextPage = () => {
   };
 
   return (
-    <>
+    <PageErrorBoundary pageName="Natures Guide">
       <Head>
         <title>Pokémon Natures Guide | DexTrends</title>
         <meta name="description" content="Complete guide to all 25 Pokemon natures with stat effects, competitive recommendations, and nature chart matrix." />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-orange-50 dark:from-stone-950 dark:via-stone-900 dark:to-amber-950">
-        {/* Hero Section */}
-        <div className="relative overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute inset-0 opacity-30 dark:opacity-20">
-            <div className="absolute top-10 left-10 w-64 h-64 bg-amber-400 rounded-full blur-3xl" />
-            <div className="absolute top-20 right-20 w-48 h-48 bg-orange-400 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-1/3 w-56 h-56 bg-yellow-400 rounded-full blur-3xl" />
+      <FullBleedWrapper gradient="pokedex">
+        <div className="container mx-auto px-4 py-6 max-w-7xl">
+          {/* Back Button */}
+          <div className="mb-4">
+            <StyledBackButton
+              onClick={() => router.push('/pokemon')}
+              text="Pokémon Hub"
+              variant="pokemon"
+              size="sm"
+            />
           </div>
 
-          <div className="relative container mx-auto px-4 pt-6 pb-4">
-            {/* Back Button */}
-            <button
-              onClick={() => router.push('/pokemon')}
-              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors mb-4"
-            >
-              <FiChevronLeft className="w-4 h-4" />
-              Pokémon Hub
-            </button>
+          {/* Page Header */}
+          <PageHeader
+            title="Natures Guide"
+            description="Master the 25 natures that shape your Pokémon's stats"
+            breadcrumbs={[
+              { title: 'Home', href: '/', icon: '🏠', isActive: false },
+              { title: 'Pokémon', href: '/pokemon', icon: '🔴', isActive: false },
+              { title: 'Natures', href: '/pokemon/natures', icon: '📊', isActive: true },
+            ]}
+          />
 
-            {/* Hero Content */}
-            <div className="text-center mb-6">
-              <motion.h1
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-3xl sm:text-4xl md:text-5xl font-black mb-3"
-              >
-                <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
-                  Natures Guide
-                </span>
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-                className="text-stone-600 dark:text-stone-400 max-w-2xl mx-auto"
-              >
-                Master the 25 natures that shape your Pokémon&apos;s stats
-              </motion.p>
-            </div>
-
-            {/* Quick Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex justify-center gap-4 sm:gap-8 mb-4"
-            >
+          {/* Quick Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex justify-center gap-4 sm:gap-8 mb-6"
+          >
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400">{stats.total}</div>
                 <div className="text-xs sm:text-sm text-stone-500">Total</div>
@@ -190,11 +176,9 @@ const NaturesPage: NextPage = () => {
                 <div className="text-xs sm:text-sm text-stone-500">Neutral</div>
               </div>
             </motion.div>
-          </div>
-        </div>
 
-        {/* How It Works */}
-        <div className="container mx-auto px-4 py-4">
+          {/* How It Works */}
+          <div className="mb-6">
           <button
             onClick={() => setShowInfo(!showInfo)}
             className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
@@ -221,10 +205,10 @@ const NaturesPage: NextPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+          </div>
 
-        {/* Competitive Recommendations */}
-        <div className="container mx-auto px-4 pb-4">
+          {/* Competitive Recommendations */}
+          <div className="mb-6">
           <h2 className="text-lg font-bold text-stone-900 dark:text-white mb-3">Competitive Guide</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {COMPETITIVE_RECOMMENDATIONS.map((rec) => (
@@ -249,11 +233,10 @@ const NaturesPage: NextPage = () => {
               </motion.div>
             ))}
           </div>
-        </div>
+          </div>
 
-        {/* Search & Filters */}
-        <div className="sticky top-14 md:top-16 z-30 bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl border-b border-stone-200 dark:border-stone-700">
-          <div className="container mx-auto px-4 py-3">
+          {/* Search & Filters */}
+          <div className="bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl rounded-xl border border-stone-200 dark:border-stone-700 mb-6 p-4">
             <div className="flex flex-col sm:flex-row gap-3">
               {/* Search */}
               <div className="flex-1 relative">
@@ -343,19 +326,18 @@ const NaturesPage: NextPage = () => {
               })}
             </div>
           </div>
-        </div>
 
-        {/* Results Count */}
-        <div className="container mx-auto px-4 py-3">
-          <p className="text-sm text-stone-500 dark:text-stone-400">
-            Showing <span className="font-semibold text-stone-700 dark:text-stone-200">{filteredNatures.length}</span> natures
-            {filterStat && ` affecting ${filterStat}`}
-            {searchQuery && ` matching "${searchQuery}"`}
-          </p>
-        </div>
+          {/* Results Count */}
+          <div className="mb-4">
+            <p className="text-sm text-stone-500 dark:text-stone-400">
+              Showing <span className="font-semibold text-stone-700 dark:text-stone-200">{filteredNatures.length}</span> natures
+              {filterStat && ` affecting ${filterStat}`}
+              {searchQuery && ` matching "${searchQuery}"`}
+            </p>
+          </div>
 
-        {/* Content */}
-        <div className="container mx-auto px-4 pb-8">
+          {/* Content */}
+          <div className="mb-8">
           {/* Chart View */}
           {viewMode === 'chart' && (
             <div className="bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 overflow-hidden">
@@ -494,35 +476,33 @@ const NaturesPage: NextPage = () => {
               )}
             </>
           )}
-        </div>
+          </div>
 
-        {/* Stat Legend */}
-        <div className="container mx-auto px-4 pb-8">
-          <div className="bg-white dark:bg-stone-800 rounded-xl p-4 border border-stone-200 dark:border-stone-700">
-            <h3 className="text-sm font-semibold text-stone-900 dark:text-white mb-3">Stat Legend</h3>
-            <div className="flex flex-wrap gap-3">
-              {STATS.map(stat => {
-                const config = STAT_CONFIG[stat];
-                return (
-                  <div key={stat} className="flex items-center gap-2">
-                    <span className={cn('px-2 py-1 rounded-lg text-xs font-medium', config.bgLight, config.bgDark, config.color)}>
-                      {stat}
-                    </span>
-                    <span className="text-xs text-stone-500 dark:text-stone-400">
-                      {stat === 'Sp. Atk' ? 'Special Attack' : stat === 'Sp. Def' ? 'Special Defense' : stat}
-                    </span>
-                  </div>
-                );
-              })}
+          {/* Stat Legend */}
+          <div className="mt-8">
+            <div className="bg-white dark:bg-stone-800 rounded-xl p-4 border border-stone-200 dark:border-stone-700">
+              <h3 className="text-sm font-semibold text-stone-900 dark:text-white mb-3">Stat Legend</h3>
+              <div className="flex flex-wrap gap-3">
+                {STATS.map(stat => {
+                  const config = STAT_CONFIG[stat];
+                  return (
+                    <div key={stat} className="flex items-center gap-2">
+                      <span className={cn('px-2 py-1 rounded-lg text-xs font-medium', config.bgLight, config.bgDark, config.color)}>
+                        {stat}
+                      </span>
+                      <span className="text-xs text-stone-500 dark:text-stone-400">
+                        {stat === 'Sp. Atk' ? 'Special Attack' : stat === 'Sp. Def' ? 'Special Defense' : stat}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </FullBleedWrapper>
+    </PageErrorBoundary>
   );
 };
-
-// Full bleed layout
-(NaturesPage as NextPage & { fullBleed?: boolean }).fullBleed = true;
 
 export default NaturesPage;

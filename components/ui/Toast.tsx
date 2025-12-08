@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaExclamationTriangle } from 'react-icons/fa';
+import { FiX, FiCheckCircle, FiAlertCircle, FiInfo, FiAlertTriangle } from 'react-icons/fi';
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
 export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
@@ -16,10 +16,10 @@ export interface ToastProps {
 }
 
 const toastIcons = {
-  success: <FaCheckCircle className="w-5 h-5" />,
-  error: <FaExclamationCircle className="w-5 h-5" />,
-  info: <FaInfoCircle className="w-5 h-5" />,
-  warning: <FaExclamationTriangle className="w-5 h-5" />
+  success: <FiCheckCircle className="w-5 h-5" />,
+  error: <FiAlertCircle className="w-5 h-5" />,
+  info: <FiInfo className="w-5 h-5" />,
+  warning: <FiAlertTriangle className="w-5 h-5" />
 };
 
 const toastColors = {
@@ -159,7 +159,7 @@ export const Toast: React.FC<ToastProps> = ({
               onClick={() => onClose(id)}
               className="flex-shrink-0 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors"
             >
-              <FaTimes className="w-4 h-4" />
+              <FiX className="w-4 h-4" />
             </button>
           </div>
         </div>

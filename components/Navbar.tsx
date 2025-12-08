@@ -1,10 +1,10 @@
-import { useEffect, useState, useRef, ReactNode } from "react";
+import { useEffect, useState, useRef, ReactNode, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
-import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown, BsPerson, BsPersonFill, BsQuestionCircle } from "react-icons/bs";
-import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
+import { FiSun, FiMoon, FiGlobe, FiHeart, FiSearch, FiGrid, FiLayers, FiBook, FiChevronDown, FiUser, FiHelpCircle } from "react-icons/fi";
+import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi"; // Keep specialty gaming icons
 import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import logger from "../utils/logger";
@@ -14,7 +14,7 @@ import { useAuthSafe } from "../context/AuthContext";
 import ClientOnly from "./ClientOnly";
 import { NavbarLogo } from "../components/ui/DexTrendsLogo";
 import { PokeballSVG } from "./ui/PokeballSVG";
-import { Z_INDEX } from "../hooks/useViewport";
+import { useViewport, Z_INDEX } from "../hooks/useViewport";
 
 // Type definitions for navigation
 interface DropdownItem {
@@ -49,6 +49,25 @@ export default function Navbar() {
   const menuWrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchModalRef = useRef<GlobalSearchModalHandle>(null);
+  const viewport = useViewport();
+
+  // Use viewport-based mobile detection instead of touch capability
+  // This ensures consistent behavior across devices (laptops with touchscreens should use desktop behavior)
+  const isMobileViewport = viewport.isMounted && (viewport.isMobile || viewport.isTablet);
+
+  // Android back button handler - closes mobile menu when back is pressed
+  useEffect(() => {
+    const handlePopState = () => {
+      if (mobileOpen) {
+        setMobileOpen(false);
+      }
+      // Also close any open dropdowns
+      setDropdownStates({});
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [mobileOpen]);
 
   // Count total favorites
   const totalFavorites = favorites ?
@@ -57,17 +76,17 @@ export default function Navbar() {
 
   // DexTrends Pokémon-themed navigation with dropdown structure
   const navItems: NavItem[] = [
-    { href: "/", label: "Home", icon: <BsGrid size={18} />, color: "text-pokeball-red" },
+    { href: "/", label: "Home", icon: <FiGrid size={18} />, color: "text-pokeball-red" },
     {
       href: "/tcgexpansions",
       label: "Pokémon TCG",
-      icon: <BsCardList size={18} />,
+      icon: <FiLayers size={18} />,
       color: "text-greatball-blue",
       hasDropdown: true,
       dropdownItems: [
-        { href: "/tcgexpansions", label: "Sets", icon: <BsCardList size={18} />, description: "Browse all TCG sets" },
-        { href: "/cards", label: "Cards", icon: <BsCardList size={18} />, description: "Browse and search Pokemon cards" },
-        { href: "/collection", label: "Collection Tracker", icon: <BsHeart size={18} />, description: "Track your card collection" },
+        { href: "/tcgexpansions", label: "Sets", icon: <FiLayers size={18} />, description: "Browse all TCG sets" },
+        { href: "/cards", label: "Cards", icon: <FiLayers size={18} />, description: "Browse and search Pokemon cards" },
+        { href: "/collection", label: "Collection Tracker", icon: <FiHeart size={18} />, description: "Track your card collection" },
         { href: "/deck-sharing", label: "Deck Sharing", icon: <GiCardPickup size={18} />, description: "Build and share deck lists" },
         { href: "/price-alerts", label: "Price Alerts", icon: <FiTrendingUp size={18} />, description: "Get notified on price changes" },
         { href: "/market", label: "Market Analytics", icon: <FiTrendingUp size={18} />, description: "Market trends and insights" },
@@ -77,13 +96,13 @@ export default function Navbar() {
     {
       href: "/pokemon",
       label: "Pokémon",
-      icon: <BsGlobeEuropeAfrica size={18} />,
+      icon: <FiGlobe size={18} />,
       color: "text-poke-grass",
       hasDropdown: true,
       dropdownItems: [
-        { href: "/pokemon/regions", label: "Regions", icon: <BsGlobeEuropeAfrica size={18} />, description: "Explore all regions" },
+        { href: "/pokemon/regions", label: "Regions", icon: <FiGlobe size={18} />, description: "Explore all regions" },
         { href: "/pokemon/starters", label: "Starters", icon: <GiPokerHand size={18} />, description: "Regional starter Pokémon" },
-        { href: "/pokemon/moves", label: "Moves & TMs", icon: <BsBook size={18} />, description: "Complete moves database" },
+        { href: "/pokemon/moves", label: "Moves & TMs", icon: <FiBook size={18} />, description: "Complete moves database" },
         { href: "/pokemon/games", label: "Games", icon: <GiCardPickup size={18} />, description: "All Pokémon games" },
         { href: "/pokemon/items", label: "Items", icon: <FiShoppingBag size={18} />, description: "Items and their effects" },
         { href: "/pokemon/abilities", label: "Abilities", icon: <AiOutlineBulb size={18} />, description: "Pokémon abilities list" },
@@ -98,7 +117,7 @@ export default function Navbar() {
       dropdownItems: [
         { href: "/battle-simulator", label: "Battle Simulator", icon: <GiCrossedSwords size={18} />, description: "Simulate Pokemon battles" },
         { href: "/team-builder", label: "Team Builder", icon: <GiPokerHand size={18} />, description: "Build balanced teams" },
-        { href: "/type-effectiveness", label: "Type Effectiveness", icon: <BsBook size={18} />, description: "Interactive type chart" },
+        { href: "/type-effectiveness", label: "Type Effectiveness", icon: <FiBook size={18} />, description: "Interactive type chart" },
       ]
     },
     {
@@ -108,15 +127,15 @@ export default function Navbar() {
       color: "text-poke-electric",
       hasDropdown: true,
       dropdownItems: [
-        { href: "/pocketmode", label: "Cards", icon: <BsCardList size={18} />, description: "Browse Pocket cards" },
-        { href: "/pocketmode/expansions", label: "Expansions", icon: <BsGrid size={18} />, description: "Browse expansion sets" },
+        { href: "/pocketmode", label: "Cards", icon: <FiLayers size={18} />, description: "Browse Pocket cards" },
+        { href: "/pocketmode/expansions", label: "Expansions", icon: <FiGrid size={18} />, description: "Browse expansion sets" },
         { href: "/pocketmode/packs", label: "Pack Opening", icon: <FiShoppingBag size={18} />, description: "Open virtual packs" },
-        { href: "/pocketmode/decks", label: "Top Decks", icon: <BsBook size={18} />, description: "Popular deck builds" },
+        { href: "/pocketmode/decks", label: "Top Decks", icon: <FiBook size={18} />, description: "Popular deck builds" },
         { href: "/pocketmode/deckbuilder", label: "Deck Builder", icon: <GiPokerHand size={18} />, description: "Build custom decks" },
       ]
     },
     { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={18} />, color: "text-poke-psychic" },
-    { href: "/support", label: "Support", icon: <BsQuestionCircle size={18} />, color: "text-stone-500" },
+    { href: "/support", label: "Support", icon: <FiHelpCircle size={18} />, color: "text-stone-500" },
   ];
 
 
@@ -235,8 +254,9 @@ export default function Navbar() {
                         ? 'bg-amber-600 text-white'
                         : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                     onClick={(e) => {
-                      // On touch devices, toggle dropdown on click instead of navigating
-                      if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                      // On mobile/tablet viewports, toggle dropdown on click instead of navigating
+                      // Using viewport width instead of touch capability for consistent behavior
+                      if (isMobileViewport) {
                         e.preventDefault();
                         setDropdownStates(prev => ({
                           ...Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {}),
@@ -266,7 +286,7 @@ export default function Navbar() {
                       {item.icon}
                     </span>
                     <span className="text-sm font-medium">{item.label}</span>
-                    <BsChevronDown className={`w-3 h-3 transition-transform duration-150 ${dropdownStates[item.href] ? 'rotate-180' : ''} ${isActive ? 'text-white/70' : 'text-stone-400'}`} />
+                    <FiChevronDown className={`w-3 h-3 transition-transform duration-150 ${dropdownStates[item.href] ? 'rotate-180' : ''} ${isActive ? 'text-white/70' : 'text-stone-400'}`} />
                   </Link>
 
                   {/* Invisible bridge to prevent gap */}
@@ -354,7 +374,7 @@ export default function Navbar() {
             className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={() => searchModalRef.current?.open()}
           >
-            <BsSearch className="w-5 h-5" />
+            <FiSearch className="w-5 h-5" />
           </button>
 
           {/* Favorites - proper touch target */}
@@ -365,7 +385,7 @@ export default function Navbar() {
             className="relative p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 active:bg-stone-300 dark:active:bg-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
             data-is-navbar="true"
           >
-            <BsHeart className="w-5 h-5" />
+            <FiHeart className="w-5 h-5" />
             <ClientOnly>
               {totalFavorites > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-amber-600 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
@@ -390,9 +410,9 @@ export default function Navbar() {
               {authLoading ? (
                 <div className="w-5 h-5 border-2 border-stone-300 dark:border-stone-600 border-t-amber-500 rounded-full animate-spin" />
               ) : user ? (
-                <BsPersonFill className="w-5 h-5" />
+                <FiUser className="w-5 h-5" />
               ) : (
-                <BsPerson className="w-5 h-5" />
+                <FiUser className="w-5 h-5" />
               )}
               {user && (
                 <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-stone-900" />
@@ -409,8 +429,8 @@ export default function Navbar() {
           >
             <ClientOnly>
               {theme === 'dark' ?
-                <BsSun className="w-5 h-5 text-amber-500" /> :
-                <BsMoon className="w-5 h-5 text-amber-600" />
+                <FiSun className="w-5 h-5 text-amber-500" /> :
+                <FiMoon className="w-5 h-5 text-amber-600" />
               }
             </ClientOnly>
           </button>

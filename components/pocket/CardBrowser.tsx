@@ -81,12 +81,13 @@ const CardItem = memo(function CardItem({
       onTouchCancel={() => longPressTimer.current && clearTimeout(longPressTimer.current)}
       className={cn(
         'relative group rounded-md overflow-hidden',
-        'aspect-[2.5/3.5] w-full',
+        'aspect-[2.5/3.5] w-full min-w-[60px]', // Minimum width for touch
         'bg-stone-100 dark:bg-stone-800',
         'transition-all duration-150 ease-out',
         'hover:brightness-110 hover:shadow-md',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-inset',
-        'active:scale-[0.97]',
+        'active:scale-[0.97] active:brightness-95',
+        'touch-manipulation', // Optimize for touch
         isAtMax && 'opacity-50 saturate-50'
       )}
       aria-label={`Add ${card.name} to deck${count > 0 ? ` (${count}/${maxCopies} in deck)` : ''}`}
@@ -197,10 +198,11 @@ export function CardBrowser({
         </span>
       </div>
 
-      {/* Card Grid - Dense layout to show more cards */}
+      {/* Card Grid - Responsive layout optimized for touch on mobile */}
       <div className={cn(
-        'grid gap-1.5 sm:gap-2',
-        'grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8'
+        'grid gap-2 sm:gap-2.5',
+        // 3 columns on small mobile, 4 on larger phones, scaling up for tablets/desktop
+        'grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8'
       )}>
         {cards.map((card) => (
           <CardItem
@@ -225,17 +227,18 @@ export function CardBrowser({
         </div>
       )}
 
-      {/* Load More Button (fallback) */}
+      {/* Load More Button (fallback) - With proper touch target */}
       {hasMore && !loading && (
         <button
           type="button"
           onClick={onLoadMore}
           className={cn(
-            'mx-auto mt-4 px-6 py-2.5',
-            'bg-blue-500 hover:bg-blue-600 text-white',
+            'mx-auto mt-4 px-8 py-3 min-h-[48px]',
+            'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white',
             'rounded-full font-medium text-sm',
-            'transition-colors duration-200',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+            'transition-all duration-200 active:scale-[0.98]',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
+            'touch-manipulation'
           )}
         >
           Load More

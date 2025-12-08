@@ -4,7 +4,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../context/UnifiedAppContext';
-import { BsStars, BsDiamond, BsHexagon } from 'react-icons/bs';
+import { FiStar, FiSquare, FiHexagon } from 'react-icons/fi';
 
 interface RegionData {
   name?: string;
@@ -71,7 +71,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
           animate="floating"
           className="absolute top-4 left-1/4 w-8 h-8"
         >
-          <BsDiamond className="w-full h-full text-amber-400 opacity-30" />
+          <FiSquare className="w-full h-full text-amber-400 opacity-30" />
         </motion.div>
         <motion.div
           variants={decorationVariants}
@@ -79,7 +79,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
           className="absolute top-8 right-1/3 w-6 h-6"
           style={{ animationDelay: '2s' }}
         >
-          <BsHexagon className="w-full h-full text-amber-400 opacity-40" />
+          <FiHexagon className="w-full h-full text-amber-400 opacity-40" />
         </motion.div>
         <motion.div
           variants={decorationVariants}
@@ -87,7 +87,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
           className="absolute bottom-4 left-1/3 w-10 h-10"
           style={{ animationDelay: '4s' }}
         >
-          <BsStars className="w-full h-full text-pink-400 opacity-25" />
+          <FiStar className="w-full h-full text-pink-400 opacity-25" />
         </motion.div>
       </div>
 
@@ -144,17 +144,17 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <div className="flex items-center gap-2">
-              <BsStars className="text-yellow-300" />
+              <FiStar className="text-yellow-300" />
               <span>Elite Trainers</span>
             </div>
             <div className="w-1 h-6 bg-white opacity-50" />
             <div className="flex items-center gap-2">
-              <BsDiamond className="text-amber-300" />
+              <FiSquare className="text-amber-300" />
               <span>Gym Badges</span>
             </div>
             <div className="w-1 h-6 bg-white opacity-50" />
             <div className="flex items-center gap-2">
-              <BsHexagon className="text-amber-300" />
+              <FiHexagon className="text-amber-300" />
               <span>Type Masters</span>
             </div>
           </motion.div>

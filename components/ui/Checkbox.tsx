@@ -1,5 +1,5 @@
 import React, { forwardRef, InputHTMLAttributes, useId } from 'react';
-import { IoCheckmark, IoRemove } from 'react-icons/io5';
+import { FiCheck, FiMinus } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 const hapticManager = typeof window !== 'undefined' ? require('../../utils/hapticFeedback').default : null;
@@ -139,9 +139,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 className="text-white"
               >
                 {indeterminate ? (
-                  <IoRemove className={sizeConfig[size].icon} />
+                  <FiMinus className={sizeConfig[size].icon} />
                 ) : (
-                  <IoCheckmark className={sizeConfig[size].icon} strokeWidth={3} />
+                  <FiCheck className={sizeConfig[size].icon} />
                 )}
               </motion.div>
             )}

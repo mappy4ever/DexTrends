@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container, ContainerHeader, ContainerTitle, ContainerDescription, ContainerFooter } from '@/components/ui/Container';
 import Button, { ButtonGroup, IconButton } from '@/components/ui/Button';
@@ -809,10 +810,10 @@ const CardListItem: React.FC<{
     >
       {/* Card Image */}
       <div
-        className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer"
+        className="relative w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer"
         onClick={onClick}
       >
-        <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
+        <Image src={card.image} alt={card.name} fill className="object-cover" sizes="48px" loading="lazy" />
       </div>
 
       {/* Card Info */}
@@ -976,7 +977,9 @@ const AddCardModal: React.FC<{
                     alreadyOwned && 'opacity-50 cursor-not-allowed'
                   )}
                 >
-                  <img src={card.image} alt={card.name} className="w-full aspect-[2.5/3.5] object-cover" />
+                  <div className="relative w-full aspect-[2.5/3.5]">
+                    <Image src={card.image} alt={card.name} fill className="object-cover" sizes="96px" loading="lazy" />
+                  </div>
                   {alreadyOwned && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                       <BsCheckCircle className="w-6 h-6 text-green-400" />
@@ -1027,8 +1030,8 @@ const CardDetailModal: React.FC<{
     >
       <div className="grid md:grid-cols-2 gap-6">
         {/* Card Image */}
-        <div className="aspect-[2.5/3.5] rounded-xl overflow-hidden">
-          <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
+        <div className="relative aspect-[2.5/3.5] rounded-xl overflow-hidden">
+          <Image src={card.image} alt={card.name} fill className="object-cover" sizes="320px" loading="lazy" />
         </div>
 
         {/* Card Details */}

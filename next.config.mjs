@@ -2,6 +2,7 @@
 // next.config.mjs
 
 import bundleAnalyzer from '@next/bundle-analyzer';
+import { withSentryConfig } from '@sentry/nextjs';
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -368,4 +369,29 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
 };
 
-export default withBundleAnalyzer(nextConfig);
+// Sentry configuration options
+const sentryWebpackPluginOptions = {
+  // Only upload source maps in production with Sentry configured
+  silent: !process.env.SENTRY_DSN,
+
+  // Source maps upload (only when SENTRY_AUTH_TOKEN is set)
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+
+  // Hides source maps from generated client bundles
+  hideSourceMaps: true,
+
+  // Automatically tree-shake Sentry logger statements
+  disableLogger: true,
+
+  // Don't fail build if Sentry isn't configured
+  silentError: true,
+};
+
+// Apply both plugins - Bundle Analyzer and Sentry
+const configWithAnalyzer = withBundleAnalyzer(nextConfig);
+
+// Only wrap with Sentry in production or when DSN is set
+export default process.env.SENTRY_DSN || process.env.NODE_ENV === 'production'
+  ? withSentryConfig(configWithAnalyzer, sentryWebpackPluginOptions)
+  : configWithAnalyzer;

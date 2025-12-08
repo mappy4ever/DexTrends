@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import logger from '@/utils/logger';
 import { getServiceWorkerFile, getBrowserInfo } from '@/utils/browserDetection';
 import type { BeforeInstallPromptEvent, ExtendedNavigator } from '@/types/pwa';
+import { UpdateNotification, OfflineIndicator } from '@/components/ui/UpdateNotification';
 
 // Re-export hook for backward compatibility
 export { usePWA } from '../../hooks/usePWA';
@@ -225,9 +226,19 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
     serviceWorkerRegistration
   };
 
+  const dismissUpdate = useCallback(() => {
+    setHasUpdate(false);
+  }, []);
+
   return (
     <PWAContext.Provider value={value}>
       {children}
+      <UpdateNotification
+        isVisible={hasUpdate}
+        onUpdate={refreshApp}
+        onDismiss={dismissUpdate}
+      />
+      <OfflineIndicator isOffline={!isOnline} />
     </PWAContext.Provider>
   );
 };

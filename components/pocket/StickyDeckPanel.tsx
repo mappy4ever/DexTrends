@@ -40,11 +40,12 @@ const MiniCard = memo(function MiniCard({
       onClick={onClick}
       className={cn(
         'relative group rounded overflow-hidden',
-        'aspect-[2.5/3.5] w-full',
+        'aspect-[2.5/3.5] w-full min-w-[44px]', // Added min-w for touch target
         'bg-stone-200 dark:bg-stone-700',
         'transition-all duration-200',
-        'hover:ring-2 hover:ring-red-400',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500'
+        'hover:ring-2 hover:ring-red-400 active:scale-95', // Added active feedback
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500',
+        'touch-manipulation' // Optimize for touch
       )}
       aria-label={`Remove ${entry.card.name} from deck`}
     >
@@ -350,50 +351,52 @@ const MobilePanel = memo(function MobilePanel({
         'fixed bottom-0 left-0 right-0 z-50',
         'bg-white dark:bg-stone-900',
         'border-t border-stone-200 dark:border-stone-700',
+        'shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)]',
         'transition-all duration-300 ease-out',
-        isExpanded ? 'h-[70vh]' : 'h-[100px]',
+        isExpanded ? 'h-[70vh]' : 'h-[80px]', // Reduced collapsed height from 100px to 80px
+        'pb-safe', // Safe area for devices with home indicator
         className
       )}>
-        {/* Collapsed view */}
+        {/* Collapsed view - Optimized for mobile */}
         <div className={cn(
-          'p-3',
+          'px-3 py-2',
           isExpanded && 'border-b border-stone-200 dark:border-stone-700'
         )}>
-          <div className="flex items-center gap-3">
-            {/* Mini card preview (horizontal scroll) */}
-            <div className="flex-1 overflow-x-auto">
-              <div className="flex gap-1.5">
+          <div className="flex items-center gap-2">
+            {/* Mini card preview (horizontal scroll) - Larger cards for touch */}
+            <div className="flex-1 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-1">
                 {deck.length > 0 ? (
-                  deck.slice(0, 8).map((entry, i) => (
+                  deck.slice(0, 6).map((entry, i) => (
                     <div
                       key={`${entry.card.id}-${i}`}
-                      className="w-10 h-14 flex-shrink-0 rounded overflow-hidden bg-stone-200 dark:bg-stone-700"
+                      className="w-11 h-[60px] flex-shrink-0 rounded overflow-hidden bg-stone-200 dark:bg-stone-700"
                     >
                       <Image
                         src={entry.card.image || entry.card.thumbnail || '/placeholder-card.png'}
                         alt={entry.card.name}
-                        width={40}
-                        height={56}
+                        width={44}
+                        height={60}
                         className="object-cover w-full h-full"
                       />
                     </div>
                   ))
                 ) : (
-                  <span className="text-sm text-stone-400">No cards added</span>
+                  <span className="text-xs text-stone-400 py-4">Tap cards to add</span>
                 )}
-                {deck.length > 8 && (
-                  <div className="w-10 h-14 flex-shrink-0 rounded bg-stone-200 dark:bg-stone-700 flex items-center justify-center">
-                    <span className="text-xs font-bold text-stone-500">+{deck.length - 8}</span>
+                {deck.length > 6 && (
+                  <div className="w-11 h-[60px] flex-shrink-0 rounded bg-stone-200 dark:bg-stone-700 flex items-center justify-center">
+                    <span className="text-xs font-bold text-stone-500">+{deckStats.totalCards - 6}</span>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Card count badge */}
+            {/* Card count badge - More compact */}
             <div className={cn(
-              'flex-shrink-0 w-12 h-12 rounded-full',
+              'flex-shrink-0 min-w-[44px] h-11 px-2 rounded-full',
               'flex items-center justify-center',
-              'font-bold text-sm',
+              'font-bold text-xs',
               deckStats.isFull
                 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
                 : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
@@ -401,41 +404,45 @@ const MobilePanel = memo(function MobilePanel({
               {deckStats.totalCards}/{maxDeckSize}
             </div>
 
-            {/* Expand button */}
+            {/* Expand button - Larger touch target */}
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
               className={cn(
-                'flex-shrink-0 py-2.5 px-4 rounded-lg',
+                'flex-shrink-0 min-h-[44px] py-2 px-4 rounded-lg',
                 'bg-blue-500 text-white font-medium text-sm',
-                'transition-colors duration-200',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500'
+                'transition-all duration-200 active:scale-95',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+                'touch-manipulation'
               )}
             >
-              {isExpanded ? 'Close' : 'View Deck'}
+              {isExpanded ? 'Close' : 'Deck'}
             </button>
           </div>
         </div>
 
         {/* Expanded view */}
         {isExpanded && (
-          <div className="flex flex-col h-[calc(100%-76px)] overflow-hidden">
-            {/* Deck name input */}
-            <div className="p-3 border-b border-stone-200 dark:border-stone-700">
-              <input
-                type="text"
-                value={deckName}
-                onChange={(e) => onNameChange(e.target.value)}
-                placeholder="Deck Name"
-                className={cn(
-                  'w-full px-3 py-2 text-sm font-medium',
-                  'bg-stone-50 dark:bg-stone-800 rounded-lg',
-                  'border border-stone-200 dark:border-stone-700',
-                  'focus:outline-none focus:ring-2 focus:ring-blue-500'
-                )}
-              />
+          <div className="flex flex-col h-[calc(100%-64px)] overflow-hidden">
+            {/* Deck name input - More compact */}
+            <div className="px-3 py-2 border-b border-stone-200 dark:border-stone-700">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={deckName}
+                  onChange={(e) => onNameChange(e.target.value)}
+                  placeholder="Deck Name"
+                  className={cn(
+                    'flex-1 px-3 py-2 text-sm font-medium',
+                    'bg-stone-50 dark:bg-stone-800 rounded-lg',
+                    'border border-stone-200 dark:border-stone-700',
+                    'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    'min-h-[44px]' // Touch target
+                  )}
+                />
+              </div>
 
-              {/* Type distribution */}
+              {/* Type distribution - Compact */}
               {deckStats.totalCards > 0 && (
                 <div className="mt-2">
                   <TypeDistribution
@@ -446,9 +453,9 @@ const MobilePanel = memo(function MobilePanel({
               )}
             </div>
 
-            {/* Card grid (scrollable) */}
+            {/* Card grid (scrollable) - 4 columns for better touch targets */}
             <div className="flex-1 overflow-auto p-3">
-              <div className="grid grid-cols-5 gap-1.5">
+              <div className="grid grid-cols-4 gap-2">
                 {Array.from({ length: maxDeckSize }, (_, slotIndex) => {
                   let foundEntry: DeckEntry | null = null;
                   let tempIndex = 0;
@@ -479,16 +486,17 @@ const MobilePanel = memo(function MobilePanel({
               </div>
             </div>
 
-            {/* Action buttons */}
-            <div className="p-3 border-t border-stone-200 dark:border-stone-700">
+            {/* Action buttons - With proper touch targets */}
+            <div className="p-3 border-t border-stone-200 dark:border-stone-700 pb-safe">
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => { onViewDeck(); setIsExpanded(false); }}
                   disabled={deckStats.isEmpty}
                   className={cn(
-                    'flex-1 py-3 rounded-lg font-medium',
-                    'transition-colors duration-200',
+                    'flex-1 min-h-[48px] rounded-lg font-medium text-sm',
+                    'transition-all duration-200 active:scale-[0.98]',
+                    'touch-manipulation',
                     deckStats.isEmpty
                       ? 'bg-stone-100 dark:bg-stone-800 text-stone-400'
                       : 'bg-blue-500 text-white'
@@ -501,8 +509,9 @@ const MobilePanel = memo(function MobilePanel({
                   onClick={() => { onShareDeck(); setIsExpanded(false); }}
                   disabled={deckStats.isEmpty}
                   className={cn(
-                    'flex-1 py-3 rounded-lg font-medium',
-                    'transition-colors duration-200',
+                    'flex-1 min-h-[48px] rounded-lg font-medium text-sm',
+                    'transition-all duration-200 active:scale-[0.98]',
+                    'touch-manipulation',
                     deckStats.isEmpty
                       ? 'bg-stone-100 dark:bg-stone-800 text-stone-400'
                       : 'bg-green-500 text-white'
@@ -515,8 +524,9 @@ const MobilePanel = memo(function MobilePanel({
                   onClick={onClearDeck}
                   disabled={deckStats.isEmpty}
                   className={cn(
-                    'py-3 px-4 rounded-lg font-medium',
-                    'transition-colors duration-200',
+                    'min-h-[48px] px-4 rounded-lg font-medium text-sm',
+                    'transition-all duration-200 active:scale-[0.98]',
+                    'touch-manipulation',
                     deckStats.isEmpty
                       ? 'bg-stone-100 dark:bg-stone-800 text-stone-400'
                       : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'

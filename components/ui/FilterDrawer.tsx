@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { IoFilter, IoClose, IoChevronDown } from 'react-icons/io5';
+import { FiFilter, FiX, FiChevronDown } from 'react-icons/fi';
 import { cn } from '../../utils/cn';
 import Button from './Button';
 import { TRANSITION, SPRING_PHYSICS, TYPOGRAPHY } from './design-system/glass-constants';
@@ -77,7 +77,7 @@ function FilterGroupAccordion({ group }: FilterGroupAccordionProps) {
         className="w-full flex items-center justify-between py-3 px-1"
       >
         <span className={cn(TYPOGRAPHY.label)}>{group.label}</span>
-        <IoChevronDown
+        <FiChevronDown
           className={cn(
             'w-5 h-5 text-stone-400 transition-transform',
             isOpen && 'rotate-180'
@@ -130,7 +130,7 @@ export function FilterDrawer({
           variant="secondary"
           size="md"
           onClick={() => setIsOpen(true)}
-          icon={<IoFilter className="w-4 h-4" />}
+          icon={<FiFilter className="w-4 h-4" />}
           className="w-full"
         >
           Filters
@@ -207,7 +207,7 @@ export function FilterDrawer({
                       onClick={() => setIsOpen(false)}
                       className="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800"
                     >
-                      <IoClose className="w-5 h-5" />
+                      <FiX className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
@@ -273,7 +273,7 @@ export function ActiveFilterPills({ filters, onClearAll, className }: ActiveFilt
           )}
         >
           <span>{filter.label}: {filter.value}</span>
-          <IoClose className="w-3 h-3" />
+          <FiX className="w-3 h-3" />
         </button>
       ))}
       {filters.length > 1 && onClearAll && (

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { NextPage } from 'next';
-import { IoGameController, IoSparkles, IoTrendingUp, IoHeart } from 'react-icons/io5';
+import { FiSmartphone, FiStar, FiTrendingUp, FiHeart } from 'react-icons/fi';
 
 // Components
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
@@ -144,7 +144,7 @@ const FEATURES = [
   },
   {
     href: '/pocketmode',
-    icon: <IoGameController className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-pink-600 dark:text-pink-400" />,
+    icon: <FiSmartphone className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-pink-600 dark:text-pink-400" />,
     iconBg: 'bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/20',
     title: 'TCG Pocket',
     description: 'Pocket cards, decks & pack opening',
@@ -152,14 +152,14 @@ const FEATURES = [
   },
   {
     href: '/market',
-    icon: <IoTrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-600 dark:text-green-400" />,
+    icon: <FiTrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-600 dark:text-green-400" />,
     iconBg: 'bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20',
     title: 'Market',
     description: 'Price trends & market analytics',
   },
   {
     href: '/favorites',
-    icon: <IoHeart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-rose-600 dark:text-rose-400" />,
+    icon: <FiHeart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-rose-600 dark:text-rose-400" />,
     iconBg: 'bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/30 dark:to-rose-800/20',
     title: 'Favorites',
     description: 'Your saved Pokémon & cards',
@@ -173,7 +173,7 @@ const FEATURES = [
   },
   {
     href: '/fun',
-    icon: <IoSparkles className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-cyan-600 dark:text-cyan-400" />,
+    icon: <FiStar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-cyan-600 dark:text-cyan-400" />,
     iconBg: 'bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/30 dark:to-cyan-800/20',
     title: 'Fun',
     description: 'Quizzes, random & mini games',

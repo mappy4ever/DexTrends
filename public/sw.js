@@ -1,7 +1,7 @@
 // Service Worker for DexTrends PWA
-// Version 1.0.0
+// Version 1.1.0 - Added offline page and update notifications
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v1.1';
 const CACHE_NAME = `dextrends-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
 const API_CACHE = `api-${CACHE_VERSION}`;
@@ -9,6 +9,7 @@ const API_CACHE = `api-${CACHE_VERSION}`;
 // Assets to cache on install
 const STATIC_ASSETS = [
   '/',
+  '/offline',
   '/manifest.json',
   '/favicon.ico',
   '/dextrendslogo.png',
@@ -142,13 +143,27 @@ self.addEventListener('fetch', (event) => {
   // Handle navigation requests (HTML)
   if (request.mode === 'navigate') {
     event.respondWith(
-      caches.match(request)
-        .then((cachedResponse) => {
-          return cachedResponse || fetch(request);
+      fetch(request)
+        .then((response) => {
+          // Cache successful navigation responses
+          if (response.ok) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseToCache);
+            });
+          }
+          return response;
         })
         .catch(() => {
-          // Return offline page if available
-          return caches.match('/');
+          // Try cached version first
+          return caches.match(request)
+            .then((cachedResponse) => {
+              if (cachedResponse) {
+                return cachedResponse;
+              }
+              // Return offline page as fallback
+              return caches.match('/offline');
+            });
         })
     );
     return;

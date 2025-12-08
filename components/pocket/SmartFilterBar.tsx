@@ -90,9 +90,9 @@ const TypePill = memo(function TypePill({
       onClick={onClick}
       className={cn(
         'flex items-center gap-1.5 px-2.5 py-1.5 rounded-full',
-        'transition-all duration-200',
+        'transition-all duration-200 active:scale-[0.97]',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500',
-        'min-w-[44px] min-h-[44px]', // Touch target
+        'min-w-[44px] min-h-[44px] touch-manipulation', // Touch target
         isSelected
           ? 'bg-blue-500 text-white shadow-md'
           : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
@@ -105,7 +105,7 @@ const TypePill = memo(function TypePill({
   );
 });
 
-// Active filter chip
+// Active filter chip - With proper touch target
 const FilterChip = memo(function FilterChip({
   label,
   onRemove
@@ -118,15 +118,17 @@ const FilterChip = memo(function FilterChip({
       type="button"
       onClick={onRemove}
       className={cn(
-        'inline-flex items-center gap-1 px-2 py-1 rounded-full',
+        'inline-flex items-center gap-1.5 px-3 py-2 rounded-full',
+        'min-h-[36px] touch-manipulation', // Touch target
         'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
         'text-xs font-medium',
         'hover:bg-blue-200 dark:hover:bg-blue-900/50',
-        'transition-colors duration-150'
+        'active:scale-[0.97]',
+        'transition-all duration-150'
       )}
     >
       <span>{label}</span>
-      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
@@ -191,7 +193,7 @@ export const SmartFilterBar = memo(function SmartFilterBar({
       </div>
 
       {/* Category Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
         {CATEGORIES.map(({ value, label }) => (
           <button
             key={value}
@@ -199,9 +201,9 @@ export const SmartFilterBar = memo(function SmartFilterBar({
             onClick={() => onCategoryChange(value)}
             className={cn(
               'px-4 py-2 rounded-full font-medium text-sm whitespace-nowrap',
-              'transition-all duration-200',
+              'transition-all duration-200 active:scale-[0.97]',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500',
-              'min-h-[44px]', // Touch target
+              'min-h-[44px] touch-manipulation', // Touch target
               filters.category === value
                 ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
                 : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
@@ -214,17 +216,17 @@ export const SmartFilterBar = memo(function SmartFilterBar({
 
       {/* Trainer Subtypes (when Trainer category selected) */}
       {filters.category === 'trainer' && (
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
           {TRAINER_SUBTYPES.map(({ value, label }) => (
             <button
               key={value}
               type="button"
               onClick={() => onTrainerSubtypeChange(value)}
               className={cn(
-                'px-3 py-1.5 rounded-full font-medium text-xs whitespace-nowrap',
-                'transition-all duration-200',
+                'px-4 py-2 rounded-full font-medium text-xs whitespace-nowrap',
+                'transition-all duration-200 active:scale-[0.97]',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500',
-                'min-h-[36px]',
+                'min-h-[44px] touch-manipulation', // Proper touch target
                 filters.trainerSubtype === value
                   ? 'bg-emerald-500 text-white'
                   : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200'
@@ -238,7 +240,7 @@ export const SmartFilterBar = memo(function SmartFilterBar({
 
       {/* Type Pills (when Pokemon category or All selected) */}
       {(filters.category === 'all' || filters.category === 'pokemon') && (
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
           {ENERGY_TYPES.filter(type => filterOptions.types.includes(type)).map(type => (
             <TypePill
               key={type}
@@ -273,11 +275,13 @@ export const SmartFilterBar = memo(function SmartFilterBar({
             type="button"
             onClick={onSortOrderToggle}
             className={cn(
-              'p-2 rounded-lg',
+              'p-2 rounded-lg min-w-[44px] min-h-[44px]', // Touch target
+              'flex items-center justify-center',
               'bg-stone-100 dark:bg-stone-800',
               'hover:bg-stone-200 dark:hover:bg-stone-700',
-              'transition-colors duration-150',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500'
+              'transition-all duration-150 active:scale-[0.95]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500',
+              'touch-manipulation'
             )}
             aria-label={sortOrder === 'asc' ? 'Sort ascending' : 'Sort descending'}
           >
@@ -302,8 +306,9 @@ export const SmartFilterBar = memo(function SmartFilterBar({
           type="button"
           onClick={() => setShowMoreFilters(!showMoreFilters)}
           className={cn(
-            'flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium',
-            'transition-colors duration-150',
+            'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium',
+            'min-h-[44px] touch-manipulation', // Touch target
+            'transition-all duration-150 active:scale-[0.97]',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500',
             showMoreFilters || hasActiveFilters
               ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
@@ -338,8 +343,9 @@ export const SmartFilterBar = memo(function SmartFilterBar({
                   type="button"
                   onClick={() => onPackToggle(pack)}
                   className={cn(
-                    'px-3 py-1.5 rounded-full text-xs font-medium',
-                    'transition-colors duration-150',
+                    'px-4 py-2 rounded-full text-xs font-medium',
+                    'min-h-[40px] touch-manipulation', // Touch target
+                    'transition-all duration-150 active:scale-[0.97]',
                     filters.packs.includes(pack)
                       ? 'bg-purple-500 text-white'
                       : 'bg-white dark:bg-stone-700 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-600'
@@ -363,8 +369,9 @@ export const SmartFilterBar = memo(function SmartFilterBar({
                   type="button"
                   onClick={() => onRarityToggle(rarity)}
                   className={cn(
-                    'px-3 py-1.5 rounded-full text-xs font-medium',
-                    'transition-colors duration-150',
+                    'px-4 py-2 rounded-full text-xs font-medium',
+                    'min-h-[40px] touch-manipulation', // Touch target
+                    'transition-all duration-150 active:scale-[0.97]',
                     filters.rarities.includes(rarity)
                       ? 'bg-amber-500 text-white'
                       : 'bg-white dark:bg-stone-700 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-600'
@@ -396,7 +403,14 @@ export const SmartFilterBar = memo(function SmartFilterBar({
           <button
             type="button"
             onClick={onClearFilters}
-            className="text-xs text-red-600 dark:text-red-400 font-medium hover:underline"
+            className={cn(
+              'px-3 py-2 min-h-[36px] rounded-full',
+              'text-xs text-red-600 dark:text-red-400 font-medium',
+              'hover:bg-red-50 dark:hover:bg-red-900/20',
+              'active:scale-[0.97]',
+              'transition-all duration-150',
+              'touch-manipulation'
+            )}
           >
             Clear all
           </button>

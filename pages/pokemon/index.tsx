@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import {
-  FaBook, FaGamepad, FaDice, FaListAlt, FaFlask, FaMagic, FaGlobe, FaPaw,
-  FaBalanceScale, FaDna, FaAppleAlt, FaStar, FaCalculator, FaRandom,
-  FaChevronRight, FaDatabase, FaTools, FaCompass, FaFire, FaTint, FaLeaf
-} from 'react-icons/fa';
+  FiBook, FiMonitor, FiTarget, FiList, FiDroplet, FiZap, FiGlobe, FiHeart,
+  FiSliders, FiActivity, FiCircle, FiStar, FiHash, FiShuffle,
+  FiChevronRight, FiDatabase, FiTool, FiCompass
+} from 'react-icons/fi';
 
 // Section categories for better organization
 const SECTION_CATEGORIES = [
@@ -16,14 +16,14 @@ const SECTION_CATEGORIES = [
     id: 'database',
     title: 'Database',
     subtitle: 'Explore comprehensive data',
-    icon: <FaDatabase className="w-4 h-4" />,
+    icon: <FiDatabase className="w-4 h-4" />,
     color: 'from-blue-500 to-indigo-600',
     sections: [
       {
         title: 'Pokédex',
         description: 'All 1000+ Pokémon with stats, evolutions & more',
         href: '/pokedex',
-        icon: <FaBook className="w-5 h-5" />,
+        icon: <FiBook className="w-5 h-5" />,
         gradient: 'from-red-500 to-orange-500',
         featured: true,
       },
@@ -31,35 +31,35 @@ const SECTION_CATEGORIES = [
         title: 'Moves',
         description: 'Complete move database with effects',
         href: '/pokemon/moves-unified',
-        icon: <FaMagic className="w-5 h-5" />,
+        icon: <FiZap className="w-5 h-5" />,
         gradient: 'from-blue-500 to-cyan-500',
       },
       {
         title: 'Abilities',
         description: 'Every ability and its effects',
         href: '/pokemon/abilities-unified',
-        icon: <FaFlask className="w-5 h-5" />,
+        icon: <FiDroplet className="w-5 h-5" />,
         gradient: 'from-purple-500 to-pink-500',
       },
       {
         title: 'Items',
         description: 'All items from every game',
         href: '/pokemon/items-unified',
-        icon: <FaListAlt className="w-5 h-5" />,
+        icon: <FiList className="w-5 h-5" />,
         gradient: 'from-amber-500 to-yellow-500',
       },
       {
         title: 'Natures',
         description: 'All 25 natures & stat effects',
         href: '/pokemon/natures',
-        icon: <FaDna className="w-5 h-5" />,
+        icon: <FiActivity className="w-5 h-5" />,
         gradient: 'from-pink-500 to-rose-500',
       },
       {
         title: 'Berries',
         description: 'Berry effects & growth times',
         href: '/pokemon/berries',
-        icon: <FaAppleAlt className="w-5 h-5" />,
+        icon: <FiCircle className="w-5 h-5" />,
         gradient: 'from-red-400 to-pink-500',
       },
     ]
@@ -68,14 +68,14 @@ const SECTION_CATEGORIES = [
     id: 'tools',
     title: 'Tools',
     subtitle: 'Helpful utilities & calculators',
-    icon: <FaTools className="w-4 h-4" />,
+    icon: <FiTool className="w-4 h-4" />,
     color: 'from-emerald-500 to-teal-600',
     sections: [
       {
         title: 'Compare',
         description: 'Side-by-side stat comparison',
         href: '/pokemon/compare',
-        icon: <FaBalanceScale className="w-5 h-5" />,
+        icon: <FiSliders className="w-5 h-5" />,
         gradient: 'from-indigo-500 to-blue-500',
         isNew: true,
       },
@@ -83,7 +83,7 @@ const SECTION_CATEGORIES = [
         title: 'IV Calculator',
         description: 'Calculate hidden IVs',
         href: '/pokemon/iv-calculator',
-        icon: <FaCalculator className="w-5 h-5" />,
+        icon: <FiHash className="w-5 h-5" />,
         gradient: 'from-cyan-500 to-blue-500',
         isNew: true,
       },
@@ -91,7 +91,7 @@ const SECTION_CATEGORIES = [
         title: 'Evolution Guide',
         description: 'All evolution methods explained',
         href: '/pokemon/evolution-guide',
-        icon: <FaRandom className="w-5 h-5" />,
+        icon: <FiShuffle className="w-5 h-5" />,
         gradient: 'from-green-400 to-emerald-500',
         isNew: true,
       },
@@ -99,7 +99,7 @@ const SECTION_CATEGORIES = [
         title: 'Shiny Gallery',
         description: 'Browse shiny variations',
         href: '/pokemon/shiny',
-        icon: <FaStar className="w-5 h-5" />,
+        icon: <FiStar className="w-5 h-5" />,
         gradient: 'from-amber-400 to-yellow-500',
         isNew: true,
       },
@@ -109,35 +109,35 @@ const SECTION_CATEGORIES = [
     id: 'explore',
     title: 'Explore',
     subtitle: 'Discover the Pokémon world',
-    icon: <FaCompass className="w-4 h-4" />,
+    icon: <FiCompass className="w-4 h-4" />,
     color: 'from-rose-500 to-pink-600',
     sections: [
       {
         title: 'Regions',
         description: 'All 9 regions with gym leaders & more',
         href: '/pokemon/regions',
-        icon: <FaGlobe className="w-5 h-5" />,
+        icon: <FiGlobe className="w-5 h-5" />,
         gradient: 'from-teal-500 to-cyan-500',
       },
       {
         title: 'Starters',
         description: 'Every starter from every gen',
         href: '/pokemon/starters',
-        icon: <FaPaw className="w-5 h-5" />,
+        icon: <FiHeart className="w-5 h-5" />,
         gradient: 'from-rose-500 to-red-500',
       },
       {
         title: 'Games',
         description: 'Main series game info',
         href: '/pokemon/games',
-        icon: <FaGamepad className="w-5 h-5" />,
+        icon: <FiMonitor className="w-5 h-5" />,
         gradient: 'from-green-500 to-emerald-500',
       },
       {
         title: 'Fun',
         description: 'Mini-games & activities',
         href: '/fun',
-        icon: <FaDice className="w-5 h-5" />,
+        icon: <FiTarget className="w-5 h-5" />,
         gradient: 'from-indigo-500 to-purple-500',
       },
     ]
@@ -146,10 +146,10 @@ const SECTION_CATEGORIES = [
 
 // Quick stats for the hero section
 const QUICK_STATS = [
-  { label: 'Pokémon', value: '1025+', icon: <FaBook className="w-4 h-4" /> },
-  { label: 'Moves', value: '900+', icon: <FaMagic className="w-4 h-4" /> },
-  { label: 'Abilities', value: '300+', icon: <FaFlask className="w-4 h-4" /> },
-  { label: 'Regions', value: '9', icon: <FaGlobe className="w-4 h-4" /> },
+  { label: 'Pokémon', value: '1025+', icon: <FiBook className="w-4 h-4" /> },
+  { label: 'Moves', value: '900+', icon: <FiZap className="w-4 h-4" /> },
+  { label: 'Abilities', value: '300+', icon: <FiDroplet className="w-4 h-4" /> },
+  { label: 'Regions', value: '9', icon: <FiGlobe className="w-4 h-4" /> },
 ];
 
 // Featured Pokemon for visual appeal
@@ -295,7 +295,7 @@ const PokemonIndexPage: NextPage = () => {
                     </p>
                     <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-red-600 font-semibold rounded-xl group-hover:bg-white/90 transition-colors">
                       Open Pokédex
-                      <FaChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      <FiChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </div>
@@ -399,9 +399,9 @@ const PokemonIndexPage: NextPage = () => {
 
             <div className="flex flex-wrap justify-center gap-2">
               {[
-                { name: 'fire', color: 'bg-orange-500', icon: <FaFire /> },
-                { name: 'water', color: 'bg-blue-500', icon: <FaTint /> },
-                { name: 'grass', color: 'bg-green-500', icon: <FaLeaf /> },
+                { name: 'fire', color: 'bg-orange-500' },
+                { name: 'water', color: 'bg-blue-500' },
+                { name: 'grass', color: 'bg-green-500' },
                 { name: 'electric', color: 'bg-yellow-400' },
                 { name: 'psychic', color: 'bg-pink-500' },
                 { name: 'dragon', color: 'bg-indigo-600' },

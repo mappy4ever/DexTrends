@@ -13,9 +13,7 @@ import { fetchJSON } from '@/utils/unifiedFetch';
 import { showdownQueries, MoveCompetitiveDataRecord } from '@/utils/supabase';
 import { cn } from '@/utils/cn';
 import { typeColors } from '@/utils/unifiedTypeColors';
-import { FaChevronLeft, FaGamepad, FaStar, FaUsers } from 'react-icons/fa';
-import { BsLightning, BsShield, BsSpeedometer } from 'react-icons/bs';
-import { GiOnTarget } from 'react-icons/gi';
+import { FiChevronLeft, FiMonitor, FiStar, FiUsers, FiZap, FiShield, FiActivity, FiTarget } from 'react-icons/fi';
 import logger from '@/utils/logger';
 
 interface MoveDetailPageProps {
@@ -184,7 +182,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
             >
               <Container variant="default" className="p-6">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <BsLightning className="text-yellow-500" />
+                  <FiZap className="text-yellow-500" />
                   Battle Statistics
                 </h2>
                 
@@ -258,7 +256,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
               >
                 <Container variant="default" className="p-6">
                   <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <FaStar className="text-yellow-500" />
+                    <FiStar className="text-yellow-500" />
                     Competitive Information
                   </h2>
                   
@@ -301,7 +299,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
           >
             <Container variant="default" className="p-6">
               <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <FaUsers className="text-amber-500" />
+                <FiUsers className="text-amber-500" />
                 Pokémon that can learn {displayName}
               </h2>
               
@@ -348,7 +346,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 href="/pokemon/moves"
                 className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
               >
-                <FaGamepad />
+                <FiMonitor />
                 Browse All Moves
               </Link>
               <Link

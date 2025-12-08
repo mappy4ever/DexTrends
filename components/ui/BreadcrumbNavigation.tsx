@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FaChevronRight, FaHome } from 'react-icons/fa';
+import { FiChevronRight, FiHome } from 'react-icons/fi';
 
 interface Breadcrumb {
   title: string;
@@ -178,7 +178,7 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
         {displayBreadcrumbs.map((crumb, index) => (
           <React.Fragment key={index}>
             {index > 0 && (
-              <FaChevronRight className="h-3 w-3 sm:h-4 sm:w-4 text-stone-400 dark:text-stone-500 flex-shrink-0" />
+              <FiChevronRight className="h-3 w-3 sm:h-4 sm:w-4 text-stone-400 dark:text-stone-500 flex-shrink-0" />
             )}
 
             {crumb.isEllipsis ? (

@@ -10,6 +10,7 @@ import { PokemonAvatar } from '../components/ui/PokemonDisplay';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { Container } from '../components/ui/Container';
 import { PageHeader } from '../components/ui/BreadcrumbNavigation';
+import { EmptyState, ErrorState } from '../components/ui/EmptyState';
 import { NextPage } from 'next';
 import { TCGCard } from '../types/api/cards';
 import Head from 'next/head';
@@ -404,20 +405,16 @@ const FavoritesPage: NextPage = () => {
                       ))}
                     </div>
                   ) : (
-                    <Container variant="default" padding="lg" className="text-center">
-                      <svg className="w-14 h-14 text-stone-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                      </svg>
-                      <h3 className="text-lg font-semibold mb-2 text-stone-800">No favorite Pokemon yet</h3>
-                      <p className="text-stone-500 text-sm mb-6">
-                        Add Pokemon to your favorites by clicking the heart icon
-                      </p>
-                      <Link
-                        href="/pokedex"
-                        className="inline-block px-5 py-2.5 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition-colors"
-                      >
-                        Browse Pokedex
-                      </Link>
+                    <Container variant="default" padding="lg">
+                      <EmptyState
+                        illustration="pokemon"
+                        title="No favorite Pokémon yet"
+                        description="Add Pokémon to your favorites by clicking the heart icon while browsing."
+                        action={{
+                          label: "Browse Pokédex",
+                          onClick: () => router.push('/pokedex'),
+                        }}
+                      />
                     </Container>
                   )}
                 </div>
@@ -427,18 +424,11 @@ const FavoritesPage: NextPage = () => {
               {activeTab === 'cards' && (
                 <div>
                   {cardsError ? (
-                    <Container variant="default" padding="lg" className="text-center">
-                      <svg className="w-12 h-12 mx-auto text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                      </svg>
-                      <h3 className="text-lg font-semibold mb-2 text-stone-800">Unable to Load Cards</h3>
-                      <p className="text-sm text-stone-500 mb-4">{cardsError}</p>
-                      <button
-                        onClick={() => window.location.reload()}
-                        className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors text-sm"
-                      >
-                        Refresh Page
-                      </button>
+                    <Container variant="default" padding="lg">
+                      <ErrorState
+                        error={cardsError}
+                        onRetry={() => window.location.reload()}
+                      />
                     </Container>
                   ) : cardsData.length > 0 ? (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -487,20 +477,16 @@ const FavoritesPage: NextPage = () => {
                       ))}
                     </div>
                   ) : (
-                    <Container variant="default" padding="lg" className="text-center">
-                      <svg className="w-14 h-14 text-stone-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                      </svg>
-                      <h3 className="text-lg font-semibold mb-2 text-stone-800">No favorite cards yet</h3>
-                      <p className="text-stone-500 text-sm mb-6">
-                        Add cards to your favorites by clicking the heart icon
-                      </p>
-                      <Link
-                        href="/tcgexpansions"
-                        className="inline-block px-5 py-2.5 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition-colors"
-                      >
-                        Browse TCG Sets
-                      </Link>
+                    <Container variant="default" padding="lg">
+                      <EmptyState
+                        illustration="card"
+                        title="No favorite cards yet"
+                        description="Add cards to your favorites by clicking the heart icon while browsing."
+                        action={{
+                          label: "Browse TCG Sets",
+                          onClick: () => router.push('/tcgexpansions'),
+                        }}
+                      />
                     </Container>
                   )}
                 </div>

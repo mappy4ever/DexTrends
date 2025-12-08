@@ -11,7 +11,7 @@ import Button from '../../components/ui/Button';
 import { cn } from '../../utils/cn';
 import logger from '../../utils/logger';
 import { fetchJSON } from '../../utils/unifiedFetch';
-import { FaExchangeAlt, FaSearch, FaTimes, FaTrophy, FaShieldAlt, FaBolt, FaHeart } from 'react-icons/fa';
+import { FiRepeat, FiSearch, FiX, FiAward, FiShield, FiZap, FiHeart } from 'react-icons/fi';
 
 interface Pokemon {
   id: number;
@@ -241,7 +241,7 @@ const PokemonComparePage: NextPage = () => {
             onClick={() => clearPokemon(slot)}
             className="absolute top-3 right-3 p-2 rounded-full bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors"
           >
-            <FaTimes className="w-4 h-4 text-stone-500" />
+            <FiX className="w-4 h-4 text-stone-500" />
           </button>
 
           {/* Pokemon Image */}
@@ -284,7 +284,7 @@ const PokemonComparePage: NextPage = () => {
         <div className="text-center py-8">
           <div className="relative">
             <div className="flex items-center gap-2 bg-stone-100 dark:bg-stone-700 rounded-xl px-4 py-3">
-              <FaSearch className="text-stone-400" />
+              <FiSearch className="text-stone-400" />
               <input
                 type="text"
                 value={search}
@@ -363,7 +363,7 @@ const PokemonComparePage: NextPage = () => {
     return (
       <Container variant="elevated" className="p-4 sm:p-6">
         <h3 className="text-lg font-bold text-stone-800 dark:text-white mb-6 text-center flex items-center justify-center gap-2">
-          <FaBolt className="text-amber-500" />
+          <FiZap className="text-amber-500" />
           Base Stats Comparison
         </h3>
 
@@ -381,7 +381,7 @@ const PokemonComparePage: NextPage = () => {
                     winner === 1 ? 'text-green-600 dark:text-green-400' : 'text-stone-600 dark:text-stone-300'
                   )}>
                     {val1}
-                    {winner === 1 && <FaTrophy className="inline ml-1 text-amber-500 w-3 h-3" />}
+                    {winner === 1 && <FiAward className="inline ml-1 text-amber-500 w-3 h-3" />}
                   </span>
                   <span className="font-semibold text-stone-800 dark:text-white">
                     {STAT_NAMES[stat]}
@@ -390,7 +390,7 @@ const PokemonComparePage: NextPage = () => {
                     'font-medium',
                     winner === 2 ? 'text-green-600 dark:text-green-400' : 'text-stone-600 dark:text-stone-300'
                   )}>
-                    {winner === 2 && <FaTrophy className="inline mr-1 text-amber-500 w-3 h-3" />}
+                    {winner === 2 && <FiAward className="inline mr-1 text-amber-500 w-3 h-3" />}
                     {val2}
                   </span>
                 </div>
@@ -439,7 +439,7 @@ const PokemonComparePage: NextPage = () => {
               )}>
                 <div className="text-2xl font-bold">
                   {getTotalStats(pokemon1)}
-                  {getOverallWinner() === 1 && <FaTrophy className="inline ml-2 text-amber-500" />}
+                  {getOverallWinner() === 1 && <FiAward className="inline ml-2 text-amber-500" />}
                 </div>
                 <div className="text-xs text-stone-500">Total</div>
               </div>
@@ -449,7 +449,7 @@ const PokemonComparePage: NextPage = () => {
                 getOverallWinner() === 2 && 'text-green-600 dark:text-green-400'
               )}>
                 <div className="text-2xl font-bold">
-                  {getOverallWinner() === 2 && <FaTrophy className="inline mr-2 text-amber-500" />}
+                  {getOverallWinner() === 2 && <FiAward className="inline mr-2 text-amber-500" />}
                   {getTotalStats(pokemon2)}
                 </div>
                 <div className="text-xs text-stone-500">Total</div>
@@ -467,7 +467,7 @@ const PokemonComparePage: NextPage = () => {
     return (
       <Container variant="elevated" className="p-4 sm:p-6">
         <h3 className="text-lg font-bold text-stone-800 dark:text-white mb-4 text-center flex items-center justify-center gap-2">
-          <FaShieldAlt className="text-purple-500" />
+          <FiShield className="text-purple-500" />
           Abilities
         </h3>
 
@@ -568,7 +568,7 @@ const PokemonComparePage: NextPage = () => {
                 'disabled:opacity-50 disabled:cursor-not-allowed'
               )}
             >
-              <FaExchangeAlt className="w-5 h-5" />
+              <FiRepeat className="w-5 h-5" />
             </motion.button>
           </div>
 
@@ -598,7 +598,7 @@ const PokemonComparePage: NextPage = () => {
               'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >
-            <FaExchangeAlt className="w-4 h-4" />
+            <FiRepeat className="w-4 h-4" />
             Swap Pokemon
           </motion.button>
         </div>
@@ -648,7 +648,7 @@ const PokemonComparePage: NextPage = () => {
           >
             <Container variant="elevated" className="p-8 max-w-lg mx-auto">
               <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaHeart className="w-8 h-8 text-amber-500" />
+                <FiHeart className="w-8 h-8 text-amber-500" />
               </div>
               <h3 className="text-xl font-bold text-stone-800 dark:text-white mb-2">
                 Select Pokemon to Compare

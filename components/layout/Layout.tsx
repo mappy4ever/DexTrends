@@ -18,10 +18,11 @@ interface LayoutProps {
  * Padding strategy:
  * - pt-14/pt-16: Space for fixed navbar (56px mobile, 64px desktop)
  * - pb-20 sm:pb-0: Bottom padding for mobile BottomNav, none on desktop
+ * - px-safe: Safe area horizontal padding for devices with rounded corners/notches
  */
 export default function Layout({ children, fullBleed = false }: LayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen text-card-foreground transition-colors duration-300 relative">
+    <div className="flex flex-col min-h-screen text-card-foreground transition-colors duration-300 relative px-safe">
       <Navbar />
       <div className="flex flex-col flex-grow relative z-10">
         <main className={`flex-grow transition-all duration-300 ${fullBleed ? '' : 'pt-14 md:pt-16'}`}>

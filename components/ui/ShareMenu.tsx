@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaLink, FaImage, FaClipboard, FaQrcode } from 'react-icons/fa';
+import { FiLink, FiImage, FiClipboard, FiGrid } from 'react-icons/fi';
 import { cn } from '../../utils/cn';
 
 interface ShareMenuProps {
@@ -31,10 +31,10 @@ const ShareMenu: React.FC<ShareMenuProps> = ({ onShare, trigger, className }) =>
   }, [isOpen]);
   
   const menuItems = [
-    { id: 'link', label: 'Copy Link', icon: FaLink },
-    { id: 'image', label: 'Share as Image', icon: FaImage },
-    { id: 'stats', label: 'Copy Stats', icon: FaClipboard },
-    { id: 'qr', label: 'QR Code', icon: FaQrcode },
+    { id: 'link', label: 'Copy Link', icon: FiLink },
+    { id: 'image', label: 'Share as Image', icon: FiImage },
+    { id: 'stats', label: 'Copy Stats', icon: FiClipboard },
+    { id: 'qr', label: 'QR Code', icon: FiGrid },
   ];
   
   return (

@@ -22,7 +22,7 @@ import logger from '../utils/logger';
 import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { cn } from '@/utils/cn';
-import { IoCalculator, IoGrid, IoGitNetwork } from 'react-icons/io5';
+import { FiTarget, FiGrid, FiShare2 } from 'react-icons/fi';
 
 interface TypeDetails {
   name: string;
@@ -295,7 +295,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 )}
               >
-                <IoCalculator className="w-4 h-4 flex-shrink-0" />
+                <FiTarget className="w-4 h-4 flex-shrink-0" />
                 <span className="hidden xs:inline sm:inline">Calculator</span>
               </button>
               <button
@@ -307,7 +307,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 )}
               >
-                <IoGrid className="w-4 h-4 flex-shrink-0" />
+                <FiGrid className="w-4 h-4 flex-shrink-0" />
                 <span className="hidden xs:inline sm:inline">Chart</span>
               </button>
               <button
@@ -319,7 +319,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 )}
               >
-                <IoGitNetwork className="w-4 h-4 flex-shrink-0" />
+                <FiShare2 className="w-4 h-4 flex-shrink-0" />
                 <span className="hidden xs:inline sm:inline">Team</span>
               </button>
             </div>

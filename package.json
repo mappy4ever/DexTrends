@@ -50,6 +50,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@heroicons/react": "^2.2.0",
+    "@sentry/nextjs": "^10.29.0",
     "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-virtual": "^3.13.12",
     "@tsparticles/react": "^3.0.0",

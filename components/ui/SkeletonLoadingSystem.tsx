@@ -1027,6 +1027,7 @@ interface SkeletonWrapperProps {
   loading: boolean;
   skeleton?: ReactNode;
   children: ReactNode;
+  /** Delay in ms before showing skeleton (prevents flash on fast loads). Default: 200ms */
   delay?: number;
   fallback?: ReactNode;
   className?: string;
@@ -1036,7 +1037,7 @@ export const SkeletonWrapper: React.FC<SkeletonWrapperProps> = ({
   loading,
   skeleton,
   children,
-  delay = 0,
+  delay = 200, // Default 200ms delay to prevent flash on fast loads
   fallback,
   className = '',
   ...props

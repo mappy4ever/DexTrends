@@ -161,3 +161,94 @@ fetchJSON(url, { useCache: false, forceRefresh: true })
 
 - **README.md** - Project overview and setup
 - **docs/archive/** - Historical documentation and completed work
+- **docs/archive/DECEMBER_2024_RELEASE_NOTES.md** - Latest release notes
+
+---
+
+## Recent Updates (December 2024)
+
+Major improvements completed across 5 sprints. See full release notes in `/docs/archive/DECEMBER_2024_RELEASE_NOTES.md`.
+
+### Key Changes
+
+| Area | Change | Impact |
+|------|--------|--------|
+| Icons | Standardized to Feather (`react-icons/fi`) | Visual consistency |
+| Mobile CSS | Removed 1610 lines of orphan CSS | 71% bundle reduction |
+| Search | Added history, suggestions, keyboard nav | Better UX |
+| PWA | Offline page, update notifications | Production ready |
+| Error Tracking | Sentry integration | Debugging |
+| Collections | Full CRUD with Supabase | Feature complete |
+| Market | Real pricing data | Feature complete |
+
+### New Utilities
+
+```typescript
+// Haptic feedback for mobile
+import { haptic, useHaptic } from '@/utils/haptics';
+haptic('light'); // light, medium, heavy, selection, success, warning, error
+
+// Service worker hook
+import { useServiceWorker } from '@/hooks/useServiceWorker';
+const { isUpdateAvailable, isOffline, applyUpdate } = useServiceWorker();
+
+// Market data hook
+import { useMarketData } from '@/hooks/useMarketData';
+const { trendingCards, priceMovers, loading } = useMarketData();
+```
+
+### New Components
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `TabPills` | `/components/ui/TabPills.tsx` | Scrollable tab navigation |
+| `UpdateNotification` | `/components/ui/UpdateNotification.tsx` | PWA update banner |
+| `OfflineIndicator` | `/components/ui/UpdateNotification.tsx` | Offline status bar |
+
+### Icon Library Standard
+
+**Use Feather icons (`react-icons/fi`) as the primary icon library.**
+
+```typescript
+// Preferred
+import { FiChevronLeft, FiSearch, FiHeart } from 'react-icons/fi';
+
+// Only use specialty icons when semantically necessary
+import { GiPokerHand } from 'react-icons/gi'; // Card games only
+```
+
+### Back Navigation Standard
+
+**Always use `StyledBackButton` for back navigation:**
+
+```typescript
+import StyledBackButton from '@/components/ui/StyledBackButton';
+
+// Variants: 'default' | 'pokemon' | 'pocket' | 'tcg'
+<StyledBackButton variant="pokemon" text="Back to Pokédex" />
+```
+
+---
+
+## Production Configuration
+
+### Sentry Error Tracking
+
+Add to `.env.local` to enable:
+
+```bash
+NEXT_PUBLIC_SENTRY_DSN=your_dsn_here
+SENTRY_DSN=your_dsn_here
+
+# Optional: Source maps upload
+SENTRY_AUTH_TOKEN=your_token
+SENTRY_ORG=your_org
+SENTRY_PROJECT=your_project
+```
+
+### PWA Features
+
+Automatic - no configuration needed:
+- Offline page at `/offline`
+- Update notifications via `PWAProvider`
+- Service worker at `/sw.js` (v1.1.0)

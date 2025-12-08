@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { cn } from '@/utils/cn';
 import { Book, CardList, Search } from '@/utils/icons';
-import { BsGrid } from 'react-icons/bs';
-import { IoEllipsisHorizontal } from 'react-icons/io5';
+import { FiGrid, FiMoreHorizontal } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useViewport, Z_INDEX } from '@/hooks/useViewport';
 import { MoreSheet } from './MoreSheet';
+import { haptic } from '@/utils/haptics';
 
 interface NavItem {
   href: string;
@@ -46,7 +46,7 @@ export const BottomNavigation: React.FC = () => {
     {
       href: '/',
       label: 'Home',
-      icon: <BsGrid className="w-5 h-5" />,
+      icon: <FiGrid className="w-5 h-5" />,
       color: 'text-purple-600 dark:text-purple-400'
     },
     {
@@ -70,6 +70,11 @@ export const BottomNavigation: React.FC = () => {
   useEffect(() => {
     setActiveRoute(router.pathname);
   }, [router.pathname]);
+
+  // Haptic feedback on nav click - must be before early return (React Hooks rule)
+  const handleNavClick = useCallback(() => {
+    haptic('light');
+  }, []);
 
   // Don't render on desktop or during SSR (prevents hydration mismatch)
   if (!viewport.isMounted || !viewport.isMobile) return null;
@@ -98,6 +103,7 @@ export const BottomNavigation: React.FC = () => {
       <Link
         key={item.href}
         href={item.href}
+        onClick={handleNavClick}
         className={cn(
           "flex flex-col items-center justify-center",
           "flex-1 h-full py-2",
@@ -177,7 +183,10 @@ export const BottomNavigation: React.FC = () => {
           {/* Center: Search button (elevated, larger) */}
           <div className="flex items-center justify-center flex-1">
             <motion.button
-              onClick={() => router.push('/search')}
+              onClick={() => {
+                haptic('medium');
+                router.push('/search');
+              }}
               aria-label="Search"
               className={cn(
                 "relative flex items-center justify-center",
@@ -199,7 +208,10 @@ export const BottomNavigation: React.FC = () => {
 
           {/* More button */}
           <button
-            onClick={() => setMoreSheetOpen(true)}
+            onClick={() => {
+              haptic('light');
+              setMoreSheetOpen(true);
+            }}
             className={cn(
               "flex flex-col items-center justify-center",
               "flex-1 h-full py-2",
@@ -236,7 +248,7 @@ export const BottomNavigation: React.FC = () => {
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <IoEllipsisHorizontal className="w-5 h-5" />
+              <FiMoreHorizontal className="w-5 h-5" />
             </motion.div>
 
             <span

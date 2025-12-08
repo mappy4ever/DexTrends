@@ -1,5 +1,5 @@
 import React, { forwardRef, SelectHTMLAttributes, useState, useRef, useEffect } from 'react';
-import { IoChevronDown, IoCheckmark, IoClose } from 'react-icons/io5';
+import { FiChevronDown, FiCheck, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import { useViewport } from '../../hooks/useViewport';
@@ -208,7 +208,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 </option>
               ))}
             </select>
-            <IoChevronDown
+            <FiChevronDown
               className={cn(
                 'absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none',
                 sizeStyles[size].icon,
@@ -281,10 +281,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 onClick={handleClear}
                 className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded"
               >
-                <IoClose className={sizeStyles[size].icon} />
+                <FiX className={sizeStyles[size].icon} />
               </button>
             )}
-            <IoChevronDown
+            <FiChevronDown
               className={cn(
                 sizeStyles[size].icon,
                 'text-stone-500 dark:text-stone-300 transition-transform',
@@ -375,7 +375,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                           </div>
                         </div>
                         {showCheckmarks && isSelected && (
-                          <IoCheckmark className={cn(
+                          <FiCheck className={cn(
                             sizeStyles[size].icon,
                             'text-amber-600 dark:text-amber-400 flex-shrink-0'
                           )} />

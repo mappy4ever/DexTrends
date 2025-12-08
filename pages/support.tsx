@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Container } from '@/components/ui/Container';
-import { BsKeyboard, BsQuestionCircle, BsLightbulb, BsBook, BsEnvelope, BsRocket, BsCheckCircle, BsClock, BsStar } from 'react-icons/bs';
+import { FiCommand, FiHelpCircle, FiZap, FiBook, FiMail, FiSend, FiCheckCircle, FiClock, FiStar } from 'react-icons/fi';
 
 interface HelpSection {
   title: string;
@@ -249,10 +249,10 @@ const priorityColors = {
 };
 
 const statusIcons = {
-  completed: BsCheckCircle,
-  'in-progress': BsClock,
-  planned: BsRocket,
-  idea: BsStar
+  completed: FiCheckCircle,
+  'in-progress': FiClock,
+  planned: FiSend,
+  idea: FiStar
 };
 
 const statusLabels = {
@@ -301,7 +301,7 @@ export default function SupportPage() {
           <div className="max-w-4xl mx-auto px-4 py-12">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                <BsQuestionCircle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                <FiHelpCircle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100">Support & Help</h1>
@@ -316,7 +316,7 @@ export default function SupportPage() {
           <Container variant="elevated" className="p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                <BsLightbulb className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                <FiZap className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
               </div>
               <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Quick Tips</h2>
             </div>
@@ -339,7 +339,7 @@ export default function SupportPage() {
           <Container variant="elevated" className="p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                <BsKeyboard className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <FiCommand className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Keyboard Shortcuts</h2>
             </div>
@@ -362,7 +362,7 @@ export default function SupportPage() {
           <Container variant="elevated" className="p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                <BsBook className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <FiBook className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Page Guides</h2>
             </div>
@@ -415,7 +415,7 @@ export default function SupportPage() {
           <Container variant="elevated" className="p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                <BsEnvelope className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <FiMail className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
               <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Need More Help?</h2>
             </div>
@@ -444,7 +444,7 @@ export default function SupportPage() {
           <Container variant="elevated" className="p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-100 to-fuchsia-100 dark:from-violet-900/30 dark:to-fuchsia-900/30 flex items-center justify-center">
-                <BsRocket className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                <FiSend className="w-5 h-5 text-violet-600 dark:text-violet-400" />
               </div>
               <div>
                 <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Features & Roadmap</h2>

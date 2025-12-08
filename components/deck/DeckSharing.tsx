@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container, ContainerHeader, ContainerTitle, ContainerDescription, ContainerFooter } from '@/components/ui/Container';
 import Button, { ButtonGroup, IconButton } from '@/components/ui/Button';
@@ -292,14 +293,14 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
       <Container variant="elevated" padding="md">
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Deck Preview Thumbnail */}
-          <div className="w-full sm:w-48 aspect-video sm:aspect-square rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center overflow-hidden">
+          <div className="relative w-full sm:w-48 aspect-video sm:aspect-square rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center overflow-hidden">
             {deck.thumbnail ? (
-              <img src={deck.thumbnail} alt={deck.name} className="w-full h-full object-cover" />
+              <Image src={deck.thumbnail} alt={deck.name} fill className="object-cover" sizes="192px" />
             ) : (
               <div className="grid grid-cols-3 gap-1 p-2">
                 {deck.cards.slice(0, 9).map((c, i) => (
-                  <div key={i} className="aspect-[2.5/3.5] rounded overflow-hidden bg-white/50">
-                    <img src={c.card.images.small} alt="" className="w-full h-full object-cover" />
+                  <div key={i} className="relative aspect-[2.5/3.5] rounded overflow-hidden bg-white/50">
+                    <Image src={c.card.images.small} alt="" fill className="object-cover" sizes="48px" loading="lazy" />
                   </div>
                 ))}
               </div>
@@ -713,8 +714,8 @@ const DeckSection: React.FC<{
                 <span className="w-6 text-center text-sm font-medium text-stone-600 dark:text-stone-300">
                   {count}x
                 </span>
-                <div className="w-8 h-10 rounded overflow-hidden flex-shrink-0">
-                  <img src={card.images.small} alt={card.name} className="w-full h-full object-cover" />
+                <div className="relative w-8 h-10 rounded overflow-hidden flex-shrink-0">
+                  <Image src={card.images.small} alt={card.name} fill className="object-cover" sizes="32px" loading="lazy" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-stone-800 dark:text-white truncate">
@@ -858,8 +859,8 @@ const DeckImagePreview: React.FC<{
         {/* Card Grid */}
         <div className="grid grid-cols-6 gap-2">
           {deck.cards.slice(0, 12).map((c, i) => (
-            <div key={i} className="aspect-[2.5/3.5] rounded-lg overflow-hidden shadow-md">
-              <img src={c.card.images.small} alt={c.card.name} className="w-full h-full object-cover" />
+            <div key={i} className="relative aspect-[2.5/3.5] rounded-lg overflow-hidden shadow-md">
+              <Image src={c.card.images.small} alt={c.card.name} fill className="object-cover" sizes="64px" loading="lazy" />
             </div>
           ))}
         </div>

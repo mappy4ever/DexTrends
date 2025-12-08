@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
-import { IoClose } from 'react-icons/io5';
+import { FiX } from 'react-icons/fi';
 import logger from '../../utils/logger';
 import { useViewport } from '../../hooks/useViewport';
 import { RADIUS, SHADOW, TRANSITION } from './design-system/glass-constants';
@@ -354,7 +354,7 @@ export const Modal: React.FC<ModalProps> = ({
                       )}
                       aria-label="Close modal"
                     >
-                      <IoClose className="w-5 h-5" />
+                      <FiX className="w-5 h-5" />
                     </button>
                   )}
                 </div>

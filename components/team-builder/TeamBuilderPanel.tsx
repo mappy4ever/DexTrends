@@ -10,6 +10,7 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import { Container, ContainerHeader, ContainerTitle, ContainerDescription, ContainerFooter } from '@/components/ui/Container';
 import Button, { ButtonGroup, IconButton } from '@/components/ui/Button';
@@ -780,8 +781,8 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
           {/* Team Preview */}
           <div className="flex gap-2 justify-center p-4 bg-stone-50 dark:bg-stone-800/50 rounded-xl">
             {team.map(pokemon => (
-              <div key={pokemon.id} className="w-14 h-14 rounded-lg bg-white dark:bg-stone-700 p-1">
-                <img src={pokemon.sprite} alt={pokemon.name} className="w-full h-full object-contain" />
+              <div key={pokemon.id} className="relative w-14 h-14 rounded-lg bg-white dark:bg-stone-700 p-1">
+                <Image src={pokemon.sprite} alt={pokemon.name} fill className="object-contain p-1" sizes="56px" loading="lazy" />
               </div>
             ))}
           </div>
@@ -1083,7 +1084,9 @@ const PokemonSearchModal: React.FC<PokemonSearchModalProps> = ({
                   existingIds.includes(pokemon.pokedexId) && 'opacity-50 cursor-not-allowed'
                 )}
               >
-                <img src={pokemon.sprite} alt={pokemon.name} className="w-12 h-12" />
+                <div className="relative w-12 h-12 flex-shrink-0">
+                  <Image src={pokemon.sprite} alt={pokemon.name} fill className="object-contain" sizes="48px" loading="lazy" />
+                </div>
                 <div className="flex-1 text-left">
                   <div className="font-semibold text-stone-800 dark:text-white capitalize">{pokemon.name}</div>
                   <div className="flex gap-1 mt-1">
@@ -1126,7 +1129,9 @@ const PokemonSearchModal: React.FC<PokemonSearchModalProps> = ({
                   existingIds.includes(pokemon.pokedexId) && 'opacity-50 cursor-not-allowed'
                 )}
               >
-                <img src={pokemon.sprite} alt={pokemon.name} className="w-12 h-12" />
+                <div className="relative w-12 h-12">
+                  <Image src={pokemon.sprite} alt={pokemon.name} fill className="object-contain" sizes="48px" loading="lazy" />
+                </div>
                 <span className="text-xs text-stone-600 dark:text-stone-300 capitalize mt-1 truncate w-full text-center">
                   {pokemon.name}
                 </span>

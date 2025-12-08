@@ -9,9 +9,8 @@ import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/BreadcrumbNavigation';
 import { useDebounce } from '@/hooks/useDebounce';
 import { fetchJSON } from '@/utils/unifiedFetch';
-import { IoSearch, IoClose, IoChevronForward } from 'react-icons/io5';
+import { FiSearch, FiX, FiChevronRight, FiGrid } from 'react-icons/fi';
 import { PokeballSVG } from '@/components/ui/PokeballSVG';
-import { BsCardList } from 'react-icons/bs';
 import type { TCGCard, CardSet } from '@/types/api/cards';
 
 // Type definitions
@@ -48,7 +47,7 @@ const PokemonResultCard = memo(({ pokemon }: { pokemon: PokemonResult }) => {
         <div className="font-medium capitalize text-stone-900 dark:text-white group-hover:text-red-700 dark:group-hover:text-red-400 transition-colors">{pokemon.name}</div>
         <div className="text-xs text-stone-500">#{pokemonId.padStart(4, '0')}</div>
       </div>
-      <IoChevronForward className="w-4 h-4 text-stone-400 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all opacity-0 group-hover:opacity-100" />
+      <FiChevronRight className="w-4 h-4 text-stone-400 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all opacity-0 group-hover:opacity-100" />
     </Link>
   );
 });
@@ -75,7 +74,7 @@ const CardResultItem = memo(({ card }: { card: TCGCard }) => (
       <div className="font-medium text-stone-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">{card.name}</div>
       <div className="text-xs text-stone-500">{card.set?.name}</div>
     </div>
-    <IoChevronForward className="w-4 h-4 text-stone-400 group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all opacity-0 group-hover:opacity-100" />
+    <FiChevronRight className="w-4 h-4 text-stone-400 group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all opacity-0 group-hover:opacity-100" />
   </Link>
 ));
 CardResultItem.displayName = 'CardResultItem';
@@ -178,7 +177,7 @@ const SearchPage: NextPage = () => {
           {/* Enhanced Search Input */}
           <div className="mb-8">
             <div className="relative">
-              <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
               <input
                 type="text"
                 value={searchQuery}
@@ -194,7 +193,7 @@ const SearchPage: NextPage = () => {
                   aria-label="Clear search"
                   className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors"
                 >
-                  <IoClose className="w-5 h-5 text-stone-400" />
+                  <FiX className="w-5 h-5 text-stone-400" />
                 </button>
               )}
             </div>
@@ -239,7 +238,7 @@ const SearchPage: NextPage = () => {
                         href={`/pokedex?search=${encodeURIComponent(debouncedQuery)}`}
                         className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium flex items-center gap-1 transition-colors"
                       >
-                        View all <IoChevronForward className="w-4 h-4" />
+                        View all <FiChevronRight className="w-4 h-4" />
                       </Link>
                     )}
                   </div>
@@ -257,7 +256,7 @@ const SearchPage: NextPage = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30">
-                        <BsCardList className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                        <FiGrid className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                       </div>
                       <div>
                         <h2 className="text-lg font-semibold text-stone-800 dark:text-stone-200">
@@ -271,7 +270,7 @@ const SearchPage: NextPage = () => {
                         href={`/cards?q=name:${encodeURIComponent(debouncedQuery)}*`}
                         className="text-sm text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 font-medium flex items-center gap-1 transition-colors"
                       >
-                        View all <IoChevronForward className="w-4 h-4" />
+                        View all <FiChevronRight className="w-4 h-4" />
                       </Link>
                     )}
                   </div>

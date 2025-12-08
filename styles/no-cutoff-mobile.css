@@ -8,10 +8,19 @@
    ======================================== */
 @media (max-width: 768px) {
   /* Force ALL elements to show their full content */
-  /* IMPORTANT: Exclude sr-only and visually-hidden elements to keep accessibility text hidden */
-  *:not(html):not(body):not(.sr-only):not(.visually-hidden):not([class*="sr-only"]) {
+  /* IMPORTANT: Exclude sr-only, visually-hidden, and fixed navigation elements */
+  *:not(html):not(body):not(.sr-only):not(.visually-hidden):not([class*="sr-only"]):not([style*="position: fixed"]):not([style*="z-index: 4"]) {
     overflow: visible !important;
     min-height: auto !important;
+  }
+
+  /* CRITICAL: Preserve fixed positioning behavior for navigation */
+  /* These elements MUST keep their overflow and positioning intact */
+  .fixed,
+  [class*="fixed "],
+  [class*=" fixed"] {
+    overflow: hidden !important;
+    position: fixed !important;
   }
 
   /* Keep screen reader text hidden - DO NOT override clip on these */
@@ -63,7 +72,16 @@
   }
   
   /* All containers must accommodate content */
-  div, section, article, aside, main, header, footer, nav {
+  /* EXCEPTION: Fixed navigation elements (top nav, bottom nav) must preserve their overflow */
+  div:not(.fixed):not([class*="fixed "]):not([class*=" fixed"]),
+  section, article, aside, main, header,
+  footer:not(.fixed):not([class*="fixed "]):not([class*=" fixed"]) {
+    min-height: fit-content !important;
+    overflow: visible !important;
+  }
+
+  /* Nav elements need special handling - only non-fixed ones get overflow visible */
+  nav:not(.fixed):not([class*="fixed "]):not([class*=" fixed"]) {
     min-height: fit-content !important;
     overflow: visible !important;
   }

@@ -5,24 +5,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '@/utils/logger';
 import {
-  BsChevronRight,
-  BsLightningFill,
-  BsShieldFill,
-  BsHeart,
-  BsStar,
-  BsGraphUp,
-  BsArrowRight,
-  BsCheckCircleFill
-} from 'react-icons/bs';
+  FiChevronRight,
+  FiZap,
+  FiShield,
+  FiHeart,
+  FiStar,
+  FiTrendingUp,
+  FiArrowRight,
+  FiCheckCircle
+} from 'react-icons/fi';
 import {
   GiSwordWound,
-  GiShield,
+  GiShield as GiShieldIcon,
   GiRunningNinja,
   GiFlame,
   GiWaterDrop,
   GiTreeBranch
 } from 'react-icons/gi';
-import { FaFire, FaLeaf, FaTint } from 'react-icons/fa';
 import {
   GLASS_BLUR,
   GLASS_OPACITY,
@@ -223,7 +222,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
             <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-600 via-amber-600 to-amber-600 bg-clip-text text-transparent group-hover:from-amber-500 group-hover:to-orange-500 transition-all">
               {region} Starters
             </h2>
-            <BsArrowRight className="text-amber-600 group-hover:translate-x-1 transition-transform" />
+            <FiArrowRight className="text-amber-600 group-hover:translate-x-1 transition-transform" />
           </Link>
           <p className="text-base sm:text-lg text-stone-600 dark:text-stone-300">
             Select your starter and explore their evolution journey
@@ -271,7 +270,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                     transition={{ type: "spring", stiffness: 300 }}
                   >
                     <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-                      <BsCheckCircleFill className="text-white text-lg" />
+                      <FiCheckCircle className="text-white text-lg" />
                     </div>
                   </motion.div>
                 )}
@@ -324,7 +323,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                   </div>
                   {chain.stage2 && (
                     <>
-                      <BsChevronRight className="text-stone-400 text-xs" />
+                      <FiChevronRight className="text-stone-400 text-xs" />
                       <div className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
                         <Image
                           src={chain.stage2.sprite}
@@ -338,7 +337,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                   )}
                   {chain.stage3 && (
                     <>
-                      <BsChevronRight className="text-stone-400 text-xs" />
+                      <FiChevronRight className="text-stone-400 text-xs" />
                       <div className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
                         <Image
                           src={chain.stage3.sprite}
@@ -398,7 +397,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                       animate={{ x: [0, 10, 0] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                     >
-                      <BsArrowRight className="text-3xl text-amber-500 mx-auto" />
+                      <FiArrowRight className="text-3xl text-amber-500 mx-auto" />
                     </motion.div>
                   </div>
                 </div>
@@ -426,7 +425,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                       animate={{ x: [0, 10, 0] }}
                       transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
                     >
-                      <BsArrowRight className="text-3xl text-amber-500 mx-auto" />
+                      <FiArrowRight className="text-3xl text-amber-500 mx-auto" />
                     </motion.div>
                   </div>
                 </div>
@@ -451,7 +450,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                 className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 <div className="flex items-center gap-2">
-                  <BsGraphUp />
+                  <FiTrendingUp />
                   <span>{showStats ? 'Hide' : 'Show'} Stats Progression</span>
                 </div>
               </button>
@@ -569,7 +568,7 @@ const EvolutionCard: React.FC<{
                 <div className="text-xs font-bold">{pokemon.stats.attack}</div>
               </div>
               <div className="bg-white/50 dark:bg-stone-800/50 rounded-lg p-2">
-                <GiShield className="text-blue-500 mx-auto mb-1 text-sm" />
+                <GiShieldIcon className="text-blue-500 mx-auto mb-1 text-sm" />
                 <div className="text-xs font-bold">{pokemon.stats.defense}</div>
               </div>
               <div className="bg-white/50 dark:bg-stone-800/50 rounded-lg p-2">
@@ -627,13 +626,13 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
                   <span className="text-amber-600 dark:text-amber-400 font-bold">{stage1Value}</span>
                   {stage2Value && (
                     <>
-                      <BsChevronRight className="text-stone-400" />
+                      <FiChevronRight className="text-stone-400" />
                       <span className="text-amber-600 dark:text-amber-400 font-bold">{stage2Value}</span>
                     </>
                   )}
                   {stage3Value && (
                     <>
-                      <BsChevronRight className="text-stone-400" />
+                      <FiChevronRight className="text-stone-400" />
                       <span className="text-amber-600 dark:text-amber-400 font-bold">{stage3Value}</span>
                     </>
                   )}
@@ -689,7 +688,7 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
             </span>
             {chain.stage2 && (
               <>
-                <BsArrowRight className="text-stone-400" />
+                <FiArrowRight className="text-stone-400" />
                 <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
                   {chain.stage2.stats.total}
                 </span>
@@ -697,7 +696,7 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
             )}
             {chain.stage3 && (
               <>
-                <BsArrowRight className="text-stone-400" />
+                <FiArrowRight className="text-stone-400" />
                 <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
                   {chain.stage3.stats.total}
                 </span>

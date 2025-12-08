@@ -17,7 +17,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
-import { HiChevronDown, HiCheck } from 'react-icons/hi';
+import { FiChevronDown, FiCheck } from 'react-icons/fi';
 
 export interface DropdownMenuItem {
   /** Menu item label */
@@ -181,7 +181,7 @@ export function DropdownMenu({
       >
         {trigger}
         {showChevron && (
-          <HiChevronDown
+          <FiChevronDown
             className={cn(
               'ml-1 h-4 w-4 transition-transform duration-200',
               isOpen && 'rotate-180'
@@ -244,7 +244,7 @@ export function DropdownMenu({
                     )}
                     <span className="flex-1">{item.label}</span>
                     {item.selected && (
-                      <HiCheck className="flex-shrink-0 w-4 h-4 text-amber-600 dark:text-amber-400" />
+                      <FiCheck className="flex-shrink-0 w-4 h-4 text-amber-600 dark:text-amber-400" />
                     )}
                   </ItemComponent>
                 </React.Fragment>

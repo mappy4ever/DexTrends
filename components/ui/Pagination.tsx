@@ -14,7 +14,7 @@
 
 import React from 'react';
 import { cn } from '@/utils/cn';
-import { HiChevronLeft, HiChevronRight, HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
+import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 
 export interface PaginationProps {
   /** Current page (1-indexed) */
@@ -165,7 +165,7 @@ export function Pagination({
           aria-label="Go to first page"
           title="First page"
         >
-          <HiChevronDoubleLeft className={styles.icon} />
+          <FiChevronsLeft className={styles.icon} />
         </button>
       )}
 
@@ -177,7 +177,7 @@ export function Pagination({
         aria-label="Go to previous page"
         title="Previous page"
       >
-        <HiChevronLeft className={styles.icon} />
+        <FiChevronLeft className={styles.icon} />
         <span className="hidden sm:inline ml-1">Prev</span>
       </button>
 
@@ -234,7 +234,7 @@ export function Pagination({
         title="Next page"
       >
         <span className="hidden sm:inline mr-1">Next</span>
-        <HiChevronRight className={styles.icon} />
+        <FiChevronRight className={styles.icon} />
       </button>
 
       {/* Last page button */}
@@ -246,7 +246,7 @@ export function Pagination({
           aria-label="Go to last page"
           title="Last page"
         >
-          <HiChevronDoubleRight className={styles.icon} />
+          <FiChevronsRight className={styles.icon} />
         </button>
       )}
 

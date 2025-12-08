@@ -10,8 +10,7 @@ import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import { cn } from '../../utils/cn';
 import logger from '../../utils/logger';
 import { fetchJSON } from '../../utils/unifiedFetch';
-import { FaSearch, FaStar, FaRandom, FaExpand, FaTimes, FaChevronLeft, FaChevronRight, FaHeart } from 'react-icons/fa';
-import { HiSparkles } from 'react-icons/hi';
+import { FiSearch, FiStar, FiShuffle, FiMaximize, FiX, FiChevronLeft, FiChevronRight, FiHeart, FiZap } from 'react-icons/fi';
 
 interface Pokemon {
   id: number;
@@ -270,7 +269,7 @@ const ShinyGalleryPage: NextPage = () => {
           {isNotable && (
             <div className="absolute top-2 left-2 z-10">
               <span className="flex items-center gap-1 px-2 py-1 bg-amber-500 text-white text-xs font-medium rounded-full">
-                <FaStar className="w-3 h-3" />
+                <FiStar className="w-3 h-3" />
                 Notable
               </span>
             </div>
@@ -289,7 +288,7 @@ const ShinyGalleryPage: NextPage = () => {
                 : 'bg-stone-100 dark:bg-stone-700 text-stone-400 hover:bg-pink-100 hover:text-pink-500'
             )}
           >
-            <FaHeart className="w-4 h-4" />
+            <FiHeart className="w-4 h-4" />
           </button>
 
           {/* Pokemon Images */}
@@ -309,7 +308,7 @@ const ShinyGalleryPage: NextPage = () => {
 
             {/* Arrow */}
             <div className="flex items-center text-stone-300 dark:text-stone-600">
-              <HiSparkles className="w-4 h-4 text-amber-400" />
+              <FiZap className="w-4 h-4 text-amber-400" />
             </div>
 
             {/* Shiny */}
@@ -367,7 +366,7 @@ const ShinyGalleryPage: NextPage = () => {
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-pink-500 text-white rounded-xl font-medium shadow-lg"
           >
-            <FaRandom className="w-4 h-4" />
+            <FiShuffle className="w-4 h-4" />
             Random Shiny
           </motion.button>
         </PageHeader>
@@ -377,7 +376,7 @@ const ShinyGalleryPage: NextPage = () => {
         {/* Notable Shinies Showcase */}
         <Container variant="gradient" className="p-4 sm:p-6 mb-6">
           <h3 className="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-            <FaStar className="text-amber-500" />
+            <FiStar className="text-amber-500" />
             Notable Shinies
           </h3>
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
@@ -409,7 +408,7 @@ const ShinyGalleryPage: NextPage = () => {
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           {/* Search */}
           <div className="flex-1 relative">
-            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
             <input
               type="text"
               value={searchQuery}
@@ -489,7 +488,7 @@ const ShinyGalleryPage: NextPage = () => {
         {/* No Results */}
         {!loading && filteredPokemon.length === 0 && (
           <Container variant="elevated" className="p-8 text-center">
-            <FaSearch className="w-12 h-12 text-stone-300 dark:text-stone-600 mx-auto mb-4" />
+            <FiSearch className="w-12 h-12 text-stone-300 dark:text-stone-600 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-2">
               No Pokemon found
             </h3>
@@ -535,13 +534,13 @@ const ShinyGalleryPage: NextPage = () => {
                         : 'bg-stone-100 dark:bg-stone-700 text-stone-400'
                     )}
                   >
-                    <FaHeart className="w-5 h-5" />
+                    <FiHeart className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setSelectedPokemon(null)}
                     className="p-2 rounded-full bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600"
                   >
-                    <FaTimes className="w-5 h-5" />
+                    <FiX className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -574,7 +573,7 @@ const ShinyGalleryPage: NextPage = () => {
                       />
                     </div>
                     <span className="text-sm font-medium text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1">
-                      <HiSparkles className="w-3 h-3" />
+                      <FiZap className="w-3 h-3" />
                       Shiny Form
                     </span>
                   </div>
@@ -592,7 +591,7 @@ const ShinyGalleryPage: NextPage = () => {
                   <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 mb-6">
                     <div className="flex items-start gap-3">
                       <div className="p-2 bg-amber-500 rounded-lg">
-                        <FaStar className="w-4 h-4 text-white" />
+                        <FiStar className="w-4 h-4 text-white" />
                       </div>
                       <div>
                         <h4 className="font-semibold text-amber-700 dark:text-amber-400 mb-1">
@@ -615,7 +614,7 @@ const ShinyGalleryPage: NextPage = () => {
                     }}
                     className="flex items-center gap-2 px-4 py-2 bg-stone-100 dark:bg-stone-700 rounded-xl hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors"
                   >
-                    <FaChevronLeft className="w-4 h-4" />
+                    <FiChevronLeft className="w-4 h-4" />
                     Previous
                   </button>
                   <button
@@ -632,7 +631,7 @@ const ShinyGalleryPage: NextPage = () => {
                     className="flex items-center gap-2 px-4 py-2 bg-stone-100 dark:bg-stone-700 rounded-xl hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors"
                   >
                     Next
-                    <FaChevronRight className="w-4 h-4" />
+                    <FiChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>

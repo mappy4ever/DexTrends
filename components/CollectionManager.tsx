@@ -5,6 +5,8 @@ import Modal from '@/components/ui/Modal';
 import Link from 'next/link';
 import type { TCGCard } from '../types/api/cards';
 import logger from '@/utils/logger';
+import { fetchJSON } from '@/utils/unifiedFetch';
+import { FiPlus, FiTrash2, FiEdit2, FiUpload, FiDownload, FiX, FiSearch } from 'react-icons/fi';
 
 // Type definitions for collections
 interface CollectionCard {
@@ -53,6 +55,9 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
   const [mounted, setMounted] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [collectionToDelete, setCollectionToDelete] = useState<Collection | null>(null);
 
   // Handle mounting
   useEffect(() => {
@@ -255,66 +260,37 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     }
   };
 
+  const [searchLoading, setSearchLoading] = useState(false);
+
   const searchCards = async (query: string) => {
     if (!query.trim()) {
       setSearchResults([]);
       return;
     }
 
+    setSearchLoading(true);
     try {
-      // Simulate card search - in real app, use Pokemon TCG API
-      const mockResults: TCGCard[] = [
+      // Use the real TCG API to search for cards
+      const response = await fetchJSON<{ data: TCGCard[], meta?: { cardCount: number } }>(
+        `/api/tcg-cards?name=${encodeURIComponent(query)}&pageSize=20`,
         {
-          id: 'base1-4',
-          name: 'Charizard',
-          supertype: 'Pokémon' as const,
-          set: { 
-            id: 'base1',
-            name: 'Base Set',
-            series: 'Base',
-            printedTotal: 102,
-            total: 102,
-            releaseDate: '1999-01-09',
-            updatedAt: '2023-01-01',
-            images: {
-              symbol: '',
-              logo: ''
-            }
-          },
-          number: '4',
-          images: { 
-            small: '/api/placeholder/150/200',
-            large: '/api/placeholder/300/400'
-          }
-        },
-        {
-          id: 'base1-6',
-          name: 'Blastoise',
-          supertype: 'Pokémon' as const,
-          set: { 
-            id: 'base1',
-            name: 'Base Set',
-            series: 'Base',
-            printedTotal: 102,
-            total: 102,
-            releaseDate: '1999-01-09',
-            updatedAt: '2023-01-01',
-            images: {
-              symbol: '',
-              logo: ''
-            }
-          },
-          number: '6',
-          images: { 
-            small: '/api/placeholder/150/200',
-            large: '/api/placeholder/300/400'
-          }
+          useCache: true,
+          cacheTime: 5 * 60 * 1000, // 5 minute cache
+          timeout: 10000
         }
-      ].filter(card => card.name.toLowerCase().includes(query.toLowerCase()));
+      );
 
-      setSearchResults(mockResults);
+      if (response?.data) {
+        setSearchResults(response.data);
+        logger.debug('Card search results', { query, count: response.data.length });
+      } else {
+        setSearchResults([]);
+      }
     } catch (error) {
-      // Error searching cards
+      logger.error('Error searching cards', { query, error });
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
     }
   };
 
@@ -398,6 +374,34 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
       logger.error('Error updating collection:', { error });
     }
   }, [userId, getSessionId, selectedCollection?.id]);
+
+  const deleteCollection = useCallback(async (collectionId: string) => {
+    try {
+      const sessionId = userId || getSessionId();
+      const table = userId ? 'user_collections' : 'session_collections';
+      const idField = userId ? 'user_id' : 'session_id';
+
+      const { error } = await supabase
+        .from(table)
+        .delete()
+        .eq('id', collectionId)
+        .eq(idField, sessionId!);
+
+      if (error) throw error;
+
+      setCollections(prev => prev.filter(c => c.id !== collectionId));
+
+      // If deleted collection was selected, select another one or null
+      if (selectedCollection?.id === collectionId) {
+        const remaining = collections.filter(c => c.id !== collectionId);
+        setSelectedCollection(remaining.length > 0 ? remaining[0] : null);
+      }
+
+      logger.info('Collection deleted successfully', { collectionId });
+    } catch (error) {
+      logger.error('Error deleting collection:', { error });
+    }
+  }, [userId, getSessionId, selectedCollection?.id, collections]);
 
   const importCollection = useCallback(async (file: File) => {
     setImportError(null);
@@ -531,11 +535,9 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
         </h2>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 flex items-center gap-2"
+          className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 flex items-center gap-2 min-h-[44px] touch-manipulation"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
+          <FiPlus className="w-4 h-4" />
           New Collection
         </button>
       </div>
@@ -582,11 +584,9 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
             <div className="bg-white dark:bg-stone-800 rounded-lg shadow p-4 flex items-center justify-center">
               <button
                 onClick={() => setShowAddCardModal(true)}
-                className="w-full h-full flex items-center justify-center border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md hover:border-amber-500 text-stone-500 dark:text-stone-300 hover:text-amber-500"
+                className="w-full h-full flex items-center justify-center border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md hover:border-amber-500 text-stone-500 dark:text-stone-300 hover:text-amber-500 min-h-[44px] touch-manipulation"
               >
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
+                <FiPlus className="w-8 h-8" />
               </button>
             </div>
           </div>
@@ -607,23 +607,27 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                 </div>
                 <div className="flex gap-2">
                   <button
+                    onClick={() => setShowEditModal(true)}
+                    className="px-3 py-1 text-sm bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-200 dark:hover:bg-stone-600 flex items-center gap-1 min-h-[36px] touch-manipulation"
+                    title="Edit collection"
+                  >
+                    <FiEdit2 className="w-4 h-4" />
+                    Edit
+                  </button>
+                  <button
                     onClick={() => setShowImportModal(true)}
-                    className="px-3 py-1 text-sm bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-200 dark:hover:bg-stone-600 flex items-center gap-1"
+                    className="px-3 py-1 text-sm bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-200 dark:hover:bg-stone-600 flex items-center gap-1 min-h-[36px] touch-manipulation"
                     title="Import cards"
                   >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
+                    <FiUpload className="w-4 h-4" />
                     Import
                   </button>
                   <div className="relative group">
                     <button
-                      className="px-3 py-1 text-sm bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-200 dark:hover:bg-stone-600 flex items-center gap-1"
+                      className="px-3 py-1 text-sm bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-200 dark:hover:bg-stone-600 flex items-center gap-1 min-h-[36px] touch-manipulation"
                       title="Export collection"
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                      </svg>
+                      <FiDownload className="w-4 h-4" />
                       Export
                     </button>
                     <div className="absolute right-0 mt-1 w-32 bg-white dark:bg-stone-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
@@ -641,6 +645,16 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                       </button>
                     </div>
                   </div>
+                  <button
+                    onClick={() => {
+                      setCollectionToDelete(selectedCollection);
+                      setShowDeleteConfirm(true);
+                    }}
+                    className="px-3 py-1 text-sm bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-md hover:bg-red-200 dark:hover:bg-red-900/50 flex items-center gap-1 min-h-[36px] touch-manipulation"
+                    title="Delete collection"
+                  >
+                    <FiTrash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -680,12 +694,10 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
                             </div>
                             <button
                               onClick={() => removeCardFromCollection(card.card_id)}
-                              className="text-red-500 hover:text-red-700 p-1"
+                              className="text-red-500 hover:text-red-700 p-2 min-w-[36px] min-h-[36px] touch-manipulation"
                               title="Remove from collection"
                             >
-                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                              </svg>
+                              <FiTrash2 className="w-4 h-4" />
                             </button>
                           </div>
                           {card.notes && (
@@ -740,6 +752,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           searchResults={searchResults}
+          searchLoading={searchLoading}
           onSearch={searchCards}
           onAddCard={addCardToCollection}
           onCancel={() => setShowAddCardModal(false)}
@@ -783,9 +796,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
               htmlFor="import-file-input"
               className="cursor-pointer"
             >
-              <svg className="w-12 h-12 text-stone-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-              </svg>
+              <FiUpload className="w-12 h-12 text-stone-400 mx-auto mb-3" />
               <p className="text-sm text-stone-600 dark:text-stone-300 mb-2">
                 Click to select a file or drag and drop
               </p>
@@ -802,6 +813,83 @@ Card ID,Card Name,Set Name,Quantity
 sm1-1,Bulbasaur,Sun & Moon,2
 xy1-54,Charizard,XY Base,1
             </pre>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Edit Collection Modal */}
+      {selectedCollection && (
+        <Modal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          title="Edit Collection"
+        >
+          <EditCollectionForm
+            collection={selectedCollection}
+            onSubmit={(name, description) => {
+              updateCollection(selectedCollection.id, { name, description });
+              setShowEditModal(false);
+            }}
+            onCancel={() => setShowEditModal(false)}
+          />
+        </Modal>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setCollectionToDelete(null);
+        }}
+        title="Delete Collection"
+      >
+        <div className="p-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <FiTrash2 className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
+                Delete &quot;{collectionToDelete?.name}&quot;?
+              </h3>
+              <p className="text-sm text-stone-500 dark:text-stone-400">
+                This action cannot be undone.
+              </p>
+            </div>
+          </div>
+
+          {collectionToDelete && collectionToDelete.cards?.length > 0 && (
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md p-3 mb-4">
+              <p className="text-sm text-amber-700 dark:text-amber-400">
+                This collection contains {collectionToDelete.cards.length} card{collectionToDelete.cards.length !== 1 ? 's' : ''}. All cards will be permanently removed.
+              </p>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => {
+                setShowDeleteConfirm(false);
+                setCollectionToDelete(null);
+              }}
+              className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-700 min-h-[44px] touch-manipulation"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                if (collectionToDelete) {
+                  deleteCollection(collectionToDelete.id);
+                }
+                setShowDeleteConfirm(false);
+                setCollectionToDelete(null);
+              }}
+              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center gap-2 min-h-[44px] touch-manipulation"
+            >
+              <FiTrash2 className="w-4 h-4" />
+              Delete Collection
+            </button>
           </div>
         </div>
       </Modal>
@@ -885,17 +973,86 @@ const CreateCollectionForm = memo<CreateCollectionFormProps>(({ onSubmit, onCanc
 
 CreateCollectionForm.displayName = 'CreateCollectionForm';
 
+// Edit Collection Form Component
+interface EditCollectionFormProps {
+  collection: Collection;
+  onSubmit: (name: string, description: string) => void;
+  onCancel: () => void;
+}
+
+const EditCollectionForm = memo<EditCollectionFormProps>(({ collection, onSubmit, onCancel }) => {
+  const [name, setName] = useState(collection.name);
+  const [description, setDescription] = useState(collection.description || '');
+
+  const handleSubmit = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    if (name.trim()) {
+      onSubmit(name.trim(), description.trim());
+    }
+  }, [name, description, onSubmit]);
+
+  return (
+    <div className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+            Collection Name *
+          </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
+            placeholder="My Pokemon Collection"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+            Description
+          </label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
+            placeholder="Describe your collection..."
+            rows={3}
+          />
+        </div>
+        <div className="flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-700 min-h-[44px] touch-manipulation"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 min-h-[44px] touch-manipulation"
+          >
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+});
+
+EditCollectionForm.displayName = 'EditCollectionForm';
+
 // Add Card Form Component
 interface AddCardFormProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   searchResults: TCGCard[];
+  searchLoading?: boolean;
   onSearch: (query: string) => void;
   onAddCard: (card: TCGCard, quantity: number, condition: string, notes: string) => void;
   onCancel: () => void;
 }
 
-const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searchResults, onSearch, onAddCard, onCancel }) => {
+const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searchResults, searchLoading = false, onSearch, onAddCard, onCancel }) => {
   const [selectedCard, setSelectedCard] = useState<TCGCard | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [condition, setCondition] = useState('Near Mint');
@@ -933,15 +1090,31 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
           <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
             Search for a card
           </label>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
-            placeholder="Charizard, Pikachu..."
-          />
+          <div className="relative">
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-800 dark:text-white"
+              placeholder="Charizard, Pikachu..."
+            />
+          </div>
 
-          {searchResults.length > 0 && (
+          {searchLoading && (
+            <div className="mt-4 flex items-center justify-center py-4">
+              <div className="animate-spin rounded-full h-6 w-6 border-2 border-amber-500 border-t-transparent"></div>
+              <span className="ml-2 text-sm text-stone-500 dark:text-stone-400">Searching cards...</span>
+            </div>
+          )}
+
+          {!searchLoading && searchQuery && searchResults.length === 0 && (
+            <div className="mt-4 text-center py-4 text-stone-500 dark:text-stone-400 text-sm">
+              No cards found for &quot;{searchQuery}&quot;
+            </div>
+          )}
+
+          {!searchLoading && searchResults.length > 0 && (
             <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
               {searchResults.map(card => (
                 <div
@@ -990,9 +1163,9 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
             <button
               type="button"
               onClick={() => setSelectedCard(null)}
-              className="ml-auto text-stone-500 hover:text-stone-700"
+              className="ml-auto text-stone-500 hover:text-stone-700 p-2 min-w-[36px] min-h-[36px] touch-manipulation"
             >
-              ✕
+              <FiX className="w-5 h-5" />
             </button>
           </div>
 
@@ -1042,14 +1215,15 @@ const AddCardForm = memo<AddCardFormProps>(({ searchQuery, setSearchQuery, searc
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-700"
+              className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-700 min-h-[44px] touch-manipulation"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700"
+              className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 flex items-center gap-2 min-h-[44px] touch-manipulation"
             >
+              <FiPlus className="w-4 h-4" />
               Add to Collection
             </button>
           </div>

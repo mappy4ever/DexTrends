@@ -1,50 +1,58 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { useTheme } from '../context/UnifiedAppContext';
+import Link from 'next/link';
 import { DynamicMarketAnalytics } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import BackToTop from '../components/ui/BaseBackToTop';
 import { Container } from '../components/ui/Container';
 import { PageHeader } from '../components/ui/BreadcrumbNavigation';
-import { IoTrendingUp, IoFlame, IoSwapVertical, IoAnalytics } from 'react-icons/io5';
+import { TabPills, type TabItem } from '../components/ui/TabPills';
+import { PageLoader } from '../components/ui/SkeletonLoadingSystem';
+import { EmptyState } from '../components/ui/EmptyState';
+import { FiTrendingUp, FiActivity, FiRefreshCw, FiBarChart2 } from 'react-icons/fi';
+import useMarketData from '../hooks/useMarketData';
 import type { NextPage } from 'next';
 
-interface Tab {
-  id: string;
-  label: string;
-  icon: string;
-  description: string;
-}
-
 const MarketPage: NextPage = () => {
-  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('overview');
+  const { trendingCards, topGainers, topLosers, stats, loading } = useMarketData('7d');
 
-  const tabs: Tab[] = [
-    { 
-      id: 'overview', 
-      label: 'Market Overview', 
-      icon: '📊',
-      description: 'Market trends and top movers'
+  const formatCurrency = (amount: number): string => {
+    if (amount >= 1000000) return `$${(amount / 1000000).toFixed(1)}M`;
+    if (amount >= 1000) return `$${(amount / 1000).toFixed(1)}K`;
+    return `$${amount.toFixed(2)}`;
+  };
+
+  const formatPercent = (percent: number): string => {
+    const sign = percent >= 0 ? '+' : '';
+    return `${sign}${percent.toFixed(1)}%`;
+  };
+
+  const tabs: TabItem[] = [
+    {
+      id: 'overview',
+      label: 'Market Overview',
+      shortLabel: 'Overview',
+      icon: <FiTrendingUp className="w-4 h-4" />,
     },
-    { 
-      id: 'trending', 
-      label: 'Trending Cards', 
-      icon: '📈',
-      description: 'Most popular cards right now'
+    {
+      id: 'trending',
+      label: 'Trending Cards',
+      shortLabel: 'Trending',
+      icon: <FiActivity className="w-4 h-4" />,
     },
-    { 
-      id: 'movers', 
-      label: 'Price Movers', 
-      icon: '💹',
-      description: 'Biggest price changes'
+    {
+      id: 'movers',
+      label: 'Price Movers',
+      shortLabel: 'Movers',
+      icon: <FiRefreshCw className="w-4 h-4" />,
     },
-    { 
-      id: 'insights', 
-      label: 'Market Insights', 
-      icon: '🔍',
-      description: 'Analysis and predictions'
+    {
+      id: 'insights',
+      label: 'Market Insights',
+      shortLabel: 'Insights',
+      icon: <FiBarChart2 className="w-4 h-4" />,
     }
   ];
 
@@ -68,47 +76,41 @@ const MarketPage: NextPage = () => {
               { title: 'Market', href: '/market', icon: '📈', isActive: true },
             ]}
           >
-            {/* Tab Navigation as Pills - Scrollable on mobile */}
-            <div className="overflow-x-auto -mx-4 px-4 pb-2 scrollbar-hide">
-              <div className="flex gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-full w-fit min-w-full sm:min-w-0">
-                {tabs.map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap min-h-[44px] ${
-                      activeTab === tab.id
-                        ? 'bg-amber-600 text-white'
-                        : 'text-stone-600 dark:text-stone-300 hover:text-amber-600'
-                    }`}
-                  >
-                    {tab.id === 'overview' && <IoTrendingUp className="w-4 h-4 flex-shrink-0" />}
-                    {tab.id === 'trending' && <IoFlame className="w-4 h-4 flex-shrink-0" />}
-                    {tab.id === 'movers' && <IoSwapVertical className="w-4 h-4 flex-shrink-0" />}
-                    {tab.id === 'insights' && <IoAnalytics className="w-4 h-4 flex-shrink-0" />}
-                    <span className="hidden xs:inline sm:inline">{tab.label.split(' ')[0]}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            {/* Tab Navigation using TabPills component */}
+            <TabPills
+              tabs={tabs}
+              activeTab={activeTab}
+              onChange={setActiveTab}
+              ariaLabel="Market analytics navigation"
+              className="pb-2"
+            />
           </PageHeader>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
             <Container variant="default" hover className="text-center p-4">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">2.4K+</div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {loading ? '—' : `${(stats.totalCardsTracked / 1000).toFixed(1)}K+`}
+              </div>
               <div className="text-sm text-stone-500 dark:text-stone-300">Cards Tracked</div>
             </Container>
             <Container variant="default" hover className="text-center p-4">
-              <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">$45K</div>
+              <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                {loading ? '—' : formatCurrency(stats.dailyVolume)}
+              </div>
               <div className="text-sm text-stone-500 dark:text-stone-300">Daily Volume</div>
             </Container>
             <Container variant="default" hover className="text-center p-4">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">+12.5%</div>
+              <div className={`text-2xl font-bold ${stats.weeklyGrowth >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                {loading ? '—' : formatPercent(stats.weeklyGrowth)}
+              </div>
               <div className="text-sm text-stone-500 dark:text-stone-300">Weekly Growth</div>
             </Container>
             <Container variant="default" hover className="text-center p-4">
-              <div className="text-2xl font-bold text-stone-800 dark:text-stone-200">156</div>
-              <div className="text-sm text-stone-500 dark:text-stone-300">Active Traders</div>
+              <div className="text-2xl font-bold text-stone-800 dark:text-stone-200">
+                {loading ? '—' : topGainers.length + topLosers.length}
+              </div>
+              <div className="text-sm text-stone-500 dark:text-stone-300">Price Movers</div>
             </Container>
           </div>
 
@@ -127,82 +129,126 @@ const MarketPage: NextPage = () => {
                 <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-2">Trending Cards</h2>
                 <p className="text-stone-500 mb-6">Most popular and searched cards</p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[1, 2, 3, 4, 5, 6].map((index) => (
-                    <div key={index} className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4 border border-stone-200 dark:border-stone-600">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm font-medium text-stone-500">#{index}</div>
-                        <div className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full">
-                          +{(Math.random() * 50 + 10).toFixed(1)}%
+                {loading ? (
+                  <PageLoader text="Loading trending cards..." />
+                ) : trendingCards.length === 0 ? (
+                  <EmptyState
+                    illustration="card"
+                    title="No trending cards"
+                    description="Check back later for trending card data."
+                    size="sm"
+                  />
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {trendingCards.slice(0, 6).map((card, index) => (
+                      <Link
+                        key={card.card_id}
+                        href={`/cards/${card.card_id}`}
+                        className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4 border border-stone-200 dark:border-stone-600 hover:border-amber-400 dark:hover:border-amber-500 transition-colors"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="text-sm font-medium text-stone-500">#{index + 1}</div>
+                          {card.price_market && (
+                            <div className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full">
+                              ${parseFloat(String(card.price_market)).toFixed(2)}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                      <h3 className="font-semibold text-stone-900 dark:text-white mb-1">Card Name {index}</h3>
-                      <p className="text-sm text-stone-500 mb-2">Base Set • Rare</p>
-                      <div className="text-lg font-bold text-green-600 dark:text-green-400">
-                        ${(Math.random() * 200 + 50).toFixed(2)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                        <h3 className="font-semibold text-stone-900 dark:text-white mb-1 truncate">{card.card_name}</h3>
+                        <p className="text-sm text-stone-500 mb-2 truncate">{card.set_name} • {card.variant_type || 'Standard'}</p>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </Container>
             )}
 
             {activeTab === 'movers' && (
               <Container variant="default" className="p-6 md:p-8">
                 <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-2">Price Movers</h2>
-                <p className="text-stone-500 mb-6">Biggest price changes in the last 24 hours</p>
+                <p className="text-stone-500 mb-6">Biggest price changes in the last 7 days</p>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Top Gainers */}
-                  <div>
-                    <h3 className="text-base font-medium text-green-700 dark:text-green-400 mb-4">Top Gainers</h3>
-                    <div className="space-y-3">
-                      {[1, 2, 3, 4, 5].map((index) => (
-                        <div key={index} className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4 border border-stone-200 dark:border-stone-600">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <div className="font-medium text-stone-900 dark:text-white">Gainer Card {index}</div>
-                              <div className="text-sm text-stone-500">Set Name • Rarity</div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-semibold text-green-600 dark:text-green-400">
-                                +{(Math.random() * 30 + 5).toFixed(1)}%
+                {loading ? (
+                  <PageLoader text="Loading price movers..." />
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Top Gainers */}
+                    <div>
+                      <h3 className="text-base font-medium text-green-700 dark:text-green-400 mb-4">Top Gainers</h3>
+                      {topGainers.length === 0 ? (
+                        <EmptyState
+                          illustration="card"
+                          title="No gainers"
+                          description="No cards showing price increases."
+                          size="sm"
+                        />
+                      ) : (
+                        <div className="space-y-3">
+                          {topGainers.slice(0, 5).map((card) => (
+                            <Link
+                              key={card.card_id}
+                              href={`/cards/${card.card_id}`}
+                              className="block bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4 border border-stone-200 dark:border-stone-600 hover:border-green-400 dark:hover:border-green-500 transition-colors"
+                            >
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <div className="font-medium text-stone-900 dark:text-white truncate">{card.card_name}</div>
+                                  <div className="text-sm text-stone-500 truncate">{card.set_name}</div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="font-semibold text-green-600 dark:text-green-400">
+                                    {formatPercent(card.priceChangePercent)}
+                                  </div>
+                                  <div className="text-sm text-stone-500">
+                                    ${parseFloat(String(card.price_market || 0)).toFixed(2)}
+                                  </div>
+                                </div>
                               </div>
-                              <div className="text-sm text-stone-500">
-                                ${(Math.random() * 100 + 20).toFixed(2)}
-                              </div>
-                            </div>
-                          </div>
+                            </Link>
+                          ))}
                         </div>
-                      ))}
+                      )}
+                    </div>
+
+                    {/* Top Losers */}
+                    <div>
+                      <h3 className="text-base font-medium text-red-700 dark:text-red-400 mb-4">Top Losers</h3>
+                      {topLosers.length === 0 ? (
+                        <EmptyState
+                          illustration="card"
+                          title="No losers"
+                          description="No cards showing price decreases."
+                          size="sm"
+                        />
+                      ) : (
+                        <div className="space-y-3">
+                          {topLosers.slice(0, 5).map((card) => (
+                            <Link
+                              key={card.card_id}
+                              href={`/cards/${card.card_id}`}
+                              className="block bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4 border border-stone-200 dark:border-stone-600 hover:border-red-400 dark:hover:border-red-500 transition-colors"
+                            >
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <div className="font-medium text-stone-900 dark:text-white truncate">{card.card_name}</div>
+                                  <div className="text-sm text-stone-500 truncate">{card.set_name}</div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="font-semibold text-red-600 dark:text-red-400">
+                                    {formatPercent(card.priceChangePercent)}
+                                  </div>
+                                  <div className="text-sm text-stone-500">
+                                    ${parseFloat(String(card.price_market || 0)).toFixed(2)}
+                                  </div>
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
-
-                  {/* Top Losers */}
-                  <div>
-                    <h3 className="text-base font-medium text-red-700 dark:text-red-400 mb-4">Top Losers</h3>
-                    <div className="space-y-3">
-                      {[1, 2, 3, 4, 5].map((index) => (
-                        <div key={index} className="bg-stone-50 dark:bg-stone-700/50 rounded-lg p-4 border border-stone-200 dark:border-stone-600">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <div className="font-medium text-stone-900 dark:text-white">Loser Card {index}</div>
-                              <div className="text-sm text-stone-500">Set Name • Rarity</div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-semibold text-red-600 dark:text-red-400">
-                                -{(Math.random() * 20 + 2).toFixed(1)}%
-                              </div>
-                              <div className="text-sm text-stone-500">
-                                ${(Math.random() * 80 + 15).toFixed(2)}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                )}
               </Container>
             )}
 

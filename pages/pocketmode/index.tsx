@@ -4,8 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import { FaCrown } from "react-icons/fa";
-import { IoFilter, IoClose, IoChevronDown } from "react-icons/io5";
+import { FiFilter, FiX, FiChevronDown } from "react-icons/fi";
 import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import { TypeFilter } from "../../components/ui/forms/TypeFilter";
@@ -94,7 +93,7 @@ function MobileFilterDrawer({
         {/* Header */}
         <div className="sticky top-0 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <IoFilter className="w-5 h-5 text-amber-600" />
+            <FiFilter className="w-5 h-5 text-amber-600" />
             <h2 className={cn(TYPOGRAPHY.heading.h4)}>Filters</h2>
             {activeFilterCount > 0 && (
               <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-semibold rounded-full">
@@ -106,7 +105,7 @@ function MobileFilterDrawer({
             onClick={onClose}
             className="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
           >
-            <IoClose className="w-5 h-5" />
+            <FiX className="w-5 h-5" />
           </button>
         </div>
 
@@ -521,7 +520,7 @@ const PocketMode: NextPage = () => {
               onClick={() => setMobileFilterOpen(true)}
               className="lg:hidden flex items-center gap-2 px-4 py-2 bg-stone-100 dark:bg-stone-800 rounded-xl font-medium text-stone-700 dark:text-stone-300"
             >
-              <IoFilter className="w-4 h-4" />
+              <FiFilter className="w-4 h-4" />
               <span>Filters</span>
               {activeFilterCount > 0 && (
                 <span className="px-2 py-0.5 bg-amber-500 text-white text-xs font-bold rounded-full">
@@ -538,7 +537,7 @@ const PocketMode: NextPage = () => {
                     <TypeBadge type={typeFilter} size="xs" />
                     <span className="capitalize">{typeFilter}</span>
                     <button onClick={() => setTypeFilter('all')} className="ml-1 hover:text-blue-900">
-                      <IoClose className="w-3.5 h-3.5" />
+                      <FiX className="w-3.5 h-3.5" />
                     </button>
                   </span>
                 )}
@@ -546,7 +545,7 @@ const PocketMode: NextPage = () => {
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium rounded-full">
                     {rarityFilter === 'fullart' ? 'Full Art' : rarityFilter}
                     <button onClick={() => setRarityFilter('all')} className="ml-1 hover:text-yellow-900">
-                      <IoClose className="w-3.5 h-3.5" />
+                      <FiX className="w-3.5 h-3.5" />
                     </button>
                   </span>
                 )}

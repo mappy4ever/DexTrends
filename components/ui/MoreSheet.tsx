@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence, useDragControls, PanInfo } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { CrossedSwords, Heart, CardPickup } from '@/utils/icons';
-import { IoSettingsOutline, IoGameControllerOutline, IoClose } from 'react-icons/io5';
+import { FiSettings, FiMonitor, FiX } from 'react-icons/fi';
 import { Z_INDEX } from '@/hooks/useViewport';
 
 interface MoreSheetProps {
@@ -45,7 +45,7 @@ const navItems: SheetNavItem[] = [
     href: '/fun',
     label: 'Fun & Games',
     description: 'Quizzes and mini games',
-    icon: <IoGameControllerOutline className="w-5 h-5" />,
+    icon: <FiMonitor className="w-5 h-5" />,
     color: 'text-green-600 dark:text-green-400',
   },
 ];
@@ -61,10 +61,26 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
   const dragControls = useDragControls();
   const sheetRef = useRef<HTMLDivElement>(null);
 
+  // Android back button handler - closes sheet when back is pressed
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('popstate', handlePopState);
+    }
+
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [isOpen, onClose]);
+
   // Handle drag end - dismiss if swiped down enough
+  // Using 150px threshold to prevent accidental closes
   const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    // If dragged down more than 100px or with velocity > 500, close the sheet
-    if (info.offset.y > 100 || info.velocity.y > 500) {
+    // If dragged down more than 150px or with velocity > 500, close the sheet
+    if (info.offset.y > 150 || info.velocity.y > 500) {
       onClose();
     }
   };
@@ -135,7 +151,7 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
                   'touch-manipulation tap-highlight-transparent'
                 )}
               >
-                <IoClose className="w-5 h-5 text-stone-500 dark:text-stone-300" />
+                <FiX className="w-5 h-5 text-stone-500 dark:text-stone-300" />
               </button>
             </div>
 
