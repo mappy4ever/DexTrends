@@ -1208,7 +1208,7 @@ const CardsView: React.FC<{
               />
             </div>
             <div className="clean-card-info">
-              <span className="clean-card-info-name">{card.name}</span>
+              <span className="clean-card-info-name text-stone-900 dark:text-white">{card.name}</span>
             </div>
           </div>
         ))}
