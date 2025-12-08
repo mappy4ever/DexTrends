@@ -109,7 +109,31 @@ interface FeatureIdea {
 }
 
 const featureIdeas: FeatureIdea[] = [
-  // High Priority
+  // ============ COMPLETED (v2.0 December 2024) ============
+  {
+    id: 'search-experience',
+    title: 'Enhanced Search Experience',
+    description: 'Search history (up to 8 recent), popular suggestions, keyboard navigation (arrows + Enter), Cmd/Ctrl+K shortcut',
+    priority: 'high',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'offline-mode',
+    title: 'PWA Offline Mode',
+    description: 'Install as app, offline fallback page, service worker caching, update notifications when new version available',
+    priority: 'high',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'market-analytics',
+    title: 'Real-Time Market Analytics',
+    description: 'Live data from Supabase - cards tracked, 24h volume, weekly growth, price movers, trending cards with actual metrics',
+    priority: 'high',
+    status: 'completed',
+    category: 'tcg'
+  },
   {
     id: 'deck-sharing',
     title: 'Deck Sharing & Export',
@@ -121,7 +145,7 @@ const featureIdeas: FeatureIdea[] = [
   {
     id: 'collection-tracker',
     title: 'Card Collection Tracker',
-    description: 'Track owned cards, completion percentage per set, wish lists, and trade lists',
+    description: 'Full CRUD with Supabase - create/edit/delete collections, add cards via search, export JSON/CSV, import from files',
     priority: 'high',
     status: 'completed',
     category: 'tcg'
@@ -142,7 +166,71 @@ const featureIdeas: FeatureIdea[] = [
     status: 'completed',
     category: 'pokedex'
   },
-  // Medium Priority
+  {
+    id: 'mobile-touch',
+    title: 'Mobile Touch Excellence',
+    description: '44px touch targets, haptic feedback on interactions, Android back button support, improved swipe gestures',
+    priority: 'high',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'icon-consistency',
+    title: 'Icon System Consistency',
+    description: 'Unified to Feather icons (react-icons/fi) across 20+ files for consistent visual weight and style',
+    priority: 'high',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'css-optimization',
+    title: 'CSS Bundle Optimization',
+    description: 'Removed 1,610 lines of unused CSS (71% reduction), faster page loads and simpler maintenance',
+    priority: 'medium',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'tab-navigation',
+    title: 'Tab Pills Component',
+    description: 'Reusable scrollable tab navigation with auto-scroll, badges, ARIA accessibility - used on Market and Collections',
+    priority: 'medium',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'image-optimization',
+    title: 'Image Lazy Loading',
+    description: 'Converted 15+ images to Next.js Image component with lazy loading and responsive sizes',
+    priority: 'medium',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'sentry-tracking',
+    title: 'Sentry Error Tracking',
+    description: 'Full Sentry integration for client, server, and edge runtime - production error monitoring with source maps',
+    priority: 'high',
+    status: 'completed',
+    category: 'data'
+  },
+  {
+    id: 'page-layouts',
+    title: 'Canonical Page Layouts',
+    description: 'Consistent structure across all pages with PageHeader, breadcrumbs, and max-w-7xl containers',
+    priority: 'medium',
+    status: 'completed',
+    category: 'ux'
+  },
+  {
+    id: 'empty-states',
+    title: 'Empty States with CTAs',
+    description: 'All empty states now have actionable buttons - "Browse Pokédex", "Try different filters", etc.',
+    priority: 'medium',
+    status: 'completed',
+    category: 'ux'
+  },
+  // ============ PLANNED ============
   {
     id: 'compare-pokemon',
     title: 'Pokemon Comparison Tool',
@@ -151,6 +239,31 @@ const featureIdeas: FeatureIdea[] = [
     status: 'planned',
     category: 'pokedex'
   },
+  {
+    id: 'advanced-filters',
+    title: 'Advanced Search Filters',
+    description: 'Filter by weakness, resistance, evolution stage, catch rate, egg group, etc.',
+    priority: 'medium',
+    status: 'planned',
+    category: 'pokedex'
+  },
+  {
+    id: 'mega-regional-forms',
+    title: 'Mega Evolutions & Regional Forms',
+    description: 'Browse Mega Evolutions, Alolan forms, Galarian forms, Hisuian forms, and Paldean forms with stats and comparisons',
+    priority: 'medium',
+    status: 'planned',
+    category: 'pokedex'
+  },
+  {
+    id: 'ev-iv-calculator',
+    title: 'EV/IV Calculator',
+    description: 'Calculate hidden stats, optimal EV spreads, breeding helper',
+    priority: 'medium',
+    status: 'planned',
+    category: 'data'
+  },
+  // ============ IDEAS ============
   {
     id: 'meta-decks',
     title: 'Meta Deck Analytics',
@@ -176,23 +289,6 @@ const featureIdeas: FeatureIdea[] = [
     category: 'social'
   },
   {
-    id: 'advanced-filters',
-    title: 'Advanced Search Filters',
-    description: 'Filter by weakness, resistance, evolution stage, catch rate, egg group, etc.',
-    priority: 'medium',
-    status: 'planned',
-    category: 'pokedex'
-  },
-  {
-    id: 'mega-regional-forms',
-    title: 'Mega Evolutions & Regional Forms',
-    description: 'Browse Mega Evolutions, Alolan forms, Galarian forms, Hisuian forms, and Paldean forms with stats and comparisons',
-    priority: 'medium',
-    status: 'planned',
-    category: 'pokedex'
-  },
-  // Low Priority / Ideas
-  {
     id: 'trading-marketplace',
     title: 'Card Trading Platform',
     description: 'Match users for trades, trade verification, reputation system',
@@ -217,26 +313,10 @@ const featureIdeas: FeatureIdea[] = [
     category: 'pokedex'
   },
   {
-    id: 'ev-iv-calculator',
-    title: 'EV/IV Calculator',
-    description: 'Calculate hidden stats, optimal EV spreads, breeding helper',
-    priority: 'medium',
-    status: 'planned',
-    category: 'data'
-  },
-  {
     id: 'dark-mode-themes',
     title: 'Custom Themes',
     description: 'Type-based themes (Fire theme, Water theme), OLED dark mode, custom accents',
     priority: 'low',
-    status: 'idea',
-    category: 'ux'
-  },
-  {
-    id: 'offline-mode',
-    title: 'Offline Mode (PWA)',
-    description: 'Install as app, browse cached Pokemon/cards offline, sync when online',
-    priority: 'medium',
     status: 'idea',
     category: 'ux'
   }

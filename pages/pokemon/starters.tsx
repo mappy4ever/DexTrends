@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { NextPage } from 'next';
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -587,195 +587,18 @@ const EvolutionChain: React.FC<{
   );
 };
 
-// Starter Detail Card - Full featured
-const StarterDetailCard: React.FC<{
-  starter: StarterPokemon;
-  region: Region;
-  onClose: () => void;
-}> = ({ starter, region, onClose }) => {
-  const router = useRouter();
-  const [viewStage, setViewStage] = useState(starter.id);
-  const primaryType = starter.types[0];
-  const typeColors = TYPE_COLORS[primaryType] || { bg: '#A8A878', text: '#fff', light: '#F5F5F5' };
-
-  // Get current evolution stage data
-  const currentStage = starter.evolutionChain.find(s => s.id === viewStage) || starter.evolutionChain[0];
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
-  }, []);
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div className={cn(
-        "fixed z-50 inset-x-4 top-1/2 -translate-y-1/2",
-        "sm:inset-auto sm:left-1/2 sm:-translate-x-1/2",
-        "max-w-lg w-full max-h-[90vh]",
-        "bg-white dark:bg-stone-900 rounded-2xl shadow-2xl",
-        "overflow-hidden flex flex-col"
-      )}>
-        {/* Header with gradient */}
-        <div
-          className="relative p-6 pb-16"
-          style={{ background: `linear-gradient(135deg, ${typeColors.bg}20 0%, ${typeColors.light} 100%)` }}
-        >
-          {/* Close button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/80 dark:bg-stone-800/80 flex items-center justify-center hover:bg-white dark:hover:bg-stone-700 transition-colors"
-          >
-            <svg className="w-4 h-4 text-stone-600 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          {/* Pokemon display */}
-          <div className="flex items-start gap-4">
-            <div className="relative w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0 -mb-12">
-              <Image
-                src={getPokemonImage(currentStage.id)}
-                alt={currentStage.name}
-                fill
-                className="object-contain drop-shadow-xl"
-                priority
-              />
-            </div>
-            <div className="flex-1 pt-1">
-              <p className="text-xs text-stone-500 dark:text-stone-400 font-mono">
-                #{String(currentStage.id).padStart(4, '0')}
-              </p>
-              <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
-                {currentStage.name}
-              </h2>
-              <div className="flex gap-1.5 mt-2">
-                {currentStage.types.map(type => (
-                  <TypeBadge key={type} type={type} size="md" />
-                ))}
-              </div>
-              <p className="text-xs text-stone-600 dark:text-stone-400 mt-2">
-                {region.name} • Gen {region.generation}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Evolution Chain */}
-          <section>
-            <h3 className="text-sm font-bold text-stone-900 dark:text-white mb-3 flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-              Evolution Chain
-            </h3>
-            <EvolutionChain
-              chain={starter.evolutionChain}
-              onSelect={setViewStage}
-              selectedId={viewStage}
-              gradient={region.gradient}
-            />
-          </section>
-
-          {/* Base Stats */}
-          <section>
-            <h3 className="text-sm font-bold text-stone-900 dark:text-white mb-3 flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              Base Stats
-              <span className="ml-auto text-xs font-normal text-stone-500">
-                Total: {starter.stats.total}
-              </span>
-            </h3>
-            <div className="space-y-2">
-              <StatBar label="HP" value={starter.stats.hp} color="#FF5959" />
-              <StatBar label="ATK" value={starter.stats.attack} color="#F5AC78" />
-              <StatBar label="DEF" value={starter.stats.defense} color="#FAE078" />
-              <StatBar label="SpA" value={starter.stats.spAtk} color="#9DB7F5" />
-              <StatBar label="SpD" value={starter.stats.spDef} color="#A7DB8D" />
-              <StatBar label="SPD" value={starter.stats.speed} color="#FA92B2" />
-            </div>
-          </section>
-
-          {/* Info */}
-          <section className="grid grid-cols-2 gap-4">
-            <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-800">
-              <p className="text-[10px] uppercase text-stone-500 dark:text-stone-400 mb-0.5">Category</p>
-              <p className="text-sm font-medium text-stone-900 dark:text-white">{starter.category}</p>
-            </div>
-            <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-800">
-              <p className="text-[10px] uppercase text-stone-500 dark:text-stone-400 mb-0.5">Height</p>
-              <p className="text-sm font-medium text-stone-900 dark:text-white">{starter.height}</p>
-            </div>
-            <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-800">
-              <p className="text-[10px] uppercase text-stone-500 dark:text-stone-400 mb-0.5">Weight</p>
-              <p className="text-sm font-medium text-stone-900 dark:text-white">{starter.weight}</p>
-            </div>
-            <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-800">
-              <p className="text-[10px] uppercase text-stone-500 dark:text-stone-400 mb-0.5">Professor</p>
-              <p className="text-sm font-medium text-stone-900 dark:text-white">{region.professor}</p>
-            </div>
-          </section>
-
-          {/* Description */}
-          <section className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800">
-            <p className="text-sm text-stone-700 dark:text-stone-300 italic leading-relaxed">
-              "{starter.description}"
-            </p>
-          </section>
-        </div>
-
-        {/* Footer Actions */}
-        <div className="p-4 border-t border-stone-200 dark:border-stone-700 flex gap-3">
-          <button
-            onClick={() => router.push(`/pokedex/${starter.id}`)}
-            className={cn(
-              "flex-1 h-11 rounded-xl font-semibold text-sm",
-              "bg-stone-900 dark:bg-white text-white dark:text-stone-900",
-              "hover:bg-stone-800 dark:hover:bg-stone-100",
-              "active:scale-[0.98] transition-all"
-            )}
-          >
-            View in Pokédex
-          </button>
-          <button
-            onClick={onClose}
-            className={cn(
-              "px-5 h-11 rounded-xl font-medium text-sm",
-              "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300",
-              "hover:bg-stone-200 dark:hover:bg-stone-700",
-              "active:scale-[0.98] transition-all"
-            )}
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </>
-  );
-};
-
-// Compact Starter Card for grid
+// Compact Starter Card for grid - now links to dedicated page
 const StarterGridCard: React.FC<{
   starter: StarterPokemon;
   region: Region;
-  onClick: () => void;
-}> = ({ starter, region, onClick }) => {
+}> = ({ starter, region }) => {
+  const router = useRouter();
   const primaryType = starter.types[0];
   const typeColors = TYPE_COLORS[primaryType] || { bg: '#A8A878', text: '#fff', light: '#F5F5F5' };
 
   return (
     <button
-      onClick={onClick}
+      onClick={() => router.push(`/pokemon/starters/${region.id}`)}
       className={cn(
         "relative rounded-2xl overflow-hidden",
         "bg-white dark:bg-stone-800",
@@ -832,24 +655,31 @@ const StarterGridCard: React.FC<{
   );
 };
 
-// Region Section
+// Region Section - now links to dedicated region page
 const RegionSection: React.FC<{
   region: Region;
-  onStarterClick: (starter: StarterPokemon, region: Region) => void;
-}> = ({ region, onStarterClick }) => {
+}> = ({ region }) => {
+  const router = useRouter();
+
   return (
     <section className="mb-10">
-      {/* Region Header */}
-      <div className="px-4 mb-4">
+      {/* Region Header - Clickable */}
+      <button
+        onClick={() => router.push(`/pokemon/starters/${region.id}`)}
+        className="w-full px-4 mb-4 text-left group"
+      >
         <div className="flex items-center gap-3">
           <h2 className={cn(
-            "text-xl sm:text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent",
+            "text-xl sm:text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent group-hover:opacity-80 transition-opacity",
             region.gradient
           )}>
             {region.name}
           </h2>
           <span className="px-2.5 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-xs font-semibold text-stone-600 dark:text-stone-400">
             Gen {region.generation}
+          </span>
+          <span className="ml-auto text-xs text-stone-400 dark:text-stone-500 group-hover:text-amber-500 transition-colors">
+            View Details →
           </span>
         </div>
         <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
@@ -858,7 +688,7 @@ const RegionSection: React.FC<{
         <p className="text-xs text-stone-400 dark:text-stone-500 mt-0.5">
           Given by {region.professor}
         </p>
-      </div>
+      </button>
 
       {/* Starters Grid */}
       <div className="px-4">
@@ -868,7 +698,6 @@ const RegionSection: React.FC<{
               key={starter.id}
               starter={starter}
               region={region}
-              onClick={() => onStarterClick(starter, region)}
             />
           ))}
         </div>
@@ -877,11 +706,9 @@ const RegionSection: React.FC<{
   );
 };
 
-// Main Page Component
+// Main Page Component - No modal, links to dedicated pages
 const StartersPage: NextPage = () => {
   const router = useRouter();
-  const [selectedStarter, setSelectedStarter] = useState<StarterPokemon | null>(null);
-  const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
   const [filterGen, setFilterGen] = useState<number | null>(null);
   const [filterType, setFilterType] = useState<string | null>(null);
 
@@ -899,27 +726,6 @@ const StartersPage: NextPage = () => {
     }
     return result;
   }, [filterGen, filterType]);
-
-  // Handle starter click
-  const handleStarterClick = useCallback((starter: StarterPokemon, region: Region) => {
-    setSelectedStarter(starter);
-    setSelectedRegion(region);
-  }, []);
-
-  // Close modal
-  const handleCloseModal = useCallback(() => {
-    setSelectedStarter(null);
-    setSelectedRegion(null);
-  }, []);
-
-  // Keyboard escape handler
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleCloseModal();
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [handleCloseModal]);
 
   // Stats summary
   const totalStarters = regions.reduce((acc, r) => acc + r.starters.length, 0);
@@ -1047,7 +853,6 @@ const StartersPage: NextPage = () => {
             <RegionSection
               key={region.id}
               region={region}
-              onStarterClick={handleStarterClick}
             />
           ))}
 
@@ -1102,14 +907,6 @@ const StartersPage: NextPage = () => {
           </div>
         </footer>
 
-        {/* Detail Modal */}
-        {selectedStarter && selectedRegion && (
-          <StarterDetailCard
-            starter={selectedStarter}
-            region={selectedRegion}
-            onClose={handleCloseModal}
-          />
-        )}
       </div>
     </>
   );
