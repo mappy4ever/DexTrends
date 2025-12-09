@@ -422,14 +422,10 @@ All redirect URIs use: `https://ptvpxfrfkkzisihufitz.supabase.co/auth/v1/callbac
 After getting Client ID & Secret from each provider, add them in:
 **Supabase Dashboard → Authentication → Providers**
 
-### 2. Set Up Price History Tracking
-- Create `price_history` table migration
-- Set up scheduled job to capture daily prices
-- Add price history charts to card detail pages
-
-### 3. Completed This Session
+### 2. Completed This Session
 - [x] Showdown sync added to GitHub Actions (weekly on Sundays)
 - [x] Fixed mobile navbar safe area issues (iOS notch support)
 - [x] Enabled AuthProvider for user login/signup
 - [x] Created profiles table migration
 - [x] Created /profile page with logout
+- [x] Price history tracking system (daily sync, table + helper functions)
