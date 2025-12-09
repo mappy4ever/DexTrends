@@ -17,6 +17,7 @@ on:
           - all-delta
           - pokemon-only
           - tcg-only
+          - showdown-only
         default: all-delta
 
 jobs:
@@ -141,9 +142,47 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "Sync completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
 
+  sync-showdown-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Run on Sundays OR when manually triggered with showdown-only/all
+    if: ${{ github.event.inputs.sync-type == 'showdown-only' || github.event.inputs.sync-type == 'all' || (github.event_name == 'schedule' && github.event.schedule == '0 3 * * 0') }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Sync Showdown competitive data to Supabase
+      run: npm run db:sync-showdown
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+    - name: Create summary
+      run: |
+        echo "## Showdown Database Sync Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- Type Effectiveness synced" >> $GITHUB_STEP_SUMMARY
+        echo "- Competitive Tiers synced (OU, UU, Ubers, etc.)" >> $GITHUB_STEP_SUMMARY
+        echo "- Pokemon Learnsets synced" >> $GITHUB_STEP_SUMMARY
+        echo "- Move Competitive Data synced" >> $GITHUB_STEP_SUMMARY
+        echo "- Ability Ratings synced" >> $GITHUB_STEP_SUMMARY
+        echo "- Items synced" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Sync completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
+
   notify-on-failure:
     runs-on: ubuntu-latest
-    needs: [sync-pokemon-database, sync-tcg-database]
+    needs: [sync-pokemon-database, sync-tcg-database, sync-showdown-database]
     if: failure()
 
     steps:
