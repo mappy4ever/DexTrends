@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   NAVBAR & SAFE AREA CSS VARIABLES
+   These must be defined first for use across components
+   ============================================ */
+:root {
+  --navbar-height-mobile: 56px;
+  --navbar-height-desktop: 64px;
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --navbar-offset-mobile: calc(var(--safe-area-top) + var(--navbar-height-mobile));
+  --navbar-offset-desktop: calc(var(--safe-area-top) + var(--navbar-height-desktop));
+}
+
 /* Import the unified design system */
 @import './design-system.css';
 

@@ -34,8 +34,7 @@ if (typeof window === 'undefined') {
 import { NotificationProvider } from '../components/qol/NotificationSystem';
 import { ContextualHelpProvider } from '../components/qol/ContextualHelp';
 import { PreferencesProvider } from '../components/qol/UserPreferences';
-// AuthProvider temporarily disabled for debugging
-// import { AuthProvider } from '../context/AuthContext';
+import { AuthProvider } from '../context/AuthContext';
 
 // Toast system imports
 import { ToastProvider } from '../components/providers/ToastProvider';
@@ -135,7 +134,8 @@ const AppContent: React.FC<AppContentProps> = ({
           <meta name="description" content="Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience." />
           <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
         </Head>
-        
+
+        <AuthProvider>
         <UnifiedAppProvider>
             <ToastProvider>
               {/* ModalProvider removed - using unified Modal */}
@@ -165,6 +165,7 @@ const AppContent: React.FC<AppContentProps> = ({
               {/* End ModalProvider removal */}
             </ToastProvider>
           </UnifiedAppProvider>
+        </AuthProvider>
       </PWAProvider>
     </>
   );

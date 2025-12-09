@@ -211,9 +211,20 @@ export default function Navbar() {
   return (
     <>
       {/* Clean Navbar - Warm cream background */}
+      {/* Safe area spacer: Fills the iOS notch area with background color */}
       <div
-        className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)] safe-area-padding-top"
-        style={{ zIndex: Z_INDEX.navbar }}
+        className="fixed top-0 left-0 right-0 bg-[#FFFDF7] dark:bg-stone-900"
+        style={{
+          zIndex: Z_INDEX.navbar,
+          height: 'env(safe-area-inset-top, 0px)'
+        }}
+      />
+      <div
+        className="fixed left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+        style={{
+          zIndex: Z_INDEX.navbar,
+          top: 'env(safe-area-inset-top, 0px)'
+        }}
       >
         <div className="flex items-center gap-x-2">
           {/* Mobile Menu Button */}
@@ -450,8 +461,11 @@ export default function Navbar() {
           {/* Menu panel - slide in from left, above backdrop */}
           <div
             ref={menuWrapperRef}
-            className="fixed left-0 top-14 bottom-0 w-80 max-w-[85vw] bg-[#FFFDF7] dark:bg-stone-900 shadow-2xl md:hidden overflow-y-auto safe-area-padding-x"
-            style={{ zIndex: Z_INDEX.mobileMenu }}
+            className="fixed left-0 bottom-0 w-80 max-w-[85vw] bg-[#FFFDF7] dark:bg-stone-900 shadow-2xl md:hidden overflow-y-auto safe-area-padding-x"
+            style={{
+              zIndex: Z_INDEX.mobileMenu,
+              top: 'calc(env(safe-area-inset-top, 0px) + 56px)' // 56px = h-14 navbar height
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <nav className="flex flex-col p-3 space-y-1">

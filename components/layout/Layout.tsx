@@ -16,16 +16,33 @@ interface LayoutProps {
  * Includes Vercel Analytics and Speed Insights for performance monitoring
  *
  * Padding strategy:
- * - pt-14/pt-16: Space for fixed navbar (56px mobile, 64px desktop)
+ * - CSS var --navbar-offset: Accounts for safe area + navbar height (defined in globals.css)
  * - pb-20 sm:pb-0: Bottom padding for mobile BottomNav, none on desktop
  * - px-safe: Safe area horizontal padding for devices with rounded corners/notches
+ *
+ * IMPORTANT: Navbar height is 56px (mobile) / 64px (desktop) PLUS safe-area-inset-top on iOS
  */
 export default function Layout({ children, fullBleed = false }: LayoutProps) {
   return (
     <div className="flex flex-col min-h-screen text-card-foreground transition-colors duration-300 relative px-safe">
       <Navbar />
       <div className="flex flex-col flex-grow relative z-10">
-        <main className={`flex-grow transition-all duration-300 ${fullBleed ? '' : 'pt-14 md:pt-16'}`}>
+        <main
+          className="flex-grow transition-all duration-300"
+          style={fullBleed ? undefined : {
+            paddingTop: 'var(--navbar-offset-mobile)',
+          }}
+        >
+          {/* Desktop override for navbar height - uses CSS variables from globals.css */}
+          {!fullBleed && (
+            <style jsx>{`
+              @media (min-width: 768px) {
+                main {
+                  padding-top: var(--navbar-offset-desktop) !important;
+                }
+              }
+            `}</style>
+          )}
           {fullBleed ? (
             children
           ) : (
