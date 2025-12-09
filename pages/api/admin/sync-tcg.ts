@@ -209,9 +209,9 @@ export default async function handler(
 }
 
 // Sync a single set (fast enough to do synchronously)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function syncSingleSet(
-  supabase: ReturnType<typeof createClient<any>>,
+  // Using explicit any to handle Supabase client type variance
+  supabase: { from: (table: string) => { upsert: Function; select: Function } },
   setId: string
 ): Promise<{ cardsChecked: number; cardsCreated: number; cardsFailed: number }> {
   const stats = { cardsChecked: 0, cardsCreated: 0, cardsFailed: 0 };
