@@ -54,7 +54,8 @@
     "db:sync-abilities": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --abilities",
     "db:sync-static": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --types --natures --berries",
     "db:sync-showdown": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/showdown-sync/sync-showdown-data.ts",
-    "db:sync-showdown-tiers": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/showdown-sync/sync-showdown-data.ts --tiers-only"
+    "db:sync-showdown-tiers": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/showdown-sync/sync-showdown-data.ts --tiers-only",
+    "db:sync-prices": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-price-history.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
