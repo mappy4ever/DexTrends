@@ -10,6 +10,12 @@
  *   npx ts-node scripts/sync-tcg-database.ts --set sv3  # Sync specific set
  */
 
+// Load environment variables from .env.local
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type {
   TCGDexCard,
