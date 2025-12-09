@@ -235,16 +235,16 @@ const PocketCard = memo<PocketCardProps>(({
               <div className="flex-shrink-0">
                 {/* Check for Crown Rare specifically */}
                 {(card.rarity === ('👑' as PocketRarity) || card.rarity === ('♕' as PocketRarity)) ? (
-                  // Crown Rare indicator
+                  // Crown Rare indicator - GOLD
                   <FiAward className="text-amber-500 -mt-1" size={16} />
                 ) : isGoldRarity(card.rarity) ? (
-                  // Other gold rarities (stars) - same color as crown
+                  // Star rarities (1-star, 2-star) - GOLD
                   <span className="font-bold text-amber-500 text-sm">
                     {getRarityDisplay(card.rarity)}
                   </span>
                 ) : (
-                  // Non-gold rarities (diamonds) - all use same purple-pink palette
-                  <span className="text-sm font-bold bg-gradient-to-r from-amber-300 via-amber-300 to-amber-300 bg-clip-text text-transparent">
+                  // Diamond rarities (1-4 diamonds) - SILVER
+                  <span className="text-sm font-bold text-stone-400 dark:text-stone-300">
                     {getRarityDisplay(card.rarity)}
                   </span>
                 )}

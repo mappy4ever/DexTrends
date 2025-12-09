@@ -205,16 +205,20 @@ export const getRarityDisplay = (rarity: string, isPocket: boolean = false): Rar
 // Get color for rarity
 export const getRarityColor = (rarity: string, isPocket: boolean = false): string => {
   if (isPocket) {
+    // Pocket rarities: diamonds are SILVER, stars and crown are GOLD
     switch(rarity) {
-      case 'common': return 'text-gray-400';
-      case 'uncommon': return 'text-blue-400';
-      case 'rare': return 'text-purple-400';
-      case 'doubleRare': return 'text-purple-500';
-      case 'artRare': return 'text-yellow-400';
-      case 'superRare': return 'text-yellow-500';
-      case 'immersiveRare': return 'text-yellow-600';
-      case 'crown': return 'text-yellow-500';
-      default: return 'text-gray-400';
+      // Diamond rarities - SILVER (stone/gray)
+      case 'common': return 'text-stone-400';      // 1 diamond
+      case 'uncommon': return 'text-stone-400';    // 2 diamonds
+      case 'rare': return 'text-stone-400';        // 3 diamonds
+      case 'doubleRare': return 'text-stone-400';  // 4 diamonds
+      // Star rarities - GOLD (amber)
+      case 'artRare': return 'text-amber-500';     // 1 star
+      case 'superRare': return 'text-amber-500';   // 2 stars
+      case 'immersiveRare': return 'text-amber-500'; // 3 stars (immersive)
+      // Crown - GOLD
+      case 'crown': return 'text-amber-500';
+      default: return 'text-stone-400';
     }
   } else {
     switch(rarity) {

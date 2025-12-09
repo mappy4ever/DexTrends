@@ -122,8 +122,8 @@ async function getCardsWithPrices(setId: string): Promise<TCGDexCard[]> {
           cardsWithPrices.push(fullCard);
         }
 
-        // Small delay to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 50));
+        // Longer delay to be respectful to the API (100ms between cards)
+        await new Promise(resolve => setTimeout(resolve, 100));
       } catch {
         // Skip cards that fail to fetch
       }
@@ -170,15 +170,8 @@ async function syncPriceHistory(specificSet?: string) {
     console.log(`Syncing specific set: ${specificSet}`);
   } else {
     sets = await getAllSets();
-    // Focus on recent sets (last ~3 years) for efficiency
-    // Older sets rarely have price updates
-    const recentSets = sets.filter(id =>
-      id.startsWith('sv') ||   // Scarlet & Violet era
-      id.startsWith('swsh') || // Sword & Shield era
-      id.startsWith('sm')      // Sun & Moon era
-    );
-    sets = recentSets.length > 0 ? recentSets : sets.slice(-50); // Fallback to last 50 sets
-    console.log(`Syncing ${sets.length} recent sets`);
+    // Sync ALL sets to capture complete price history
+    console.log(`Syncing ALL ${sets.length} sets`);
   }
 
   let totalCards = 0;
@@ -218,8 +211,8 @@ async function syncPriceHistory(specificSet?: string) {
 
     console.log(`  Saved ${priceRecords.length} price records`);
 
-    // Delay between sets to avoid rate limiting
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Longer delay between sets to be respectful to the API (1 second)
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   console.log('\n' + '='.repeat(60));

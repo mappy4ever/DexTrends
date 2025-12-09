@@ -144,8 +144,9 @@ jobs:
 
   sync-price-history:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    # Run daily (every schedule) to capture price snapshots
+    timeout-minutes: 360
+    # Run daily (every schedule) to capture price snapshots for ALL sets
+    # Extended timeout (6 hours) due to longer delays for API respect
 
     steps:
     - name: Checkout code
