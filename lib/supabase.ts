@@ -688,15 +688,28 @@ export class PriceHistoryManager {
    * Returns TCGPlayer and CardMarket prices
    */
   static async getLatestPriceFromHistory(cardId: string): Promise<{
+    // TCGPlayer (USD)
     tcgplayer_low: number | null;
     tcgplayer_mid: number | null;
     tcgplayer_high: number | null;
     tcgplayer_market: number | null;
+    tcgplayer_updated_at: string | null;
+    // CardMarket regular (EUR)
+    cardmarket_avg: number | null;
     cardmarket_low: number | null;
     cardmarket_trend: number | null;
     cardmarket_avg1: number | null;
     cardmarket_avg7: number | null;
     cardmarket_avg30: number | null;
+    // CardMarket holo (EUR)
+    cardmarket_avg_holo: number | null;
+    cardmarket_low_holo: number | null;
+    cardmarket_trend_holo: number | null;
+    cardmarket_avg1_holo: number | null;
+    cardmarket_avg7_holo: number | null;
+    cardmarket_avg30_holo: number | null;
+    cardmarket_updated_at: string | null;
+    // Metadata
     recorded_at: string | null;
   } | null> {
     try {
@@ -707,11 +720,20 @@ export class PriceHistoryManager {
           tcgplayer_mid,
           tcgplayer_high,
           tcgplayer_market,
+          tcgplayer_updated_at,
+          cardmarket_avg,
           cardmarket_low,
           cardmarket_trend,
           cardmarket_avg1,
           cardmarket_avg7,
           cardmarket_avg30,
+          cardmarket_avg_holo,
+          cardmarket_low_holo,
+          cardmarket_trend_holo,
+          cardmarket_avg1_holo,
+          cardmarket_avg7_holo,
+          cardmarket_avg30_holo,
+          cardmarket_updated_at,
           recorded_at
         `)
         .eq('card_id', cardId)

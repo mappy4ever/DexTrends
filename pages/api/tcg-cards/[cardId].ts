@@ -82,8 +82,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           if (priceData.tcgplayer_market || priceData.tcgplayer_low) {
             card.tcgplayer = {
               url: '',
-              updatedAt: priceData.recorded_at || new Date().toISOString(),
+              updatedAt: priceData.tcgplayer_updated_at || priceData.recorded_at || new Date().toISOString(),
               prices: {
+                normal: {
+                  low: priceData.tcgplayer_low,
+                  mid: priceData.tcgplayer_mid,
+                  high: priceData.tcgplayer_high,
+                  market: priceData.tcgplayer_market,
+                  directLow: null
+                },
                 holofoil: {
                   low: priceData.tcgplayer_low,
                   mid: priceData.tcgplayer_mid,
@@ -98,17 +105,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           if (priceData.cardmarket_trend || priceData.cardmarket_low) {
             card.cardmarket = {
               url: '',
-              updatedAt: priceData.recorded_at || new Date().toISOString(),
+              updatedAt: priceData.cardmarket_updated_at || priceData.recorded_at || new Date().toISOString(),
               prices: {
-                averageSellPrice: priceData.cardmarket_trend,
+                // Regular prices
+                averageSellPrice: priceData.cardmarket_avg || priceData.cardmarket_trend,
                 lowPrice: priceData.cardmarket_low,
                 trendPrice: priceData.cardmarket_trend,
                 avg1: priceData.cardmarket_avg1,
                 avg7: priceData.cardmarket_avg7,
                 avg30: priceData.cardmarket_avg30,
-                reverseHoloSell: null,
-                reverseHoloLow: null,
-                reverseHoloTrend: null
+                // Holo/Reverse prices (will be null until migration + next sync)
+                reverseHoloSell: priceData.cardmarket_avg_holo,
+                reverseHoloLow: priceData.cardmarket_low_holo,
+                reverseHoloTrend: priceData.cardmarket_trend_holo,
+                reverseHoloAvg1: priceData.cardmarket_avg1_holo,
+                reverseHoloAvg7: priceData.cardmarket_avg7_holo,
+                reverseHoloAvg30: priceData.cardmarket_avg30_holo
               }
             };
           }
