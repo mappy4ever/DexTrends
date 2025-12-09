@@ -31,62 +31,102 @@ interface SetInfo {
   id: string;
   name: string;
   description: string;
-  emoji: string;
   cardCount: number;
 }
 
-// Set themes with details
-const setThemes: Record<string, { name: string; description: string; emoji: string }> = {
+// Set themes with details - Supports both API IDs (A1, A2, etc) and slugified names
+const setThemes: Record<string, { name: string; description: string }> = {
+  // API IDs
+  'A1': {
+    name: 'Genetic Apex',
+    description: 'The first expansion set for Pokemon TCG Pocket featuring legendary Pokemon.'
+  },
+  'A1a': {
+    name: 'Mythical Island',
+    description: 'Discover mystical Pokemon from the legendary Mythical Island.'
+  },
+  'A2': {
+    name: 'Space-Time Smackdown',
+    description: 'Master time and space with the legendary powers of Dialga and Palkia.'
+  },
+  'A2a': {
+    name: 'Triumphant Light',
+    description: 'Illuminate your path to victory with brilliant light-type Pokemon.'
+  },
+  'A2b': {
+    name: 'Shining Revelry',
+    description: 'Experience the ultimate rivalry with shining rare Pokemon cards.'
+  },
+  'A3': {
+    name: 'Celestial Guardians',
+    description: 'Harness the celestial powers of the sun and moon guardians.'
+  },
+  'A3a': {
+    name: 'Extradimensional Crisis',
+    description: 'Battle across dimensions with ultra-rare interdimensional Pokemon.'
+  },
+  'A3b': {
+    name: 'Eeveelution Celebration',
+    description: 'Celebrate the evolution possibilities with Eevee and all its evolutions.'
+  },
+  'A4': {
+    name: 'Ancient Wisdom',
+    description: 'Explore the wisdom of Kyogre and Groudon with powerful Water and Ground types.'
+  },
+  'A4a': {
+    name: 'Hidden Springs',
+    description: 'Discover the tranquility of hidden springs with rare Water-type Pokemon.'
+  },
+  'B1': {
+    name: 'Mega Power',
+    description: 'Experience the power of Mega Evolution with classic Pokemon in their ultimate forms.'
+  },
+  'P-A': {
+    name: 'Promo Cards',
+    description: 'Exclusive promotional cards available through special events and campaigns.'
+  },
+  // Legacy slugified names (for backwards compatibility)
   'genetic-apex': {
     name: 'Genetic Apex',
-    description: 'The first expansion set for Pokemon TCG Pocket featuring legendary Pokemon.',
-    emoji: '🧬'
+    description: 'The first expansion set for Pokemon TCG Pocket featuring legendary Pokemon.'
   },
   'mythical-island': {
     name: 'Mythical Island',
-    description: 'Discover mystical Pokemon from the legendary Mythical Island.',
-    emoji: '🏝️'
+    description: 'Discover mystical Pokemon from the legendary Mythical Island.'
   },
   'space-time-smackdown': {
     name: 'Space-Time Smackdown',
-    description: 'Master time and space with the legendary powers of Dialga and Palkia.',
-    emoji: '⏰'
+    description: 'Master time and space with the legendary powers of Dialga and Palkia.'
   },
   'triumphant-light': {
     name: 'Triumphant Light',
-    description: 'Illuminate your path to victory with brilliant light-type Pokemon.',
-    emoji: '✨'
+    description: 'Illuminate your path to victory with brilliant light-type Pokemon.'
   },
   'shining-revelry': {
     name: 'Shining Revelry',
-    description: 'Experience the ultimate rivalry with shining rare Pokemon cards.',
-    emoji: '🌟'
+    description: 'Experience the ultimate rivalry with shining rare Pokemon cards.'
   },
   'celestial-guardians': {
     name: 'Celestial Guardians',
-    description: 'Harness the celestial powers of the sun and moon guardians.',
-    emoji: '🌙'
+    description: 'Harness the celestial powers of the sun and moon guardians.'
   },
   'extradimensional-crisis': {
     name: 'Extradimensional Crisis',
-    description: 'Battle across dimensions with ultra-rare interdimensional Pokemon.',
-    emoji: '🌀'
+    description: 'Battle across dimensions with ultra-rare interdimensional Pokemon.'
   },
   'eevee-grove': {
     name: 'Eevee Grove',
-    description: 'Celebrate the evolution possibilities with Eevee and all its evolutions.',
-    emoji: '🦊'
+    description: 'Celebrate the evolution possibilities with Eevee and all its evolutions.'
   },
   'promo-a': {
     name: 'Promo Cards',
-    description: 'Exclusive promotional cards available through special events and campaigns.',
-    emoji: '🎁'
+    description: 'Exclusive promotional cards available through special events and campaigns.'
   }
 };
 
-// Rarity ranking for sorting
+// Rarity ranking for sorting (using Unicode symbols from card data)
 const rarityRank: Record<string, number> = {
-  '👑': 10, '♕': 10,
+  'Crown': 10, '♕': 10,
   '★★★': 9, '★★': 8, '☆☆': 8, '★': 7, '☆': 7,
   '◊◊◊◊': 6, '◊◊◊': 5, '◊◊': 4, '◊': 3
 };
@@ -113,9 +153,24 @@ function PocketSetView() {
   const [selectedCard, setSelectedCard] = useState<ExtendedPocketCard | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  // Filter cards based on set ID
+  // Filter cards based on set ID - supports both API IDs (A1, A2) and slugified names
   const filterCardsBySet = useCallback((cards: ExtendedPocketCard[], targetSetId: string): ExtendedPocketCard[] => {
+    // Mapping of set IDs to pack names (supports both API IDs and slugified names)
     const packMappings: Record<string, string[]> = {
+      // API IDs
+      'A1': ['Mewtwo', 'Charizard', 'Pikachu'],
+      'A1a': ['Mythical Island'],
+      'A2': ['Dialga', 'Palkia'],
+      'A2a': ['Triumphant Light'],
+      'A2b': ['Shining Revelry'],
+      'A3': ['Solgaleo', 'Lunala'],
+      'A3a': ['Extradimensional Crisis'],
+      'A3b': ['Eevee Grove', 'Eeveelution'],
+      'A4': ['Ancient Wisdom', 'Kyogre', 'Groudon'],
+      'A4a': ['Hidden Springs'],
+      'B1': ['Mega Power', 'Mega'],
+      'P-A': [],
+      // Legacy slugified names
       'genetic-apex': ['Mewtwo', 'Charizard', 'Pikachu'],
       'mythical-island': ['Mythical Island'],
       'space-time-smackdown': ['Dialga', 'Palkia'],
@@ -129,7 +184,8 @@ function PocketSetView() {
 
     const packNames = packMappings[targetSetId] || [];
 
-    if (targetSetId === 'promo-a') {
+    // Handle promo cards
+    if (targetSetId === 'promo-a' || targetSetId === 'P-A') {
       return cards.filter((card: ExtendedPocketCard) => {
         const packName = (card.pack || '').toLowerCase();
         return packName.includes('promo') ||
@@ -140,6 +196,18 @@ function PocketSetView() {
                packName.includes('premium') ||
                packName.includes('wonder');
       });
+    }
+
+    // If no pack mapping, try to filter by set property on cards
+    if (packNames.length === 0) {
+      // Try filtering by set.id property on cards
+      const bySetId = cards.filter((card: ExtendedPocketCard) => {
+        const cardSetId = (card as any).set?.id || (card as any).setId || '';
+        return cardSetId.toLowerCase() === targetSetId.toLowerCase();
+      });
+      if (bySetId.length > 0) {
+        return Array.from(new Map(bySetId.map(card => [card.id, card])).values());
+      }
     }
 
     const filtered = cards.filter((card: ExtendedPocketCard) =>
@@ -153,19 +221,25 @@ function PocketSetView() {
   useEffect(() => {
     if (!router.isReady || !setId || typeof setId !== 'string') return;
 
-    // Handle old URL format (e.g., a2b-107) by redirecting
-    if (/^[a-z]\d+[a-z]?-\d+$/i.test(setId)) {
+    // Valid API IDs that should NOT be redirected
+    const validApiIds = ['A1', 'A1a', 'A2', 'A2a', 'A2b', 'A3', 'A3a', 'A3b', 'A4', 'A4a', 'B1', 'P-A'];
+
+    // Handle old URL format (e.g., a2b-107) by redirecting - but NOT valid API IDs
+    if (/^[a-z]\d+[a-z]?-\d+$/i.test(setId) && !validApiIds.includes(setId)) {
       const expansionCode = setId.split('-')[0].toLowerCase();
       const expansionMapping: Record<string, string> = {
-        'a1': 'genetic-apex',
-        'a1a': 'mythical-island',
-        'a2': 'space-time-smackdown',
-        'a2a': 'triumphant-light',
-        'a2b': 'shining-revelry',
-        'a3': 'celestial-guardians',
-        'a3a': 'extradimensional-crisis',
-        'a4': 'eevee-grove',
-        'pa': 'promo-a'
+        'a1': 'A1',
+        'a1a': 'A1a',
+        'a2': 'A2',
+        'a2a': 'A2a',
+        'a2b': 'A2b',
+        'a3': 'A3',
+        'a3a': 'A3a',
+        'a3b': 'A3b',
+        'a4': 'A4',
+        'a4a': 'A4a',
+        'b1': 'B1',
+        'pa': 'P-A'
       };
 
       const correctSetName = expansionMapping[expansionCode] || expansionCode;
@@ -189,8 +263,7 @@ function PocketSetView() {
           name: setId.split('-').map(word =>
             word.charAt(0).toUpperCase() + word.slice(1)
           ).join(' '),
-          description: 'Browse cards from this Pokemon TCG Pocket expansion.',
-          emoji: '📦'
+          description: 'Browse cards from this Pokemon TCG Pocket expansion.'
         };
 
         const setCards = filterCardsBySet(cards, setId);
@@ -200,7 +273,6 @@ function PocketSetView() {
           id: setId,
           name: theme.name,
           description: theme.description,
-          emoji: theme.emoji,
           cardCount: setCards.length
         });
 

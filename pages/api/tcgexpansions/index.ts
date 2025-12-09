@@ -6,6 +6,7 @@ import type { TCGSetListApiResponse } from '../../../types/api/enhanced-response
 import type { TCGDexSetBrief } from '../../../types/api/tcgdex';
 import { transformSetBrief, transformSetsFromSeries, TCGDexEndpoints, type TCGDexSeriesWithSets } from '../../../utils/tcgdex-adapter';
 import { withRateLimit, RateLimitPresets } from '../../../lib/api-middleware';
+import { TcgCardManager } from '../../../lib/supabase';
 
 // Lazy import tcgCache to avoid module loading errors
 let tcgCacheModule: typeof import('../../../lib/tcg-cache') | null = null;
@@ -78,6 +79,66 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         logger.warn('Cache lookup failed, continuing to API', { error: cacheError });
       }
     }
+
+    // Try Supabase first (local database) - much faster than external API
+    const supabaseSets = await TcgCardManager.getSets();
+    if (supabaseSets && supabaseSets.length > 0) {
+      logger.debug('Using Supabase data for TCG sets', { count: supabaseSets.length });
+
+      // Filter out TCG Pocket sets - they have their own dedicated page at /pocketmode
+      const POCKET_SET_PATTERNS = /^(A[0-9]|P-A)/i;
+      let allSets = supabaseSets
+        .filter(set => !POCKET_SET_PATTERNS.test(set.id))
+        .map(set => ({
+          id: set.id,
+          name: set.name,
+          series: set.series_id || '',
+          releaseDate: set.release_date || '',
+          total: set.total_cards || 0,
+          printedTotal: set.total_cards || 0,
+          images: {
+            symbol: set.symbol_url || '',
+            logo: set.logo_url || ''
+          },
+          legalities: { standard: 'Legal', expanded: 'Legal' }
+        }));
+
+      // Sort by release date (newest first)
+      allSets.sort((a, b) => {
+        if (a.releaseDate && b.releaseDate) {
+          return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
+        }
+        return b.id.localeCompare(a.id);
+      });
+
+      // Paginate the results
+      const startIndex = (pageNum - 1) * pageSizeNum;
+      const sets = allSets.slice(startIndex, startIndex + pageSizeNum);
+
+      const responseTime = Date.now() - startTime;
+      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
+      res.setHeader('X-Cache-Status', 'supabase');
+      res.setHeader('X-Response-Time', `${responseTime}ms`);
+      res.setHeader('X-Data-Source', 'supabase');
+
+      return res.status(200).json({
+        data: sets,
+        pagination: {
+          page: pageNum,
+          pageSize: pageSizeNum,
+          count: sets.length,
+          totalCount: allSets.length,
+          hasMore: startIndex + pageSizeNum < allSets.length
+        },
+        meta: {
+          responseTime,
+          cached: false,
+          source: 'supabase'
+        }
+      });
+    }
+
+    logger.debug('Supabase returned no sets, falling back to TCGDex');
 
     // TCGDex API - fetch all series in parallel to get complete set data
     // This gives us series names and release dates for proper sorting

@@ -178,8 +178,9 @@ async function searchPokemon(query: string, limit: number): Promise<SearchResult
 // Helper function to search TCG Cards
 async function searchTCGCards(query: string, limit: number, baseUrl: string): Promise<SearchResult[]> {
   try {
+    // Use 'name' parameter to match the API endpoint (uses Supabase first, fallback to TCGDex)
     const response = await fetchJSON<TCGApiResponse<unknown[]>>(
-      `${baseUrl}/api/tcg-cards?q=${encodeURIComponent(query)}&pageSize=${limit}`
+      `${baseUrl}/api/tcg-cards?name=${encodeURIComponent(query)}&pageSize=${limit}`
     );
     
     if (!response?.data) return [];

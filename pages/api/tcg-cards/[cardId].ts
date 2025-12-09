@@ -7,6 +7,7 @@ import type { TCGCard } from '../../../types/api/cards';
 import type { TCGDexCard } from '../../../types/api/tcgdex';
 import { transformCard, TCGDexEndpoints, extractBestPrice } from '../../../utils/tcgdex-adapter';
 import { isTCGCard } from '../../../utils/typeGuards';
+import { TcgCardManager } from '../../../lib/supabase';
 // Pricing is now provided directly by TCGDex API (no pokemontcg.io dependency)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -20,7 +21,69 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const startTime = Date.now();
   
   try {
-    // Check cache first
+    // Try Supabase first (local database)
+    const supabaseCard = await TcgCardManager.getCard(id);
+    if (supabaseCard) {
+      const responseTime = Date.now() - startTime;
+      logger.info('[TCG Card API] Supabase hit', {
+        cardId: id,
+        responseTime,
+        source: 'supabase'
+      });
+
+      // Transform Supabase card to expected format
+      const card = {
+        id: supabaseCard.id as string,
+        name: supabaseCard.name as string,
+        supertype: supabaseCard.category === 'Pokemon' ? 'Pokémon' : supabaseCard.category,
+        hp: supabaseCard.hp ? String(supabaseCard.hp) : undefined,
+        types: supabaseCard.types as string[] | undefined,
+        evolvesFrom: supabaseCard.evolve_from as string | undefined,
+        evolvesTo: supabaseCard.evolve_to as string[] | undefined,
+        attacks: supabaseCard.attacks as TCGCard['attacks'],
+        abilities: supabaseCard.abilities as TCGCard['abilities'],
+        weaknesses: supabaseCard.weaknesses as TCGCard['weaknesses'],
+        resistances: supabaseCard.resistances as TCGCard['resistances'],
+        retreatCost: supabaseCard.retreat_cost ? Array(supabaseCard.retreat_cost as number).fill('Colorless') : undefined,
+        number: supabaseCard.local_id as string,
+        artist: supabaseCard.illustrator as string | undefined,
+        rarity: supabaseCard.rarity as string | undefined,
+        nationalPokedexNumbers: supabaseCard.dex_ids as number[] | undefined,
+        legalities: {
+          standard: supabaseCard.legal_standard ? 'Legal' : 'Banned',
+          expanded: supabaseCard.legal_expanded ? 'Legal' : 'Banned'
+        },
+        images: {
+          small: supabaseCard.image_small as string || '/back-card.png',
+          large: supabaseCard.image_large as string || '/back-card.png'
+        },
+        set: {
+          id: supabaseCard.set_id as string,
+          name: '',
+          series: '',
+          printedTotal: 0,
+          total: 0,
+          releaseDate: '',
+          updatedAt: '',
+          images: { symbol: '', logo: '' }
+        }
+      };
+
+      res.setHeader('X-Cache-Status', 'supabase');
+      res.setHeader('X-Response-Time', `${responseTime}ms`);
+      res.setHeader('X-Data-Source', 'supabase');
+      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
+
+      return res.status(200).json({
+        card,
+        pricing: null, // Supabase doesn't store pricing (per user request)
+        cached: false,
+        source: 'supabase',
+        responseTime
+      });
+    }
+
+    // Check Redis cache next
     const cachedCard = await tcgCache.getCard(id);
     if (cachedCard) {
       const responseTime = Date.now() - startTime;
@@ -46,8 +109,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         responseTime
       });
     }
-    
-    logger.info('[TCG Card API] Cache miss, fetching from TCGDex', { cardId: id });
+
+    logger.info('[TCG Card API] No local data, fetching from TCGDex', { cardId: id });
 
     // Fetch card from TCGDex API (no API key required)
     const apiUrl = TCGDexEndpoints.card(id, 'en');

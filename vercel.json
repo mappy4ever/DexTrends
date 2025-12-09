@@ -1,8 +1,2 @@
 {
-  "crons": [
-    {
-      "path": "/api/cron/sync-tcg",
-      "schedule": "0 6 * * *"
-    }
-  ]
 }

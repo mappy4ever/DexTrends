@@ -3,6 +3,7 @@ import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import type { TCGDexSerieBrief } from '../../../types/api/tcgdex';
 import { TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
+import { TcgCardManager } from '../../../lib/supabase';
 
 /**
  * TCG Series List API
@@ -19,6 +20,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const language = Array.isArray(lang) ? lang[0] : lang;
 
   try {
+    // Try Supabase first (local database) - much faster than external API
+    const supabaseSeries = await TcgCardManager.getSeries();
+    if (supabaseSeries && supabaseSeries.length > 0) {
+      logger.debug('Using Supabase data for TCG series', { count: supabaseSeries.length });
+
+      const series = supabaseSeries.map(s => ({
+        id: s.id,
+        name: s.name,
+        logo: s.logo_url || null
+      }));
+
+      const responseTime = Date.now() - startTime;
+
+      res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
+      res.setHeader('X-Response-Time', `${responseTime}ms`);
+      res.setHeader('X-Data-Source', 'supabase');
+
+      return res.status(200).json({
+        data: series,
+        meta: {
+          count: series.length,
+          responseTime,
+          language,
+          source: 'supabase'
+        }
+      });
+    }
+
+    logger.debug('Supabase returned no series, falling back to TCGDex');
+
     const apiUrl = TCGDexEndpoints.series(language);
     logger.info('Fetching TCG series from TCGDex', { url: apiUrl, lang: language });
 

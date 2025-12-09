@@ -6,8 +6,8 @@ interface PocketSetInfo {
   id: string;
   name: string;
   description: string;
-  emoji: string;
   cardCount: number;
+  logoUrl?: string;
 }
 
 interface PocketSetHeroProps {
@@ -19,6 +19,14 @@ interface PocketSetHeroProps {
  * Matches TCG set hero style without pricing
  */
 export const PocketSetHero: React.FC<PocketSetHeroProps> = ({ setInfo }) => {
+  // Get initials from set name for fallback display
+  const initials = setInfo.name
+    .split(' ')
+    .slice(0, 2)
+    .map(word => word.charAt(0))
+    .join('')
+    .toUpperCase();
+
   return (
     <div className="relative w-full">
       {/* Background gradient */}
@@ -47,7 +55,7 @@ export const PocketSetHero: React.FC<PocketSetHeroProps> = ({ setInfo }) => {
 
         {/* Main hero content */}
         <div className="flex items-start gap-4 sm:gap-5">
-          {/* Emoji Logo */}
+          {/* Set Logo */}
           <div className={cn(
             'flex-shrink-0',
             'w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28',
@@ -55,9 +63,21 @@ export const PocketSetHero: React.FC<PocketSetHeroProps> = ({ setInfo }) => {
             'bg-white dark:bg-stone-800',
             'border border-stone-200/80 dark:border-stone-700/80',
             'shadow-lg shadow-stone-200/50 dark:shadow-stone-900/50',
-            'flex items-center justify-center'
+            'flex items-center justify-center',
+            'p-2.5 sm:p-3'
           )}>
-            <span className="text-4xl sm:text-5xl md:text-6xl">{setInfo.emoji}</span>
+            {setInfo.logoUrl ? (
+              <img
+                src={setInfo.logoUrl}
+                alt=""
+                className="w-full h-full object-contain"
+                draggable={false}
+              />
+            ) : (
+              <span className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400">
+                {initials}
+              </span>
+            )}
           </div>
 
           {/* Title and meta */}

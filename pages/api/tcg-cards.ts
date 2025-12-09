@@ -4,6 +4,7 @@ import logger from '../../utils/logger';
 import type { TCGDexCardBrief } from '../../types/api/tcgdex';
 import { TCGDexEndpoints } from '../../utils/tcgdex-adapter';
 import { withRateLimit, RateLimitPresets } from '../../lib/api-middleware';
+import { TcgCardManager } from '../../lib/supabase';
 // Pricing is available via individual card detail endpoints (TCGDex includes pricing)
 
 /**
@@ -53,6 +54,92 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
+    // Try Supabase first (local database)
+    const typeFilter = Array.isArray(type) ? type[0] : type;
+    const rarityFilter = Array.isArray(rarity) ? rarity[0] : rarity;
+    const categoryFilter = Array.isArray(category) ? category[0] : category;
+    const stageFilter = Array.isArray(stage) ? stage[0] : stage;
+    const artistFilter = Array.isArray(illustrator) ? illustrator[0] : illustrator;
+    const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1;
+    const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 50, 100);
+
+    logger.debug('Searching TCG cards', { pokemonName, source: 'supabase-first' });
+
+    const supabaseCards = await TcgCardManager.searchCards({
+      name: pokemonName,
+      types: typeFilter ? [typeFilter] : undefined,
+      rarity: rarityFilter,
+      category: categoryFilter,
+      stage: stageFilter,
+      illustrator: artistFilter,
+      limit: pageSizeNum,
+      offset: (pageNum - 1) * pageSizeNum
+    });
+
+    // If Supabase has results, use them
+    if (supabaseCards && supabaseCards.length > 0) {
+      logger.debug('Using Supabase data for TCG cards', { pokemonName, count: supabaseCards.length });
+
+      // Transform Supabase cards to match expected format
+      const cards = supabaseCards.map(card => ({
+        id: card.id,
+        name: card.name,
+        supertype: card.category === 'Pokemon' ? 'Pokémon' : card.category,
+        number: card.local_id,
+        hp: card.hp ? String(card.hp) : undefined,
+        types: card.types,
+        rarity: card.rarity,
+        artist: card.illustrator,
+        images: {
+          small: card.image_small || '/back-card.png',
+          large: card.image_large || '/back-card.png',
+        },
+        set: {
+          id: card.set_id,
+          name: '',
+          series: '',
+          printedTotal: 0,
+          total: 0,
+          releaseDate: '',
+          updatedAt: '',
+          images: { symbol: '', logo: '' }
+        }
+      }));
+
+      const responseTime = Date.now() - startTime;
+      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
+      res.setHeader('X-Response-Time', `${responseTime}ms`);
+      res.setHeader('X-Data-Source', 'supabase');
+
+      return res.status(200).json({
+        data: cards,
+        pagination: {
+          page: pageNum,
+          pageSize: pageSizeNum,
+          count: cards.length
+        },
+        filters: {
+          name: pokemonName,
+          type: typeFilter || null,
+          rarity: rarityFilter || null,
+          hpMin: null,
+          hpMax: null,
+          illustrator: artistFilter || null,
+          category: categoryFilter || null,
+          stage: stageFilter || null,
+          legal: null
+        },
+        meta: {
+          responseTime,
+          cardCount: cards.length,
+          source: 'supabase'
+        }
+      });
+    }
+
+    logger.debug('Supabase returned no results, falling back to TCGDex', { pokemonName });
+
+    // Fallback to TCGDex API if Supabase has no data
     // Build TCGDex query with all filters
     const queryParams = new URLSearchParams();
 
@@ -61,13 +148,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     queryParams.append('name', `like:${pokemonName}`);
 
     // Type filter (Fire, Water, Grass, etc.)
-    const typeFilter = Array.isArray(type) ? type[0] : type;
     if (typeFilter) {
       queryParams.append('types', typeFilter);
     }
 
     // Rarity filter
-    const rarityFilter = Array.isArray(rarity) ? rarity[0] : rarity;
     if (rarityFilter) {
       queryParams.append('rarity', `eq:${rarityFilter}`);
     }
@@ -83,19 +168,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     // Illustrator filter
-    const artistFilter = Array.isArray(illustrator) ? illustrator[0] : illustrator;
     if (artistFilter) {
       queryParams.append('illustrator', artistFilter);
     }
 
     // Category filter (Pokemon, Trainer, Energy)
-    const categoryFilter = Array.isArray(category) ? category[0] : category;
     if (categoryFilter) {
       queryParams.append('category', `eq:${categoryFilter}`);
     }
 
     // Stage filter (Basic, Stage1, Stage2, V, VMAX, ex, etc.)
-    const stageFilter = Array.isArray(stage) ? stage[0] : stage;
     if (stageFilter) {
       queryParams.append('stage', `eq:${stageFilter}`);
     }
@@ -116,9 +198,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       queryParams.append('sort:order', sortOrder.toUpperCase());
     }
 
-    // Pagination
-    const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1;
-    const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 50, 100);
+    // Pagination (using variables already defined above)
     queryParams.append('pagination:page', String(pageNum));
     queryParams.append('pagination:itemsPerPage', String(pageSizeNum));
 

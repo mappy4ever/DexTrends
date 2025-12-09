@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
 import { TCGDEX } from '../../config/api';
+import { TcgCardManager } from '../../lib/supabase';
 
 interface TCGDexSet {
   id: string;
@@ -163,7 +164,35 @@ export default async function handler(
   res: NextApiResponse<PocketExpansion[]>
 ) {
   try {
-    logger.info('Fetching Pocket expansions from TCGDex');
+    logger.info('Fetching Pocket expansions');
+
+    // Try Supabase first (local database) - much faster than external API
+    const supabaseSets = await TcgCardManager.getPocketSets();
+    if (supabaseSets && supabaseSets.length > 0) {
+      logger.debug('Using Supabase data for Pocket expansions', { count: supabaseSets.length });
+
+      const expansions: PocketExpansion[] = supabaseSets.map(set => ({
+        id: set.id,
+        name: set.name,
+        description: getSetDescription(set.id, set.name),
+        logoUrl: set.logo_url || `https://assets.tcgdex.net/en/tcgp/${set.id}/logo`,
+        releaseDate: set.release_date || '2024-10-30',
+        cardCount: set.total_cards || 0,
+        symbol: set.symbol_url || set.id,
+        code: set.id
+      }));
+
+      // Sort by release date (newest first)
+      expansions.sort((a, b) =>
+        new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
+      );
+
+      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
+      res.setHeader('X-Data-Source', 'supabase');
+      return res.status(200).json(expansions);
+    }
+
+    logger.debug('Supabase returned no Pocket sets, falling back to TCGDex');
 
     // Fetch the Pocket series from TCGDex
     // Force fresh data to avoid stale cache issues

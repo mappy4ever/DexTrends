@@ -683,4 +683,1027 @@ export class PriceHistoryManager {
   }
 }
 
+// TCG Cards from Supabase database
+export class TcgCardManager {
+  // Check if Supabase is configured
+  private static isConfigured(): boolean {
+    return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  }
+
+  // Get all series
+  static async getSeries(): Promise<Array<{ id: string; name: string; logo_url: string | null }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('tcg_series')
+        .select('id, name, logo_url')
+        .order('name');
+
+      if (error) {
+        logger.error('[TcgCardManager] Error fetching series:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error fetching series:', { error });
+      return [];
+    }
+  }
+
+  // Get all sets with optional series filter
+  static async getSets(seriesId?: string): Promise<Array<{
+    id: string;
+    name: string;
+    series_id: string | null;
+    logo_url: string | null;
+    symbol_url: string | null;
+    total_cards: number | null;
+    release_date: string | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      let query = supabase
+        .from('tcg_sets')
+        .select('id, name, series_id, logo_url, symbol_url, total_cards, release_date')
+        .order('release_date', { ascending: false });
+
+      if (seriesId) {
+        query = query.eq('series_id', seriesId);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        logger.error('[TcgCardManager] Error fetching sets:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error fetching sets:', { error });
+      return [];
+    }
+  }
+
+  // Search cards by name with filters
+  static async searchCards(options: {
+    name?: string;
+    setId?: string;
+    types?: string[];
+    rarity?: string;
+    category?: string;
+    stage?: string;
+    illustrator?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<Array<{
+    id: string;
+    name: string;
+    set_id: string;
+    local_id: string;
+    category: string;
+    hp: number | null;
+    types: string[] | null;
+    rarity: string | null;
+    image_small: string | null;
+    image_large: string | null;
+    illustrator: string | null;
+    stage: string | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      let query = supabase
+        .from('tcg_cards')
+        .select('id, name, set_id, local_id, category, hp, types, rarity, image_small, image_large, illustrator, stage');
+
+      // Apply filters
+      if (options.name) {
+        query = query.ilike('name', `%${options.name}%`);
+      }
+      if (options.setId) {
+        query = query.eq('set_id', options.setId);
+      }
+      if (options.rarity) {
+        query = query.eq('rarity', options.rarity);
+      }
+      if (options.category) {
+        query = query.eq('category', options.category);
+      }
+      if (options.stage) {
+        query = query.eq('stage', options.stage);
+      }
+      if (options.illustrator) {
+        query = query.ilike('illustrator', `%${options.illustrator}%`);
+      }
+      if (options.types && options.types.length > 0) {
+        query = query.overlaps('types', options.types);
+      }
+
+      // Apply pagination
+      const limit = Math.min(options.limit || 50, 100);
+      const offset = options.offset || 0;
+      query = query.range(offset, offset + limit - 1);
+
+      // Order by name
+      query = query.order('name');
+
+      const { data, error } = await query;
+
+      if (error) {
+        logger.error('[TcgCardManager] Error searching cards:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error searching cards:', { error });
+      return [];
+    }
+  }
+
+  // Get a single card by ID
+  static async getCard(cardId: string): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('tcg_cards')
+        .select('*')
+        .eq('id', cardId)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null; // Not found
+        logger.error('[TcgCardManager] Error fetching card:', { cardId, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error fetching card:', { cardId, error });
+      return null;
+    }
+  }
+
+  // Get cards by set ID
+  static async getCardsBySet(setId: string): Promise<Array<{
+    id: string;
+    name: string;
+    local_id: string;
+    category: string;
+    rarity: string | null;
+    image_small: string | null;
+    image_large: string | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('tcg_cards')
+        .select('id, name, local_id, category, rarity, image_small, image_large')
+        .eq('set_id', setId)
+        .order('local_id');
+
+      if (error) {
+        logger.error('[TcgCardManager] Error fetching cards by set:', { setId, error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error fetching cards by set:', { setId, error });
+      return [];
+    }
+  }
+
+  // Get database stats
+  static async getStats(): Promise<{ series: number; sets: number; cards: number } | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const [seriesResult, setsResult, cardsResult] = await Promise.all([
+        supabase.from('tcg_series').select('id', { count: 'exact', head: true }),
+        supabase.from('tcg_sets').select('id', { count: 'exact', head: true }),
+        supabase.from('tcg_cards').select('id', { count: 'exact', head: true })
+      ]);
+
+      return {
+        series: seriesResult.count || 0,
+        sets: setsResult.count || 0,
+        cards: cardsResult.count || 0
+      };
+    } catch (error) {
+      logger.error('[TcgCardManager] Error fetching stats:', { error });
+      return null;
+    }
+  }
+
+  // ==================== POCKET CARD METHODS ====================
+  // Pocket cards have set IDs starting with: A1, A2, A1a, A2a, P-A (promos)
+  private static readonly POCKET_SET_PATTERN = /^(A[0-9]|P-A)/i;
+
+  // Get all Pocket sets
+  static async getPocketSets(): Promise<Array<{
+    id: string;
+    name: string;
+    series_id: string | null;
+    logo_url: string | null;
+    symbol_url: string | null;
+    total_cards: number | null;
+    release_date: string | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('tcg_sets')
+        .select('id, name, series_id, logo_url, symbol_url, total_cards, release_date')
+        .or('id.ilike.A1%,id.ilike.A2%,id.ilike.A3%,id.ilike.P-A%')
+        .order('release_date', { ascending: false });
+
+      if (error) {
+        logger.error('[TcgCardManager] Error fetching Pocket sets:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error fetching Pocket sets:', { error });
+      return [];
+    }
+  }
+
+  // Search Pocket cards by Pokemon name
+  static async searchPocketCards(pokemonName: string, limit: number = 50): Promise<Array<{
+    id: string;
+    name: string;
+    set_id: string;
+    local_id: string;
+    category: string;
+    hp: number | null;
+    types: string[] | null;
+    rarity: string | null;
+    image_small: string | null;
+    image_large: string | null;
+    illustrator: string | null;
+    attacks: unknown[] | null;
+    abilities: unknown[] | null;
+    weaknesses: unknown[] | null;
+    retreat_cost: number | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      // Search for cards matching the Pokemon name in Pocket sets
+      const { data, error } = await supabase
+        .from('tcg_cards')
+        .select('id, name, set_id, local_id, category, hp, types, rarity, image_small, image_large, illustrator, attacks, abilities, weaknesses, retreat_cost')
+        .ilike('name', `%${pokemonName}%`)
+        .or('set_id.ilike.A1%,set_id.ilike.A2%,set_id.ilike.A3%,set_id.ilike.P-A%')
+        .order('name')
+        .limit(limit);
+
+      if (error) {
+        logger.error('[TcgCardManager] Error searching Pocket cards:', { pokemonName, error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error searching Pocket cards:', { pokemonName, error });
+      return [];
+    }
+  }
+
+  // Get all cards in a Pocket set
+  static async getPocketCardsBySet(setId: string): Promise<Array<{
+    id: string;
+    name: string;
+    local_id: string;
+    category: string;
+    hp: number | null;
+    types: string[] | null;
+    rarity: string | null;
+    image_small: string | null;
+    image_large: string | null;
+    illustrator: string | null;
+    attacks: unknown[] | null;
+    abilities: unknown[] | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('tcg_cards')
+        .select('id, name, local_id, category, hp, types, rarity, image_small, image_large, illustrator, attacks, abilities')
+        .eq('set_id', setId)
+        .order('local_id');
+
+      if (error) {
+        logger.error('[TcgCardManager] Error fetching Pocket cards by set:', { setId, error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[TcgCardManager] Unexpected error fetching Pocket cards by set:', { setId, error });
+      return [];
+    }
+  }
+}
+
+// =============================================
+// POKEMON DATA MANAGER
+// =============================================
+export class PokemonManager {
+  private static isConfigured(): boolean {
+    return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  }
+
+  // Get Pokemon by ID
+  static async getPokemon(id: number): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('pokemon')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        logger.error('[PokemonManager] Error fetching Pokemon:', { id, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching Pokemon:', { id, error });
+      return null;
+    }
+  }
+
+  // Get Pokemon by name
+  static async getPokemonByName(name: string): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('pokemon')
+        .select('*')
+        .eq('name', name.toLowerCase())
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        logger.error('[PokemonManager] Error fetching Pokemon by name:', { name, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching Pokemon by name:', { name, error });
+      return null;
+    }
+  }
+
+  // Get Pokemon species by ID
+  static async getSpecies(id: number): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('pokemon_species')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        logger.error('[PokemonManager] Error fetching species:', { id, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching species:', { id, error });
+      return null;
+    }
+  }
+
+  // Search Pokemon by name
+  static async searchPokemon(query: string, limit: number = 20): Promise<Array<{
+    id: number;
+    name: string;
+    types: string[];
+    sprites: Record<string, unknown>;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('pokemon')
+        .select('id, name, types, sprites')
+        .ilike('name', `%${query}%`)
+        .order('id')
+        .limit(limit);
+
+      if (error) {
+        logger.error('[PokemonManager] Error searching Pokemon:', { query, error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error searching Pokemon:', { query, error });
+      return [];
+    }
+  }
+
+  // Get Move by ID
+  static async getMove(id: number): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('moves')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        logger.error('[PokemonManager] Error fetching move:', { id, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching move:', { id, error });
+      return null;
+    }
+  }
+
+  // Get Move by name
+  static async getMoveByName(name: string): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('moves')
+        .select('*')
+        .eq('name', name.toLowerCase())
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        logger.error('[PokemonManager] Error fetching move by name:', { name, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching move by name:', { name, error });
+      return null;
+    }
+  }
+
+  // Get all moves with pagination
+  static async getMoves(limit: number = 50, offset: number = 0): Promise<Array<{
+    id: number;
+    name: string;
+    type: string | null;
+    power: number | null;
+    accuracy: number | null;
+    pp: number | null;
+    damage_class: string | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('moves')
+        .select('id, name, type, power, accuracy, pp, damage_class')
+        .order('name')
+        .range(offset, offset + limit - 1);
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching moves:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching moves:', { error });
+      return [];
+    }
+  }
+
+  // Get Ability by name
+  static async getAbilityByName(name: string): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('abilities')
+        .select('*')
+        .eq('name', name.toLowerCase())
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        logger.error('[PokemonManager] Error fetching ability:', { name, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching ability:', { name, error });
+      return null;
+    }
+  }
+
+  // Get all abilities
+  static async getAbilities(limit: number = 50, offset: number = 0): Promise<Array<{
+    id: number;
+    name: string;
+    effect_entries: unknown[];
+    generation: string | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('abilities')
+        .select('id, name, effect_entries, generation')
+        .order('name')
+        .range(offset, offset + limit - 1);
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching abilities:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching abilities:', { error });
+      return [];
+    }
+  }
+
+  // Get all types
+  static async getTypes(): Promise<Array<{
+    id: number;
+    name: string;
+    damage_relations: Record<string, unknown>;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('types')
+        .select('id, name, damage_relations')
+        .order('id');
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching types:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching types:', { error });
+      return [];
+    }
+  }
+
+  // Get all natures
+  static async getNatures(): Promise<Array<{
+    id: number;
+    name: string;
+    increased_stat: string | null;
+    decreased_stat: string | null;
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('natures')
+        .select('id, name, increased_stat, decreased_stat')
+        .order('name');
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching natures:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching natures:', { error });
+      return [];
+    }
+  }
+
+  // Get all berries
+  static async getBerries(): Promise<Array<{
+    id: number;
+    name: string;
+    natural_gift_type: string | null;
+    natural_gift_power: number | null;
+    flavors: unknown[];
+  }>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('berries')
+        .select('id, name, natural_gift_type, natural_gift_power, flavors')
+        .order('name');
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching berries:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching berries:', { error });
+      return [];
+    }
+  }
+
+  // Get item by name
+  static async getItemByName(name: string): Promise<Record<string, unknown> | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('items')
+        .select('*')
+        .eq('name', name.toLowerCase())
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        logger.error('[PokemonManager] Error fetching item:', { name, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching item:', { name, error });
+      return null;
+    }
+  }
+
+  // Get database stats
+  static async getStats(): Promise<{
+    pokemon: number;
+    moves: number;
+    abilities: number;
+    types: number;
+    natures: number;
+    berries: number;
+    items: number;
+  } | null> {
+    if (!this.isConfigured()) return null;
+
+    try {
+      const [pokemonResult, movesResult, abilitiesResult, typesResult, naturesResult, berriesResult, itemsResult] = await Promise.all([
+        supabase.from('pokemon').select('id', { count: 'exact', head: true }),
+        supabase.from('moves').select('id', { count: 'exact', head: true }),
+        supabase.from('abilities').select('id', { count: 'exact', head: true }),
+        supabase.from('types').select('id', { count: 'exact', head: true }),
+        supabase.from('natures').select('id', { count: 'exact', head: true }),
+        supabase.from('berries').select('id', { count: 'exact', head: true }),
+        supabase.from('items').select('id', { count: 'exact', head: true })
+      ]);
+
+      return {
+        pokemon: pokemonResult.count || 0,
+        moves: movesResult.count || 0,
+        abilities: abilitiesResult.count || 0,
+        types: typesResult.count || 0,
+        natures: naturesResult.count || 0,
+        berries: berriesResult.count || 0,
+        items: itemsResult.count || 0
+      };
+    } catch (error) {
+      logger.error('[PokemonManager] Error fetching stats:', { error });
+      return null;
+    }
+  }
+
+  // =============================================
+  // EXTENDED API METHODS FOR SUPABASE-FIRST PATTERN
+  // =============================================
+
+  // Alias for getPokemon - Get Pokemon by ID
+  static async getPokemonById(id: number): Promise<Record<string, unknown> | null> {
+    return this.getPokemon(id);
+  }
+
+  // Alias for getSpecies - Get species by ID
+  static async getSpeciesById(id: number): Promise<Record<string, unknown> | null> {
+    return this.getSpecies(id);
+  }
+
+  // Get Pokemon list with pagination and filters
+  static async getPokemonList(
+    limit: number = 50,
+    offset: number = 0,
+    filters?: {
+      search?: string;
+      type?: string;
+      generation?: string;
+    }
+  ): Promise<Array<Record<string, unknown>>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      let query = supabase
+        .from('pokemon')
+        .select('*')
+        .order('id')
+        .range(offset, offset + limit - 1);
+
+      // Apply search filter
+      if (filters?.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
+
+      // Apply type filter (search in JSONB types array)
+      if (filters?.type) {
+        query = query.contains('types', [{ type: { name: filters.type.toLowerCase() } }]);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching Pokemon list:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching Pokemon list:', { error });
+      return [];
+    }
+  }
+
+  // Get Pokemon count with filters
+  static async getPokemonCount(filters?: {
+    search?: string;
+    type?: string;
+    generation?: string;
+  }): Promise<number> {
+    if (!this.isConfigured()) return 0;
+
+    try {
+      let query = supabase
+        .from('pokemon')
+        .select('id', { count: 'exact', head: true });
+
+      if (filters?.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
+
+      if (filters?.type) {
+        query = query.contains('types', [{ type: { name: filters.type.toLowerCase() } }]);
+      }
+
+      const { count, error } = await query;
+
+      if (error) {
+        logger.error('[PokemonManager] Error counting Pokemon:', { error: error.message });
+        return 0;
+      }
+
+      return count || 0;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error counting Pokemon:', { error });
+      return 0;
+    }
+  }
+
+  // Get moves list with pagination and filters
+  static async getMovesList(
+    limit: number = 50,
+    offset: number = 0,
+    filters?: {
+      search?: string;
+      type?: string;
+      damageClass?: string;
+    }
+  ): Promise<Array<Record<string, unknown>>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      let query = supabase
+        .from('moves')
+        .select('*')
+        .order('name')
+        .range(offset, offset + limit - 1);
+
+      if (filters?.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
+
+      if (filters?.type) {
+        query = query.eq('type', filters.type.toLowerCase());
+      }
+
+      if (filters?.damageClass) {
+        query = query.eq('damage_class', filters.damageClass.toLowerCase());
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching moves list:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching moves list:', { error });
+      return [];
+    }
+  }
+
+  // Get moves count with filters
+  static async getMovesCount(filters?: {
+    search?: string;
+    type?: string;
+    damageClass?: string;
+  }): Promise<number> {
+    if (!this.isConfigured()) return 0;
+
+    try {
+      let query = supabase
+        .from('moves')
+        .select('id', { count: 'exact', head: true });
+
+      if (filters?.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
+
+      if (filters?.type) {
+        query = query.eq('type', filters.type.toLowerCase());
+      }
+
+      if (filters?.damageClass) {
+        query = query.eq('damage_class', filters.damageClass.toLowerCase());
+      }
+
+      const { count, error } = await query;
+
+      if (error) {
+        logger.error('[PokemonManager] Error counting moves:', { error: error.message });
+        return 0;
+      }
+
+      return count || 0;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error counting moves:', { error });
+      return 0;
+    }
+  }
+
+  // Get abilities list with pagination and filters
+  static async getAbilitiesList(
+    limit: number = 50,
+    offset: number = 0,
+    filters?: {
+      search?: string;
+    }
+  ): Promise<Array<Record<string, unknown>>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      let query = supabase
+        .from('abilities')
+        .select('*')
+        .order('name')
+        .range(offset, offset + limit - 1);
+
+      if (filters?.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching abilities list:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching abilities list:', { error });
+      return [];
+    }
+  }
+
+  // Get abilities count with filters
+  static async getAbilitiesCount(filters?: {
+    search?: string;
+  }): Promise<number> {
+    if (!this.isConfigured()) return 0;
+
+    try {
+      let query = supabase
+        .from('abilities')
+        .select('id', { count: 'exact', head: true });
+
+      if (filters?.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
+
+      const { count, error } = await query;
+
+      if (error) {
+        logger.error('[PokemonManager] Error counting abilities:', { error: error.message });
+        return 0;
+      }
+
+      return count || 0;
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error counting abilities:', { error });
+      return 0;
+    }
+  }
+
+  // Alias for getTypes - Get all types with full data
+  static async getAllTypes(): Promise<Array<Record<string, unknown>>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('types')
+        .select('*')
+        .order('id');
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching all types:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching all types:', { error });
+      return [];
+    }
+  }
+
+  // Alias for getNatures - Get all natures with full data
+  static async getAllNatures(): Promise<Array<Record<string, unknown>>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('natures')
+        .select('*')
+        .order('name');
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching all natures:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching all natures:', { error });
+      return [];
+    }
+  }
+
+  // Alias for getBerries - Get all berries with full data
+  static async getAllBerries(): Promise<Array<Record<string, unknown>>> {
+    if (!this.isConfigured()) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('berries')
+        .select('*')
+        .order('name');
+
+      if (error) {
+        logger.error('[PokemonManager] Error fetching all berries:', { error: error.message });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PokemonManager] Unexpected error fetching all berries:', { error });
+      return [];
+    }
+  }
+}
+
 export default supabase;

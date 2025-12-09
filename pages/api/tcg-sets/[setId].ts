@@ -7,6 +7,7 @@ import type { TCGCardListApiResponse } from '../../../types/api/enhanced-respons
 import type { CardSet, TCGCard } from '../../../types/api/cards';
 import type { TCGDexSet } from '../../../types/api/tcgdex';
 import { transformSet, TCGDexEndpoints } from '../../../utils/tcgdex-adapter';
+import { TcgCardManager } from '../../../lib/supabase';
 // NOTE: Pricing removed from set listings for performance (was pokemontcg.io - too slow ~10s/card)
 // Pricing is now available via TCGDex on individual card detail pages
 
@@ -25,7 +26,73 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     logger.info('Fetching TCG set details', { setId: id, page: pageNum, pageSize: pageSizeNum });
-    
+
+    // Try Supabase first (local database) - much faster than external API
+    const [supabaseSetResult, supabaseCards] = await Promise.all([
+      TcgCardManager.getSets().then(sets => sets.find(s => s.id === id)),
+      TcgCardManager.getCardsBySet(id)
+    ]);
+
+    if (supabaseSetResult && supabaseCards && supabaseCards.length > 0) {
+      logger.debug('Using Supabase data for TCG set detail', { setId: id, cardCount: supabaseCards.length });
+
+      // Transform Supabase set to expected format
+      const set: CardSet = {
+        id: supabaseSetResult.id,
+        name: supabaseSetResult.name,
+        series: supabaseSetResult.series_id || '',
+        printedTotal: supabaseSetResult.total_cards || 0,
+        total: supabaseSetResult.total_cards || 0,
+        releaseDate: supabaseSetResult.release_date || '',
+        updatedAt: '',
+        images: {
+          symbol: supabaseSetResult.symbol_url || '',
+          logo: supabaseSetResult.logo_url || ''
+        }
+      };
+
+      // Transform cards to expected format
+      const allCards: TCGCard[] = supabaseCards.map(card => {
+        const supertype = card.category === 'Pokemon' ? 'Pokémon' as const :
+                          card.category === 'Trainer' ? 'Trainer' as const :
+                          card.category === 'Energy' ? 'Energy' as const : 'Pokémon' as const;
+        return {
+          id: card.id,
+          name: card.name,
+          supertype,
+          set: set,
+          number: card.local_id,
+          rarity: card.rarity || undefined,
+          images: {
+            small: card.image_small || '/back-card.png',
+            large: card.image_large || '/back-card.png'
+          }
+        };
+      });
+
+      // Paginate cards
+      const startIndex = (pageNum - 1) * pageSizeNum;
+      const paginatedCards = allCards.slice(startIndex, startIndex + pageSizeNum);
+
+      res.setHeader('X-Cache-Status', 'supabase');
+      res.setHeader('X-Data-Source', 'supabase');
+      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
+
+      return res.status(200).json({
+        set,
+        cards: paginatedCards,
+        pagination: {
+          page: pageNum,
+          pageSize: pageSizeNum,
+          count: paginatedCards.length,
+          totalCount: allCards.length,
+          hasMore: startIndex + pageSizeNum < allCards.length
+        }
+      });
+    }
+
+    logger.debug('Supabase returned no data for set, falling back to cache/API', { setId: id });
+
     // First, check if we have the complete set cached (best performance)
     if (pageNum === 1) {
       const completeSet = await tcgCache.getCompleteSet(id);
