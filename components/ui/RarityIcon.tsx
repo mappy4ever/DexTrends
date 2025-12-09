@@ -231,20 +231,28 @@ export const RarityIcon: React.FC<RarityIconProps> = ({
     return <IconComponent className={cn(finalRarityData.color, otherSize)} />;
   };
   
+  // Handle keyboard events for interactive rarity icons
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <div
       className={cn(
         'inline-flex items-center gap-1',
-        onClick && 'cursor-pointer hover:scale-110 transition-transform',
+        onClick && 'cursor-pointer hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded',
         isActive && 'scale-110',
         className
       )}
       onClick={onClick}
-      {...(onClick ? {
-        role: 'button',
-        tabIndex: 0,
-        'aria-label': `Filter by ${finalRarityData.label} rarity`
-      } : {})}
+      onKeyDown={onClick ? handleKeyDown : undefined}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      aria-label={`${finalRarityData.label} rarity${onClick ? ' - click to filter' : ''}`}
+      aria-pressed={onClick ? isActive : undefined}
     >
       {/* Icons without containers - pure Pokemon TCG style */}
       {renderIcons()}

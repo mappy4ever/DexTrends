@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactNode } from 'react';
-import { FaTrophy, FaMedal, FaStar, FaGift, FaFire, FaLock, FaUnlock, FaCoins, FaGem } from 'react-icons/fa';
-import { BsLightning, BsCollection, BsCardChecklist, BsGraphUp, BsPeople, BsHeart } from 'react-icons/bs';
-import { GiTwoCoins, GiDiamonds, GiCrown, GiStarMedal } from 'react-icons/gi';
+import { FiAward, FiStar, FiGift, FiTrendingUp, FiLock, FiUnlock, FiZap, FiLayers, FiCheckSquare, FiUsers, FiHeart } from 'react-icons/fi';
+// Domain exceptions: gamification/currency icons
+import { GiTwoCoins, GiDiamonds, GiCrown, GiStarMedal, GiTrophy } from 'react-icons/gi';
 
 interface UserStats {
   cardsViewed: number;
@@ -122,7 +122,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'first_search',
         name: 'First Steps',
         description: 'Perform your first card search',
-        icon: <BsLightning className="text-yellow-500" />,
+        icon: <FiZap className="text-yellow-500" />,
         points: 50,
         rarity: 'common',
         unlocked: true,
@@ -134,7 +134,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'collection_starter',
         name: 'Collection Starter',
         description: 'Add 10 cards to your collection',
-        icon: <BsCollection className="text-amber-500" />,
+        icon: <FiLayers className="text-amber-500" />,
         points: 100,
         rarity: 'common',
         unlocked: true,
@@ -146,7 +146,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'social_butterfly',
         name: 'Social Butterfly',
         description: 'Make 5 friends in the community',
-        icon: <BsPeople className="text-amber-500" />,
+        icon: <FiUsers className="text-amber-500" />,
         points: 200,
         rarity: 'uncommon',
         unlocked: true,
@@ -158,7 +158,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'price_prophet',
         name: 'Price Prophet',
         description: 'Make 10 accurate price predictions',
-        icon: <BsGraphUp className="text-green-500" />,
+        icon: <FiTrendingUp className="text-green-500" />,
         points: 300,
         rarity: 'rare',
         unlocked: true,
@@ -170,7 +170,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'deck_master',
         name: 'Deck Master',
         description: 'Create 3 tournament-legal decks',
-        icon: <BsCardChecklist className="text-red-500" />,
+        icon: <FiCheckSquare className="text-red-500" />,
         points: 500,
         rarity: 'epic',
         unlocked: false,
@@ -192,7 +192,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'community_leader',
         name: 'Community Leader',
         description: 'Get 100 likes on your posts',
-        icon: <BsHeart className="text-pink-500" />,
+        icon: <FiHeart className="text-pink-500" />,
         points: 750,
         rarity: 'epic',
         unlocked: false,
@@ -219,7 +219,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'daily_search',
         name: 'Daily Explorer',
         description: 'Perform 5 card searches',
-        icon: <BsLightning className="text-yellow-500" />,
+        icon: <FiZap className="text-yellow-500" />,
         reward: { coins: 50, experience: 25 },
         progress: 3,
         maxProgress: 5,
@@ -230,7 +230,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'daily_collection',
         name: 'Collection Curator',
         description: 'Add 2 cards to your collection',
-        icon: <BsCollection className="text-amber-500" />,
+        icon: <FiLayers className="text-amber-500" />,
         reward: { coins: 75, experience: 30 },
         progress: 2,
         maxProgress: 2,
@@ -241,7 +241,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         id: 'daily_social',
         name: 'Social Connector',
         description: 'Like 3 community posts',
-        icon: <BsHeart className="text-pink-500" />,
+        icon: <FiHeart className="text-pink-500" />,
         reward: { coins: 30, experience: 15 },
         progress: 1,
         maxProgress: 3,
@@ -344,7 +344,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center space-x-4 mb-4 lg:mb-0">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-              <FaTrophy className="w-8 h-8" />
+              <GiTrophy className="w-8 h-8" />
             </div>
             <div>
               <h2 className="text-2xl font-bold">Level {userProfile.level}</h2>
@@ -359,7 +359,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                   <span>{userProfile.gems} gems</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <FaFire className="text-orange-300" />
+                  <FiZap className="text-orange-300" />
                   <span>{userProfile.streak} day streak</span>
                 </div>
               </div>
@@ -383,10 +383,10 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
       {/* Navigation Tabs */}
       <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg">
         {[
-          { id: 'overview' as const, label: 'Overview', icon: <FaTrophy /> },
-          { id: 'achievements' as const, label: 'Achievements', icon: <FaMedal /> },
-          { id: 'daily' as const, label: 'Daily Tasks', icon: <BsCardChecklist /> },
-          { id: 'leaderboard' as const, label: 'Leaderboard', icon: <FaStar /> }
+          { id: 'overview' as const, label: 'Overview', icon: <GiTrophy /> },
+          { id: 'achievements' as const, label: 'Achievements', icon: <FiAward /> },
+          { id: 'daily' as const, label: 'Daily Tasks', icon: <FiCheckSquare /> },
+          { id: 'leaderboard' as const, label: 'Leaderboard', icon: <FiStar /> }
         ].map(tab => (
           <button
             key={tab.id}
@@ -437,9 +437,9 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                     activity.type === 'level_up' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400' :
                     'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400'
                   }`}>
-                    {activity.type === 'achievement' ? <FaTrophy className="w-4 h-4" /> :
-                     activity.type === 'level_up' ? <FaStar className="w-4 h-4" /> :
-                     <FaGift className="w-4 h-4" />}
+                    {activity.type === 'achievement' ? <GiTrophy className="w-4 h-4" /> :
+                     activity.type === 'level_up' ? <FiStar className="w-4 h-4" /> :
+                     <FiGift className="w-4 h-4" />}
                   </div>
                   <div className="flex-1">
                     <p className="text-sm text-stone-900 dark:text-white">{activity.message}</p>
@@ -464,7 +464,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
                   achievement.unlocked ? getRarityColor(achievement.rarity) : 'bg-stone-200 text-stone-400'
                 }`}>
-                  {achievement.unlocked ? achievement.icon : <FaLock />}
+                  {achievement.unlocked ? achievement.icon : <FiLock />}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
@@ -504,7 +504,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                         Unlocked {new Date(achievement.unlockedAt!).toLocaleDateString()}
                       </span>
                     ) : (
-                      <FaLock className="text-stone-400" />
+                      <FiLock className="text-stone-400" />
                     )}
                   </div>
                 </div>
@@ -533,7 +533,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                       task.completed ? 'bg-green-100 text-green-600' : 'bg-stone-100 text-stone-600'
                     }`}>
-                      {task.completed ? <FaUnlock /> : task.icon}
+                      {task.completed ? <FiUnlock /> : task.icon}
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-stone-900 dark:text-white">{task.name}</h4>
@@ -565,7 +565,7 @@ const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewar
                         )}
                         {task.reward.experience && (
                           <div className="flex items-center space-x-1 mt-1">
-                            <FaStar className="text-amber-500" />
+                            <FiStar className="text-amber-500" />
                             <span>{task.reward.experience} XP</span>
                           </div>
                         )}

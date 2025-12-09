@@ -1,3 +1,27 @@
+/**
+ * @deprecated This component is deprecated. Use `RarityIcon` from `/components/ui/RarityIcon.tsx` instead.
+ *
+ * Migration guide:
+ * ```typescript
+ * // Before
+ * import { ProfessionalRarityIcon } from '@/components/ui/ProfessionalRarityIcon';
+ * <ProfessionalRarityIcon rarity="Rare Holo" size="md" />
+ *
+ * // After
+ * import { RarityIcon } from '@/components/ui/RarityIcon';
+ * <RarityIcon rarity="Rare Holo" size="md" />
+ * ```
+ *
+ * RarityIcon provides additional features:
+ * - RARITY_ORDER export for sorting
+ * - getRarityRank helper function
+ * - Crown Rare support via CrownIcon
+ * - Mixed hollow star support for B&W era rarities
+ * - Proper accessibility attributes when interactive
+ *
+ * @see /components/ui/RarityIcon.tsx for the canonical implementation
+ */
+
 import React from 'react';
 import { cn } from '@/utils/cn';
 

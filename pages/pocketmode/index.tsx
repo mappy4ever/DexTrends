@@ -9,7 +9,8 @@ import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import { TypeFilter } from "../../components/ui/forms/TypeFilter";
 import { GradientButton, CircularButton } from '../../components/ui/design-system';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
+import { UnifiedSearchBar, LoadingStateGlass } from '../../components/ui/glass-components';
+import { ErrorState } from '../../components/ui/EmptyState';
 import Container from '../../components/ui/Container';
 import { motion, AnimatePresence } from "framer-motion";
 import PocketCardList from "../../components/PocketCardList";
@@ -572,15 +573,9 @@ const PocketMode: NextPage = () => {
               className="animate-fadeIn"
             />
           ) : viewError ? (
-            <EmptyStateGlass 
-              type="error"
-              title="Oops! Something went wrong"
-              message={viewError}
-              actionButton={{
-                text: "Try Again",
-                onClick: fetchPokemonData,
-                variant: "danger"
-              }}
+            <ErrorState
+              error={viewError}
+              onRetry={fetchPokemonData}
               className="min-h-[400px] flex items-center justify-center"
             />
           ) : filteredPokemon.length === 0 ? (

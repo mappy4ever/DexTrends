@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import logger from '../../utils/logger';
 import { fetchShowdownAbilities } from '../../utils/showdownData';
 import { requestCache } from '../../utils/UnifiedCacheManager';
-import { CompetitiveTierBadge } from '../../components/ui/CompetitiveTierBadge';
+import { RatingTierBadge } from '../../components/ui/RatingTierBadge';
 import { cn } from '@/utils/cn';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import { FiSearch, FiChevronLeft, FiChevronDown, FiChevronUp, FiStar, FiZap, FiShield, FiWind, FiTarget, FiEye, FiX } from 'react-icons/fi';
@@ -427,7 +427,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
                         </h3>
                         <div className="flex items-center gap-2 mt-1">
                           {ability.rating !== undefined && (
-                            <CompetitiveTierBadge rating={ability.rating} />
+                            <RatingTierBadge rating={ability.rating} />
                           )}
                           {ability.is_competitive && (
                             <span className="text-xs px-2 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full font-medium">

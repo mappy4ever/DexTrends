@@ -7,12 +7,11 @@ import type { TypeColors } from '../../../types/pokemon-tabs';
 import { Container } from '../../ui/Container';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { cn } from '../../../utils/cn';
-import { 
-  FaArrowRight, FaArrowDown, FaStar, FaDna,
-  FaExchangeAlt, FaLevelUpAlt, FaGem
-} from 'react-icons/fa';
+import { FiArrowRight, FiArrowDown, FiStar, FiRefreshCw, FiTrendingUp } from 'react-icons/fi';
+// Domain-specific icons for evolution/items - documented exceptions
+import { FaDna, FaGem } from 'react-icons/fa';
 import { GiTwoCoins, GiStoneSphere } from 'react-icons/gi';
-import { HiSparkles } from 'react-icons/hi';
+// HiSparkles replaced with FiStar from Feather
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { hasRegionalEvolution, getRegionalEvolution, isRegionalEvolution } from '../../../utils/regionalEvolutions';
@@ -306,9 +305,9 @@ const EvolutionArrow = ({
       )}
       <div className="text-stone-500 dark:text-stone-300">
         {horizontal ? (
-          <FaArrowRight className="w-6 h-6" />
+          <FiArrowRight className="w-6 h-6" />
         ) : (
-          <FaArrowDown className="w-6 h-6" />
+          <FiArrowDown className="w-6 h-6" />
         )}
       </div>
     </motion.div>
@@ -625,7 +624,7 @@ interface EvolutionChainNode {
               WebkitTransform: 'translate3d(0,0,0)'
             }}
           >
-            <FaStar className={cn("w-4 h-4", showShiny && "drop-shadow-glow")} />
+            <FiStar className={cn("w-4 h-4", showShiny && "drop-shadow-glow")} />
             <span className="text-sm font-medium">Shiny</span>
           </button>
             </div>
@@ -739,7 +738,7 @@ interface EvolutionChainNode {
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
-                  <FaLevelUpAlt className="w-5 h-5 text-amber-400" />
+                  <FiTrendingUp className="w-5 h-5 text-amber-400" />
                 </div>
                 <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Evolution Methods
@@ -753,7 +752,7 @@ interface EvolutionChainNode {
                 >
                   <div className="bg-white dark:bg-stone-900/50 rounded-xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
                     <div className="flex items-center gap-2 mb-2">
-                      <FaExchangeAlt className="w-4 h-4 text-amber-400" />
+                      <FiRefreshCw className="w-4 h-4 text-amber-400" />
                       <span className="font-semibold text-sm">Evolution Requirements</span>
                     </div>
                     <div className="text-sm text-stone-600 dark:text-stone-300">
@@ -829,7 +828,7 @@ interface EvolutionChainNode {
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
-                  <HiSparkles className="w-5 h-5 text-amber-400" />
+                  <FiStar className="w-5 h-5 text-amber-400" />
                 </div>
                 <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Mega Evolution
@@ -950,7 +949,7 @@ interface EvolutionChainNode {
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center">
-                  <HiSparkles className="w-5 h-5 text-red-400" />
+                  <FiStar className="w-5 h-5 text-red-400" />
                 </div>
                 <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                   Gigantamax Form
@@ -981,7 +980,7 @@ interface EvolutionChainNode {
                   transition={{ delay: 0.1 }}
                 >
                   <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full p-3 shadow-lg">
-                    <HiSparkles className="w-5 h-5" />
+                    <FiStar className="w-5 h-5" />
                   </div>
                 </motion.div>
                 

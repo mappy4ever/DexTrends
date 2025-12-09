@@ -7,13 +7,13 @@ import CompactTypeEffectiveness from '../CompactTypeEffectiveness';
 import { formatEggGroups } from '../../../utils/pokemonDetailUtils';
 import { cn } from '../../../utils/cn';
 import {
-  FaFlask, FaTag, FaHome, FaPalette, FaShapes, FaEgg,
-  FaClock, FaHeart, FaChartLine, FaRuler, FaStar,
-  FaRunning, FaMedal, FaTrophy, FaPercent, FaGraduationCap,
-  FaDna, FaMapMarkerAlt, FaSmile
-} from 'react-icons/fa';
+  FiTag, FiHome, FiClock, FiHeart, FiTrendingUp, FiMaximize2,
+  FiStar, FiActivity, FiAward, FiPercent, FiMapPin, FiSmile
+} from 'react-icons/fi';
+// Domain-specific icons for pokemon/science/breeding - documented exceptions
+import { FaFlask, FaPalette, FaShapes, FaEgg, FaDna, FaGraduationCap } from 'react-icons/fa';
 import { GiEggClutch, GiDna2 } from 'react-icons/gi';
-import { HiSparkles } from 'react-icons/hi';
+// HiSparkles replaced with FiStar from Feather
 
 interface TypeColors {
   accent: string;
@@ -137,14 +137,14 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                        <FaSmile className="w-4 h-4 text-amber-400/70" />
+                        <FiSmile className="w-4 h-4 text-amber-400/70" />
                         Base Happiness
                       </span>
                       <span className="font-semibold text-stone-700 dark:text-stone-200">{species.base_happiness || 0}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                        <FaPercent className="w-4 h-4 opacity-70" />
+                        <FiPercent className="w-4 h-4 opacity-70" />
                         Catch Rate
                       </span>
                       <div className="text-right">
@@ -154,14 +154,14 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                        <FaChartLine className="w-4 h-4 opacity-70" />
+                        <FiTrendingUp className="w-4 h-4 opacity-70" />
                         Growth Rate
                       </span>
                       <span className="font-semibold capitalize text-stone-700 dark:text-stone-200">{species.growth_rate?.name.replace('-', ' ') || 'Unknown'}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                        <FaStar className="w-4 h-4 opacity-70" />
+                        <FiStar className="w-4 h-4 opacity-70" />
                         Base EXP
                       </span>
                       <span className="font-semibold text-stone-700 dark:text-stone-200">{pokemon.base_experience || 0}</span>
@@ -193,14 +193,14 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                        <FaClock className="w-4 h-4 opacity-70" />
+                        <FiClock className="w-4 h-4 opacity-70" />
                         Hatch Time
                       </span>
                       <span className="font-semibold text-stone-700 dark:text-stone-200">{(species.hatch_counter || 0) * 256} steps</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                        <FaHeart className="w-4 h-4 opacity-70" />
+                        <FiHeart className="w-4 h-4 opacity-70" />
                         Gender
                       </span>
                       <span className="font-semibold text-stone-700 dark:text-stone-200">
@@ -240,7 +240,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                        <FaMapMarkerAlt className="w-4 h-4 opacity-70" />
+                        <FiMapPin className="w-4 h-4 opacity-70" />
                         Habitat
                       </span>
                       <span className="font-semibold capitalize text-stone-700 dark:text-stone-200">{species.habitat?.name.replace('-', ' ') || 'Unknown'}</span>

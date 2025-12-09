@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import { TYPOGRAPHY, TRANSITION, ANIMATION_DURATION } from '../../components/ui/design-system/glass-constants';
-import { FaStar, FaBolt, FaShieldAlt, FaHeart, FaRunning } from 'react-icons/fa';
+import { FiHeart, FiShield, FiActivity } from 'react-icons/fi';
+// Domain-specific icons for game/battle mechanics - documented exceptions
 import { GiCrossedSwords, GiMagicSwirl } from 'react-icons/gi';
 
 // ===========================================
@@ -80,12 +81,12 @@ function classifyPokemon(stats: QuickStatsCardProps['stats']): string[] {
 }
 
 const STAT_ICONS: Record<string, React.ReactNode> = {
-  hp: <FaHeart className="w-3 h-3" />,
+  hp: <FiHeart className="w-3 h-3" />,
   attack: <GiCrossedSwords className="w-3 h-3" />,
-  defense: <FaShieldAlt className="w-3 h-3" />,
+  defense: <FiShield className="w-3 h-3" />,
   specialAttack: <GiMagicSwirl className="w-3 h-3" />,
-  specialDefense: <FaShieldAlt className="w-3 h-3" />,
-  speed: <FaRunning className="w-3 h-3" />,
+  specialDefense: <FiShield className="w-3 h-3" />,
+  speed: <FiActivity className="w-3 h-3" />,
 };
 
 const STAT_LABELS: Record<string, string> = {

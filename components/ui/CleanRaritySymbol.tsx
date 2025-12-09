@@ -1,6 +1,36 @@
+/**
+ * @deprecated This component is deprecated. Use `RarityIcon` from `/components/ui/RarityIcon.tsx` instead.
+ *
+ * Migration guide:
+ * ```typescript
+ * // Before
+ * import { CleanRaritySymbol } from '@/components/ui/CleanRaritySymbol';
+ * <CleanRaritySymbol rarity="Rare Holo" size="md" />
+ *
+ * // After
+ * import { RarityIcon } from '@/components/ui/RarityIcon';
+ * <RarityIcon rarity="Rare Holo" size="md" />
+ * ```
+ *
+ * RarityIcon provides additional features:
+ * - RARITY_ORDER export for sorting
+ * - getRarityRank helper function
+ * - Crown Rare support via CrownIcon
+ * - Mixed hollow star support for B&W era rarities
+ * - Proper accessibility attributes when interactive
+ *
+ * @see /components/ui/RarityIcon.tsx for the canonical implementation
+ */
+
 import React from 'react';
 import { cn } from '@/utils/cn';
-import { FaCrown } from 'react-icons/fa';
+
+// Inline Crown SVG to avoid FontAwesome dependency
+const CrownSymbol = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z" />
+  </svg>
+);
 
 interface RaritySymbolProps {
   rarity: string;
@@ -181,12 +211,12 @@ const rarityConfig: Record<string, {
   
   // Crown Rare (Pocket TCG)
   'Crown Rare': {
-    symbol: <FaCrown className="w-full h-full" />,
+    symbol: <CrownSymbol className="w-full h-full" />,
     label: 'Crown',
     color: 'text-yellow-500 dark:text-yellow-400'
   },
   'Crown': {
-    symbol: <FaCrown className="w-full h-full" />,
+    symbol: <CrownSymbol className="w-full h-full" />,
     label: 'Crown',
     color: 'text-yellow-500 dark:text-yellow-400'
   }

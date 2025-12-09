@@ -18,6 +18,12 @@ interface PokeballType {
   glowColor: string;
 }
 
+/**
+ * Pokeball color definitions matching official Pokemon game designs.
+ * These are domain-specific colors representing actual Pokeball items,
+ * NOT UI tokens - they should remain as-is to accurately depict the items.
+ * Colors sourced from official Pokemon game assets.
+ */
 const pokeballTypes: PokeballType[] = [
   { name: 'pokeball', topColor: '#ee1515', bottomColor: '#f5f5f5', glowColor: 'rgba(238, 21, 21, 0.4)' },
   { name: 'greatball', topColor: '#3B82F6', bottomColor: '#f5f5f5', glowColor: 'rgba(59, 130, 246, 0.4)' },
@@ -30,6 +36,9 @@ const pokeballTypes: PokeballType[] = [
   { name: 'nestball', topColor: '#10b981', bottomColor: '#fde047', glowColor: 'rgba(16, 185, 129, 0.4)' },
   { name: 'healball', topColor: '#ec4899', bottomColor: '#f5f5f5', glowColor: 'rgba(236, 72, 153, 0.4)' }
 ];
+
+// Pokeball border color - uses stone-800 equivalent for dark outline
+const POKEBALL_BORDER_COLOR = '#292524'; // Tailwind stone-800
 
 type Size = 'small' | 'medium' | 'large';
 
@@ -107,7 +116,7 @@ export const PokeballLoader = memo(function PokeballLoader({
           {/* Pokeball body */}
           <div
             className="absolute inset-0 rounded-full overflow-hidden shadow-md"
-            style={{ border: `${config.borderWidth}px solid #292524` }}
+            style={{ border: `${config.borderWidth}px solid ${POKEBALL_BORDER_COLOR}` }}
           >
             {/* Top half */}
             <div
@@ -122,7 +131,7 @@ export const PokeballLoader = memo(function PokeballLoader({
             {/* Center band */}
             <div
               className="absolute top-1/2 left-0 w-full -translate-y-1/2"
-              style={{ height: config.borderWidth, backgroundColor: '#292524' }}
+              style={{ height: config.borderWidth, backgroundColor: POKEBALL_BORDER_COLOR }}
             />
           </div>
           {/* Center button with glow pulse */}
@@ -160,7 +169,7 @@ export const PokeballLoader = memo(function PokeballLoader({
           {/* Pokeball body */}
           <div
             className="absolute inset-0 rounded-full overflow-hidden shadow-lg"
-            style={{ border: `${config.borderWidth}px solid #292524` }}
+            style={{ border: `${config.borderWidth}px solid ${POKEBALL_BORDER_COLOR}` }}
           >
             {/* Top half */}
             <div
@@ -175,7 +184,7 @@ export const PokeballLoader = memo(function PokeballLoader({
             {/* Center band */}
             <div
               className="absolute top-1/2 left-0 w-full -translate-y-1/2"
-              style={{ height: config.borderWidth, backgroundColor: '#292524' }}
+              style={{ height: config.borderWidth, backgroundColor: POKEBALL_BORDER_COLOR }}
             />
           </div>
           {/* Center button with glow pulse */}

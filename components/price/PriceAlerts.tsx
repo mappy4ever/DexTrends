@@ -21,29 +21,28 @@ import { Pagination, PageInfo } from '@/components/ui/Pagination';
 import { cn } from '@/utils/cn';
 import { TRANSITION } from '@/components/ui/design-system/glass-constants';
 import {
-  BsBell,
-  BsBellFill,
-  BsBellSlash,
-  BsGraphDown,
-  BsGraphUp,
-  BsPercent,
-  BsPlus,
-  BsX,
-  BsTrash,
-  BsCheckCircle,
-  BsClock,
-  BsExclamationCircle,
-  BsSearch,
-  BsArrowDown,
-  BsArrowUp,
-  BsPencil,
-  BsEnvelope,
-  BsGear,
-  BsFilter,
-  BsThreeDots,
-  BsEye,
-  BsEyeSlash,
-} from 'react-icons/bs';
+  FiBell,
+  FiBellOff,
+  FiTrendingDown,
+  FiTrendingUp,
+  FiPercent,
+  FiPlus,
+  FiX,
+  FiTrash2,
+  FiCheckCircle,
+  FiClock,
+  FiAlertCircle,
+  FiSearch,
+  FiArrowDown,
+  FiArrowUp,
+  FiEdit2,
+  FiMail,
+  FiSettings,
+  FiFilter,
+  FiMoreHorizontal,
+  FiEye,
+  FiEyeOff,
+} from 'react-icons/fi';
 import logger from '@/utils/logger';
 
 // Alert types
@@ -98,31 +97,31 @@ const ALERT_TYPE_CONFIG: Record<AlertType, {
 }> = {
   below: {
     label: 'Price Below',
-    icon: BsArrowDown,
+    icon: FiArrowDown,
     color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20',
     description: 'Alert when price drops below target',
   },
   above: {
     label: 'Price Above',
-    icon: BsArrowUp,
+    icon: FiArrowUp,
     color: 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20',
     description: 'Alert when price rises above target',
   },
   percent_drop: {
     label: 'Price Drop %',
-    icon: BsPercent,
+    icon: FiPercent,
     color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20',
     description: 'Alert when price drops by percentage',
   },
   percent_rise: {
     label: 'Price Rise %',
-    icon: BsPercent,
+    icon: FiPercent,
     color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20',
     description: 'Alert when price rises by percentage',
   },
   any_change: {
     label: 'Any Change',
-    icon: BsGraphUp,
+    icon: FiTrendingUp,
     color: 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20',
     description: 'Alert on any significant price change',
   },
@@ -273,26 +272,26 @@ export const PriceAlerts: React.FC<PriceAlertsProps> = ({
         <StatCard
           label="Total Alerts"
           value={stats.total}
-          icon={<BsBell className="w-5 h-5" />}
+          icon={<FiBell className="w-5 h-5" />}
           color="stone"
         />
         <StatCard
           label="Active"
           value={stats.active}
-          icon={<BsBellFill className="w-5 h-5" />}
+          icon={<FiBell className="w-5 h-5" />}
           color="blue"
         />
         <StatCard
           label="Triggered"
           value={stats.triggered}
-          icon={<BsCheckCircle className="w-5 h-5" />}
+          icon={<FiCheckCircle className="w-5 h-5" />}
           color="green"
           highlight={stats.triggered > 0}
         />
         <StatCard
           label="Pending"
           value={stats.pendingNotification}
-          icon={<BsExclamationCircle className="w-5 h-5" />}
+          icon={<FiAlertCircle className="w-5 h-5" />}
           color="amber"
           highlight={stats.pendingNotification > 0}
         />
@@ -315,7 +314,7 @@ export const PriceAlerts: React.FC<PriceAlertsProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
-                    <BsCheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                    <FiCheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-green-800 dark:text-green-200">
@@ -382,7 +381,7 @@ export const PriceAlerts: React.FC<PriceAlertsProps> = ({
 
           {/* Search */}
           <div className="relative flex-1 sm:max-w-xs">
-            <BsSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <input
               type="text"
               value={searchQuery}
@@ -407,12 +406,12 @@ export const PriceAlerts: React.FC<PriceAlertsProps> = ({
               onClick={settingsModal.open}
               aria-label="Settings"
             >
-              <BsGear className="w-5 h-5" />
+              <FiSettings className="w-5 h-5" />
             </IconButton>
             <Button
               variant="primary"
               size="sm"
-              icon={<BsPlus className="w-4 h-4" />}
+              icon={<FiPlus className="w-4 h-4" />}
               onClick={addAlertModal.open}
             >
               New Alert
@@ -588,7 +587,7 @@ const AlertItem: React.FC<{
           </h4>
           {alert.isTriggered && (
             <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 text-xs font-medium">
-              <BsCheckCircle className="w-3 h-3" />
+              <FiCheckCircle className="w-3 h-3" />
               Triggered
             </span>
           )}
@@ -641,9 +640,9 @@ const AlertItem: React.FC<{
               aria-label={alert.isActive ? 'Pause alert' : 'Activate alert'}
             >
               {alert.isActive ? (
-                <BsBellSlash className="w-4 h-4" />
+                <FiBellOff className="w-4 h-4" />
               ) : (
-                <BsBell className="w-4 h-4" />
+                <FiBell className="w-4 h-4" />
               )}
             </IconButton>
             <IconButton
@@ -652,7 +651,7 @@ const AlertItem: React.FC<{
               onClick={onViewHistory}
               aria-label="View price history"
             >
-              <BsGraphUp className="w-4 h-4" />
+              <FiTrendingUp className="w-4 h-4" />
             </IconButton>
             <IconButton
               variant="ghost"
@@ -660,7 +659,7 @@ const AlertItem: React.FC<{
               onClick={onDelete}
               aria-label="Delete alert"
             >
-              <BsTrash className="w-4 h-4 text-red-500" />
+              <FiTrash2 className="w-4 h-4 text-red-500" />
             </IconButton>
           </>
         )}
@@ -691,7 +690,7 @@ const EmptyState: React.FC<{
 
   return (
     <div className="text-center py-12">
-      <BsBell className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
+      <FiBell className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
       <h3 className="text-lg font-medium text-stone-800 dark:text-white mb-2">
         {messages[filterType].title}
       </h3>
@@ -699,7 +698,7 @@ const EmptyState: React.FC<{
         {messages[filterType].description}
       </p>
       {filterType === 'all' && (
-        <Button variant="primary" onClick={onCreateAlert} icon={<BsPlus className="w-4 h-4" />}>
+        <Button variant="primary" onClick={onCreateAlert} icon={<FiPlus className="w-4 h-4" />}>
           Create Your First Alert
         </Button>
       )}
@@ -803,7 +802,7 @@ const CreateAlertModal: React.FC<{
         <div className="space-y-4">
           <div className="flex gap-2">
             <div className="flex-1 relative">
-              <BsSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
               <input
                 type="text"
                 value={searchQuery}
@@ -944,7 +943,7 @@ const CreateAlertModal: React.FC<{
               variant="primary"
               onClick={handleCreate}
               disabled={!targetValue || parseFloat(targetValue) <= 0}
-              icon={<BsBell className="w-4 h-4" />}
+              icon={<FiBell className="w-4 h-4" />}
             >
               Create Alert
             </Button>
@@ -974,7 +973,7 @@ const SettingsModal: React.FC<{
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <BsEnvelope className="w-5 h-5 text-stone-500" />
+              <FiMail className="w-5 h-5 text-stone-500" />
               <div>
                 <h4 className="font-medium text-stone-800 dark:text-white">Email Notifications</h4>
                 <p className="text-xs text-stone-500 dark:text-stone-400">Receive alerts via email</p>
@@ -1141,7 +1140,7 @@ const PriceHistoryModal: React.FC<{
             ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
             : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
         )}>
-          {priceChange >= 0 ? <BsArrowUp className="w-5 h-5" /> : <BsArrowDown className="w-5 h-5" />}
+          {priceChange >= 0 ? <FiArrowUp className="w-5 h-5" /> : <FiArrowDown className="w-5 h-5" />}
           <span className="font-semibold">
             {priceChange >= 0 ? '+' : ''}{percentChange.toFixed(1)}% ({priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)})
           </span>
@@ -1192,7 +1191,7 @@ const PriceHistoryModal: React.FC<{
         {/* Target Line Info */}
         <div className="flex items-center justify-between p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20">
           <div className="flex items-center gap-2">
-            <BsBell className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <FiBell className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             <span className="text-sm text-amber-700 dark:text-amber-300">
               Alert Target: {ALERT_TYPE_CONFIG[alert.alertType].label}
             </span>

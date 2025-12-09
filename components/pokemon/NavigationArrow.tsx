@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import type { PokemonType } from "../../types/pokemon";
 import { getTypeUIColors } from '../../utils/pokemonTypeGradients';
 import { cn } from '../../utils/cn';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 interface NavigationArrowProps {
   direction: 'prev' | 'next';
@@ -36,9 +36,9 @@ const NavigationArrow: React.FC<NavigationArrowProps> = ({ direction, pokemon, o
         "hover:scale-110 transition-all duration-200"
       )}>
         {isPrev ? (
-          <FaChevronLeft className="w-6 h-6 text-stone-700 dark:text-stone-300" />
+          <FiChevronLeft className="w-6 h-6 text-stone-700 dark:text-stone-300" />
         ) : (
-          <FaChevronRight className="w-6 h-6 text-stone-700 dark:text-stone-300" />
+          <FiChevronRight className="w-6 h-6 text-stone-700 dark:text-stone-300" />
         )}
       </div>
       

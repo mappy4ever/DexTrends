@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiFilter, FiX, FiChevronDown } from 'react-icons/fi';
 import { cn } from '../../utils/cn';
@@ -121,6 +121,92 @@ export function FilterDrawer({
   className,
 }: FilterDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
+
+  // Handle focus trap and keyboard navigation
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Store previously focused element
+    previousActiveElement.current = document.activeElement as HTMLElement;
+
+    // Focus first focusable element in drawer
+    const focusFirstElement = () => {
+      if (!drawerRef.current) return;
+      const focusableElements = drawerRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableElements.length > 0) {
+        (focusableElements[0] as HTMLElement).focus();
+      }
+    };
+
+    // Small delay to ensure drawer is rendered
+    const timeoutId = setTimeout(focusFirstElement, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [isOpen]);
+
+  // Handle Tab key for focus trap
+  useEffect(() => {
+    if (!isOpen || !drawerRef.current) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Handle Escape key
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setIsOpen(false);
+        return;
+      }
+
+      // Handle Tab key for focus trap
+      if (e.key !== 'Tab' || !drawerRef.current) return;
+
+      const focusableElements = drawerRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
+  // Restore focus when drawer closes
+  useEffect(() => {
+    if (!isOpen && previousActiveElement.current) {
+      previousActiveElement.current.focus();
+    }
+  }, [isOpen]);
+
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   return (
     <>
@@ -173,12 +259,17 @@ export function FilterDrawer({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
+              onClick={handleClose}
               className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              aria-hidden="true"
             />
 
             {/* Drawer */}
             <motion.div
+              ref={drawerRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="filter-drawer-title"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
@@ -193,19 +284,21 @@ export function FilterDrawer({
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 pb-3 border-b border-stone-200 dark:border-stone-700">
-                  <h2 className={cn(TYPOGRAPHY.heading.h4)}>Filters</h2>
+                  <h2 id="filter-drawer-title" className={cn(TYPOGRAPHY.heading.h4)}>Filters</h2>
                   <div className="flex items-center gap-2">
                     {activeFilterCount > 0 && onClearAll && (
                       <button
                         onClick={onClearAll}
                         className="text-sm text-amber-600 dark:text-amber-400 font-medium"
+                        aria-label="Clear all filters"
                       >
                         Clear all
                       </button>
                     )}
                     <button
-                      onClick={() => setIsOpen(false)}
+                      onClick={handleClose}
                       className="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800"
+                      aria-label="Close filter drawer"
                     >
                       <FiX className="w-5 h-5" />
                     </button>
@@ -225,7 +318,7 @@ export function FilterDrawer({
                     variant="primary"
                     size="lg"
                     fullWidth
-                    onClick={() => setIsOpen(false)}
+                    onClick={handleClose}
                   >
                     Show Results
                     {activeFilterCount > 0 && (

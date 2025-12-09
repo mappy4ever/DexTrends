@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { cn } from '@/utils/cn';
-import { CleanRarityFilterBar } from './CleanRaritySymbol';
+import { RarityFilterBar } from './RarityIcon';
 
 interface ProfessionalFilterSectionProps {
   // Rarity filter
@@ -134,7 +134,7 @@ export const ProfessionalFilterSection: React.FC<ProfessionalFilterSectionProps>
           badge={selectedRarity ? '1' : undefined}
         >
           <div className="p-4">
-            <CleanRarityFilterBar
+            <RarityFilterBar
               selectedRarity={selectedRarity}
               onRaritySelect={(rarity) => onRarityChange(rarity || '')}
               availableRarities={availableRarities}

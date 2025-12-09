@@ -20,24 +20,21 @@ import { EnergyIcon, EnergyBadge } from '@/components/ui/EnergyIcon';
 import { cn } from '@/utils/cn';
 import { TRANSITION } from '@/components/ui/design-system/glass-constants';
 import {
-  BsShare,
-  BsDownload,
-  BsUpload,
-  BsLink45Deg,
-  BsQrCode,
-  BsClipboard,
-  BsClipboardCheck,
-  BsImage,
-  BsFileText,
-  BsFileCode,
-  BsTwitter,
-  BsReddit,
-  BsDiscord,
-  BsCheckCircle,
-  BsExclamationCircle,
-  BsChevronDown,
-  BsGrid3X3,
-} from 'react-icons/bs';
+  FiShare2,
+  FiDownload,
+  FiUpload,
+  FiLink,
+  FiClipboard,
+  FiImage,
+  FiFileText,
+  FiCode,
+  FiCheckCircle,
+  FiAlertCircle,
+  FiChevronDown,
+  FiGrid,
+} from 'react-icons/fi';
+// Brand icons - documented exceptions (no Feather equivalents)
+import { BsTwitter, BsReddit, BsDiscord, BsQrCode } from 'react-icons/bs';
 import logger from '@/utils/logger';
 import type { Deck, DeckCard, TCGCard } from '@/types/api/cards';
 
@@ -323,12 +320,12 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
                   </span>
                   {validation.isValid ? (
                     <span className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
-                      <BsCheckCircle className="w-3 h-3" />
+                      <FiCheckCircle className="w-3 h-3" />
                       Valid
                     </span>
                   ) : (
                     <span className="flex items-center gap-1 text-xs text-red-600 dark:text-red-400">
-                      <BsExclamationCircle className="w-3 h-3" />
+                      <FiAlertCircle className="w-3 h-3" />
                       {validation.issues.length} issue{validation.issues.length > 1 ? 's' : ''}
                     </span>
                   )}
@@ -337,7 +334,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
               <Button
                 variant="primary"
                 size="sm"
-                icon={<BsShare className="w-4 h-4" />}
+                icon={<FiShare2 className="w-4 h-4" />}
                 onClick={shareModal.open}
               >
                 Share
@@ -377,13 +374,13 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
           <div className="mt-4 space-y-2">
             {validation.issues.map((issue, i) => (
               <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 text-sm">
-                <BsExclamationCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <FiAlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 {issue}
               </div>
             ))}
             {validation.warnings.map((warning, i) => (
               <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-sm">
-                <BsExclamationCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <FiAlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 {warning}
               </div>
             ))}
@@ -433,9 +430,9 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
           {/* Tabs */}
           <div className="flex gap-2 border-b border-stone-200 dark:border-stone-700">
             {[
-              { id: 'share', label: 'Share', icon: BsShare },
-              { id: 'export', label: 'Export', icon: BsDownload },
-              { id: 'import', label: 'Import', icon: BsUpload },
+              { id: 'share', label: 'Share', icon: FiShare2 },
+              { id: 'export', label: 'Export', icon: FiDownload },
+              { id: 'import', label: 'Import', icon: FiUpload },
             ].map(tab => (
               <button
                 key={tab.id}
@@ -478,7 +475,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
                     <Button
                       variant={copied ? 'success' : 'secondary'}
                       onClick={() => handleCopy(shareUrl)}
-                      icon={copied ? <BsClipboardCheck className="w-4 h-4" /> : <BsClipboard className="w-4 h-4" />}
+                      icon={copied ? <FiClipboard className="w-4 h-4" /> : <FiClipboard className="w-4 h-4" />}
                     >
                       {copied ? 'Copied!' : 'Copy'}
                     </Button>
@@ -489,7 +486,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
                         const url = generateShareUrl();
                         onShare?.(url);
                       }}
-                      icon={<BsLink45Deg className="w-4 h-4" />}
+                      icon={<FiLink className="w-4 h-4" />}
                     >
                       Generate
                     </Button>
@@ -569,7 +566,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
                     TRANSITION.default
                   )}
                 >
-                  <BsFileCode className="w-8 h-8 text-amber-600 dark:text-amber-400" />
+                  <FiCode className="w-8 h-8 text-amber-600 dark:text-amber-400" />
                   <span className="font-medium text-stone-800 dark:text-white">JSON</span>
                   <span className="text-xs text-stone-500 dark:text-stone-400">Full data backup</span>
                 </button>
@@ -583,7 +580,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
                     TRANSITION.default
                   )}
                 >
-                  <BsFileText className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                  <FiFileText className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                   <span className="font-medium text-stone-800 dark:text-white">Text</span>
                   <span className="text-xs text-stone-500 dark:text-stone-400">Human readable</span>
                 </button>
@@ -597,7 +594,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
                     TRANSITION.default
                   )}
                 >
-                  <BsGrid3X3 className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                  <FiGrid className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                   <span className="font-medium text-stone-800 dark:text-white">PTCGO</span>
                   <span className="text-xs text-stone-500 dark:text-stone-400">Pokemon TCG Online</span>
                 </button>
@@ -613,7 +610,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
                     isGenerating && 'opacity-50 cursor-not-allowed'
                   )}
                 >
-                  <BsImage className="w-8 h-8 text-green-600 dark:text-green-400" />
+                  <FiImage className="w-8 h-8 text-green-600 dark:text-green-400" />
                   <span className="font-medium text-stone-800 dark:text-white">Image</span>
                   <span className="text-xs text-stone-500 dark:text-stone-400">Social media ready</span>
                 </button>
@@ -651,7 +648,7 @@ export const DeckSharing: React.FC<DeckSharingProps> = ({
           <Button
             variant="secondary"
             onClick={() => handleCopy(shareUrl || generateShareUrl())}
-            icon={<BsClipboard className="w-4 h-4" />}
+            icon={<FiClipboard className="w-4 h-4" />}
           >
             Copy Link Instead
           </Button>
@@ -694,7 +691,7 @@ const DeckSection: React.FC<{
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <BsChevronDown className="w-4 h-4 text-stone-400" />
+          <FiChevronDown className="w-4 h-4 text-stone-400" />
         </motion.span>
       </button>
 
@@ -789,7 +786,7 @@ const ImportDeckSection: React.FC<{
 
       {importError && (
         <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
-          <BsExclamationCircle className="w-4 h-4" />
+          <FiAlertCircle className="w-4 h-4" />
           {importError}
         </div>
       )}
@@ -799,7 +796,7 @@ const ImportDeckSection: React.FC<{
         fullWidth
         onClick={handleImport}
         disabled={!importText.trim()}
-        icon={<BsUpload className="w-4 h-4" />}
+        icon={<FiUpload className="w-4 h-4" />}
       >
         Import Deck
       </Button>
@@ -876,7 +873,7 @@ const DeckImagePreview: React.FC<{
       <Button
         variant="primary"
         fullWidth
-        icon={<BsDownload className="w-4 h-4" />}
+        icon={<FiDownload className="w-4 h-4" />}
         onClick={() => {
           // Would use html2canvas to generate image
           logger.info('Downloading deck image');

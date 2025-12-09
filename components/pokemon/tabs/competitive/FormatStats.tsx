@@ -4,7 +4,7 @@ import { Container } from '../../../ui/Container';
 import { TierBadge } from '../../../ui/TierBadge';
 import { cn } from '../../../../utils/cn';
 import { MdCatchingPokemon } from 'react-icons/md';
-import { FaCheckCircle, FaTimesCircle, FaExclamationTriangle } from 'react-icons/fa';
+import { FiCheckCircle, FiXCircle, FiAlertTriangle } from 'react-icons/fi';
 import type { Pokemon, PokemonSpecies } from '../../../../types/pokemon';
 import type { CompetitiveTierRecord } from '../../../../utils/supabase';
 import type { UsageStats, FormatEligibility } from './types';
@@ -231,12 +231,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     <div className="flex items-center justify-center gap-2 text-center">
                       {formatEligibility.vgc ? (
                         <>
-                          <FaCheckCircle className="w-5 h-5 text-green-500" />
+                          <FiCheckCircle className="w-5 h-5 text-green-500" />
                           <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Legal</span>
                         </>
                       ) : (
                         <>
-                          <FaTimesCircle className="w-5 h-5 text-red-500" />
+                          <FiXCircle className="w-5 h-5 text-red-500" />
                           <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Not Legal</span>
                         </>
                       )}
@@ -252,12 +252,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                     <div className="flex items-center justify-center gap-2 text-center">
                       {formatEligibility.battleStadium ? (
                         <>
-                          <FaCheckCircle className="w-5 h-5 text-green-500" />
+                          <FiCheckCircle className="w-5 h-5 text-green-500" />
                           <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Legal</span>
                         </>
                       ) : (
                         <>
-                          <FaTimesCircle className="w-5 h-5 text-red-500" />
+                          <FiXCircle className="w-5 h-5 text-red-500" />
                           <span className="text-sm text-stone-700 dark:text-stone-300 font-medium">Restricted</span>
                         </>
                       )}
@@ -360,12 +360,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="flex items-start gap-2">
                     {formatEligibility.littleCup ? (
                       <>
-                        <FaCheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                        <FiCheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                         <span className="text-sm text-stone-600 dark:text-stone-300">Little Cup eligible (Level 5, unevolved)</span>
                       </>
                     ) : (
                       <>
-                        <FaTimesCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                        <FiXCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
                         <span className="text-sm text-stone-600 dark:text-stone-300">
                           {species.is_baby
                             ? 'Baby Pokémon are banned in Little Cup'
@@ -410,12 +410,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="flex items-center gap-2">
                     {formatEligibility.nfe ? (
                       <>
-                        <FaCheckCircle className="w-4 h-4 text-green-500" />
+                        <FiCheckCircle className="w-4 h-4 text-green-500" />
                         <span className="text-sm text-stone-600 dark:text-stone-300">Eligible for NFE format</span>
                       </>
                     ) : (
                       <>
-                        <FaTimesCircle className="w-4 h-4 text-red-500" />
+                        <FiXCircle className="w-4 h-4 text-red-500" />
                         <span className="text-sm text-stone-600 dark:text-stone-300">Fully evolved - not NFE eligible</span>
                       </>
                     )}
@@ -431,12 +431,12 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
                   <div className="flex items-center gap-2">
                     {baseStatTotal >= 500 ? (
                       <>
-                        <FaCheckCircle className="w-4 h-4 text-green-500" />
+                        <FiCheckCircle className="w-4 h-4 text-green-500" />
                         <span className="text-sm text-stone-600 dark:text-stone-300">Viable in 1v1 format</span>
                       </>
                     ) : (
                       <>
-                        <FaExclamationTriangle className="w-4 h-4 text-yellow-500" />
+                        <FiAlertTriangle className="w-4 h-4 text-yellow-500" />
                         <span className="text-sm text-stone-600 dark:text-stone-300">May struggle in 1v1</span>
                       </>
                     )}

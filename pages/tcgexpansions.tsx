@@ -8,7 +8,7 @@ import { useTheme, useViewSettings } from '../context/UnifiedAppContext';
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { useDebounce } from "../hooks/useDebounce";
 import { createGlassStyle, GradientButton, CircularButton } from '../components/ui/design-system';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
+import { UnifiedSearchBar, LoadingStateGlass } from '../components/ui/glass-components';
 import { motion } from 'framer-motion';
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SkeletonCard } from '@/components/ui/Skeleton';
@@ -17,7 +17,7 @@ import { ProgressiveImage } from '@/components/ui/ProgressiveImage';
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import { PageHeader } from "../components/ui/BreadcrumbNavigation";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
-import { NoSearchResults } from "../components/ui/EmptyState";
+import { NoSearchResults, ErrorState } from "../components/ui/EmptyState";
 import { CardSet } from "../types/api/cards";
 import { PaginationInfo } from "../types/api/api-responses";
 import { NextPage } from "next";
@@ -491,18 +491,12 @@ const TcgSetsContent: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="max-w-2xl mx-auto"
             >
-              <EmptyStateGlass
-                type="error"
-                title="Error Loading Sets"
-                message={error}
-                actionButton={{
-                  text: "Try Again",
-                  onClick: () => {
-                    setLoading(true);
-                    setError(null);
-                    fetchSets();
-                  },
-                  variant: "danger"
+              <ErrorState
+                error={error || "Failed to load sets"}
+                onRetry={() => {
+                  setLoading(true);
+                  setError(null);
+                  fetchSets();
                 }}
               />
             </motion.div>

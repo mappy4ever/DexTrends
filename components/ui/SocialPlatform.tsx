@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaUser, FaUsers, FaHeart, FaComment, FaShare, FaTrophy, FaEye, FaPlus, FaUserPlus, FaUserMinus } from 'react-icons/fa';
-import { BsCardList, BsGrid3X3Gap, BsChat, BsStar, BsFire } from 'react-icons/bs';
+import { FiUser, FiUsers, FiHeart, FiMessageCircle, FiShare2, FiAward, FiEye, FiPlus, FiUserPlus, FiUserMinus, FiList, FiGrid, FiStar, FiTrendingUp } from 'react-icons/fi';
 import { supabase } from '../../lib/supabase';
 import logger from '@/utils/logger';
 
@@ -353,7 +352,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
       {post.cardData && (
         <div className="mb-4 p-3 bg-stone-50 dark:bg-stone-700 rounded-lg border">
           <div className="flex items-center space-x-2">
-            <BsCardList className="text-amber-500" />
+            <FiList className="text-amber-500" />
             <span className="font-medium text-stone-900 dark:text-white">
               {post.cardData.name}
             </span>
@@ -378,23 +377,23 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
                 : 'text-stone-500 dark:text-stone-300 hover:text-red-500'
             }`}
           >
-            <FaHeart className={post.isLiked ? 'fill-current' : ''} />
+            <FiHeart className={post.isLiked ? 'fill-current' : ''} />
             <span>{post.likes}</span>
           </button>
 
           <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-300 hover:text-amber-500 transition-colors">
-            <FaComment />
+            <FiMessageCircle />
             <span>{post.comments}</span>
           </button>
 
           <button className="flex items-center space-x-2 text-stone-500 dark:text-stone-300 hover:text-green-500 transition-colors">
-            <FaShare />
+            <FiShare2 />
             <span>{post.shares}</span>
           </button>
         </div>
 
         <button className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors">
-          <FaEye />
+          <FiEye />
         </button>
       </div>
     </div>
@@ -441,12 +440,12 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
           >
             {following.includes(user.id) ? (
               <>
-                <FaUserMinus className="inline mr-2" />
+                <FiUserMinus className="inline mr-2" />
                 Unfollow
               </>
             ) : (
               <>
-                <FaUserPlus className="inline mr-2" />
+                <FiUserPlus className="inline mr-2" />
                 Follow
               </>
             )}
@@ -486,7 +485,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
               : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
-          <BsFire className="inline mr-2" />
+          <FiTrendingUp className="inline mr-2" />
           Feed
         </button>
         <button
@@ -497,7 +496,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
               : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
-          <FaUsers className="inline mr-2" />
+          <FiUsers className="inline mr-2" />
           Discover
         </button>
         <button
@@ -508,7 +507,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
               : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
-          <FaTrophy className="inline mr-2" />
+          <FiAward className="inline mr-2" />
           Leaderboard
         </button>
       </div>
@@ -531,10 +530,10 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
                   <div className="flex justify-between items-center mt-3">
                     <div className="flex space-x-2">
                       <button className="p-2 text-stone-500 hover:text-amber-500 transition-colors">
-                        <BsCardList title="Add card" />
+                        <FiList title="Add card" />
                       </button>
                       <button className="p-2 text-stone-500 hover:text-green-500 transition-colors">
-                        <BsGrid3X3Gap title="Add image" />
+                        <FiGrid title="Add image" />
                       </button>
                     </div>
                     <button className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
@@ -588,7 +587,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
           <div className="grid gap-6">
             <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
               <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4 flex items-center">
-                <FaTrophy className="text-yellow-500 mr-2" />
+                <FiAward className="text-yellow-500 mr-2" />
                 Top Collectors This Month
               </h3>
               <div className="space-y-3">
@@ -624,7 +623,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
 
             <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md border border-stone-200 dark:border-stone-700 p-6">
               <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4 flex items-center">
-                <BsStar className="text-amber-500 mr-2" />
+                <FiStar className="text-amber-500 mr-2" />
                 Most Popular Posts
               </h3>
               <div className="space-y-3">

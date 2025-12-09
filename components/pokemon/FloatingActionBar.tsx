@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
-import { FaHeart, FaRegHeart, FaShare, FaArrowUp } from 'react-icons/fa';
+import { FiHeart, FiShare2, FiArrowUp } from 'react-icons/fi';
 import { CircularButton } from '../ui/design-system';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import { useToast } from '../providers/ToastProvider';
@@ -80,7 +80,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
               className="shadow-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700"
               title="Scroll to top"
             >
-              <FaArrowUp />
+              <FiArrowUp />
             </CircularButton>
           </motion.div>
         )}
@@ -96,7 +96,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
             className="shadow-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700"
             title="Share Pokemon"
           >
-            <FaShare />
+            <FiShare2 />
           </CircularButton>
         }
       />
@@ -130,7 +130,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
         )}
         title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       >
-        {isFavorite ? <FaHeart className="text-white" /> : <FaRegHeart />}
+        {isFavorite ? <FiHeart className="text-white fill-current" /> : <FiHeart />}
       </CircularButton>
     </motion.div>
   );

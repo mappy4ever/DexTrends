@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { Container } from '../ui/Container';
 import { createGlassStyle } from '../ui/design-system/glass-constants';
-import { CleanRaritySymbol } from '../ui/CleanRaritySymbol';
+import { RarityIcon, getRarityRank } from '../ui/RarityIcon';
 import type { TCGCard } from '@/types/api/cards';
 
 interface ChaseCardsGalleryProps {
@@ -37,20 +37,8 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
       case 'price-asc':
         return getPrice(a) - getPrice(b);
       case 'rarity':
-        const rarityOrder: Record<string, number> = {
-          'Rare Secret': 10,
-          'Rare Rainbow': 9,
-          'Rare Gold': 8,
-          'Rare Ultra': 7,
-          'Rare Holo VSTAR': 6,
-          'Rare Holo VMAX': 5,
-          'Rare Holo V': 4,
-          'Rare Holo': 3,
-          'Rare': 2,
-          'Uncommon': 1,
-          'Common': 0
-        };
-        return (rarityOrder[b.rarity || ''] || 0) - (rarityOrder[a.rarity || ''] || 0);
+        // Use canonical getRarityRank from RarityIcon for consistent ordering
+        return getRarityRank(b.rarity || '') - getRarityRank(a.rarity || '');
       case 'number':
         return parseInt(a.number) - parseInt(b.number);
       default:
@@ -131,7 +119,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                     ${price.toFixed(2)}
                   </p>
                   {card.rarity && (
-                    <CleanRaritySymbol rarity={card.rarity} size="sm" showLabel={false} />
+                    <RarityIcon rarity={card.rarity} size="sm" showLabel={false} />
                   )}
                 </div>
               </div>
@@ -264,7 +252,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                           ${getPrice(selectedCard).toFixed(2)}
                         </p>
                         {selectedCard.rarity && (
-                          <CleanRaritySymbol rarity={selectedCard.rarity} size="md" showLabel={true} />
+                          <RarityIcon rarity={selectedCard.rarity} size="md" showLabel={true} />
                         )}
                       </div>
                     </div>
@@ -354,7 +342,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
                   
                   {/* Rarity */}
                   {card.rarity && (
-                    <CleanRaritySymbol rarity={card.rarity} size="sm" showLabel={false} />
+                    <RarityIcon rarity={card.rarity} size="sm" showLabel={false} />
                   )}
                   
                   {/* Price */}

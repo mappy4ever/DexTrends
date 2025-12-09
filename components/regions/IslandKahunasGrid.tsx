@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  BsStar,
-  BsShieldFill,
-  BsGeoAltFill,
-  BsLightningFill,
-  BsHexagonFill
-} from 'react-icons/bs';
-import { FaCrown } from 'react-icons/fa';
+  FiStar,
+  FiShield,
+  FiMapPin,
+  FiZap,
+  FiHexagon
+} from 'react-icons/fi';
+import { FaCrown } from 'react-icons/fa'; // Domain exception: royalty icon
 import {
   GiCrystalShine,
   GiStoneSphere,
   GiPalmTree,
   GiWaveStrike
-} from 'react-icons/gi';
+} from 'react-icons/gi'; // Domain exceptions: environment/element icons
 import {
   createGlassStyle,
   TYPE_GRADIENTS
@@ -93,7 +93,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
     if (island.includes("Akala")) return <GiCrystalShine className="text-2xl" />;
     if (island.includes("Ula'ula")) return <GiStoneSphere className="text-2xl" />;
     if (island.includes("Poni")) return <GiWaveStrike className="text-2xl" />;
-    return <BsGeoAltFill className="text-2xl" />;
+    return <FiMapPin className="text-2xl" />;
   };
 
   const getTypeGradient = (type: string) => {
@@ -174,7 +174,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
                     <div className="absolute inset-0 opacity-10">
                       <div className="grid grid-cols-6 gap-1">
                         {Array.from({ length: 24 }).map((_, i) => (
-                          <BsHexagonFill key={i} className="text-white/20" />
+                          <FiHexagon key={i} className="text-white/20" />
                         ))}
                       </div>
                     </div>
@@ -185,7 +185,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
                       {/* Add actual trainer image here if available */}
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-6xl text-white/80">
-                          <BsShieldFill />
+                          <FiShield />
                         </div>
                       </div>
                     </div>
@@ -277,7 +277,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
           transition={{ delay: 0.5 }}
         >
           <div className="flex items-center gap-3 mb-3">
-            <BsLightningFill className="text-2xl text-yellow-500" />
+            <FiZap className="text-2xl text-yellow-500" />
             <h3 className="text-lg font-bold text-stone-800 dark:text-white">About Island Trials</h3>
           </div>
           <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-4">

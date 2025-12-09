@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef, ReactNode, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { RiGovernmentFill } from "react-icons/ri";
-import { AiOutlineBulb } from "react-icons/ai";
-import { FiSun, FiMoon, FiGlobe, FiHeart, FiSearch, FiGrid, FiLayers, FiBook, FiChevronDown, FiUser, FiHelpCircle } from "react-icons/fi";
+import { FiSun, FiMoon, FiGlobe, FiHeart, FiSearch, FiGrid, FiLayers, FiBook, FiChevronDown, FiUser, FiHelpCircle, FiZap } from "react-icons/fi";
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi"; // Keep specialty gaming icons
 import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
@@ -105,7 +103,7 @@ export default function Navbar() {
         { href: "/pokemon/moves", label: "Moves & TMs", icon: <FiBook size={18} />, description: "Complete moves database" },
         { href: "/pokemon/games", label: "Games", icon: <GiCardPickup size={18} />, description: "All Pokémon games" },
         { href: "/pokemon/items", label: "Items", icon: <FiShoppingBag size={18} />, description: "Items and their effects" },
-        { href: "/pokemon/abilities", label: "Abilities", icon: <AiOutlineBulb size={18} />, description: "Pokémon abilities list" },
+        { href: "/pokemon/abilities", label: "Abilities", icon: <FiZap size={18} />, description: "Pokémon abilities list" },
       ]
     },
     {
@@ -134,7 +132,7 @@ export default function Navbar() {
         { href: "/pocketmode/deckbuilder", label: "Deck Builder", icon: <GiPokerHand size={18} />, description: "Build custom decks" },
       ]
     },
-    { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={18} />, color: "text-poke-psychic" },
+    { href: "/fun", label: "Fun", icon: <FiZap size={18} />, color: "text-poke-psychic" },
     { href: "/support", label: "Support", icon: <FiHelpCircle size={18} />, color: "text-stone-500" },
   ];
 

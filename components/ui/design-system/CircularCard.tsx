@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { FaHeart, FaShare, FaInfo } from 'react-icons/fa';
+import { FiHeart, FiShare2, FiInfo } from 'react-icons/fi';
 import { useContextMenu, ContextMenuItem } from '../ContextMenu';
 import { useNotifications } from '../../../hooks/useNotifications';
 
@@ -66,7 +66,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
   const contextMenuItems = React.useMemo((): ContextMenuItem[] => [
     {
       id: 'favorite',
-      icon: <FaHeart />,
+      icon: <FiHeart />,
       label: 'Add to Favorites',
       action: () => {
         if (onFavorite) {
@@ -79,7 +79,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
     },
     {
       id: 'share',
-      icon: <FaShare />,
+      icon: <FiShare2 />,
       label: 'Share',
       action: () => {
         if (onShare) {
@@ -92,7 +92,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
     },
     {
       id: 'info',
-      icon: <FaInfo />,
+      icon: <FiInfo />,
       label: 'More Info',
       action: () => {
         if (onInfo) {
@@ -250,7 +250,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
               }}
               title="Add to favorites"
             >
-              <FaHeart className="w-4 h-4" />
+              <FiHeart className="w-4 h-4" />
             </motion.button>
             
             <motion.button
@@ -268,7 +268,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
               }}
               title="Share"
             >
-              <FaShare className="w-4 h-4" />
+              <FiShare2 className="w-4 h-4" />
             </motion.button>
           </motion.div>
         )}

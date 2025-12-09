@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getGameCoverArt, getGameLogo } from '../../utils/scrapedImageMapping';
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations/animations';
-import { BsArrowRight, BsStarFill, BsGeoAlt } from 'react-icons/bs';
-import { FaGamepad } from 'react-icons/fa';
+import { FiArrowRight, FiStar } from 'react-icons/fi';
+import { FaGamepad } from 'react-icons/fa'; // Domain exception: gaming icon
 
 // Type definitions
 interface RegionData {
@@ -111,7 +111,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                         {/* Interactive Play Button */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <div className="w-20 h-20 rounded-full backdrop-blur-xl bg-white/90 dark:bg-stone-900/90 flex items-center justify-center shadow-2xl transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100">
-                            <BsArrowRight className="text-3xl text-amber-600 dark:text-amber-400 transtone-x-0.5" />
+                            <FiArrowRight className="text-3xl text-amber-600 dark:text-amber-400 transtone-x-0.5" />
                           </div>
                         </div>
                       </div>
@@ -142,7 +142,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
-                              <BsStarFill key={i} className={`text-xs ${
+                              <FiStar key={i} className={`text-xs ${
                                 i < 4 ? 'text-yellow-400' : 'text-stone-300 dark:text-stone-600'
                               }`} />
                             ))}
@@ -151,7 +151,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                           {/* Play Now Text */}
                           <span className="text-sm font-semibold text-amber-600 dark:text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
                             Play
-                            <BsArrowRight className="group-hover:transtone-x-1 transition-transform" />
+                            <FiArrowRight className="group-hover:transtone-x-1 transition-transform" />
                           </span>
                         </div>
                       </div>
@@ -192,7 +192,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
               <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full ${
                 theme === 'dark' ? 'bg-stone-800/50' : 'bg-stone-100/50'
               }`}>
-                <BsStarFill className="text-yellow-500" />
+                <FiStar className="text-yellow-500" />
                 <span className="text-stone-600 dark:text-stone-300">
                   {region.games.length} Games Released
                 </span>
@@ -205,7 +205,7 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <FaGamepad className="relative z-10 text-xl" />
                 <span className="relative z-10">Explore All Pokémon Games</span>
-                <BsArrowRight className="relative z-10 group-hover:transtone-x-1 transition-transform" />
+                <FiArrowRight className="relative z-10 group-hover:transtone-x-1 transition-transform" />
             </Link>
           </FadeIn>
         </div>

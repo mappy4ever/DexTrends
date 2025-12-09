@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { FaPlus, FaMinus, FaSearch, FaChartBar, FaExclamationTriangle, FaCheckCircle, FaSave, FaShare, FaDownload } from 'react-icons/fa';
-import { BsCardList, BsLightning, BsDroplet, BsFire, BsSnow, BsFlower1, BsFillCircleFill } from 'react-icons/bs';
-import { GiHighGrass, GiPsychicWaves, GiMetalBar, GiFairyWand, GiDragonHead } from 'react-icons/gi';
+import { FiPlus, FiMinus, FiSearch, FiBarChart2, FiAlertTriangle, FiCheckCircle, FiSave, FiShare2, FiDownload, FiList, FiZap, FiDroplet, FiCircle } from 'react-icons/fi';
+// Domain exceptions: Pokemon type element icons
+import { GiHighGrass, GiPsychicWaves, GiMetalBar, GiFairyWand, GiDragonHead, GiFlame } from 'react-icons/gi';
 
 // Types
 interface DeckCard {
@@ -331,19 +331,19 @@ export default function AdvancedDeckBuilder({
 
   const getTypeIcon = (type: string) => {
     const icons: Record<string, React.ReactElement> = {
-      Fire: <BsFire className="text-red-500" />,
-      Water: <BsDroplet className="text-amber-500" />,
-      Lightning: <BsLightning className="text-yellow-500" />,
-      Grass: <BsFlower1 className="text-green-500" />,
-      Fighting: <GiHighGrass className="text-orange-600" />,
+      Fire: <GiFlame className="text-red-500" />,
+      Water: <FiDroplet className="text-blue-500" />,
+      Lightning: <FiZap className="text-yellow-500" />,
+      Grass: <GiHighGrass className="text-green-500" />,
+      Fighting: <FiCircle className="text-orange-600" />,
       Psychic: <GiPsychicWaves className="text-amber-500" />,
-      Darkness: <BsFillCircleFill className="text-stone-800" />,
+      Darkness: <FiCircle className="text-stone-800" />,
       Metal: <GiMetalBar className="text-stone-500" />,
       Fairy: <GiFairyWand className="text-pink-500" />,
       Dragon: <GiDragonHead className="text-amber-600" />,
-      Colorless: <BsFillCircleFill className="text-stone-400" />
+      Colorless: <FiCircle className="text-stone-400" />
     };
-    return icons[type] || <BsFillCircleFill className="text-stone-400" />;
+    return icons[type] || <FiCircle className="text-stone-400" />;
   };
 
   const exportDeck = (): void => {
@@ -390,14 +390,14 @@ export default function AdvancedDeckBuilder({
               onClick={() => onSaveDeck?.(deck)}
               className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 flex items-center space-x-2">
 
-              <FaSave />
+              <FiSave />
               <span>Save</span>
             </button>
             <button
               onClick={exportDeck}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center space-x-2">
 
-              <FaDownload />
+              <FiDownload />
               <span>Export</span>
             </button>
           </div>
@@ -414,7 +414,7 @@ export default function AdvancedDeckBuilder({
               : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
-          <BsCardList className="inline mr-2" />
+          <FiList className="inline mr-2" />
           Deck Builder
         </button>
         <button
@@ -425,7 +425,7 @@ export default function AdvancedDeckBuilder({
               : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
-          <FaChartBar className="inline mr-2" />
+          <FiBarChart2 className="inline mr-2" />
           Analysis
         </button>
         <button
@@ -437,9 +437,9 @@ export default function AdvancedDeckBuilder({
           }`}
         >
           {validation.isValid ? (
-            <FaCheckCircle className="inline mr-2 text-green-500" />
+            <FiCheckCircle className="inline mr-2 text-green-500" />
           ) : (
-            <FaExclamationTriangle className="inline mr-2 text-red-500" />
+            <FiAlertTriangle className="inline mr-2 text-red-500" />
           )}
           Validation
         </button>
@@ -465,7 +465,7 @@ export default function AdvancedDeckBuilder({
                     }}
                     placeholder="Search for cards..."
                     className="w-full px-4 py-2 border border-stone-300 dark:border-stone-600 rounded-md focus:ring-2 focus:ring-amber-500 dark:bg-stone-700 dark:text-white" />
-                  <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                  <FiSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
                 </div>
 
                 {searchResults.length > 0 && (
@@ -496,7 +496,7 @@ export default function AdvancedDeckBuilder({
                             onClick={() => addCardToDeck(card)}
                             className="p-2 bg-amber-600 text-white rounded hover:bg-amber-700">
 
-                            <FaPlus className="w-3 h-3" />
+                            <FiPlus className="w-3 h-3" />
                           </button>
                         </div>
                       </div>
@@ -642,9 +642,9 @@ export default function AdvancedDeckBuilder({
               }`}>
                 <div className="flex items-center space-x-2">
                   {validation.isValid ? (
-                    <FaCheckCircle className="text-green-500" />
+                    <FiCheckCircle className="text-green-500" />
                   ) : (
-                    <FaExclamationTriangle className="text-red-500" />
+                    <FiAlertTriangle className="text-red-500" />
                   )}
                   <span className={`font-medium ${
                     validation.isValid 
@@ -757,13 +757,13 @@ export default function AdvancedDeckBuilder({
                             onClick={() => removeCardFromDeck(card.id)}
                             className="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/20 rounded">
 
-                            <FaMinus className="w-3 h-3" />
+                            <FiMinus className="w-3 h-3" />
                           </button>
                           <button
                             onClick={() => addCardToDeck(card)}
                             className="p-1 text-green-500 hover:bg-green-100 dark:hover:bg-green-900/20 rounded">
 
-                            <FaPlus className="w-3 h-3" />
+                            <FiPlus className="w-3 h-3" />
                           </button>
                         </div>
                       </div>
@@ -776,7 +776,7 @@ export default function AdvancedDeckBuilder({
 
           {deck.cards.length === 0 && (
             <div className="text-center py-8 text-stone-500 dark:text-stone-300">
-              <BsCardList className="w-12 h-12 mx-auto mb-4" />
+              <FiList className="w-12 h-12 mx-auto mb-4" />
               <p>Your deck is empty</p>
               <p className="text-sm">Search and add cards to get started</p>
             </div>

@@ -43,7 +43,10 @@
     "test:kill-server": "pkill -f 'next dev' || pkill -f 'next start' || true",
     "test:server-check": "curl -f http://localhost:${PORT:-3000}/api/health || echo 'Server not ready'",
     "test:dev-server": "NODE_ENV=test npm run dev",
-    "test:full-reset": "npm run test:clean && npm install && npm run test:stable"
+    "test:full-reset": "npm run test:clean && npm install && npm run test:stable",
+    "db:sync-full": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --full",
+    "db:sync-delta": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --delta",
+    "db:sync-set": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --set"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -80,6 +83,7 @@
     "tailwindcss": "^3.3.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
     "@next/bundle-analyzer": "^15.4.6",
     "@playwright/test": "^1.54.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",

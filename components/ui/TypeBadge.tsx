@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/utils/cn';
 import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
+import { TYPE_GRADIENTS } from './design-system/glass-constants';
 
 interface TypeBadgeProps {
   type: string;
@@ -9,28 +10,6 @@ interface TypeBadgeProps {
   variant?: 'solid' | 'gradient';
   showTooltip?: boolean;
 }
-
-// Gradient configurations for each type - CORRECT colors
-const TYPE_GRADIENTS: Record<string, string> = {
-  normal: 'from-stone-400 to-stone-500',
-  fire: 'from-orange-500 to-red-500',
-  water: 'from-blue-400 to-blue-600',
-  electric: 'from-yellow-400 to-amber-500',
-  grass: 'from-green-500 to-emerald-600',
-  ice: 'from-cyan-300 to-cyan-500',
-  fighting: 'from-red-600 to-orange-600',
-  poison: 'from-purple-500 to-purple-700',
-  ground: 'from-amber-600 to-yellow-700',
-  flying: 'from-indigo-400 to-sky-400',
-  psychic: 'from-pink-500 to-pink-600',
-  bug: 'from-lime-500 to-green-600',
-  rock: 'from-yellow-700 to-stone-600',
-  ghost: 'from-purple-700 to-indigo-800',
-  dragon: 'from-indigo-600 to-purple-700',
-  dark: 'from-stone-700 to-stone-800',
-  steel: 'from-slate-400 to-slate-500',
-  fairy: 'from-pink-400 to-pink-500'
-};
 
 // Type effectiveness descriptions for tooltips
 const TYPE_DESCRIPTIONS: Record<string, string> = {
@@ -61,7 +40,7 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
   variant = 'gradient',
   showTooltip = false
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   // Responsive sizing - smaller for mobile, no min-width constraints
   const sizeClasses = {
@@ -71,34 +50,54 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
     lg: 'px-3 py-1 text-sm'
   };
 
-  const typeKey = type.toLowerCase();
+  const typeKey = type.toLowerCase() as keyof typeof TYPE_GRADIENTS;
   const gradientClass = TYPE_GRADIENTS[typeKey] || TYPE_GRADIENTS.normal;
   const solidColor = POKEMON_TYPE_COLORS[typeKey] || POKEMON_TYPE_COLORS.normal;
   const tooltipText = TYPE_DESCRIPTIONS[typeKey] || '';
+  const tooltipId = `type-tooltip-${typeKey}`;
+
+  // Accessibility props for when tooltip is shown
+  const accessibilityProps = showTooltip ? {
+    tabIndex: 0,
+    role: 'button' as const,
+    'aria-describedby': isVisible ? tooltipId : undefined,
+    'aria-label': `${type} type - press to show effectiveness info`,
+  } : {
+    'aria-label': `${type} type`,
+  };
 
   const badge = variant === 'gradient' ? (
-    <span className={cn(
-      'rounded-full font-semibold text-white inline-flex items-center justify-center shadow-sm',
-      'bg-gradient-to-r',
-      gradientClass,
-      sizeClasses[size],
-      className
-    )}>
+    <span
+      className={cn(
+        'rounded-full font-semibold text-white inline-flex items-center justify-center shadow-sm',
+        'bg-gradient-to-r',
+        showTooltip && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2',
+        gradientClass,
+        sizeClasses[size],
+        className
+      )}
+      {...accessibilityProps}
+    >
       {type.toUpperCase()}
     </span>
   ) : (
-    <span className={cn(
-      'rounded-full font-medium text-white inline-flex items-center justify-center',
-      sizeClasses[size],
-      className
-    )} style={{
-      backgroundColor: solidColor,
-      transform: 'translate3d(0,0,0)',
-      WebkitTransform: 'translate3d(0,0,0)',
-      backfaceVisibility: 'visible',
-      WebkitBackfaceVisibility: 'visible',
-      willChange: 'auto'
-    }}>
+    <span
+      className={cn(
+        'rounded-full font-medium text-white inline-flex items-center justify-center',
+        showTooltip && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2',
+        sizeClasses[size],
+        className
+      )}
+      style={{
+        backgroundColor: solidColor,
+        transform: 'translate3d(0,0,0)',
+        WebkitTransform: 'translate3d(0,0,0)',
+        backfaceVisibility: 'visible',
+        WebkitBackfaceVisibility: 'visible',
+        willChange: 'auto'
+      }}
+      {...accessibilityProps}
+    >
       {type.toUpperCase()}
     </span>
   );
@@ -110,12 +109,15 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
   return (
     <div
       className="relative inline-flex"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+      onFocus={() => setIsVisible(true)}
+      onBlur={() => setIsVisible(false)}
     >
       {badge}
-      {isHovered && tooltipText && (
+      {isVisible && tooltipText && (
         <div
+          id={tooltipId}
           role="tooltip"
           className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 text-xs text-white bg-stone-800 dark:bg-stone-700 rounded-lg shadow-lg whitespace-nowrap max-w-[250px] text-center"
         >

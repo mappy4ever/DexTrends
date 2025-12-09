@@ -2,16 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FadeIn, SlideUp, StaggeredChildren } from '../ui/animations/animations';
-import { 
-  BsPerson, 
-  BsController, 
-  BsGlobe, 
-  BsBarChart,
-  BsMap,
-  BsSignpost,
-  BsStar,
-  BsGem
-} from 'react-icons/bs';
+import {
+  FiUser,
+  FiMonitor,
+  FiGlobe,
+  FiBarChart2,
+  FiMap,
+  FiNavigation,
+  FiStar,
+  FiHexagon
+} from 'react-icons/fi';
 
 // Type definitions
 interface Leader {
@@ -154,7 +154,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
         <div className="flex flex-wrap justify-center items-center gap-8 mb-16">
           {/* Professor Orb */}
           <GlassOrb
-            icon={<BsPerson />}
+            icon={<FiUser />}
             label="Professor"
             value={region.professor.replace('Professor ', '')}
             color="from-amber-400 to-pink-400"
@@ -163,7 +163,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
 
           {/* Generation Orb - Larger */}
           <GlassOrb
-            icon={<BsGlobe />}
+            icon={<FiGlobe />}
             label="Generation"
             value={`Gen ${region.generation}`}
             color={genColor}
@@ -173,7 +173,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
 
           {/* Pokédex Orb */}
           <GlassOrb
-            icon={<BsBarChart />}
+            icon={<FiBarChart2 />}
             label="Pokédex"
             value={region.pokemonRange}
             color="from-amber-400 to-cyan-400"
@@ -182,7 +182,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
 
           {/* Cities Orb */}
           <GlassOrb
-            icon={<BsMap />}
+            icon={<FiMap />}
             label="Cities"
             value={region.cities}
             color="from-green-400 to-emerald-400"
@@ -192,7 +192,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
 
           {/* Routes Orb */}
           <GlassOrb
-            icon={<BsSignpost />}
+            icon={<FiNavigation />}
             label="Routes"
             value={region.routes}
             color="from-amber-400 to-orange-400"
@@ -202,7 +202,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
 
           {/* Legendaries Orb */}
           <GlassOrb
-            icon={<BsStar />}
+            icon={<FiStar />}
             label="Legendaries"
             value={region.legendaries.length}
             color="from-yellow-400 to-gold-400"
@@ -242,7 +242,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
                   <div className="backdrop-blur-xl bg-white/80 dark:bg-stone-800/80 rounded-xl px-6 py-3 shadow-lg border border-white/30 dark:border-stone-700/30 overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-br ${genColor} opacity-10 group-hover:opacity-20 transition-opacity duration-300`} />
                     <div className="relative flex items-center gap-2">
-                      <BsController className="text-lg text-stone-600 dark:text-stone-300 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
+                      <FiMonitor className="text-lg text-stone-600 dark:text-stone-300 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
                       <span className="font-semibold text-stone-800 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">{game}</span>
                     </div>
                     {/* Shimmer effect */}
@@ -331,7 +331,7 @@ const RegionInfo: React.FC<RegionInfoProps> = ({ region, theme }) => {
                   <div className="backdrop-blur-xl bg-gradient-to-br from-yellow-50/80 via-white/80 to-amber-50/80 dark:from-stone-800/80 dark:via-stone-700/80 dark:to-stone-800/80 rounded-xl p-4 shadow-xl border border-yellow-200/30 dark:border-yellow-700/30 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-400/10" />
                     <div className="relative flex items-center gap-3">
-                      <BsGem className="text-xl text-yellow-600 dark:text-yellow-400" />
+                      <FiHexagon className="text-xl text-yellow-600 dark:text-yellow-400" />
                       <span className="font-bold text-stone-800 dark:text-white">{legendary.name}</span>
                     </div>
                     {/* Shimmer effect */}

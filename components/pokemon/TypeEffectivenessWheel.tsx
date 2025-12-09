@@ -5,8 +5,7 @@ import { TypeBadge } from '../ui/TypeBadge';
 import { Container } from '../ui/Container';
 import { useTypeEffectiveness } from '../../hooks/useTypeEffectiveness';
 import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
-import { FaExclamationTriangle, FaBan, FaCircle } from 'react-icons/fa';
-import { GiShield } from 'react-icons/gi';
+import { FiAlertTriangle, FiSlash, FiCircle, FiShield } from 'react-icons/fi';
 import { getAnimationProps, UI_ANIMATION_SETS } from '../../utils/animations';
 
 interface TypeEffectivenessWheelProps {
@@ -107,7 +106,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
       color: 'from-red-500 to-orange-500',
       bgColor: 'bg-red-100 dark:bg-red-900/30',
       borderColor: 'border-red-300 dark:border-red-700',
-      icon: <FaExclamationTriangle className="text-red-500" />,
+      icon: <FiAlertTriangle className="text-red-500" />,
       count: groupedRelations.weakness.length
     },
     { 
@@ -116,7 +115,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
       color: 'from-green-500 to-teal-500',
       bgColor: 'bg-green-100 dark:bg-green-900/30',
       borderColor: 'border-green-300 dark:border-green-700',
-      icon: <GiShield className="text-green-500" />,
+      icon: <FiShield className="text-green-500" />,
       count: groupedRelations.resistance.length
     },
     { 
@@ -125,7 +124,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
       color: 'from-stone-500 to-stone-600',
       bgColor: 'bg-stone-100 dark:bg-stone-900/30',
       borderColor: 'border-stone-300 dark:border-stone-700',
-      icon: <FaBan className="text-stone-500" />,
+      icon: <FiSlash className="text-stone-500" />,
       count: groupedRelations.immunity.length
     }
   ];
@@ -261,7 +260,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="text-3xl mb-1">
-                <FaCircle className="text-red-500 mx-auto" />
+                <FiCircle className="text-red-500 mx-auto fill-current" />
               </div>
               <div className="text-sm text-stone-600 dark:text-stone-300">
                 {groupedRelations.weakness.filter(r => r.effectiveness >= 4).length} double weaknesses
@@ -269,7 +268,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
             </div>
             <div>
               <div className="text-3xl mb-1">
-                <FaCircle className="text-green-500 mx-auto" />
+                <FiCircle className="text-green-500 mx-auto fill-current" />
               </div>
               <div className="text-sm text-stone-600 dark:text-stone-300">
                 {groupedRelations.resistance.filter(r => r.effectiveness <= 0.25).length} double resistances
@@ -277,7 +276,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
             </div>
             <div>
               <div className="text-3xl mb-1">
-                <FaCircle className="text-stone-400 mx-auto" />
+                <FiCircle className="text-stone-400 mx-auto fill-current" />
               </div>
               <div className="text-sm text-stone-600 dark:text-stone-300">
                 {groupedRelations.normal.length} normal damage

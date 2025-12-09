@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, SlideUp, CardHover } from '../ui/animations/animations';
-import { 
-  BsExclamationTriangle,
-  BsPerson,
-  BsGeoAlt,
-  BsLightning,
-  BsShieldX,
-  BsFlag,
-  BsCurrencyDollar,
-  BsEye,
-  BsXCircle,
-  BsArrowRight
-} from 'react-icons/bs';
-import { GiEvilMinion, GiCrown } from 'react-icons/gi';
+import {
+  FiAlertTriangle,
+  FiUser,
+  FiMapPin,
+  FiZap,
+  FiShield,
+  FiFlag,
+  FiDollarSign,
+  FiEye,
+  FiXCircle,
+  FiArrowRight
+} from 'react-icons/fi';
+import { GiEvilMinion, GiCrown } from 'react-icons/gi'; // Domain exceptions: villain/royalty icons
 
 // Types
 interface TeamMember {
@@ -488,7 +488,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <BsExclamationTriangle className="text-red-500" />
+              <FiAlertTriangle className="text-red-500" />
               Villainous Organizations
             </h2>
             <p className="text-xl text-stone-600 dark:text-stone-300">
@@ -552,7 +552,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                       animate={{ rotate: expandedTeam === team.name ? 180 : 0 }}
                       className="text-white/60"
                     >
-                      <BsArrowRight className="text-2xl rotate-90" />
+                      <FiArrowRight className="text-2xl rotate-90" />
                     </motion.div>
                   </div>
                 </div>
@@ -588,7 +588,7 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                             {(team.executives || team.admins || team.commanders || team.scientists || team.sages || team.squadBosses) && (
                               <div className="mt-6">
                                 <h5 className="font-semibold mb-3 flex items-center gap-2">
-                                  <BsPerson />
+                                  <FiUser />
                                   Key Members
                                 </h5>
                                 <div className="space-y-2">
@@ -610,13 +610,13 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                             {/* Goals */}
                             <div>
                               <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                <BsFlag className="text-red-500" />
+                                <FiFlag className="text-red-500" />
                                 Objectives
                               </h4>
                               <ul className="space-y-2">
                                 {team.goals.map((goal, idx) => (
                                   <li key={idx} className="flex items-start gap-2">
-                                    <BsLightning className="text-yellow-500 mt-1 flex-shrink-0" />
+                                    <FiZap className="text-yellow-500 mt-1 flex-shrink-0" />
                                     <span className="text-stone-600 dark:text-stone-300">{goal}</span>
                                   </li>
                                 ))}
@@ -626,13 +626,13 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                             {/* Major Plots */}
                             <div>
                               <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                <BsShieldX className="text-amber-500" />
+                                <FiShield className="text-amber-500" />
                                 Criminal Activities
                               </h4>
                               <ul className="space-y-2">
                                 {team.majorPlots.map((plot, idx) => (
                                   <li key={idx} className="flex items-start gap-2">
-                                    <BsExclamationTriangle className="text-red-500 mt-1 flex-shrink-0" />
+                                    <FiAlertTriangle className="text-red-500 mt-1 flex-shrink-0" />
                                     <span className="text-stone-600 dark:text-stone-300">{plot}</span>
                                   </li>
                                 ))}
@@ -645,14 +645,14 @@ const EvilTeamShowcase: React.FC<EvilTeamShowcaseProps> = ({ region, theme }) =>
                         <div className="grid md:grid-cols-2 gap-6 pt-6 border-t border-stone-200 dark:border-stone-700">
                           <div>
                             <h5 className="font-semibold mb-2 flex items-center gap-2">
-                              <BsXCircle className="text-red-500" />
+                              <FiXCircle className="text-red-500" />
                               Defeat
                             </h5>
                             <p className="text-stone-600 dark:text-stone-300">{team.defeat}</p>
                           </div>
                           <div>
                             <h5 className="font-semibold mb-2 flex items-center gap-2">
-                              <BsEye className="text-amber-500" />
+                              <FiEye className="text-amber-500" />
                               Legacy
                             </h5>
                             <p className="text-stone-600 dark:text-stone-300">{team.legacy}</p>

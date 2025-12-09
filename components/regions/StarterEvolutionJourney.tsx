@@ -4,18 +4,18 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '@/utils/logger';
-import { 
-  BsArrowRight,
-  BsChevronRight,
-  BsLightningFill,
-  BsShieldFill,
-  BsSpeedometer2,
-  BsHeart,
-  BsStar,
-  BsGraphUp
-} from 'react-icons/bs';
-import { GiSwordWound, GiShield, GiRunningNinja } from 'react-icons/gi';
-import { FaFire, FaLeaf, FaTint } from 'react-icons/fa';
+import {
+  FiArrowRight,
+  FiChevronRight,
+  FiZap,
+  FiShield,
+  FiActivity,
+  FiHeart,
+  FiStar,
+  FiTrendingUp
+} from 'react-icons/fi';
+import { GiSwordWound, GiShield as GiShieldIcon, GiRunningNinja } from 'react-icons/gi'; // Domain exceptions - battle stats
+import { FaFire, FaLeaf, FaTint } from 'react-icons/fa'; // Domain exceptions - element type icons
 
 interface StarterEvolutionJourneyProps {
   region: string;
@@ -288,7 +288,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                     animate={{ x: [0, 10, 0] }}
                     transition={{ repeat: Infinity, duration: 2 }}
                   >
-                    <BsArrowRight className="text-3xl text-amber-500" />
+                    <FiArrowRight className="text-3xl text-amber-500" />
                   </motion.div>
                 </div>
               </motion.div>
@@ -329,7 +329,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                     animate={{ x: [0, 10, 0] }}
                     transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
                   >
-                    <BsArrowRight className="text-3xl text-amber-500" />
+                    <FiArrowRight className="text-3xl text-amber-500" />
                   </motion.div>
                 </div>
               </motion.div>
@@ -364,7 +364,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
           transition={{ delay: 0.6 }}
         >
           <h3 className="text-lg font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
-            <BsGraphUp className="text-amber-500" />
+            <FiTrendingUp className="text-amber-500" />
             Evolution Stats Progression
           </h3>
           
@@ -395,7 +395,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                     
                     {currentChain.stage2 && (
                       <>
-                        <BsChevronRight className="text-stone-400" />
+                        <FiChevronRight className="text-stone-400" />
                         <div className="flex-1 relative">
                           <div className="h-6 bg-stone-200/50 dark:bg-stone-700/50 rounded-full overflow-hidden">
                             <motion.div
@@ -415,7 +415,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                     
                     {currentChain.stage3 && (
                       <>
-                        <BsChevronRight className="text-stone-400" />
+                        <FiChevronRight className="text-stone-400" />
                         <div className="flex-1 relative">
                           <div className="h-6 bg-stone-200/50 dark:bg-stone-700/50 rounded-full overflow-hidden">
                             <motion.div
@@ -448,7 +448,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                 </span>
                 {currentChain.stage2 && (
                   <>
-                    <BsArrowRight className="text-stone-400" />
+                    <FiArrowRight className="text-stone-400" />
                     <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-700 dark:text-pink-300 font-bold">
                       {currentChain.stage2.stats.total}
                     </span>
@@ -456,7 +456,7 @@ const StarterEvolutionJourney: React.FC<StarterEvolutionJourneyProps> = ({
                 )}
                 {currentChain.stage3 && (
                   <>
-                    <BsArrowRight className="text-stone-400" />
+                    <FiArrowRight className="text-stone-400" />
                     <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
                       {currentChain.stage3.stats.total}
                     </span>
@@ -578,7 +578,7 @@ const EvolutionStage: React.FC<{
                 <div className="text-sm font-bold text-stone-800 dark:text-white">{pokemon.stats.attack}</div>
               </div>
               <div className="p-2 rounded-lg bg-white/50 dark:bg-stone-800/50">
-                <GiShield className="text-amber-500 mx-auto mb-1" />
+                <GiShieldIcon className="text-amber-500 mx-auto mb-1" />
                 <div className="text-xs text-stone-600 dark:text-stone-300">DEF</div>
                 <div className="text-sm font-bold text-stone-800 dark:text-white">{pokemon.stats.defense}</div>
               </div>

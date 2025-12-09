@@ -6,23 +6,23 @@ import { getProfessorImage } from '../../utils/scrapedImageMapping';
 // Using direct PokeAPI URLs for Pokémon images
 import { FadeIn, SlideUp } from '../ui/animations/animations';
 import { Container } from '../ui/Container';
-import { 
-  BsBook, 
-  BsTrophy, 
-  BsGeoAlt, 
-  BsStar, 
-  BsLightbulb,
-  BsPersonBadge,
-  BsCalendarEvent,
-  BsJournalBookmark,
-  BsHeart,
-  BsChatQuote,
-  BsChevronLeft,
-  BsChevronRight,
-  BsSearch,
-  BsArrowRight
-} from 'react-icons/bs';
-import { GiPokecog } from 'react-icons/gi';
+import {
+  FiBook,
+  FiAward,
+  FiMapPin,
+  FiStar,
+  FiSun,
+  FiUser,
+  FiCalendar,
+  FiBookOpen,
+  FiHeart,
+  FiMessageCircle,
+  FiChevronLeft,
+  FiChevronRight,
+  FiSearch,
+  FiArrowRight
+} from 'react-icons/fi';
+import { GiPokecog } from 'react-icons/gi'; // Domain exception - Pokemon gear
 
 // Types
 interface StarterPokemon {
@@ -492,7 +492,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                 } shadow-lg hover:shadow-xl hover:scale-110`}
                 aria-label="Switch professor version"
               >
-                <BsChevronLeft className="w-7 h-7" />
+                <FiChevronLeft className="w-7 h-7" />
               </button>
             )}
             
@@ -515,7 +515,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                 } shadow-lg hover:shadow-xl hover:scale-110`}
                 aria-label="Switch professor version"
               >
-                <BsChevronRight className="w-7 h-7" />
+                <FiChevronRight className="w-7 h-7" />
               </button>
             )}
           </div>
@@ -569,7 +569,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                     theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
                   } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                     <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                      <BsPersonBadge className="text-amber-500" />
+                      <FiUser className="text-amber-500" />
                       Quick Info
                     </h4>
                     <div className="grid grid-cols-1 gap-4">
@@ -643,7 +643,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                               {/* Hover Indicator */}
                               <div className="flex items-center justify-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">View</span>
-                                <BsArrowRight className="text-xs text-amber-600 dark:text-amber-400" />
+                                <FiArrowRight className="text-xs text-amber-600 dark:text-amber-400" />
                               </div>
                             </div>
                           </div>
@@ -665,7 +665,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                 theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
               } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                 <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <BsBook className="text-amber-500" />
+                  <FiBook className="text-amber-500" />
                   Biography
                 </h4>
                 <div className="text-stone-600 dark:text-stone-300">
@@ -682,13 +682,13 @@ His unwavering commitment to his research vision led to both remarkable scientif
                 theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
               } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                 <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <BsTrophy className="text-yellow-500" />
+                  <FiAward className="text-yellow-500" />
                   Major Achievements
                 </h4>
                 <ul className="space-y-2">
                   {professorInfo.achievements?.map((achievement, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <BsStar className="text-yellow-500 mt-0.5 flex-shrink-0 text-sm" />
+                      <FiStar className="text-yellow-500 mt-0.5 flex-shrink-0 text-sm" />
                       <span className="text-stone-600 dark:text-stone-300 text-sm">{achievement}</span>
                     </li>
                   ))}
@@ -702,7 +702,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                 theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
               } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                 <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <BsJournalBookmark className="text-green-500" />
+                  <FiBookOpen className="text-green-500" />
                   Research Focus
                 </h4>
                 <div className="space-y-3">
@@ -713,7 +713,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                         theme === 'dark' ? 'bg-stone-700/50' : 'bg-stone-50'
                       }`}
                     >
-                      <BsSearch className="text-amber-500 flex-shrink-0" />
+                      <FiSearch className="text-amber-500 flex-shrink-0" />
                       <p className="text-sm font-medium">{area}</p>
                     </div>
                   ))}
@@ -728,7 +728,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                   theme === 'dark' ? 'bg-stone-800/80 backdrop-blur-sm' : 'bg-stone-50/80 backdrop-blur-sm'
                 } shadow-lg border ${theme === 'dark' ? 'border-stone-700' : 'border-stone-200'}`}>
                   <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
-                    <BsChatQuote className="text-amber-500" />
+                    <FiMessageCircle className="text-amber-500" />
                     Famous Quote
                   </h4>
                   <blockquote className="text-stone-600 dark:text-stone-300">

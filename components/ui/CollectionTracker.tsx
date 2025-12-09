@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useMemo, useCallback, ReactNode } from 'react';
-import { 
-  FaChartPie,
-  FaTrophy,
-  FaStar,
-  FaCheckCircle,
-  FaClock,
-  FaFire,
-  FaGift,
-  FaEye,
-  FaPlus,
-  FaSlidersH
-} from 'react-icons/fa';
+import {
+  FiPieChart,
+  FiAward,
+  FiStar,
+  FiCheckCircle,
+  FiClock,
+  FiZap,
+  FiGift,
+  FiEye,
+  FiPlus,
+  FiSliders
+} from 'react-icons/fi';
 // BsSparkles import removed - not available in react-icons/bs
 import { DoughnutChart, BarChart, ChartData, ChartOptions } from './LazyChart';
 import Modal from '@/components/ui/Modal';
@@ -583,10 +583,10 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
   };
 
   const tabs = [
-    { id: 'overview' as const, name: 'Overview', icon: <FaChartPie className="h-5 w-5" /> },
-    { id: 'sets' as const, name: 'Sets', icon: <FaCheckCircle className="h-5 w-5" /> },
-    { id: 'goals' as const, name: 'Goals', icon: <FaTrophy className="h-5 w-5" /> },
-    { id: 'achievements' as const, name: 'Achievements', icon: <FaStar className="h-5 w-5" /> }
+    { id: 'overview' as const, name: 'Overview', icon: <FiPieChart className="h-5 w-5" /> },
+    { id: 'sets' as const, name: 'Sets', icon: <FiCheckCircle className="h-5 w-5" /> },
+    { id: 'goals' as const, name: 'Goals', icon: <FiAward className="h-5 w-5" /> },
+    { id: 'achievements' as const, name: 'Achievements', icon: <FiStar className="h-5 w-5" /> }
   ];
 
   if (!isOpen) return null;
@@ -602,7 +602,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 <p className="text-blue-100">Total Cards</p>
                 <p className="text-2xl font-bold">{collectionAnalysis.ownedCards}</p>
               </div>
-              <FaChartPie className="h-8 w-8 text-blue-200" />
+              <FiPieChart className="h-8 w-8 text-blue-200" />
             </div>
           </div>
 
@@ -612,7 +612,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 <p className="text-green-100">Completion</p>
                 <p className="text-2xl font-bold">{collectionAnalysis.completionRate.toFixed(1)}%</p>
               </div>
-              <FaCheckCircle className="h-8 w-8 text-green-200" />
+              <FiCheckCircle className="h-8 w-8 text-green-200" />
             </div>
           </div>
 
@@ -622,7 +622,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 <p className="text-purple-100">Complete Sets</p>
                 <p className="text-2xl font-bold">{collectionAnalysis.completedSets.length}</p>
               </div>
-              <FaTrophy className="h-8 w-8 text-purple-200" />
+              <FiAward className="h-8 w-8 text-purple-200" />
             </div>
           </div>
 
@@ -632,7 +632,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 <p className="text-yellow-100">Achievements</p>
                 <p className="text-2xl font-bold">{achievements.length}</p>
               </div>
-              <FaStar className="h-8 w-8 text-yellow-200" />
+              <FiStar className="h-8 w-8 text-yellow-200" />
             </div>
           </div>
         </div>
@@ -743,7 +743,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                         {set.name}
                       </h4>
                       {set.completionRate === 100 && (
-                        <FaCheckCircle className="h-6 w-6 text-green-500" />
+                        <FiCheckCircle className="h-6 w-6 text-green-500" />
                       )}
                     </div>
                     
@@ -787,7 +787,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                 onClick={() => setShowCreateGoal(true)}
                 className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 flex items-center space-x-2">
 
-                <FaPlus className="h-4 w-4" />
+                <FiPlus className="h-4 w-4" />
                 <span>Create Goal</span>
               </button>
             </div>
@@ -807,7 +807,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                         </p>
                       </div>
                       {goal.completed && (
-                        <FaCheckCircle className="h-6 w-6 text-green-500" />
+                        <FiCheckCircle className="h-6 w-6 text-green-500" />
                       )}
                     </div>
                     
@@ -832,7 +832,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                       
                       {goal.deadline && (
                         <div className="text-sm text-stone-600 dark:text-stone-300 flex items-center">
-                          <FaClock className="h-4 w-4 mr-1" />
+                          <FiClock className="h-4 w-4 mr-1" />
                           Deadline: {new Date(goal.deadline).toLocaleDateString()}
                         </div>
                       )}
@@ -842,7 +842,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
               </div>
             ) : (
               <div className="text-center py-12">
-                <FaTrophy className="h-12 w-12 text-stone-400 mx-auto mb-4" />
+                <FiAward className="h-12 w-12 text-stone-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-stone-900 dark:text-white mb-2">
                   No goals set yet
                 </h3>
@@ -925,7 +925,7 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                         isUnlocked ? 'text-yellow-600' : 'text-stone-500'
                       }`}>
                         <div className="font-bold">{achievement.points} pts</div>
-                        {isUnlocked && <FaCheckCircle className="h-5 w-5 text-green-500 mx-auto mt-1" />}
+                        {isUnlocked && <FiCheckCircle className="h-5 w-5 text-green-500 mx-auto mt-1" />}
                       </div>
                     </div>
                   </div>

@@ -2,6 +2,7 @@
 // Re-export all glass-styled components for easy import
 
 export { default as UnifiedSearchBar } from './UnifiedSearchBar';
+/** @deprecated Use ErrorState, NoSearchResults, or EmptyCollection from './EmptyState' instead */
 export { default as EmptyStateGlass } from './EmptyStateGlass';
 // Loading states moved to Skeleton.tsx
 export { Skeleton as LoadingStateGlass, SkeletonGrid as CardGridSkeleton } from './Skeleton';

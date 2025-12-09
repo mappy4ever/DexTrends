@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FaTrophy, FaMedal, FaUsers, FaCalendarAlt, FaMapMarkerAlt, FaChartBar, FaCrown, FaFire, FaBolt } from 'react-icons/fa';
-import { BsLightning, BsGrid3X3Gap, BsGraphUp, BsStopwatch, BsStar, BsShield } from 'react-icons/bs';
-import { GiTwoCoins, GiDiamonds, GiSwordman } from 'react-icons/gi';
+import { FiAward, FiUsers, FiCalendar, FiMapPin, FiBarChart2, FiZap, FiGrid, FiTrendingUp, FiClock, FiStar, FiShield } from 'react-icons/fi';
+// Domain exceptions: competition/ranking/currency icons
+import { GiTrophy, GiLaurelCrown, GiTwoCoins, GiDiamonds, GiSwordman } from 'react-icons/gi';
 
 interface Prize {
   gems?: number;
@@ -297,9 +297,9 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
 
   const getTrendIcon = (trend: Archetype['trend']) => {
     switch (trend) {
-      case 'rising': return <BsGraphUp className="text-green-500" />;
-      case 'falling': return <BsGraphUp className="text-red-500 transform rotate-180" />;
-      default: return <BsLightning className="text-stone-400" />;
+      case 'rising': return <FiTrendingUp className="text-green-500" />;
+      case 'falling': return <FiTrendingUp className="text-red-500 transform rotate-180" />;
+      default: return <FiZap className="text-stone-400" />;
     }
   };
 
@@ -357,7 +357,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
     }`}>
       {tournament.featured && (
         <div className="flex items-center space-x-1 mb-3">
-          <FaCrown className="text-yellow-500" />
+          <GiLaurelCrown className="text-yellow-500" />
           <span className="text-xs font-medium text-yellow-600 dark:text-yellow-400">Featured Tournament</span>
         </div>
       )}
@@ -369,15 +369,15 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
           </h3>
           <div className="flex items-center space-x-4 text-sm text-stone-600 dark:text-stone-300 mt-1">
             <span className="flex items-center space-x-1">
-              <BsShield />
+              <FiShield />
               <span>{tournament.format}</span>
             </span>
             <span className="flex items-center space-x-1">
-              <FaUsers />
+              <FiUsers />
               <span>{tournament.currentPlayers}/{tournament.maxPlayers}</span>
             </span>
             <span className="flex items-center space-x-1">
-              <FaMapMarkerAlt />
+              <FiMapPin />
               <span>{tournament.location}</span>
             </span>
           </div>
@@ -548,7 +548,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold flex items-center">
-              <FaTrophy className="mr-3" />
+              <GiTrophy className="mr-3" />
               Tournament Hub
             </h2>
             <p className="text-amber-100">Compete in tournaments and climb the competitive ladder</p>
@@ -567,10 +567,10 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       {/* Navigation Tabs */}
       <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg">
         {[
-          { id: 'tournaments' as const, label: 'Active Tournaments', icon: <FaTrophy /> },
-          { id: 'my-tournaments' as const, label: 'My History', icon: <FaMedal /> },
-          { id: 'meta-analysis' as const, label: 'Meta Analysis', icon: <FaChartBar /> },
-          { id: 'leaderboards' as const, label: 'Leaderboards', icon: <FaCrown /> }
+          { id: 'tournaments' as const, label: 'Active Tournaments', icon: <GiTrophy /> },
+          { id: 'my-tournaments' as const, label: 'My History', icon: <FiAward /> },
+          { id: 'meta-analysis' as const, label: 'Meta Analysis', icon: <FiBarChart2 /> },
+          { id: 'leaderboards' as const, label: 'Leaderboards', icon: <GiLaurelCrown /> }
         ].map(tab => (
           <button
             key={tab.id}
@@ -778,7 +778,7 @@ const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamen
       {/* Tournament Info Panel */}
       <div className="bg-gradient-to-r from-amber-50 to-amber-50 dark:from-amber-900/20 dark:to-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
         <div className="flex items-start space-x-3">
-          <FaFire className="text-orange-500 mt-0.5" />
+          <FiZap className="text-orange-500 mt-0.5" />
           <div className="text-sm text-amber-700 dark:text-amber-300">
             <strong>Tournament Tips:</strong> Practice with meta decks, join beginner tournaments to learn, 
             watch live streams to understand strategy, and always check the latest banned/restricted lists before competing.

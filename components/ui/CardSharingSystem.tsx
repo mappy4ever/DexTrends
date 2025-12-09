@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  FaShare, 
-  FaDownload, 
-  FaQrcode, 
-  FaLink,
-  FaImage,
-  FaClipboard,
-  FaCheck
-} from 'react-icons/fa';
+import {
+  FiShare2,
+  FiDownload,
+  FiLink,
+  FiImage,
+  FiClipboard,
+  FiCheck
+} from 'react-icons/fi';
+// Domain exception: QR code icon
+import { FaQrcode } from 'react-icons/fa';
 import Modal from '@/components/ui/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 // Type definitions for dynamic imports
@@ -349,7 +350,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                     className="w-full h-32 object-contain mx-auto"  />
                 ) : (
                   <div className="w-full h-32 bg-stone-200 rounded flex items-center justify-center">
-                    <FaImage className="h-8 w-8 text-stone-400" />
+                    <FiImage className="h-8 w-8 text-stone-400" />
                   </div>
                 )}
               </div>
@@ -459,8 +460,8 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
   if (!isOpen) return null;
 
   const tabs = [
-    { id: 'share' as const, name: 'Share', icon: <FaShare className="h-5 w-5" /> },
-    { id: 'export' as const, name: 'Export', icon: <FaDownload className="h-5 w-5" /> }
+    { id: 'share' as const, name: 'Share', icon: <FiShare2 className="h-5 w-5" /> },
+    { id: 'export' as const, name: 'Export', icon: <FiDownload className="h-5 w-5" /> }
   ];
 
   return (
@@ -504,7 +505,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <FaLink className="h-6 w-6" />
+                  <FiLink className="h-6 w-6" />
                   <span className="text-sm font-medium">Link</span>
                 </button>
                 
@@ -528,7 +529,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <FaImage className="h-6 w-6" />
+                  <FiImage className="h-6 w-6" />
                   <span className="text-sm font-medium">Image</span>
                 </button>
                 
@@ -540,7 +541,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <FaShare className="h-6 w-6" />
+                  <FiShare2 className="h-6 w-6" />
                   <span className="text-sm font-medium">Social</span>
                 </button>
               </div>
@@ -559,7 +560,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       onClick={() => copyToClipboard(generatedLink)}
                       className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
 
-                      {copied ? <FaCheck className="h-4 w-4" /> : <FaClipboard className="h-4 w-4" />}
+                      {copied ? <FiCheck className="h-4 w-4" /> : <FiClipboard className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
@@ -635,7 +636,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <FaDownload className="h-6 w-6" />
+                  <FiDownload className="h-6 w-6" />
                   <span className="text-sm font-medium">JSON</span>
                 </button>
                 
@@ -647,7 +648,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <FaDownload className="h-6 w-6" />
+                  <FiDownload className="h-6 w-6" />
                   <span className="text-sm font-medium">CSV</span>
                 </button>
                 
@@ -659,7 +660,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <FaDownload className="h-6 w-6" />
+                  <FiDownload className="h-6 w-6" />
                   <span className="text-sm font-medium">PDF</span>
                 </button>
                 
@@ -671,7 +672,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                       : 'border-stone-200 dark:border-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <FaImage className="h-6 w-6" />
+                  <FiImage className="h-6 w-6" />
                   <span className="text-sm font-medium">Image</span>
                 </button>
               </div>

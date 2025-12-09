@@ -75,7 +75,7 @@ const DEFAULT_OPTIONS: Partial<UnifiedFetchOptions> = {
 // Cache manager is imported from UnifiedCacheManager
 
 // Request deduplication map
-const pendingRequests = new Map<string, Promise<UnifiedFetchResponse<any>>>();
+const pendingRequests = new Map<string, Promise<UnifiedFetchResponse<unknown>>>();
 
 /**
  * Main unified fetch function

@@ -8,7 +8,9 @@ import { Container } from '../ui/Container';
 import { getTypeUIColors } from '../../utils/pokemonTypeGradients';
 import { calculateCatchRate, calculateGenderRatio, getStatColor } from '../../utils/pokemonDetailUtils';
 import { cn } from '../../utils/cn';
-import { FaStar, FaRuler, FaWeight, FaMars, FaVenus, FaHeart, FaTag } from 'react-icons/fa';
+import { FiStar, FiHeart, FiMaximize2 } from 'react-icons/fi';
+// Gender (FaMars, FaVenus) and weight (FaWeight) icons kept as domain-specific exceptions - no Feather equivalents
+import { FaWeight, FaMars, FaVenus } from 'react-icons/fa';
 import { useFavorites } from '../../hooks/useUnifiedApp';
 import PokemonFormSelector from '../ui/PokemonFormSelector';
 import { dynamicIsland } from '../ui/DynamicIsland';
@@ -322,7 +324,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
                 type="button"
               >
-                <FaHeart className={cn("w-4 h-4 sm:w-5 sm:h-5 pointer-events-none", isFavorited && "fill-current")} />
+                <FiHeart className={cn("w-4 h-4 sm:w-5 sm:h-5 pointer-events-none", isFavorited && "fill-current")} />
               </motion.button>
 
               {/* Shiny Toggle - solid bg for iOS */}
@@ -353,7 +355,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaStar className={cn("w-4 h-4 sm:w-5 sm:h-5", showShiny && "text-yellow-500")} />
+                <FiStar className={cn("w-4 h-4 sm:w-5 sm:h-5", showShiny && "text-yellow-500")} />
               </motion.button>
             </div>
             
@@ -498,7 +500,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   <span className="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1">Size</span>
                   <div className="flex flex-col items-center gap-0.5">
                     <div className="flex items-center gap-1">
-                      <FaRuler className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-blue-500" />
+                      <FiMaximize2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-blue-500" />
                       <span className="text-xs sm:text-sm font-bold">{height.meters}m</span>
                     </div>
                     <div className="flex items-center gap-1">

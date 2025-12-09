@@ -1,19 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
-import { 
-  FaGithub, 
-  FaTwitter, 
-  FaDiscord, 
-  FaLinkedin,
-  FaHeart 
-} from 'react-icons/fa';
-import { 
-  BsGrid, 
-  BsCardList, 
-  BsCollection
-} from 'react-icons/bs';
+import {
+  FiGithub,
+  FiTwitter,
+  FiLinkedin,
+  FiHeart,
+  FiGrid,
+  FiList,
+  FiFolder,
+  FiTrendingUp
+} from 'react-icons/fi';
+// Social brand icons - exceptions where Feather has no equivalent
+import { FaDiscord } from 'react-icons/fa';
+// Domain-specific icons for card games
 import { GiCardPickup, GiCrossedSwords } from 'react-icons/gi';
-import { FiTrendingUp } from 'react-icons/fi';
 import { borderRadiusClasses } from '../styles/design-tokens';
 import { FooterLogo } from '../components/ui/DexTrendsLogo';
 
@@ -21,19 +21,19 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   const quickLinks = [
-    { href: '/pokedex', label: 'Pokédex', icon: <BsGrid className="w-4 h-4" /> },
-    { href: '/tcgexpansions', label: 'TCG Sets', icon: <BsCardList className="w-4 h-4" /> },
+    { href: '/pokedex', label: 'Pokédex', icon: <FiGrid className="w-4 h-4" /> },
+    { href: '/tcgexpansions', label: 'TCG Sets', icon: <FiList className="w-4 h-4" /> },
     { href: '/pocketmode', label: 'Pocket Mode', icon: <GiCardPickup className="w-4 h-4" /> },
     { href: '/trending', label: 'Trending', icon: <FiTrendingUp className="w-4 h-4" /> },
     { href: '/battle-simulator', label: 'Battle', icon: <GiCrossedSwords className="w-4 h-4" /> },
-    { href: '/collections', label: 'Collections', icon: <BsCollection className="w-4 h-4" /> },
+    { href: '/collections', label: 'Collections', icon: <FiFolder className="w-4 h-4" /> },
   ];
 
   const socialLinks = [
-    { href: 'https://github.com', label: 'GitHub', icon: <FaGithub className="w-5 h-5" /> },
-    { href: 'https://twitter.com', label: 'Twitter', icon: <FaTwitter className="w-5 h-5" /> },
+    { href: 'https://github.com', label: 'GitHub', icon: <FiGithub className="w-5 h-5" /> },
+    { href: 'https://twitter.com', label: 'Twitter', icon: <FiTwitter className="w-5 h-5" /> },
     { href: 'https://discord.com', label: 'Discord', icon: <FaDiscord className="w-5 h-5" /> },
-    { href: 'https://linkedin.com', label: 'LinkedIn', icon: <FaLinkedin className="w-5 h-5" /> },
+    { href: 'https://linkedin.com', label: 'LinkedIn', icon: <FiLinkedin className="w-5 h-5" /> },
   ];
 
   return (
@@ -149,7 +149,7 @@ const Footer: React.FC = () => {
                 Terms of Service
               </Link>
               <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
-                Made with <FaHeart className="w-3 h-3" /> by Trainers
+                Made with <FiHeart className="w-3 h-3" /> by Trainers
               </span>
             </div>
           </div>

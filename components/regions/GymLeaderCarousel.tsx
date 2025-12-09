@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getGymLeaderImage, getBadgeImage } from '../../utils/scrapedImageMapping';
 import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn } from '../ui/animations/animations';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { gymLeaderTeams } from '../../data/gymLeaderTeams';
 import { typeEffectiveness } from '../../utils/pokemonutils';
 import { PokemonDisplay as GymLeaderAvatar } from '../ui/PokemonDisplay';
@@ -193,13 +193,13 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
             onClick={handlePrev}
             className="absolute -left-4 sm:-left-8 md:-left-20 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
           >
-            <BsChevronLeft className="text-2xl text-stone-700 dark:text-stone-200 group-hover:-translate-x-1 transition-transform" />
+            <FiChevronLeft className="text-2xl text-stone-700 dark:text-stone-200 group-hover:-translate-x-1 transition-transform" />
           </button>
           <button
             onClick={handleNext}
             className="absolute -right-4 sm:-right-8 md:-right-20 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
           >
-            <BsChevronRight className="text-2xl text-stone-700 dark:text-stone-200 group-hover:translate-x-1 transition-transform" />
+            <FiChevronRight className="text-2xl text-stone-700 dark:text-stone-200 group-hover:translate-x-1 transition-transform" />
           </button>
 
           {/* Carousel */}

@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Container } from '../../../ui/Container';
+// Pokemon-specific icon - documented domain exception
 import { MdCatchingPokemon } from 'react-icons/md';
-import { FaRunning, FaStar, FaExchangeAlt } from 'react-icons/fa';
+import { FiActivity, FiStar, FiRefreshCw } from 'react-icons/fi';
 import type { Pokemon } from '../../../../types/pokemon';
 
 interface SpeedTiersSectionProps {
@@ -47,7 +48,7 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
               >
                 <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <FaRunning className="w-4 h-4 text-amber-400" />
+                    <FiActivity className="w-4 h-4 text-amber-400" />
                     <p className="text-sm text-stone-600 dark:text-stone-300">Base Speed</p>
                   </div>
                   <p className="text-2xl font-bold">{baseSpeed}</p>
@@ -61,7 +62,7 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
               >
                 <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <FaStar className="w-4 h-4 text-green-400" />
+                    <FiStar className="w-4 h-4 text-green-400" />
                     <p className="text-sm text-stone-600 dark:text-stone-300">Max Speed</p>
                   </div>
                   <p className="text-2xl font-bold text-green-600 dark:text-green-400">
@@ -77,7 +78,7 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
               >
                 <div className="text-center p-4 bg-gradient-to-br from-white/5 to-white/10 dark:from-stone-800/50 dark:to-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <FaExchangeAlt className="w-4 h-4 text-amber-400" />
+                    <FiRefreshCw className="w-4 h-4 text-amber-400" />
                     <p className="text-sm text-stone-600 dark:text-stone-300">Scarf Speed</p>
                   </div>
                   <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">

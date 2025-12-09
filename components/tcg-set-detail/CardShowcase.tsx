@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { createGlassStyle } from '../ui/design-system/glass-constants';
-import { CleanRaritySymbol } from '../ui/CleanRaritySymbol';
+import { RarityIcon } from '../ui/RarityIcon';
 import PriceIndicator from '../ui/PriceIndicator';
 const PriceDisplay = PriceIndicator; // Alias
 import type { TCGCard } from '@/types/api/cards';
@@ -140,7 +140,7 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                 {/* Rarity and Price - Compact */}
                 <div className="flex items-center justify-between">
                   {activeCard.rarity && (
-                    <CleanRaritySymbol
+                    <RarityIcon
                       rarity={activeCard.rarity}
                       size="sm"
                       showLabel={true}

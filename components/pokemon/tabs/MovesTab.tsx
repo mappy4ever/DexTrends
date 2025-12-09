@@ -9,14 +9,9 @@ import { cn } from '../../../utils/cn';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { CategoryIcon } from '../../ui/CategoryIcon';
 import { showdownQueries, PokemonLearnsetRecord, MoveCompetitiveDataRecord } from '@/utils/supabase';
-import { 
-  FaSearch, FaFilter, FaBookOpen, FaStar, FaChartBar,
-  FaBolt, FaFire, FaWater, FaLeaf, FaSnowflake,
-  FaDragon, FaGhost, FaFistRaised, FaBug,
-  FaMountain, FaFeather, FaBrain, FaShieldAlt
-} from 'react-icons/fa';
-import { BsChevronDown, BsChevronUp, BsLightning, BsShield } from 'react-icons/bs';
-import { HiSparkles } from 'react-icons/hi';
+import { FiSearch, FiBook, FiChevronDown, FiChevronUp, FiZap, FiShield } from 'react-icons/fi';
+// Domain-specific icon for Fighting type moves
+import { FaFistRaised } from 'react-icons/fa';
 
 interface MovesTabV2Props {
   pokemon: Pokemon;
@@ -271,7 +266,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
 
             {/* Search Bar */}
             <div className="relative mb-4">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
+              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
               <input
                 type="text"
                 placeholder="Search moves..."
@@ -386,7 +381,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
-                <FaBookOpen className="w-5 h-5 text-amber-400" />
+                <FiBook className="w-5 h-5 text-amber-400" />
               </div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400">Total Moves</h3>
             </div>
@@ -425,7 +420,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
-                <BsLightning className="w-5 h-5 text-amber-400" />
+                <FiZap className="w-5 h-5 text-amber-400" />
               </div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400">Special</h3>
             </div>
@@ -446,7 +441,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center">
-                <BsShield className="w-5 h-5 text-stone-400" />
+                <FiShield className="w-5 h-5 text-stone-400" />
               </div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-stone-400">Status</h3>
             </div>
@@ -598,9 +593,9 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, moveData, expanded, onToggle 
         
         <div className="ml-2">
           {expanded ? (
-            <BsChevronUp className="w-4 h-4 text-stone-400" />
+            <FiChevronUp className="w-4 h-4 text-stone-400" />
           ) : (
-            <BsChevronDown className="w-4 h-4 text-stone-400" />
+            <FiChevronDown className="w-4 h-4 text-stone-400" />
           )}
         </div>
       </div>

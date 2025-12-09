@@ -9,18 +9,9 @@ import { TypeBadge } from '../../ui/TypeBadge';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { cn } from '../../../utils/cn';
-import { 
-  FaMars, 
-  FaVenus, 
-  FaEgg, 
-  FaClock, 
-  FaHeart, 
-  FaDna,
-  FaSearch,
-  FaStar,
-  FaInfoCircle,
-  FaWalking
-} from 'react-icons/fa';
+import { FiClock, FiHeart, FiSearch, FiStar, FiInfo, FiActivity } from 'react-icons/fi';
+// Domain-specific icons for breeding/genetics - documented exceptions
+import { FaMars, FaVenus, FaEgg, FaDna } from 'react-icons/fa';
 import { GiEggClutch } from 'react-icons/gi';
 import {
   calculateBreedingInfo,
@@ -273,7 +264,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             <div>
               <div className="flex justify-between items-center mb-3">
                 <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                  <FaHeart className="w-4 h-4 opacity-70" />
+                  <FiHeart className="w-4 h-4 opacity-70" />
                   Gender Ratio
                 </span>
               </div>
@@ -313,7 +304,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             {breedingInfo.babyItem && (
               <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
                 <p className="text-sm">
-                  <FaInfoCircle className="inline mr-2 text-yellow-500" />
+                  <FiInfo className="inline mr-2 text-yellow-500" />
                   Requires <span className="font-bold">{breedingInfo.babyItem}</span> to produce baby form
                 </p>
               </div>
@@ -331,7 +322,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
           <div className="h-full bg-white dark:bg-stone-900/50 rounded-xl p-4 backdrop-blur-md border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center shadow-md shadow-orange-500/10">
-                <FaClock className="w-5 h-5 text-orange-400" />
+                <FiClock className="w-5 h-5 text-orange-400" />
               </div>
               <h3 className="font-bold text-sm uppercase tracking-wider text-orange-400">Hatch Information</h3>
             </div>
@@ -340,7 +331,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             {/* Hatch Time Title */}
             <div className="flex justify-between items-center">
               <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                <FaClock className="w-4 h-4 opacity-70" />
+                <FiClock className="w-4 h-4 opacity-70" />
                 Hatch Time
               </span>
             </div>
@@ -357,7 +348,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-white/10 dark:bg-stone-800/30 rounded-lg">
-                <FaWalking className="w-10 h-10 text-amber-400 flex-shrink-0" />
+                <FiActivity className="w-10 h-10 text-amber-400 flex-shrink-0" />
                 <div>
                   <div className="text-2xl font-bold text-amber-500">
                     {breedingInfo.hatchSteps.toLocaleString()}
@@ -374,7 +365,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-stone-500 dark:text-stone-300 flex items-center gap-2">
-                  <FaHeart className="w-4 h-4 text-red-500 opacity-70" />
+                  <FiHeart className="w-4 h-4 text-red-500 opacity-70" />
                   Base Happiness
                 </span>
               </div>
@@ -405,7 +396,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                   "text-white hover:shadow-lg transform hover:scale-[1.02]"
                 )}
               >
-                <FaStar className="inline mr-2" />
+                <FiStar className="inline mr-2" />
                 Shiny Odds Calculator
               </button>
               
@@ -471,7 +462,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
               {/* Search and Filter */}
               <div className="flex flex-col sm:flex-row gap-2">
                 <div className="relative">
-                  <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
                   <input
                     type="text"
                     placeholder="Search moves..."

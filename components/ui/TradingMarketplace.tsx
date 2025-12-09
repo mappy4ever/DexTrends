@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaExchangeAlt, FaShoppingCart, FaDollarSign, FaEye, FaHeart, FaFilter, FaSort, FaShieldAlt, FaClock, FaCheck, FaTimes } from 'react-icons/fa';
-import { BsCardList, BsSearch, BsGraphUp, BsStar, BsShieldCheck, BsChatDots } from 'react-icons/bs';
+import { FiRefreshCw, FiShoppingCart, FiDollarSign, FiEye, FiHeart, FiFilter, FiList, FiShield, FiClock, FiCheck, FiX, FiSearch, FiTrendingUp, FiStar, FiMessageCircle } from 'react-icons/fi';
 import { GiTwoCoins, GiDiamonds } from 'react-icons/gi';
 
 interface User {
@@ -320,10 +319,10 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
 
   const getTypeIcon = (type: Listing['type']) => {
     switch (type) {
-      case 'sale': return <FaDollarSign className="text-green-500" />;
-      case 'trade': return <FaExchangeAlt className="text-amber-500" />;
-      case 'auction': return <BsGraphUp className="text-amber-500" />;
-      default: return <BsCardList />;
+      case 'sale': return <FiDollarSign className="text-green-500" />;
+      case 'trade': return <FiRefreshCw className="text-amber-500" />;
+      case 'auction': return <FiTrendingUp className="text-amber-500" />;
+      default: return <FiList />;
     }
   };
 
@@ -343,7 +342,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
     }`}>
       {listing.featured && (
         <div className="flex items-center space-x-1 mb-3">
-          <BsStar className="text-yellow-500" />
+          <FiStar className="text-yellow-500" />
           <span className="text-xs font-medium text-yellow-600 dark:text-yellow-400">Featured</span>
         </div>
       )}
@@ -381,7 +380,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                   : 'text-stone-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
               }`}
             >
-              <FaHeart className={watchlist.includes(listing.id) ? 'fill-current' : ''} />
+              <FiHeart className={watchlist.includes(listing.id) ? 'fill-current' : ''} />
             </button>
           </div>
 
@@ -394,10 +393,10 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
               {listing.seller.username}
             </span>
             {listing.seller.verified && (
-              <BsShieldCheck className="text-amber-500" title="Verified seller" />
+              <FiShield className="text-amber-500" title="Verified seller" />
             )}
             <div className="flex items-center space-x-1">
-              <BsStar className="text-yellow-500 w-3 h-3" />
+              <FiStar className="text-yellow-500 w-3 h-3" />
               <span className="text-xs text-stone-600 dark:text-stone-300">
                 {listing.seller.rating} ({listing.seller.totalTrades})
               </span>
@@ -480,11 +479,11 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-stone-200 dark:border-stone-600">
             <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-300">
               <div className="flex items-center space-x-1">
-                <FaEye />
+                <FiEye />
                 <span>{listing.views}</span>
               </div>
               <div className="flex items-center space-x-1">
-                <FaHeart />
+                <FiHeart />
                 <span>{listing.watchers}</span>
               </div>
             </div>
@@ -504,7 +503,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold flex items-center">
-              <FaExchangeAlt className="mr-3" />
+              <FiRefreshCw className="mr-3" />
               Trading Marketplace
             </h2>
             <p className="text-green-100">Buy, sell, and trade Pokemon cards with the community</p>
@@ -520,10 +519,10 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       {/* Navigation Tabs */}
       <div className="flex space-x-1 bg-stone-100 dark:bg-stone-800 p-1 rounded-lg">
         {[
-          { id: 'marketplace' as const, label: 'Marketplace', icon: <FaShoppingCart /> },
-          { id: 'my-trades' as const, label: 'My Trades', icon: <FaExchangeAlt /> },
-          { id: 'watchlist' as const, label: 'Watchlist', icon: <FaHeart /> },
-          { id: 'sell' as const, label: 'Sell Cards', icon: <FaDollarSign /> }
+          { id: 'marketplace' as const, label: 'Marketplace', icon: <FiShoppingCart /> },
+          { id: 'my-trades' as const, label: 'My Trades', icon: <FiRefreshCw /> },
+          { id: 'watchlist' as const, label: 'Watchlist', icon: <FiHeart /> },
+          { id: 'sell' as const, label: 'Sell Cards', icon: <FiDollarSign /> }
         ].map(tab => (
           <button
             key={tab.id}
@@ -554,7 +553,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search cards..."
                   className="w-full px-4 py-2 pl-10 border border-stone-300 dark:border-stone-600 rounded-lg focus:ring-2 focus:ring-amber-500 dark:bg-stone-700 dark:text-white" />
-                <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
               </div>
 
               {/* Quick Filters */}
@@ -583,7 +582,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                 </select>
 
                 <button className="p-2 border border-stone-300 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700">
-                  <FaFilter className="text-stone-600 dark:text-stone-300" />
+                  <FiFilter className="text-stone-600 dark:text-stone-300" />
                 </button>
               </div>
             </div>
@@ -631,7 +630,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                       </span>
                       {trade.status === 'pending' && trade.messages && trade.messages > 0 && (
                         <div className="flex items-center space-x-1 text-amber-600">
-                          <BsChatDots />
+                          <FiMessageCircle />
                           <span className="text-sm">{trade.messages}</span>
                         </div>
                       )}
@@ -649,7 +648,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                       </div>
                     </div>
 
-                    <FaExchangeAlt className="text-stone-400" />
+                    <FiRefreshCw className="text-stone-400" />
 
                     <div className="text-center">
                       {trade.theirCard ? (
@@ -665,7 +664,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                       ) : (
                         <>
                           <div className="w-20 h-28 bg-green-100 dark:bg-green-900 rounded flex items-center justify-center mx-auto mb-2">
-                            <FaDollarSign className="text-green-600 text-2xl" />
+                            <FiDollarSign className="text-green-600 text-2xl" />
                           </div>
                           <div className="text-sm font-medium text-stone-900 dark:text-white">
                             Cash: ${trade.price}
@@ -678,15 +677,15 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
                   {trade.status === 'pending' && (
                     <div className="flex justify-center space-x-3 mt-4">
                       <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 flex items-center space-x-2">
-                        <FaCheck />
+                        <FiCheck />
                         <span>Accept</span>
                       </button>
                       <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 flex items-center space-x-2">
-                        <FaTimes />
+                        <FiX />
                         <span>Decline</span>
                       </button>
                       <button className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 flex items-center space-x-2">
-                        <BsChatDots />
+                        <FiMessageCircle />
                         <span>Message</span>
                       </button>
                     </div>
@@ -701,7 +700,7 @@ const TradingMarketplace: React.FC<TradingMarketplaceProps> = ({ userId, onTrade
       {/* Safety Notice */}
       <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
         <div className="flex items-start space-x-3">
-          <FaShieldAlt className="text-amber-600 dark:text-amber-400 mt-0.5" />
+          <FiShield className="text-amber-600 dark:text-amber-400 mt-0.5" />
           <div className="text-sm text-amber-700 dark:text-amber-300">
             <strong>Safety First:</strong> Always use our secure escrow service for high-value trades. 
             Report any suspicious activity to our support team. Trade with verified users when possible.

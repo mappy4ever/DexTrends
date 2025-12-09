@@ -5,15 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 // Using direct PokeAPI URLs for Pokémon images
 import { Container } from '../ui/Container';
 import { FadeIn, SlideUp } from '../ui/animations/animations';
-import { 
-  BsStarFill, 
-  BsLightningFill,
-  BsChevronRight,
-  BsShieldFill,
-  BsGem
-} from 'react-icons/bs';
-import { GiCrystalShine, GiDragonHead, GiBirdClaw } from 'react-icons/gi';
-import { FaFeather } from 'react-icons/fa';
+import {
+  FiStar,
+  FiZap,
+  FiChevronRight,
+  FiShield,
+  FiHexagon,
+  FiFeather
+} from 'react-icons/fi';
+import { GiCrystalShine, GiDragonHead, GiBirdClaw } from 'react-icons/gi'; // Domain exceptions - legendary creature visuals
 
 interface LegendaryPokemonShowcaseProps {
   region: {
@@ -78,12 +78,12 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
       return <GiDragonHead className="text-2xl" />;
     }
     if (lowerName.includes('bird') || lowerName.includes('lugia') || lowerName.includes('ho-oh')) {
-      return <FaFeather className="text-2xl" />;
+      return <FiFeather className="text-2xl" />;
     }
     if (lowerName.includes('crystal') || lowerName.includes('necrozma')) {
       return <GiCrystalShine className="text-2xl" />;
     }
-    return <BsStarFill className="text-xl" />;
+    return <FiStar className="text-xl" />;
   };
 
   if (!legendaries || legendaries.length === 0) return null;
@@ -104,11 +104,11 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
         <FadeIn>
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <BsShieldFill className="text-3xl text-amber-500" />
+              <FiShield className="text-3xl text-amber-500" />
               <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                 Legendary Pokémon
               </h2>
-              <BsShieldFill className="text-3xl text-pink-500" />
+              <FiShield className="text-3xl text-pink-500" />
             </div>
             <p className="text-xl text-stone-600 dark:text-stone-300">
               The mythical guardians and legendary beings of {region.name}
@@ -189,11 +189,11 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                         {/* Stats Preview - Hidden on small screens */}
                         <div className="hidden sm:flex items-center justify-center gap-2 sm:gap-4 mb-2 sm:mb-3">
                           <div className="flex items-center gap-1">
-                            <BsLightningFill className="text-yellow-500 text-xs sm:text-sm" />
+                            <FiZap className="text-yellow-500 text-xs sm:text-sm" />
                             <span className="text-xs text-stone-600 dark:text-stone-300">Legendary</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <BsGem className="text-amber-500 text-xs sm:text-sm" />
+                            <FiHexagon className="text-amber-500 text-xs sm:text-sm" />
                             <span className="text-xs text-stone-600 dark:text-stone-300">Rare</span>
                           </div>
                         </div>
@@ -203,7 +203,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                           <span className="text-sm font-semibold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                             View Details
                           </span>
-                          <BsChevronRight className="text-amber-600 dark:text-amber-400 group-hover:transtone-x-1 transition-transform" />
+                          <FiChevronRight className="text-amber-600 dark:text-amber-400 group-hover:transtone-x-1 transition-transform" />
                         </div>
                       </div>
 
@@ -227,13 +227,13 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
             </h3>
             <div className="grid grid-cols-1 min-420:grid-cols-2 md:grid-cols-2 gap-4 text-sm">
               <div className="flex items-center gap-3">
-                <BsStarFill className="text-yellow-500" />
+                <FiStar className="text-yellow-500" />
                 <span className="text-stone-700 dark:text-stone-300">
                   <strong>Legendary Birds:</strong> Articuno, Zapdos, Moltres
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <BsStarFill className="text-amber-500" />
+                <FiStar className="text-amber-500" />
                 <span className="text-stone-700 dark:text-stone-300">
                   <strong>Genetic Duo:</strong> Mewtwo & Mew
                 </span>
@@ -253,9 +253,9 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
             href={`/pokemon/legendary`}
             className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-amber-600 to-pink-600 text-white font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
           >
-            <BsShieldFill className="text-xl" />
+            <FiShield className="text-xl" />
             <span>Explore All Legendary Pokémon</span>
-            <BsChevronRight className="text-xl" />
+            <FiChevronRight className="text-xl" />
           </Link>
         </motion.div>
       </Container>

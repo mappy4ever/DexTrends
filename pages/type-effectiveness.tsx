@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { createGlassStyle, TYPOGRAPHY } from '../components/ui/design-system/glass-constants';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
+import { UnifiedSearchBar, LoadingStateGlass } from '../components/ui/glass-components';
 import { GradientButton, CircularButton } from '../components/ui/design-system';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { PageHeader } from '../components/ui/BreadcrumbNavigation';

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getEliteFourImage, getChampionImage } from '../../utils/scrapedImageMapping';
 import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations/animations';
-import { BsTrophy, BsShieldFill, BsStar, BsLightning, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { FiAward, FiShield, FiStar, FiZap, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { typeEffectiveness } from '../../utils/pokemonutils';
 import { PokemonDisplay } from '../ui/PokemonDisplay';
 import { useViewport } from '../../hooks/useViewport';
@@ -499,13 +499,13 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
           onClick={handlePrev}
           className="absolute -left-4 sm:-left-8 md:-left-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
         >
-          <BsChevronLeft className="text-2xl text-stone-700 dark:text-stone-200 group-hover:-translate-x-1 transition-transform" />
+          <FiChevronLeft className="text-2xl text-stone-700 dark:text-stone-200 group-hover:-translate-x-1 transition-transform" />
         </button>
         <button
           onClick={handleNext}
           className="absolute -right-4 sm:-right-8 md:-right-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
         >
-          <BsChevronRight className="text-2xl text-stone-700 dark:text-stone-200 group-hover:translate-x-1 transition-transform" />
+          <FiChevronRight className="text-2xl text-stone-700 dark:text-stone-200 group-hover:translate-x-1 transition-transform" />
         </button>
 
         {/* Carousel */}
@@ -593,9 +593,9 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
                       THE FINAL CHALLENGE
                     </h4>
                     <div className="flex items-center justify-center gap-2 text-yellow-500">
-                      <BsStar className="animate-spin" />
-                      <BsStar className="animate-pulse" />
-                      <BsStar className="animate-spin" />
+                      <FiStar className="animate-spin" />
+                      <FiStar className="animate-pulse" />
+                      <FiStar className="animate-spin" />
                     </div>
                   </div>
                   
@@ -604,9 +604,9 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
                     className="px-8 py-4 rounded-full backdrop-blur-xl bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-bold text-xl hover:scale-110 transition-all duration-300 shadow-xl border border-yellow-400/50"
                   >
                     <div className="flex items-center gap-3">
-                      <BsTrophy className="text-2xl" />
+                      <FiAward className="text-2xl" />
                       <span>REVEAL THE CHAMPION</span>
-                      <BsTrophy className="text-2xl" />
+                      <FiAward className="text-2xl" />
                     </div>
                   </button>
                   

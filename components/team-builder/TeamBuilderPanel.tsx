@@ -19,21 +19,21 @@ import { EnergyIcon, EnergyBadge } from '@/components/ui/EnergyIcon';
 import { cn } from '@/utils/cn';
 import { TRANSITION } from '@/components/ui/design-system/glass-constants';
 import {
-  BsPlus,
-  BsX,
-  BsArrowsMove,
-  BsDownload,
-  BsShare,
-  BsShieldCheck,
-  BsLightningCharge,
-  BsExclamationTriangle,
-  BsCheckCircle,
-  BsTrash,
-  BsSearch,
-  BsStarFill,
-  BsInfoCircle,
-  BsClipboardCheck
-} from 'react-icons/bs';
+  FiPlus,
+  FiX,
+  FiMove,
+  FiDownload,
+  FiShare2,
+  FiShield,
+  FiZap,
+  FiAlertTriangle,
+  FiCheckCircle,
+  FiTrash2,
+  FiSearch,
+  FiStar,
+  FiInfo,
+  FiClipboard
+} from 'react-icons/fi';
 import logger from '@/utils/logger';
 
 // Pokemon type effectiveness chart
@@ -326,11 +326,11 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
               'bg-red-100 dark:bg-red-900/30'
             )}>
               {synergyScore >= 70 ? (
-                <BsCheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
+                <FiCheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
               ) : synergyScore >= 40 ? (
-                <BsInfoCircle className="w-10 h-10 text-amber-600 dark:text-amber-400" />
+                <FiInfo className="w-10 h-10 text-amber-600 dark:text-amber-400" />
               ) : (
-                <BsExclamationTriangle className="w-10 h-10 text-red-600 dark:text-red-400" />
+                <FiAlertTriangle className="w-10 h-10 text-red-600 dark:text-red-400" />
               )}
             </div>
           </div>
@@ -350,7 +350,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
                   key={i}
                   className="flex items-start gap-2 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 text-sm"
                 >
-                  <BsExclamationTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                  <FiAlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <span>{warning}</span>
                 </div>
               ))}
@@ -362,9 +362,9 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
       {/* Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2">
         {[
-          { id: 'team', label: 'Team', icon: BsArrowsMove },
-          { id: 'coverage', label: 'Coverage', icon: BsLightningCharge },
-          { id: 'analysis', label: 'Analysis', icon: BsShieldCheck },
+          { id: 'team', label: 'Team', icon: FiMove },
+          { id: 'coverage', label: 'Coverage', icon: FiZap },
+          { id: 'analysis', label: 'Analysis', icon: FiShield },
         ].map(tab => (
           <button
             key={tab.id}
@@ -405,7 +405,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
                 >
                   {/* Drag Handle */}
                   <div className="text-stone-400">
-                    <BsArrowsMove className="w-5 h-5" />
+                    <FiMove className="w-5 h-5" />
                   </div>
 
                   {/* Pokemon Sprite */}
@@ -436,7 +436,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
                     onClick={() => handleRemovePokemon(index)}
                     aria-label={`Remove ${pokemon.name}`}
                   >
-                    <BsX className="w-5 h-5" />
+                    <FiX className="w-5 h-5" />
                   </IconButton>
                 </Reorder.Item>
               ))}
@@ -454,7 +454,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
                 TRANSITION.default
               )}
             >
-              <BsPlus className="w-6 h-6" />
+              <FiPlus className="w-6 h-6" />
               <span className="font-medium">Add Pokemon</span>
             </button>
           ))}
@@ -464,7 +464,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              icon={<BsTrash className="w-4 h-4" />}
+              icon={<FiTrash2 className="w-4 h-4" />}
               onClick={handleClearTeam}
               disabled={team.length === 0}
             >
@@ -474,7 +474,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
               <Button
                 variant="secondary"
                 size="sm"
-                icon={<BsDownload className="w-4 h-4" />}
+                icon={<FiDownload className="w-4 h-4" />}
                 onClick={handleExport}
                 disabled={team.length === 0}
               >
@@ -483,7 +483,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
               <Button
                 variant="primary"
                 size="sm"
-                icon={<BsShare className="w-4 h-4" />}
+                icon={<FiShare2 className="w-4 h-4" />}
                 onClick={() => {
                   shareModal.open();
                   onShare?.(team);
@@ -502,14 +502,14 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
         <div className="grid gap-4 md:grid-cols-2">
           {team.length === 0 ? (
             <Container variant="elevated" padding="lg" className="md:col-span-2 text-center">
-              <BsShieldCheck className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
+              <FiShield className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
               <h3 className="text-lg font-medium text-stone-800 dark:text-white mb-2">
                 No Pokemon in Team
               </h3>
               <p className="text-stone-500 dark:text-stone-400 mb-4">
                 Add Pokemon to your team to see type coverage analysis.
               </p>
-              <Button variant="primary" onClick={addPokemonModal.open} icon={<BsPlus className="w-4 h-4" />}>
+              <Button variant="primary" onClick={addPokemonModal.open} icon={<FiPlus className="w-4 h-4" />}>
                 Add Pokemon
               </Button>
             </Container>
@@ -519,7 +519,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
           <Container variant="elevated" padding="md">
             <ContainerHeader>
               <div className="flex items-center gap-2">
-                <BsLightningCharge className="w-5 h-5 text-red-500" />
+                <FiZap className="w-5 h-5 text-red-500" />
                 <ContainerTitle size="sm">Offensive Coverage</ContainerTitle>
               </div>
               <ContainerDescription>Types your team can hit super effectively</ContainerDescription>
@@ -557,7 +557,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
           <Container variant="elevated" padding="md">
             <ContainerHeader>
               <div className="flex items-center gap-2">
-                <BsShieldCheck className="w-5 h-5 text-blue-500" />
+                <FiShield className="w-5 h-5 text-blue-500" />
                 <ContainerTitle size="sm">Defensive Profile</ContainerTitle>
               </div>
               <ContainerDescription>Team weaknesses and resistances</ContainerDescription>
@@ -649,14 +649,14 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
         <Container variant="elevated" padding="md">
           {team.length === 0 ? (
             <div className="text-center py-8">
-              <BsInfoCircle className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
+              <FiInfo className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
               <h3 className="text-lg font-medium text-stone-800 dark:text-white mb-2">
                 No Team to Analyze
               </h3>
               <p className="text-stone-500 dark:text-stone-400 mb-4">
                 Add Pokemon to your team to see detailed analysis and recommendations.
               </p>
-              <Button variant="primary" onClick={addPokemonModal.open} icon={<BsPlus className="w-4 h-4" />}>
+              <Button variant="primary" onClick={addPokemonModal.open} icon={<FiPlus className="w-4 h-4" />}>
                 Add Pokemon
               </Button>
             </div>
@@ -731,19 +731,19 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
               <div className="space-y-2">
                 {team.length < 6 && (
                   <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 text-sm">
-                    <BsInfoCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <FiInfo className="w-4 h-4 flex-shrink-0 mt-0.5" />
                     <span>Add {6 - team.length} more Pokemon to complete your team.</span>
                   </div>
                 )}
                 {Object.entries(typeCoverage.offensive).filter(([_, v]) => v === 0).length > 6 && (
                   <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 text-sm">
-                    <BsInfoCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <FiInfo className="w-4 h-4 flex-shrink-0 mt-0.5" />
                     <span>Consider adding Pokemon with diverse type coverage to handle more threats.</span>
                   </div>
                 )}
                 {synergyScore >= 70 && (
                   <div className="flex items-start gap-2 p-3 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 text-sm">
-                    <BsStarFill className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <FiStar className="w-4 h-4 flex-shrink-0 mt-0.5" />
                     <span>Great team composition! Your synergy score is excellent.</span>
                   </div>
                 )}
@@ -805,7 +805,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
             <Button
               variant="secondary"
               fullWidth
-              icon={<BsDownload className="w-4 h-4" />}
+              icon={<FiDownload className="w-4 h-4" />}
               onClick={handleExport}
             >
               Download JSON
@@ -813,7 +813,7 @@ export const TeamBuilderPanel: React.FC<TeamBuilderPanelProps> = ({
             <Button
               variant={copied ? 'success' : 'primary'}
               fullWidth
-              icon={copied ? <BsClipboardCheck className="w-4 h-4" /> : <BsShare className="w-4 h-4" />}
+              icon={copied ? <FiClipboard className="w-4 h-4" /> : <FiShare2 className="w-4 h-4" />}
               onClick={() => {
                 const teamIds = team.map(p => p.pokedexId).join(',');
                 const shareUrl = `${window.location.origin}/team-builder?team=${teamIds}`;
@@ -1040,7 +1040,7 @@ const PokemonSearchModal: React.FC<PokemonSearchModalProps> = ({
         {/* Search */}
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <BsSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <input
               type="text"
               value={searchQuery}
@@ -1063,7 +1063,7 @@ const PokemonSearchModal: React.FC<PokemonSearchModalProps> = ({
         {/* Search Error */}
         {searchError && (
           <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm">
-            <BsExclamationTriangle className="w-4 h-4 flex-shrink-0" />
+            <FiAlertTriangle className="w-4 h-4 flex-shrink-0" />
             <span>{searchError}</span>
           </div>
         )}

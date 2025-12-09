@@ -5,7 +5,7 @@ import type { PocketRarity } from "@/types/api/pocket-cards";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { CardGridSkeleton } from "./ui/Skeleton";
-import { FaCrown } from "react-icons/fa";
+import { FiAward } from "react-icons/fi";
 import { ErrorBoundaryWrapper } from "./ui/ErrorBoundary";
 import type { PocketCard } from "../types/api/pocket-cards";
 
@@ -57,7 +57,7 @@ const PocketCard = memo<PocketCardProps>(({
   // Get rarity display
   const getRarityDisplay = (rarity?: string) => {
     if (!rarity) return null;
-    // Don't display symbol for Crown Rare as we'll use FaCrown icon
+    // Don't display symbol for Crown Rare as we'll use FiAward icon
     if (rarity === '👑' || rarity === '♕') return null;
     // Convert outline stars (☆) to filled stars (★) for better visual impact
     // Convert outline diamonds (◊) to filled diamonds (♦) with grey color
@@ -71,7 +71,7 @@ const PocketCard = memo<PocketCardProps>(({
   // Check if rarity should have gold/shiny text
   const isGoldRarity = (rarity?: string) => {
     if (!rarity) return false;
-    // Crown Rare uses FaCrown icon, not gold text
+    // Crown Rare uses FiAward icon, not gold text
     if (rarity === '👑' || rarity === '♕') return false;
     // Always apply gold styling to star rarities
     // Check for both black star (★) and white star (☆) and other star variations
@@ -235,8 +235,8 @@ const PocketCard = memo<PocketCardProps>(({
               <div className="flex-shrink-0">
                 {/* Check for Crown Rare specifically */}
                 {(card.rarity === ('👑' as PocketRarity) || card.rarity === ('♕' as PocketRarity)) ? (
-                  // Crown - Smaller size, raised higher
-                  <FaCrown className="text-amber-500 -mt-1" size={16} />
+                  // Crown Rare indicator
+                  <FiAward className="text-amber-500 -mt-1" size={16} />
                 ) : isGoldRarity(card.rarity) ? (
                   // Other gold rarities (stars) - same color as crown
                   <span className="font-bold text-amber-500 text-sm">

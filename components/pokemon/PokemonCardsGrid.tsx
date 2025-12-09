@@ -4,7 +4,7 @@ import { cn } from '@/utils/cn';
 import { RarityIcon } from '@/components/ui/RarityIcon';
 import type { TCGCard } from '@/types/api/cards';
 import type { PocketCard } from '@/types/api/pocket-cards';
-import { FaCrown } from 'react-icons/fa';
+import { FiAward } from 'react-icons/fi';
 
 // Extended pocket card interface
 interface ExtendedPocketCard extends PocketCard {
@@ -257,7 +257,7 @@ export const PokemonCardsGrid: React.FC<PokemonCardsGridProps> = ({
                   'shadow-sm flex items-center gap-0.5'
                 )}>
                   {isCrownRare ? (
-                    <FaCrown className="w-3 h-3" />
+                    <FiAward className="w-3 h-3" />
                   ) : (
                     <span>{card.rarity?.replace(/☆/g, '★')}</span>
                   )}
@@ -600,7 +600,7 @@ const PocketCardPreviewSheet: React.FC<PocketCardPreviewSheetProps> = ({
                     <p className="text-[10px] text-stone-500 dark:text-stone-400 uppercase tracking-wide mb-1">Rarity</p>
                     <div className="flex items-center gap-1.5">
                       {isCrownRare ? (
-                        <FaCrown className="text-amber-500" size={16} />
+                        <FiAward className="text-amber-500" size={16} />
                       ) : (
                         <span className="text-amber-500 font-bold">{getRarityDisplay(card.rarity)}</span>
                       )}

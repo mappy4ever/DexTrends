@@ -4,22 +4,21 @@ import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, SlideUp, CardHover } from '../ui/animations/animations';
 import { TypeBadge } from '../ui/TypeBadge';
-import { 
-  BsHeart, 
-  BsShield, 
-  BsLightning, 
-  BsArrowRight,
-  BsStars,
-  BsGenderMale,
-  BsGenderFemale,
-  BsRulers,
-  BsSpeedometer,
-  BsTrophy,
-  BsBookmark,
-  BsExclamationTriangle,
-  BsController
-} from 'react-icons/bs';
-import { GiWeight, GiMuscleUp, GiSparkles } from 'react-icons/gi';
+import {
+  FiHeart,
+  FiShield,
+  FiZap,
+  FiArrowRight,
+  FiStar,
+  FiMaximize2,
+  FiActivity,
+  FiAward,
+  FiBookmark,
+  FiAlertTriangle,
+  FiTarget
+} from 'react-icons/fi';
+import { FaMars, FaVenus } from 'react-icons/fa'; // Domain exceptions - gender symbols
+import { GiWeight, GiMuscleUp, GiSparkles } from 'react-icons/gi'; // Domain exceptions - stats/abilities
 
 // Type definitions
 interface Evolution {
@@ -980,7 +979,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                               }
                             }}
                           >
-                            <BsStars />
+                            <FiStar />
                             <span className="font-semibold text-xs">Explore in Pokédex →</span>
                           </motion.div>
                         )}
@@ -1009,7 +1008,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                   {/* Description */}
                   <div>
                     <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
-                      <BsBookmark className="text-amber-500" />
+                      <FiBookmark className="text-amber-500" />
                       Pokédex Entry
                     </h3>
                     <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
@@ -1080,11 +1079,11 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                     <h3 className="text-xl font-bold mb-3">Gender Ratio</h3>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
-                        <BsGenderMale className="text-amber-500" />
+                        <FaMars className="text-amber-500" />
                         <span>{starterData[selectedStarter].genderRatio.male}%</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <BsGenderFemale className="text-pink-500" />
+                        <FaVenus className="text-pink-500" />
                         <span>{starterData[selectedStarter].genderRatio.female}%</span>
                       </div>
                     </div>
@@ -1096,7 +1095,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                   {/* Evolution Chain */}
                   <div>
                     <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
-                      <BsArrowRight className="text-green-500" />
+                      <FiArrowRight className="text-green-500" />
                       Evolution Chain
                     </h3>
                     <div className="flex items-center justify-around">
@@ -1104,7 +1103,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                         <React.Fragment key={evo.name}>
                           {idx > 0 && (
                             <div className="flex flex-col items-center">
-                              <BsArrowRight className="text-2xl text-stone-400" />
+                              <FiArrowRight className="text-2xl text-stone-400" />
                               <span className="text-xs text-stone-500">Lv.{evo.level}</span>
                             </div>
                           )}
@@ -1149,7 +1148,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-bold mb-2 flex items-center gap-2 text-green-600 dark:text-green-400">
-                        <BsShield />
+                        <FiShield />
                         Strengths
                       </h4>
                       <ul className="space-y-1">
@@ -1163,7 +1162,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                     </div>
                     <div>
                       <h4 className="font-bold mb-2 flex items-center gap-2 text-red-600 dark:text-red-400">
-                        <BsExclamationTriangle />
+                        <FiAlertTriangle />
                         Weaknesses
                       </h4>
                       <ul className="space-y-1">
@@ -1180,7 +1179,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                   {/* Competitive Info */}
                   <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
                     <h4 className="font-bold mb-3 flex items-center gap-2">
-                      <BsTrophy className="text-yellow-500" />
+                      <FiAward className="text-yellow-500" />
                       Competitive Information
                     </h4>
                     <div className="grid grid-cols-2 gap-3 text-sm">
@@ -1206,13 +1205,13 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                   {/* Fun Facts */}
                   <div>
                     <h4 className="font-bold mb-2 flex items-center gap-2">
-                      <BsHeart className="text-pink-500" />
+                      <FiHeart className="text-pink-500" />
                       Fun Facts
                     </h4>
                     <ul className="space-y-2">
                       {starterData[selectedStarter].funFacts.map((fact, idx) => (
                         <li key={idx} className="text-sm text-stone-600 dark:text-stone-300 flex items-start gap-2">
-                          <BsStars className="text-yellow-500 mt-1 flex-shrink-0" />
+                          <FiStar className="text-yellow-500 mt-1 flex-shrink-0" />
                           {fact}
                         </li>
                       ))}
@@ -1228,7 +1227,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
         <div className="mt-12 text-center">
           <div className={`inline-block p-6 rounded-xl ${theme === 'dark' ? 'bg-stone-900' : 'bg-stone-50'}`}>
             <h3 className="text-lg font-bold mb-2 flex items-center justify-center gap-2">
-              <BsController className="text-amber-500" />
+              <FiTarget className="text-amber-500" />
               Choosing Your Starter
             </h3>
             <p className="text-sm text-stone-600 dark:text-stone-300 max-w-2xl">

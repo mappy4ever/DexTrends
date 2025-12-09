@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { SlideUp, CardHover } from '../../ui/animations/animations';
 import { TypeBadge } from '../../ui/TypeBadge';
-import { BsStars } from 'react-icons/bs';
+import { FiStar } from 'react-icons/fi';
 import type { StarterData } from './types';
 import { getTypeGradient, getFirstEvolution } from './utils';
 import { getEvolutionChain } from './starterData';
@@ -97,7 +97,7 @@ export const StarterCard: React.FC<StarterCardProps> = ({
                     }
                   }}
                 >
-                  <BsStars />
+                  <FiStar />
                   <span className="font-semibold text-xs">Explore in Pokédex →</span>
                 </motion.div>
               )}

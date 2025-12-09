@@ -4,7 +4,8 @@ import type { PokemonType } from "../../types/pokemon";
 import type { CompetitiveTierRecord } from '../../utils/supabase';
 import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
 import { cn } from '../../utils/cn';
-import { FaShieldAlt } from 'react-icons/fa';
+import { FiShield } from 'react-icons/fi';
+// Domain-specific icon for game/battle mechanics - documented exception
 import { GiSwordWound } from 'react-icons/gi';
 import { TierBadgeGroup } from '../ui/TierBadge';
 import { TypeBadge as GradientTypeBadge } from '../ui/TypeBadge';
@@ -333,7 +334,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
           <div className="relative">
             {/* Label above */}
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-              <FaShieldAlt className="w-3.5 h-3.5 text-stone-500 dark:text-stone-300" />
+              <FiShield className="w-3.5 h-3.5 text-stone-500 dark:text-stone-300" />
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-300">
                 Defense
               </span>

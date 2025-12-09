@@ -437,10 +437,18 @@ export class FavoritesManager {
       const favorites = JSON.parse(localFavorites);
       const sessionId = this.getSessionId();
 
+      // Map plural keys to singular types
+      const typeMap: Record<string, 'pokemon' | 'card' | 'deck'> = {
+        pokemons: 'pokemon',
+        cards: 'card',
+        decks: 'deck'
+      };
+
       for (const [itemType, items] of Object.entries(favorites)) {
-        if (Array.isArray(items)) {
+        const singularType = typeMap[itemType];
+        if (singularType && Array.isArray(items)) {
           for (const item of items) {
-            await this.addFavorite(itemType.slice(0, -1) as any, item.id, item); // Remove 's' from type
+            await this.addFavorite(singularType, item.id, item);
           }
         }
       }

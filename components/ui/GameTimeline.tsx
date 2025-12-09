@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BsCalendar, BsController, BsGlobe } from 'react-icons/bs';
+import { FiCalendar, FiMonitor, FiGlobe } from 'react-icons/fi';
+// Domain exception: gaming icon
 import { FaGamepad } from 'react-icons/fa';
 
 interface Game {
@@ -200,17 +201,17 @@ const GameTimeline: React.FC<GameTimelineProps> = ({ games, theme }) => {
                               
                               <div className="flex flex-wrap items-center gap-4 text-sm text-stone-600 dark:text-stone-300">
                                 <div className="flex items-center gap-1">
-                                  <BsController />
+                                  <FiMonitor />
                                   <span>{game.platform}</span>
                                 </div>
                                 {game.region && (
                                   <div className="flex items-center gap-1">
-                                    <BsGlobe />
+                                    <FiGlobe />
                                     <span>{game.region}</span>
                                   </div>
                                 )}
                                 <div className="flex items-center gap-1">
-                                  <BsCalendar />
+                                  <FiCalendar />
                                   <span>{new Date(game.releaseDate).toLocaleDateString()}</span>
                                 </div>
                               </div>

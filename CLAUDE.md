@@ -60,6 +60,10 @@ Use these as the single source for each purpose:
 | **Starter Showcase** | `StarterShowcaseComplete` | `/components/regions/StarterShowcaseComplete.tsx` |
 | **Empty States** | `EmptyState` | `/components/ui/EmptyState.tsx` |
 | **Pagination** | `Pagination`, `PageInfo` | `/components/ui/Pagination.tsx` |
+| **Responsive Grid** | `UnifiedGrid` | `/components/ui/UnifiedGrid.tsx` |
+| **Filter Sheet** | `FilterDrawer` | `/components/ui/FilterDrawer.tsx` |
+| **Rating Badges** | `RatingTierBadge` | `/components/ui/RatingTierBadge.tsx` |
+| **Rarity Icons** | `RarityIcon` | `/components/ui/RarityIcon.tsx` |
 
 ## Design System
 
@@ -217,6 +221,30 @@ import { FiChevronLeft, FiSearch, FiHeart } from 'react-icons/fi';
 import { GiPokerHand } from 'react-icons/gi'; // Card games only
 ```
 
+**Documented Exceptions (domain-specific with no Feather equivalent):**
+
+| Icon | Library | Usage | Reason |
+|------|---------|-------|--------|
+| `FaMars`, `FaVenus` | FontAwesome | Gender ratio display | Universal gender symbols |
+| `FaWeight` | FontAwesome | Pokemon weight | Semantic weight icon |
+| `FaDna` | FontAwesome | Genetics/breeding | DNA helix symbol |
+| `FaEgg` | FontAwesome | Egg groups | Semantic egg icon |
+| `FaGamepad` | FontAwesome | Gaming features | Gamepad symbol |
+| `MdCatchingPokemon` | Material | Pokemon-specific UI | Pokeball icon |
+| `GiPokerHand` | GameIcons | Card game actions | Card hand symbol |
+| `GiSwordWound`, `GiShield` | GameIcons | Combat/competitive | Battle semantics |
+| `GiSparkles` | GameIcons | Special effects | Magic/sparkle effect |
+| `GiTrophy`, `GiLaurelCrown` | GameIcons | Achievements/wins | Trophy symbols |
+| `GiTwoCoins` | GameIcons | Currency/economy | Coin symbol |
+| `FaTwitter`, `FaReddit`, `FaDiscord` | FontAwesome | Social sharing | Brand icons |
+| `FaQrcode` | FontAwesome | QR code sharing | QR symbol |
+
+All exceptions must include a comment explaining the domain-specific reason:
+```typescript
+// Pokemon-specific icon - documented domain exception
+import { MdCatchingPokemon } from 'react-icons/md';
+```
+
 ### Back Navigation Standard
 
 **Always use `StyledBackButton` for back navigation:**
@@ -252,3 +280,121 @@ Automatic - no configuration needed:
 - Offline page at `/offline`
 - Update notifications via `PWAProvider`
 - Service worker at `/sw.js` (v1.1.0)
+
+---
+
+## Active Audit Work (December 2024)
+
+### Current Sprint: Visual Consistency Foundation
+
+Full audit plan: `/.claude/plans/sharded-watching-leaf.md`
+
+#### Status Tracker
+
+| Task | Status | Notes |
+|------|--------|-------|
+| Consolidate RarityIcon variants | DONE | Deprecated CleanRaritySymbol, ProfessionalRarityIcon, migrated all usages |
+| PokeballLoader design tokens | DONE | Added POKEBALL_BORDER_COLOR constant, documented domain-specific colors |
+| TYPE_GRADIENTS duplication | DONE | TypeBadge.tsx now imports from glass-constants.ts |
+| Rename CompetitiveTierBadge | DONE | Renamed to RatingTierBadge, added backwards-compatible alias |
+| Icon Migration Sprint 1 | DONE | PokemonHeroSectionV3: FaStar→FiStar, FaHeart→FiHeart, FaRuler→FiMaximize2. FaMars/FaVenus/FaWeight kept as documented exceptions (domain-specific) |
+| Standardize EmptyState | DONE | Migrated pocketmode, tcgexpansions, games.tsx to use ErrorState/NoSearchResults from EmptyState |
+| Icon Migration Sprint 2 | DONE | games.tsx: Bs→Fi (Calendar, Globe, ArrowRight, Play). PocketCardList: FaCrown→FiAward. Navbar: Removed Ri/Ai icons, added FiZap |
+| Icon Migration Sprint 3 | DONE | VoiceSearchInterface, GameTimeline, TradingMarketplace, TournamentSystem, SocialPlatform, GameficationSystem, AdvancedDeckBuilder, CircularCard, CollectionTracker, CardSharingSystem, LocationsTab, constants.ts |
+| Pagination ARIA (A1) | DONE | Already had comprehensive ARIA: aria-label, aria-current, role="navigation", keyboard nav |
+| TypeBadge accessibility (A2) | DONE | Already had role="button", tabIndex, aria-label, aria-describedby when interactive |
+| Document unified infrastructure | DONE | Added UnifiedGrid, FilterDrawer, RatingTierBadge, RarityIcon to Canonical Components table |
+| Health endpoint (S2) | DONE | Returns 503 for degraded/unhealthy, removed NODE_ENV from response |
+| Type safety cleanup | DONE | Fixed `any` types in api-middleware.ts, unifiedFetch.ts, supabase.ts |
+| E2E route coverage test | DONE | Created tests/audit/full-route-coverage.spec.ts with 44 routes × 3 viewports |
+| API latency monitoring | DONE | Created tests/audit/api-latency.spec.ts - 8 endpoints tested, all passing |
+| Filter pattern audit | DONE | FilterDrawer is canonical; page-specific filters (pokedex types, pocket drawer) work well |
+| Skeleton audit | DONE | SkeletonLoadingSystem has 10+ variants (Card, Pokemon, List, Table, Chart, Form, Detail, Nav) |
+| Grid breakpoint audit | DONE | UnifiedGrid provides 2→3→4→6→8 responsive columns; standard inline: grid-cols-2 sm:3 md:4 lg:5 xl:6 |
+| Visual regression testing | DONE | Created tests/audit/visual-regression.spec.ts - 12 pages × 2 viewports |
+| Accessibility audit (axe-core) | DONE | Created tests/audit/accessibility.spec.ts - WCAG 2.1 AA scanning, 12 pages |
+| Focus trap fixes (A3) | DONE | Added focus trap to FilterDrawer and MoreSheet (Modal, Sheet, Dialog, ConfirmDialog already had it) |
+
+#### Deprecated Components
+
+**DO NOT USE** - These components are deprecated and will be removed:
+
+| Component | Replacement | Reason |
+|-----------|-------------|--------|
+| `CleanRaritySymbol` | `RarityIcon` | Duplicate functionality |
+| `ProfessionalRarityIcon` | `RarityIcon` | Duplicate functionality |
+
+#### Rarity Icons Standard
+
+**Always use `RarityIcon` from `/components/ui/RarityIcon.tsx`:**
+
+```typescript
+import { RarityIcon, RARITY_ORDER, getRarityRank } from '@/components/ui/RarityIcon';
+
+// Basic usage
+<RarityIcon rarity="Rare Holo" size="md" />
+
+// With filter interaction
+<RarityIcon rarity="Rare Holo" onClick={() => handleFilter("Rare Holo")} isActive={true} />
+
+// Get rarity rank for sorting
+const rank = getRarityRank("Illustration Rare"); // Returns numeric rank
+```
+
+#### Icon Migration Status: COMPLETE
+
+All non-Feather icons have been migrated or documented as domain exceptions.
+
+**Completed Migrations:**
+- [x] PokemonHeroSectionV3.tsx - FaStar→FiStar, FaHeart→FiHeart, FaRuler→FiMaximize2
+- [x] StarterShowcaseComplete.tsx - GiSwordWound, GiShield kept (documented exception)
+- [x] CleanRaritySymbol.tsx - Deprecated, use RarityIcon instead
+- [x] VoiceSearchInterface.tsx - FaSpinner→FiLoader, FaMicrophone→FiMic, BsSoundwave→FiActivity
+- [x] GameTimeline.tsx - BsController→FiMonitor, BsGlobe→FiGlobe, BsCalendar→FiCalendar
+- [x] TradingMarketplace.tsx - FaDollarSign→FiDollarSign, FaExchangeAlt→FiRefreshCw
+- [x] TournamentSystem.tsx - BsGraphUp→FiTrendingUp, FaUsers→FiUsers
+- [x] SocialPlatform.tsx - FaHeart→FiHeart, FaComment→FiMessageCircle, FaShare→FiShare2
+- [x] GameficationSystem.tsx - BsLightning→FiZap, BsCollection→FiLayers
+- [x] AdvancedDeckBuilder.tsx - FaSave→FiSave, type icons documented
+- [x] CircularCard.tsx - FaHeart→FiHeart, FaShare→FiShare2, FaInfo→FiInfo
+- [x] CollectionTracker.tsx - FaChartPie→FiPieChart, FaTrophy→FiAward, FaStar→FiStar
+- [x] CardSharingSystem.tsx - FaShare→FiShare2, FaDownload→FiDownload
+- [x] LocationsTab.tsx - FaMapMarkerAlt→FiMapPin, FaFilter→FiFilter
+- [x] constants.ts (competitive) - Domain exceptions documented
+
+**Migration Map (for reference):**
+```
+FaStar → FiStar          FaHeart → FiHeart
+FaRuler → FiMaximize2    FaTag → FiTag
+FaWeight → FiActivity    FaCrown → FiAward
+BsGrid → FiGrid          BsList → FiList
+BsCalendar → FiCalendar  BsGlobe → FiGlobe
+FaSpinner → FiLoader     FaMicrophone → FiMic
+FaShare → FiShare2       FaDownload → FiDownload
+```
+
+#### Audit Test Suite
+
+Run production audit tests:
+
+```bash
+# Full route coverage (44 routes × 3 viewports = 132 tests)
+npx playwright test tests/audit/full-route-coverage.spec.ts --project=chromium
+
+# API latency monitoring (8 endpoints)
+npx playwright test tests/audit/api-latency.spec.ts --project=chromium
+
+# Visual regression (generate baselines first run)
+npx playwright test tests/audit/visual-regression.spec.ts --update-snapshots
+npx playwright test tests/audit/visual-regression.spec.ts --project=chromium
+
+# Accessibility audit (WCAG 2.1 AA)
+npx playwright test tests/audit/accessibility.spec.ts --project=chromium
+
+# Run all audit tests
+npx playwright test tests/audit/ --project=chromium
+```
+
+Results are saved to:
+- `test-results/audit-screenshots/` - Screenshots from route coverage
+- `test-results/` - Visual regression snapshots and traces

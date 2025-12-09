@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getEliteFourImage, getChampionImage } from '../../utils/scrapedImageMapping';
 import { TypeGradientBadge } from '../ui/design-system/TypeGradientBadge';
 import { typeEffectiveness } from '../../utils/pokemonutils';
-import { BsTrophy, BsShieldFill, BsStar } from 'react-icons/bs';
+import { FiAward, FiShield, FiStar } from 'react-icons/fi';
 
 interface EliteFourMember {
   name: string;
@@ -754,7 +754,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                         {/* Elite Rank Badge below */}
                         <div className="bg-gradient-to-br from-stone-800 to-stone-900 rounded-lg px-3 py-2 shadow-lg border border-stone-700">
                           <div className="flex items-center gap-2">
-                            <BsShieldFill className="text-yellow-400 text-base" />
+                            <FiShield className="text-yellow-400 text-base" />
                             <div>
                               <p className="text-white font-bold text-sm">Elite {index + 1}</p>
                               <p className="text-stone-400 text-xs">Rank</p>

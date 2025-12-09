@@ -3,10 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, LocationAreaEncounterDetail } from "../../../types/pokemon";
 import { Container } from '../../ui/Container';
 import { cn } from '../../../utils/cn';
-import { 
-  FaGamepad, FaMapMarkerAlt, FaGlobeAmericas, FaFilter,
-  FaTree
-} from 'react-icons/fa';
+import { FiMapPin, FiGlobe, FiFilter } from 'react-icons/fi';
+// Domain exceptions: gaming icon, nature icon
+import { FaGamepad, FaTree } from 'react-icons/fa';
 
 // Animation helper
 const getAnimationProps = (_variant: string, delay: number = 0) => ({
@@ -231,7 +230,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
               {gameLocations.length > 0 && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <FaFilter className="w-4 h-4 text-amber-400" />
+                    <FiFilter className="w-4 h-4 text-amber-400" />
                     <span className="text-sm font-medium text-stone-500 dark:text-stone-300">Filter by Era</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { FadeIn, SlideUp, CardHover } from '../ui/animations/animations';
 import { TypeBadge } from '../ui/TypeBadge';
-import { FaCrown } from 'react-icons/fa';
+import { FiAward } from 'react-icons/fi';
 
 // Type definitions
 interface LegendaryPokemon {
@@ -680,7 +680,7 @@ const LegendaryShowcase: React.FC<LegendaryShowcaseProps> = ({ region, theme }) 
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <FaCrown className="text-yellow-500" />
+              <FiAward className="text-yellow-500" />
               {regionLegendaries.title}
             </h2>
             <p className="text-xl text-stone-600 dark:text-stone-300">

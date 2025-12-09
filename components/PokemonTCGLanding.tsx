@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { BsCardList, BsHeart, BsBarChart } from 'react-icons/bs';
-import { FiTrendingUp, FiShoppingBag } from 'react-icons/fi';
+import { FiTrendingUp, FiList, FiHeart } from 'react-icons/fi';
 import Button from './ui/Button';
 
 interface Feature {
@@ -19,7 +18,7 @@ const PokemonTCGLanding: React.FC = () => {
       href: '/tcgexpansions',
       title: 'Browse Sets',
       description: 'Explore all Pokémon TCG sets with detailed information, card lists, and artwork.',
-      icon: <BsCardList className="w-8 h-8" />,
+      icon: <FiList className="w-8 h-8" />,
       color: 'bg-amber-500',
       hoverColor: 'hover:bg-amber-600'
     },
@@ -35,7 +34,7 @@ const PokemonTCGLanding: React.FC = () => {
       href: '/collections',
       title: 'My Collection',
       description: 'Manage your personal card collection and track its value.',
-      icon: <BsHeart className="w-8 h-8" />,
+      icon: <FiHeart className="w-8 h-8" />,
       color: 'bg-amber-500',
       hoverColor: 'hover:bg-amber-600'
     }

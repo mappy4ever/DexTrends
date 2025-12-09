@@ -21,30 +21,28 @@ import { Pagination, PageInfo } from '@/components/ui/Pagination';
 import { cn } from '@/utils/cn';
 import { TRANSITION } from '@/components/ui/design-system/glass-constants';
 import {
-  BsCollection,
-  BsHeart,
-  BsHeartFill,
-  BsArrowLeftRight,
-  BsPlus,
-  BsX,
-  BsDownload,
-  BsUpload,
-  BsSearch,
-  BsFilter,
-  BsGrid,
-  BsList,
-  BsCheckCircle,
-  BsCircle,
-  BsCurrencyDollar,
-  BsStarFill,
-  BsStar,
-  BsTrash,
-  BsPencil,
-  BsChevronDown,
-  BsChevronUp,
-  BsGraphUp,
-  BsExclamationCircle,
-} from 'react-icons/bs';
+  FiFolder,
+  FiHeart,
+  FiRefreshCw,
+  FiPlus,
+  FiX,
+  FiDownload,
+  FiUpload,
+  FiSearch,
+  FiFilter,
+  FiGrid,
+  FiList,
+  FiCheckCircle,
+  FiCircle,
+  FiDollarSign,
+  FiStar,
+  FiTrash2,
+  FiEdit2,
+  FiChevronDown,
+  FiChevronUp,
+  FiTrendingUp,
+  FiAlertCircle,
+} from 'react-icons/fi';
 import logger from '@/utils/logger';
 
 // Collection card types
@@ -316,31 +314,31 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
         <StatCard
           label="Total Cards"
           value={stats.totalCards}
-          icon={<BsCollection className="w-5 h-5" />}
+          icon={<FiFolder className="w-5 h-5" />}
           color="amber"
         />
         <StatCard
           label="Unique Cards"
           value={stats.uniqueCards}
-          icon={<BsGrid className="w-5 h-5" />}
+          icon={<FiGrid className="w-5 h-5" />}
           color="blue"
         />
         <StatCard
           label="Est. Value"
           value={`$${stats.totalValue.toFixed(2)}`}
-          icon={<BsCurrencyDollar className="w-5 h-5" />}
+          icon={<FiDollarSign className="w-5 h-5" />}
           color="green"
         />
         <StatCard
           label="Wishlist"
           value={stats.wishlistCount}
-          icon={<BsHeart className="w-5 h-5" />}
+          icon={<FiHeart className="w-5 h-5" />}
           color="red"
         />
         <StatCard
           label="For Trade"
           value={stats.tradeListCount}
-          icon={<BsArrowLeftRight className="w-5 h-5" />}
+          icon={<FiRefreshCw className="w-5 h-5" />}
           color="purple"
         />
       </div>
@@ -356,9 +354,9 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
           {/* Tabs */}
           <div className="flex gap-2">
             {[
-              { id: 'all', label: 'All Cards', icon: BsCollection },
-              { id: 'wishlist', label: 'Wishlist', icon: BsHeart },
-              { id: 'tradelist', label: 'For Trade', icon: BsArrowLeftRight },
+              { id: 'all', label: 'All Cards', icon: FiFolder },
+              { id: 'wishlist', label: 'Wishlist', icon: FiHeart },
+              { id: 'tradelist', label: 'For Trade', icon: FiRefreshCw },
             ].map(tab => (
               <button
                 key={tab.id}
@@ -384,7 +382,7 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
 
           {/* Search */}
           <div className="relative flex-1 sm:max-w-xs">
-            <BsSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <input
               type="text"
               value={searchQuery}
@@ -413,7 +411,7 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                   : 'text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'
               )}
             >
-              <BsGrid className="w-4 h-4" />
+              <FiGrid className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('list')}
@@ -424,7 +422,7 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
                   : 'text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'
               )}
             >
-              <BsList className="w-4 h-4" />
+              <FiList className="w-4 h-4" />
             </button>
           </div>
 
@@ -433,7 +431,7 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
             <Button
               variant="secondary"
               size="sm"
-              icon={<BsUpload className="w-4 h-4" />}
+              icon={<FiUpload className="w-4 h-4" />}
               onClick={importExportModal.open}
             >
               Import/Export
@@ -441,7 +439,7 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
             <Button
               variant="primary"
               size="sm"
-              icon={<BsPlus className="w-4 h-4" />}
+              icon={<FiPlus className="w-4 h-4" />}
               onClick={addCardModal.open}
             >
               Add Card
@@ -498,7 +496,7 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
               TRANSITION.default
             )}
           >
-            {sortAsc ? <BsChevronUp className="w-4 h-4" /> : <BsChevronDown className="w-4 h-4" />}
+            {sortAsc ? <FiChevronUp className="w-4 h-4" /> : <FiChevronDown className="w-4 h-4" />}
           </button>
         </div>
       </Container>
@@ -507,7 +505,7 @@ export const CollectionTracker: React.FC<CollectionTrackerProps> = ({
       <Container variant="elevated" padding="md">
         {paginatedCollection.length === 0 ? (
           <div className="text-center py-12">
-            <BsCollection className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
+            <FiFolder className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
             <h3 className="text-lg font-medium text-stone-800 dark:text-white mb-2">
               {filterTab === 'wishlist'
                 ? 'No cards in wishlist'
@@ -662,14 +660,14 @@ const SetProgressSection: React.FC<{ progress: SetProgress[] }> = ({ progress })
         className="w-full flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
-          <BsGraphUp className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <FiTrendingUp className="w-5 h-5 text-amber-600 dark:text-amber-400" />
           <ContainerTitle size="sm">Set Progress</ContainerTitle>
         </div>
         <motion.div
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <BsChevronDown className="w-5 h-5 text-stone-400" />
+          <FiChevronDown className="w-5 h-5 text-stone-400" />
         </motion.div>
       </button>
 
@@ -755,7 +753,7 @@ const CardGridItem: React.FC<{
                 : 'bg-white/90 dark:bg-stone-800/90 text-stone-500 hover:text-red-500'
             )}
           >
-            {card.inWishlist ? <BsHeartFill className="w-3 h-3" /> : <BsHeart className="w-3 h-3" />}
+            {card.inWishlist ? <FiHeart className="w-3 h-3" /> : <FiHeart className="w-3 h-3" />}
           </button>
           <button
             onClick={(e) => {
@@ -769,7 +767,7 @@ const CardGridItem: React.FC<{
                 : 'bg-white/90 dark:bg-stone-800/90 text-stone-500 hover:text-purple-500'
             )}
           >
-            <BsArrowLeftRight className="w-3 h-3" />
+            <FiRefreshCw className="w-3 h-3" />
           </button>
         </div>
       </div>
@@ -869,7 +867,7 @@ const CardListItem: React.FC<{
               : 'text-stone-400 hover:text-red-500 hover:bg-stone-200 dark:hover:bg-stone-700'
           )}
         >
-          {card.inWishlist ? <BsHeartFill className="w-4 h-4" /> : <BsHeart className="w-4 h-4" />}
+          {card.inWishlist ? <FiHeart className="w-4 h-4" /> : <FiHeart className="w-4 h-4" />}
         </button>
         <button
           onClick={onToggleTradeList}
@@ -880,7 +878,7 @@ const CardListItem: React.FC<{
               : 'text-stone-400 hover:text-purple-500 hover:bg-stone-200 dark:hover:bg-stone-700'
           )}
         >
-          <BsArrowLeftRight className="w-4 h-4" />
+          <FiRefreshCw className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -940,7 +938,7 @@ const AddCardModal: React.FC<{
         {/* Search */}
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <BsSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <input
               type="text"
               value={searchQuery}
@@ -982,7 +980,7 @@ const AddCardModal: React.FC<{
                   </div>
                   {alreadyOwned && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                      <BsCheckCircle className="w-6 h-6 text-green-400" />
+                      <FiCheckCircle className="w-6 h-6 text-green-400" />
                     </div>
                   )}
                 </button>
@@ -1127,7 +1125,7 @@ const CardDetailModal: React.FC<{
             <Button
               variant="danger"
               size="sm"
-              icon={<BsTrash className="w-4 h-4" />}
+              icon={<FiTrash2 className="w-4 h-4" />}
               onClick={onRemove}
             >
               Remove
@@ -1146,7 +1144,7 @@ const CardDetailModal: React.FC<{
                 <Button
                   variant="secondary"
                   size="sm"
-                  icon={<BsPencil className="w-4 h-4" />}
+                  icon={<FiEdit2 className="w-4 h-4" />}
                   onClick={() => setIsEditing(true)}
                 >
                   Edit
@@ -1207,7 +1205,7 @@ const ImportExportModal: React.FC<{
           <Button
             variant="primary"
             fullWidth
-            icon={<BsDownload className="w-4 h-4" />}
+            icon={<FiDownload className="w-4 h-4" />}
             onClick={onExport}
           >
             Download Collection
@@ -1234,13 +1232,13 @@ const ImportExportModal: React.FC<{
               'hover:border-amber-500 hover:text-amber-600 dark:hover:text-amber-400',
               'cursor-pointer transition-colors'
             )}>
-              <BsUpload className="w-5 h-5" />
+              <FiUpload className="w-5 h-5" />
               <span>Choose File</span>
             </div>
           </label>
           {importError && (
             <div className="flex items-center gap-2 mt-2 text-sm text-red-600 dark:text-red-400">
-              <BsExclamationCircle className="w-4 h-4" />
+              <FiAlertCircle className="w-4 h-4" />
               {importError}
             </div>
           )}

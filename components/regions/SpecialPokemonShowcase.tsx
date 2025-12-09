@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, SlideUp, CardHover } from "../ui/animations/animations";
 import { TypeBadge } from '../ui/TypeBadge';
-import { BsArrowRepeat } from 'react-icons/bs';
-import { GiCrown } from 'react-icons/gi';
+import { FiRefreshCw } from 'react-icons/fi';
+import { GiCrown } from 'react-icons/gi'; // Domain exception - royalty/legendary symbol
 
 // Types
 interface Pokemon {
@@ -307,7 +307,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                     : `${theme === 'dark' ? 'text-stone-300 hover:text-white' : 'text-stone-600 hover:text-stone-900'}`
                 }`}
               >
-                <BsArrowRepeat />
+                <FiRefreshCw />
                 Regional Variants
               </button>
               <button
@@ -337,7 +337,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
             {/* Section Title */}
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold mb-2 flex items-center justify-center gap-3">
-                {activeTab === 'variants' ? <BsArrowRepeat className="text-amber-500" /> : <GiCrown className="text-yellow-500" />}
+                {activeTab === 'variants' ? <FiRefreshCw className="text-amber-500" /> : <GiCrown className="text-yellow-500" />}
                 {activeData?.title}
               </h3>
               <p className="text-stone-600 dark:text-stone-300">
@@ -389,7 +389,7 @@ const SpecialPokemonShowcase: React.FC<SpecialPokemonShowcaseProps> = ({ region,
                                 </>
                               ) : (
                                 <>
-                                  <BsArrowRepeat className="text-xs" />
+                                  <FiRefreshCw className="text-xs" />
                                   <span>Variant</span>
                                 </>
                               )}

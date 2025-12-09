@@ -1,14 +1,14 @@
 import React from 'react';
 import { cn } from '@/utils/cn';
 
-interface CompetitiveTierBadgeProps {
+interface RatingTierBadgeProps {
   rating: number;
   showValue?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   className?: string;
 }
 
-export const CompetitiveTierBadge: React.FC<CompetitiveTierBadgeProps> = ({
+export const RatingTierBadge: React.FC<RatingTierBadgeProps> = ({
   rating,
   showValue = true,
   size = 'sm',
@@ -139,4 +139,9 @@ export const TierLegend: React.FC<{ className?: string }> = ({ className = '' })
   );
 };
 
-export default CompetitiveTierBadge;
+export default RatingTierBadge;
+
+/**
+ * @deprecated Use `RatingTierBadge` instead. This alias is for backwards compatibility.
+ */
+export const CompetitiveTierBadge = RatingTierBadge;

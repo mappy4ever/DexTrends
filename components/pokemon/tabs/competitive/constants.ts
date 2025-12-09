@@ -1,11 +1,15 @@
-import { 
-  FaShieldAlt, 
-  FaHeart, 
-  FaBrain, 
-  FaBalanceScale, 
+// Domain-specific icons for competitive roles - documented exceptions
+// These semantic icons represent specific competitive roles and strategies
+import {
+  FaShieldAlt,
+  FaHeart,
+  FaBrain,
+  FaBalanceScale,
   FaStar
 } from 'react-icons/fa';
+// Game-specific icons for combat/competitive
 import { GiSwordWound, GiSparkles, GiShield } from 'react-icons/gi';
+// Pokemon-specific icon
 import { MdCatchingPokemon } from 'react-icons/md';
 import type { FormatInfo, TierInfo, RoleInfo } from './types';
 

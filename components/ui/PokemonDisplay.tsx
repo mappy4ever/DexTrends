@@ -30,31 +30,9 @@ import { motion } from 'framer-motion';
 import { TypeBadge } from './TypeBadge';
 import { cn } from '@/utils/cn';
 import { cardHover } from '@/utils/animations';
-import { TYPE_COLORS } from '@/components/ui/design-system/glass-constants';
+import { TYPE_COLORS, TYPE_GRADIENTS } from '@/components/ui/design-system/glass-constants';
 
 const FALLBACK_IMAGE = '/dextrendslogo.png';
-
-// Type color mappings for gradients - Official Pokemon colors
-const typeGradients: Record<string, string> = {
-  normal: 'from-stone-400 via-stone-300 to-stone-200',
-  fire: 'from-orange-500 via-orange-400 to-amber-300',
-  water: 'from-blue-500 via-blue-400 to-sky-300',
-  electric: 'from-yellow-400 via-amber-300 to-yellow-200',
-  grass: 'from-green-500 via-emerald-400 to-lime-300',
-  ice: 'from-cyan-400 via-teal-300 to-sky-200',
-  fighting: 'from-red-600 via-red-500 to-orange-400',
-  poison: 'from-purple-500 via-purple-400 to-fuchsia-300',
-  ground: 'from-amber-500 via-yellow-400 to-orange-300',
-  flying: 'from-indigo-400 via-violet-300 to-purple-200',
-  psychic: 'from-pink-500 via-rose-400 to-pink-300',
-  bug: 'from-lime-500 via-green-400 to-lime-300',
-  rock: 'from-amber-600 via-yellow-500 to-amber-400',
-  ghost: 'from-purple-600 via-violet-500 to-purple-400',
-  dragon: 'from-violet-600 via-indigo-500 to-purple-400',
-  dark: 'from-stone-700 via-stone-600 to-stone-500',
-  steel: 'from-slate-400 via-slate-300 to-slate-200',
-  fairy: 'from-pink-400 via-rose-300 to-pink-200',
-};
 
 interface PokemonType {
   type: {
@@ -172,7 +150,7 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
   
   // Get primary type for gradient
   const primaryType = typeNames[0] || 'normal';
-  const gradient = typeGradients[primaryType];
+  const gradient = TYPE_GRADIENTS[primaryType as keyof typeof TYPE_GRADIENTS];
   
   // Determine image size
   const imageSize = width || height || sizeConfig[size].image;

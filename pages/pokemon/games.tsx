@@ -8,10 +8,12 @@ import { motion } from 'framer-motion';
 import { useTheme } from "../../context/UnifiedAppContext";
 import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
 import { GradientButton, CircularButton } from '../../components/ui/design-system';
-import { EmptyStateGlass, LoadingStateGlass, UnifiedSearchBar } from '../../components/ui/glass-components';
-import { BsCalendar, BsGlobe, BsController, BsArrowRight, BsPlayFill } from "react-icons/bs";
+import { LoadingStateGlass, UnifiedSearchBar } from '../../components/ui/glass-components';
+import { NoSearchResults } from '../../components/ui/EmptyState';
+import { FiChevronLeft, FiFilter, FiChevronDown, FiCalendar, FiGlobe, FiArrowRight, FiPlay } from "react-icons/fi";
+// Domain-specific icons kept as documented exceptions (game controller, card game)
+import { BsController } from "react-icons/bs";
 import { GiCardPickup } from "react-icons/gi";
-import { FiChevronLeft, FiFilter, FiChevronDown } from "react-icons/fi";
 import { cn } from "../../utils/cn";
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 
@@ -359,7 +361,7 @@ const GamesPage: NextPage = () => {
         >
           <div className="flex flex-col items-center">
             <span className="text-sm mb-2">Scroll to explore</span>
-            <BsArrowRight className="rotate-90 text-2xl" />
+            <FiArrowRight className="rotate-90 text-2xl" />
           </div>
         </motion.div>
       </div>
@@ -499,18 +501,14 @@ const GamesPage: NextPage = () => {
 
         {/* Generation Cards */}
         {filteredGames.length === 0 ? (
-          <EmptyStateGlass
-            type="search"
-            title="No games found"
-            message="Try adjusting your search or filter criteria"
-            actionButton={{
-              text: "Clear Filters",
-              onClick: () => {
-                setSearchTerm("");
-                setSelectedPlatform("");
-                setSelectedEra("");
-                setSelectedGeneration(null);
-              }
+          <NoSearchResults
+            searchTerm={searchTerm}
+            filterCount={(selectedPlatform ? 1 : 0) + (selectedEra ? 1 : 0) + (selectedGeneration ? 1 : 0)}
+            onClear={() => {
+              setSearchTerm("");
+              setSelectedPlatform("");
+              setSelectedEra("");
+              setSelectedGeneration(null);
             }}
           />
         ) : (
@@ -564,7 +562,7 @@ const GamesPage: NextPage = () => {
                           size="md"
                           className="mt-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 border-white/30"
                         >
-                          <BsGlobe className="mr-2" />
+                          <FiGlobe className="mr-2" />
                           Explore {generation.region}
                         </GradientButton>
                       </motion.div>
@@ -675,7 +673,7 @@ const GamesPage: NextPage = () => {
                               whileHover={{ opacity: 1, scale: 1 }}
                               transition={{ duration: 0.3 }}
                             >
-                              <BsPlayFill className="text-white text-6xl" />
+                              <FiPlay className="text-white text-6xl" />
                             </motion.div>
                           </motion.div>
                         </div>
@@ -701,7 +699,7 @@ const GamesPage: NextPage = () => {
                               <span>{game.platform}</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <BsCalendar />
+                              <FiCalendar />
                               <span>{game.year}</span>
                             </div>
                           </motion.div>

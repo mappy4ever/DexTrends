@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { BsCardList, BsGrid, BsPlay } from 'react-icons/bs';
-import { FiShoppingBag, FiZap, FiTrendingUp } from 'react-icons/fi';
+import { FiShoppingBag, FiZap, FiTrendingUp, FiList, FiGrid, FiPlay } from 'react-icons/fi';
 import { GiCardPickup, GiCardDraw } from 'react-icons/gi';
 import Button from './ui/Button';
 
@@ -26,7 +25,7 @@ const PocketModeLanding: React.FC = () => {
       href: '/pocketmode',
       title: 'Browse Cards',
       description: 'Explore all Pokémon TCG Pocket cards with detailed stats and beautiful artwork.',
-      icon: <BsCardList className="w-8 h-8" />,
+      icon: <FiList className="w-8 h-8" />,
       color: 'bg-amber-500',
       badge: 'Core'
     },
@@ -34,7 +33,7 @@ const PocketModeLanding: React.FC = () => {
       href: '/pocketmode/decks',
       title: 'Top Decks',
       description: 'Discover winning deck strategies and meta builds from top players.',
-      icon: <BsGrid className="w-8 h-8" />,
+      icon: <FiGrid className="w-8 h-8" />,
       color: 'bg-green-500',
       badge: 'Popular'
     },
@@ -146,7 +145,7 @@ const PocketModeLanding: React.FC = () => {
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BsPlay className="w-8 h-8 text-white" />
+                <FiPlay className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-stone-900 dark:text-white mb-3">
                 Faster Matches

@@ -19,7 +19,7 @@ interface RateLimitConfig {
 }
 
 // Shared rate limiter store to persist across requests
-const rateLimitStore = new Map<string, any>();
+const rateLimitStore = new Map<string, number[]>();
 
 /**
  * Extract client IP from request
@@ -46,10 +46,10 @@ function checkRateLimit(
   const windowStart = now - windowMs;
 
   // Get or initialize request timestamps for this key
-  let requests = rateLimitStore.get(key) as number[] || [];
+  let requests = rateLimitStore.get(key) || [];
 
   // Remove expired requests
-  requests = requests.filter((timestamp: number) => timestamp > windowStart);
+  requests = requests.filter(timestamp => timestamp > windowStart);
 
   const remaining = Math.max(0, maxRequests - requests.length);
   const resetTime = requests.length > 0 ? Math.min(...requests) + windowMs : now + windowMs;
@@ -73,13 +73,11 @@ if (typeof setInterval !== 'undefined') {
     const maxAge = 10 * 60 * 1000; // 10 minutes max age
 
     for (const [key, requests] of rateLimitStore.entries()) {
-      if (Array.isArray(requests)) {
-        const filtered = requests.filter((t: number) => now - t < maxAge);
-        if (filtered.length === 0) {
-          rateLimitStore.delete(key);
-        } else {
-          rateLimitStore.set(key, filtered);
-        }
+      const filtered = requests.filter(t => now - t < maxAge);
+      if (filtered.length === 0) {
+        rateLimitStore.delete(key);
+      } else {
+        rateLimitStore.set(key, filtered);
       }
     }
   }, 5 * 60 * 1000);

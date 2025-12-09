@@ -8,10 +8,9 @@ import QuickStatsCard from '../QuickStatsCard';
 import PokemonComparePanel from '../PokemonComparePanel';
 import Button from '../../ui/Button';
 import { cn } from '../../../utils/cn';
-import {
-  FaDna, FaFlask, FaGamepad
-} from 'react-icons/fa';
-import { IoSwapHorizontal } from 'react-icons/io5';
+import { FiRefreshCw, FiSliders } from 'react-icons/fi';
+// Domain-specific icons for genetics/competitive - documented exceptions
+import { FaDna, FaFlask, FaGamepad } from 'react-icons/fa';
 
 interface StatsTabV2Props {
   pokemon: Pokemon;
@@ -158,7 +157,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
               variant={showCompare ? 'primary' : 'secondary'}
               size="sm"
               onClick={() => setShowCompare(!showCompare)}
-              icon={<IoSwapHorizontal className="w-4 h-4" />}
+              icon={<FiRefreshCw className="w-4 h-4" />}
             >
               Compare
             </Button>

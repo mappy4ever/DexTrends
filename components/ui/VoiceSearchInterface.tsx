@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { FaMicrophone, FaMicrophoneSlash, FaSpinner } from 'react-icons/fa';
-import { BsSoundwave } from 'react-icons/bs';
+import { FiMic, FiMicOff, FiLoader, FiActivity } from 'react-icons/fi';
 import { TCGCard } from '../../types/api/cards';
 import logger from '@/utils/logger';
 import { 
@@ -302,11 +301,11 @@ export default function VoiceSearchInterface({
           title={isListening ? 'Stop listening' : 'Start voice search'}
         >
           {isProcessing ? (
-            <FaSpinner className="w-8 h-8 animate-spin" />
+            <FiLoader className="w-8 h-8 animate-spin" />
           ) : isListening ? (
-            <FaMicrophoneSlash className="w-8 h-8" />
+            <FiMicOff className="w-8 h-8" />
           ) : (
-            <FaMicrophone className="w-8 h-8" />
+            <FiMic className="w-8 h-8" />
           )}
           
           {/* Audio level indicator */}
@@ -325,14 +324,14 @@ export default function VoiceSearchInterface({
         <div className="text-center">
           {isProcessing && (
             <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-400">
-              <FaSpinner className="animate-spin" />
+              <FiLoader className="animate-spin" />
               <span>Processing...</span>
             </div>
           )}
-          
+
           {isListening && !isProcessing && (
             <div className="flex items-center space-x-2 text-red-600 dark:text-red-400">
-              <BsSoundwave className="animate-pulse" />
+              <FiActivity className="animate-pulse" />
               <span>Listening...</span>
             </div>
           )}

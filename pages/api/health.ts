@@ -43,12 +43,10 @@ interface SystemResources {
   };
   nodeVersion: string;
   platform: string;
-  environment: string | undefined;
 }
 
 interface Configuration {
   status: 'healthy' | 'warning';
-  environment: string | undefined;
   missingVars: string[];
   presentVars: string[];
 }
@@ -190,8 +188,7 @@ function checkSystemResources(): SystemResources {
       formatted: formatUptime(uptime)
     },
     nodeVersion: process.version,
-    platform: process.platform,
-    environment: process.env.NODE_ENV as string | undefined
+    platform: process.platform
   };
 }
 
@@ -227,7 +224,6 @@ function checkConfiguration(): Configuration {
 
   const configuration: Configuration = {
     status: 'healthy',
-    environment: process.env.NODE_ENV,
     missingVars: [],
     presentVars: []
   };
@@ -334,9 +330,8 @@ async function handler(
       ip: req.headers['x-forwarded-for'] || req.connection?.remoteAddress
     });
 
-    // Set appropriate status code
-    const statusCode = healthData.status === 'healthy' ? 200 : 
-                      healthData.status === 'degraded' ? 200 : 503;
+    // Set appropriate status code (503 for degraded/unhealthy)
+    const statusCode = healthData.status === 'healthy' ? 200 : 503;
 
     // Return response based on format
     if (format === 'prometheus') {

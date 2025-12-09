@@ -4,18 +4,17 @@ import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, SlideUp, CardHover } from '../ui/animations/animations';
 import { TypeBadge } from '../ui/TypeBadge';
-import { 
-  BsArrowRepeat,
-  BsGeoAlt,
-  BsSnow,
-  BsSun,
-  BsCloudRain,
-  BsLightning,
-  BsExclamation,
-  BsChevronRight,
-  BsInfoCircle
-} from 'react-icons/bs';
-import { GiMushroom, GiCrystalGrowth, GiSnowflake2 } from 'react-icons/gi';
+import {
+  FiRefreshCw,
+  FiMapPin,
+  FiSun,
+  FiCloud,
+  FiZap,
+  FiAlertCircle,
+  FiChevronRight,
+  FiInfo
+} from 'react-icons/fi';
+import { GiMushroom, GiCrystalGrowth, GiSnowflake2 } from 'react-icons/gi'; // Domain exceptions - nature/crystal themes
 
 // Type definitions
 interface Variant {
@@ -56,7 +55,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
     alola: {
       title: 'Alolan Forms',
       description: 'Pokémon that adapted to Alola\'s tropical island environment',
-      icon: <BsSun className="text-yellow-500" />,
+      icon: <FiSun className="text-yellow-500" />,
       categories: ['ice', 'dark', 'all'],
       variants: [
         {
@@ -185,7 +184,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
     galar: {
       title: 'Galarian Forms',
       description: 'Pokémon that evolved differently in Galar\'s unique environment',
-      icon: <BsCloudRain className="text-stone-500" />,
+      icon: <FiCloud className="text-stone-500" />,
       categories: ['fighting', 'poison', 'psychic', 'all'],
       variants: [
         {
@@ -614,7 +613,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <BsArrowRepeat className="text-amber-500" />
+              <FiRefreshCw className="text-amber-500" />
               {variantData.title}
             </h2>
             <p className="text-xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto">
@@ -754,7 +753,7 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                     {/* Click Indicator */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black/20 transition-opacity">
                       <div className="bg-white/90 rounded-full p-2">
-                        <BsChevronRight className="w-4 h-4 text-stone-700" />
+                        <FiChevronRight className="w-4 h-4 text-stone-700" />
                       </div>
                     </div>
                   </div>

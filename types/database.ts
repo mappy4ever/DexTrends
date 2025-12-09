@@ -228,6 +228,111 @@ export interface CardTransaction {
   transaction_date: string;
 }
 
+// ============== TCG Database Types ==============
+
+export interface TcgSeries {
+  id: string;
+  name: string;
+  logo_url: string | null;
+  created_at: string;
+  updated_at: string;
+  last_synced_at: string;
+}
+
+export interface TcgSet {
+  id: string;
+  series_id: string | null;
+  name: string;
+  logo_url: string | null;
+  symbol_url: string | null;
+  total_cards: number | null;
+  official_cards: number | null;
+  release_date: string | null;
+  tcg_online_code: string | null;
+  legal_standard: boolean;
+  legal_expanded: boolean;
+  created_at: string;
+  updated_at: string;
+  last_synced_at: string;
+}
+
+export interface TcgCard {
+  id: string;
+  local_id: string;
+  set_id: string;
+  name: string;
+  category: 'Pokemon' | 'Trainer' | 'Energy';
+  hp: number | null;
+  types: string[] | null;
+  stage: string | null;
+  evolve_from: string | null;
+  evolve_to: string[] | null;
+  attacks: TcgAttack[] | null;
+  abilities: TcgAbility[] | null;
+  weaknesses: TcgWeakness[] | null;
+  resistances: TcgResistance[] | null;
+  retreat_cost: number | null;
+  trainer_type: string | null;
+  energy_type: string | null;
+  effect: string | null;
+  illustrator: string | null;
+  rarity: string | null;
+  regulation_mark: string | null;
+  dex_ids: number[] | null;
+  description: string | null;
+  image_small: string | null;
+  image_large: string | null;
+  has_normal: boolean;
+  has_reverse: boolean;
+  has_holo: boolean;
+  has_first_edition: boolean;
+  legal_standard: boolean;
+  legal_expanded: boolean;
+  created_at: string;
+  updated_at: string;
+  last_synced_at: string;
+}
+
+export interface TcgAttack {
+  name: string;
+  cost?: string[];
+  damage?: string | number;
+  effect?: string;
+}
+
+export interface TcgAbility {
+  name: string;
+  effect?: string;
+  type?: string;
+}
+
+export interface TcgWeakness {
+  type: string;
+  value?: string;
+}
+
+export interface TcgResistance {
+  type: string;
+  value?: string;
+}
+
+export interface TcgSyncLog {
+  id: string;
+  sync_type: 'full' | 'delta' | 'set' | 'card';
+  target_id: string | null;
+  items_checked: number;
+  items_created: number;
+  items_updated: number;
+  items_failed: number;
+  started_at: string;
+  completed_at: string | null;
+  duration_ms: number | null;
+  status: 'running' | 'completed' | 'failed';
+  error_message: string | null;
+  error_details: Record<string, unknown> | null;
+  created_at: string;
+}
+
 // ============== Showdown Integration Types ==============
 
 export interface TypeEffectivenessRecord {

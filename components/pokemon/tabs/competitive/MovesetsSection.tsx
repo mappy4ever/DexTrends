@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container } from '../../../ui/Container';
 import { cn } from '../../../../utils/cn';
-import { FaChessBishop, FaFistRaised } from 'react-icons/fa';
-import { HiSparkles } from 'react-icons/hi';
+import { FiTarget, FiStar } from 'react-icons/fi';
+// Domain-specific icon for Fighting type moves - documented exception
+import { FaFistRaised } from 'react-icons/fa';
 import { STAT_NAMES } from '../../../../utils/pokemonDetailUtils';
 import type { MovesetData } from './types';
 import { ROLE_INFO } from './constants';
@@ -31,7 +32,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
-                <FaChessBishop className="w-5 h-5 text-amber-400" />
+                <FiTarget className="w-5 h-5 text-amber-400" />
               </div>
               <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-300">
                 Popular Movesets
@@ -43,7 +44,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {movesets.map((moveset, index) => {
               const roleInfo = ROLE_INFO[moveset.name as keyof typeof ROLE_INFO];
-              const Icon = roleInfo?.icon || FaChessBishop;
+              const Icon = roleInfo?.icon || FiTarget;
               
               return (
                 <motion.div
@@ -111,7 +112,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
                           {/* EVs */}
                           <div>
                             <p className="text-sm text-stone-600 dark:text-stone-300 mb-2 flex items-center gap-2">
-                              <HiSparkles className="w-4 h-4 text-amber-400" />
+                              <FiStar className="w-4 h-4 text-amber-400" />
                               EV Spread
                             </p>
                             <div className="grid grid-cols-2 gap-2">

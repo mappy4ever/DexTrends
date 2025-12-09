@@ -9,7 +9,8 @@ import { getTypeUIColors, getTypeAnimationAccent } from '../../utils/pokemonType
 import PokemonGlassPanel from './PokemonGlassPanel';
 import { cn } from '../../utils/cn';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
-import { FaClipboardList, FaChartBar, FaExchangeAlt, FaMapMarkerAlt, FaTrophy, FaLayerGroup } from 'react-icons/fa';
+import { FiClipboard, FiBarChart2, FiRefreshCw, FiMapPin, FiAward, FiLayers } from 'react-icons/fi';
+// Domain-specific icons for battle/breeding - documented exceptions
 import { GiCrossedSwords, GiEggClutch } from 'react-icons/gi';
 import { getAnimationProps } from '../../utils/animations';
 import { useTheme } from '../../context/UnifiedAppContext';
@@ -55,14 +56,14 @@ interface PokemonTabSystemProps {
 
 // Tab configuration - moved outside component to prevent recreation
 const POKEMON_TABS: { id: PokemonTab; label: string; icon: React.ReactNode }[] = [
-  { id: 'overview', label: 'Overview', icon: <FaClipboardList /> },
-  { id: 'stats', label: 'Stats', icon: <FaChartBar /> },
-  { id: 'evolution', label: 'Evolution', icon: <FaExchangeAlt /> },
+  { id: 'overview', label: 'Overview', icon: <FiClipboard /> },
+  { id: 'stats', label: 'Stats', icon: <FiBarChart2 /> },
+  { id: 'evolution', label: 'Evolution', icon: <FiRefreshCw /> },
   { id: 'moves', label: 'Moves', icon: <GiCrossedSwords /> },
   { id: 'breeding', label: 'Breeding', icon: <GiEggClutch /> },
-  { id: 'locations', label: 'Locations', icon: <FaMapMarkerAlt /> },
-  { id: 'cards', label: 'Cards', icon: <FaLayerGroup /> },
-  { id: 'competitive', label: 'Competitive', icon: <FaTrophy /> }
+  { id: 'locations', label: 'Locations', icon: <FiMapPin /> },
+  { id: 'cards', label: 'Cards', icon: <FiLayers /> },
+  { id: 'competitive', label: 'Competitive', icon: <FiAward /> }
 ];
 
 // Cleanup function for old Pokemon tab preferences

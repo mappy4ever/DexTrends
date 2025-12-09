@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence, useDragControls, PanInfo } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { CrossedSwords, Heart, CardPickup } from '@/utils/icons';
-import { FiSettings, FiMonitor, FiX } from 'react-icons/fi';
+import { FiMonitor, FiX } from 'react-icons/fi';
 import { Z_INDEX } from '@/hooks/useViewport';
 
 interface MoreSheetProps {
@@ -60,6 +60,7 @@ const navItems: SheetNavItem[] = [
 export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
   const dragControls = useDragControls();
   const sheetRef = useRef<HTMLDivElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
 
   // Android back button handler - closes sheet when back is pressed
   useEffect(() => {
@@ -76,14 +77,92 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [isOpen, onClose]);
 
+  // Focus management - store previous focus and focus first element
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Store previously focused element
+    previousActiveElement.current = document.activeElement as HTMLElement;
+
+    // Focus first focusable element in sheet
+    const focusFirstElement = () => {
+      if (!sheetRef.current) return;
+      const focusableElements = sheetRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableElements.length > 0) {
+        (focusableElements[0] as HTMLElement).focus();
+      }
+    };
+
+    const timeoutId = setTimeout(focusFirstElement, 100);
+    return () => clearTimeout(timeoutId);
+  }, [isOpen]);
+
+  // Focus trap and keyboard navigation
+  useEffect(() => {
+    if (!isOpen || !sheetRef.current) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Handle Escape key
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      // Handle Tab key for focus trap
+      if (e.key !== 'Tab' || !sheetRef.current) return;
+
+      const focusableElements = sheetRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Restore focus when sheet closes
+  useEffect(() => {
+    if (!isOpen && previousActiveElement.current) {
+      previousActiveElement.current.focus();
+    }
+  }, [isOpen]);
+
+  // Lock body scroll when sheet is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   // Handle drag end - dismiss if swiped down enough
   // Using 150px threshold to prevent accidental closes
-  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     // If dragged down more than 150px or with velocity > 500, close the sheet
     if (info.offset.y > 150 || info.velocity.y > 500) {
       onClose();
     }
-  };
+  }, [onClose]);
 
   return (
     <AnimatePresence>
@@ -98,11 +177,15 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
             className="fixed inset-0 bg-black/50"
             style={{ zIndex: Z_INDEX.modal - 1 }}
             onClick={onClose}
+            aria-hidden="true"
           />
 
           {/* Sheet */}
           <motion.div
             ref={sheetRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="more-sheet-title"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -138,7 +221,7 @@ export const MoreSheet: React.FC<MoreSheetProps> = ({ isOpen, onClose }) => {
 
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-2 border-b border-stone-100 dark:border-stone-800">
-              <h2 className="text-lg font-semibold text-stone-900 dark:text-white">
+              <h2 id="more-sheet-title" className="text-lg font-semibold text-stone-900 dark:text-white">
                 More
               </h2>
               <button

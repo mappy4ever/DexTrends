@@ -5,15 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 // Using direct PokeAPI URLs for Pokémon images
 import { Container } from '../ui/Container';
 import { FadeIn, SlideUp } from '../ui/animations/animations';
-import { 
-  BsArrowRepeat,
-  BsGeoAltFill,
-  BsChevronRight,
-  BsSnow,
-  BsFire,
-  BsLightning
-} from 'react-icons/bs';
-import { GiPalmTree, GiMountains, GiCrystalShine } from 'react-icons/gi';
+import {
+  FiRefreshCw,
+  FiMapPin,
+  FiChevronRight,
+  FiCloud,
+  FiSun,
+  FiZap
+} from 'react-icons/fi';
+import { GiPalmTree, GiMountains, GiCrystalShine } from 'react-icons/gi'; // Domain exceptions: environment icons
 
 interface RegionalForm {
   originalId: number;
@@ -335,7 +335,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
         <FadeIn>
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <BsArrowRepeat className="text-3xl text-amber-500 animate-spin-slow" />
+              <FiRefreshCw className="text-3xl text-amber-500 animate-spin-slow" />
               <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                 Regional Forms
               </h2>
@@ -391,7 +391,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
                           onClick={() => setShowOriginal({ ...showOriginal, [index]: !isFlipped })}
                           className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/80 dark:bg-stone-900/80 backdrop-blur-md shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
                         >
-                          <BsArrowRepeat className="text-amber-600 dark:text-amber-400 text-lg" />
+                          <FiRefreshCw className="text-amber-600 dark:text-amber-400 text-lg" />
                         </button>
 
                         {/* Pokémon Image */}
@@ -441,7 +441,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
                             className="flex items-center justify-center gap-1 mt-3 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-purple-300 transition-colors"
                           >
                             <span className="text-sm font-medium">View Details</span>
-                            <BsChevronRight className="text-sm" />
+                            <FiChevronRight className="text-sm" />
                           </Link>
                         </div>
                       </motion.div>
