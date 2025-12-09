@@ -417,7 +417,7 @@ export function extractBestPrice(pricing?: TCGDexPricing | null): number | undef
   return undefined;
 }
 
-function transformTCGPlayerPricing(pricing?: TCGDexTCGPlayerPricing): TCGPlayer | undefined {
+export function transformTCGPlayerPricing(pricing?: TCGDexTCGPlayerPricing): TCGPlayer | undefined {
   if (!pricing) return undefined;
 
   const prices: TCGPlayer['prices'] = {};
@@ -455,7 +455,7 @@ function transformTCGPlayerPriceData(data: {
   };
 }
 
-function transformCardMarketPricing(pricing?: TCGDexCardMarketPricing): CardMarket | undefined {
+export function transformCardMarketPricing(pricing?: TCGDexCardMarketPricing): CardMarket | undefined {
   if (!pricing) return undefined;
 
   // TCGDex uses kebab-case for holo/reverse fields

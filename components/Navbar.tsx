@@ -211,21 +211,27 @@ export default function Navbar() {
   return (
     <>
       {/* Clean Navbar - Warm cream background */}
-      {/* Safe area spacer: Fills the iOS notch area with background color */}
-      <div
+      {/* Combined safe area + navbar container for more reliable positioning */}
+      <header
         className="fixed top-0 left-0 right-0 bg-[#FFFDF7] dark:bg-stone-900"
         style={{
           zIndex: Z_INDEX.navbar,
-          height: 'env(safe-area-inset-top, 0px)'
-        }}
-      />
-      <div
-        className="fixed left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
-        style={{
-          zIndex: Z_INDEX.navbar,
-          top: 'env(safe-area-inset-top, 0px)'
+          // Use transform: translate3d(0,0,0) to force hardware acceleration and prevent iOS rendering issues
+          transform: 'translate3d(0, 0, 0)',
+          WebkitTransform: 'translate3d(0, 0, 0)',
         }}
       >
+        {/* Safe area spacer: Fills the iOS notch area with background color */}
+        <div
+          className="w-full bg-[#FFFDF7] dark:bg-stone-900"
+          style={{
+            height: 'env(safe-area-inset-top, 0px)'
+          }}
+        />
+        {/* Main navbar content */}
+        <div
+          className="flex items-center justify-between px-3 md:px-6 h-14 md:h-16 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+        >
         <div className="flex items-center gap-x-2">
           {/* Mobile Menu Button */}
           <button
@@ -444,7 +450,8 @@ export default function Navbar() {
             </ClientOnly>
           </button>
         </div>
-      </div>
+        </div>
+      </header>
       {/* Mobile Menu Overlay - Proper z-index and rendering */}
       {mobileOpen && (
         <>

@@ -4,6 +4,7 @@ import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
 import { TCGDEX } from '../../config/api';
 import { TcgCardManager } from '../../lib/supabase';
+import { formatImageUrl } from '../../utils/tcgdex-adapter';
 
 interface TCGDexSet {
   id: string;
@@ -175,10 +176,10 @@ export default async function handler(
         id: set.id,
         name: set.name,
         description: getSetDescription(set.id, set.name),
-        logoUrl: set.logo_url || `https://assets.tcgdex.net/en/tcgp/${set.id}/logo`,
+        logoUrl: formatImageUrl(set.logo_url || undefined) || `https://assets.tcgdex.net/en/tcgp/${set.id}/logo.png`,
         releaseDate: set.release_date || '2024-10-30',
         cardCount: set.total_cards || 0,
-        symbol: set.symbol_url || set.id,
+        symbol: formatImageUrl(set.symbol_url || undefined) || set.id,
         code: set.id
       }));
 
@@ -218,10 +219,10 @@ export default async function handler(
       id: set.id,
       name: set.name,
       description: getSetDescription(set.id, set.name),
-      logoUrl: set.logo || `https://assets.tcgdex.net/en/tcgp/${set.id}/logo`,
+      logoUrl: formatImageUrl(set.logo) || `https://assets.tcgdex.net/en/tcgp/${set.id}/logo.png`,
       releaseDate: set.releaseDate || '2024-10-30',
       cardCount: set.cardCount?.official || set.cardCount?.total || 0,
-      symbol: set.symbol || set.id,
+      symbol: formatImageUrl(set.symbol) || set.id,
       code: set.id
     }));
 

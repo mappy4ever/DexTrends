@@ -681,6 +681,90 @@ export class PriceHistoryManager {
 
     return data || [];
   }
+
+  /**
+   * Get the latest price from the price_history table (daily sync)
+   * This uses the new price_history table created by the migration
+   * Returns TCGPlayer and CardMarket prices
+   */
+  static async getLatestPriceFromHistory(cardId: string): Promise<{
+    tcgplayer_low: number | null;
+    tcgplayer_mid: number | null;
+    tcgplayer_high: number | null;
+    tcgplayer_market: number | null;
+    cardmarket_low: number | null;
+    cardmarket_trend: number | null;
+    cardmarket_avg1: number | null;
+    cardmarket_avg7: number | null;
+    cardmarket_avg30: number | null;
+    recorded_at: string | null;
+  } | null> {
+    try {
+      const { data, error } = await supabase
+        .from('price_history')
+        .select(`
+          tcgplayer_low,
+          tcgplayer_mid,
+          tcgplayer_high,
+          tcgplayer_market,
+          cardmarket_low,
+          cardmarket_trend,
+          cardmarket_avg1,
+          cardmarket_avg7,
+          cardmarket_avg30,
+          recorded_at
+        `)
+        .eq('card_id', cardId)
+        .order('recorded_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error) {
+        // PGRST116 = no rows returned, which is fine - just means no price data yet
+        if (error.code !== 'PGRST116') {
+          logger.debug('[PriceHistory] No price data found for card:', { cardId });
+        }
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('[PriceHistory] Error fetching latest price:', { cardId, error });
+      return null;
+    }
+  }
+
+  /**
+   * Get price history for charting (last N days)
+   * Uses the price_history table from the daily sync
+   */
+  static async getPriceHistoryForChart(cardId: string, days: number = 30): Promise<Array<{
+    recorded_at: string;
+    tcgplayer_market: number | null;
+    cardmarket_trend: number | null;
+  }>> {
+    try {
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+
+      const { data, error } = await supabase
+        .from('price_history')
+        .select('recorded_at, tcgplayer_market, cardmarket_trend')
+        .eq('card_id', cardId)
+        .gte('recorded_at', startDate.toISOString().split('T')[0])
+        .order('recorded_at', { ascending: true });
+
+      if (error) {
+        logger.error('[PriceHistory] Error fetching price history for chart:', { cardId, error });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('[PriceHistory] Unexpected error fetching price history:', { cardId, error });
+      return [];
+    }
+  }
 }
 
 // TCG Cards from Supabase database

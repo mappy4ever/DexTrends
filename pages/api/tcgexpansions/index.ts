@@ -4,7 +4,7 @@ import logger from '../../../utils/logger';
 import { createFallbackResponse } from '../../../lib/static-sets-fallback';
 import type { TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
 import type { TCGDexSetBrief } from '../../../types/api/tcgdex';
-import { transformSetBrief, transformSetsFromSeries, TCGDexEndpoints, type TCGDexSeriesWithSets } from '../../../utils/tcgdex-adapter';
+import { transformSetBrief, transformSetsFromSeries, TCGDexEndpoints, type TCGDexSeriesWithSets, formatImageUrl } from '../../../utils/tcgdex-adapter';
 import { withRateLimit, RateLimitPresets } from '../../../lib/api-middleware';
 import { TcgCardManager } from '../../../lib/supabase';
 
@@ -97,8 +97,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           total: set.total_cards || 0,
           printedTotal: set.total_cards || 0,
           images: {
-            symbol: set.symbol_url || '',
-            logo: set.logo_url || ''
+            symbol: formatImageUrl(set.symbol_url || ''),
+            logo: formatImageUrl(set.logo_url || '')
           },
           legalities: { standard: 'Legal', expanded: 'Legal' }
         }));

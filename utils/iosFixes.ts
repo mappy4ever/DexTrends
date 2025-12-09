@@ -6,6 +6,13 @@ interface ScrollableElement extends HTMLElement {
   };
 }
 
+interface WebkitStyleElement extends HTMLElement {
+  style: CSSStyleDeclaration & {
+    webkitTransform?: string;
+    webkitBackfaceVisibility?: string;
+  };
+}
+
 export function applyIOSFixes(): boolean {
   if (typeof window === 'undefined') return false;
 
@@ -57,20 +64,52 @@ export function applyIOSFixes(): boolean {
       }, 150);
     }, { passive: true });
 
-    // Fix iOS fixed positioning issues
-    const fixedElements = document.querySelectorAll<HTMLElement>('.fixed, [style*="position: fixed"]');
+    // Fix iOS fixed positioning issues - ensure navbar stays visible
+    // Select navbar specifically by its semantic element, not just .fixed class
+    const navbar = document.querySelector<WebkitStyleElement>('header.fixed, nav.fixed[style*="bottom"]');
+    const bottomNav = document.querySelector<WebkitStyleElement>('nav.fixed[style*="bottom: 0"]');
+
+    // Force hardware acceleration on critical fixed elements
+    if (navbar) {
+      navbar.style.transform = 'translate3d(0, 0, 0)';
+      navbar.style.webkitTransform = 'translate3d(0, 0, 0)';
+      navbar.style.backfaceVisibility = 'hidden';
+      navbar.style.webkitBackfaceVisibility = 'hidden';
+      // Ensure navbar is always at top
+      navbar.style.position = 'fixed';
+      navbar.style.top = '0';
+      navbar.style.left = '0';
+      navbar.style.right = '0';
+    }
+
+    if (bottomNav) {
+      bottomNav.style.transform = 'translate3d(0, 0, 0)';
+      bottomNav.style.webkitTransform = 'translate3d(0, 0, 0)';
+      bottomNav.style.backfaceVisibility = 'hidden';
+      bottomNav.style.webkitBackfaceVisibility = 'hidden';
+    }
+
+    // Periodically check and fix navbar positioning (workaround for iOS bugs)
     let lastScrollY = window.scrollY;
-    
+    let navbarCheckTimer: number;
+
     window.addEventListener('scroll', function() {
       const currentScrollY = window.scrollY;
-      const scrollDelta = currentScrollY - lastScrollY;
-      
-      fixedElements.forEach(element => {
-        if (Math.abs(scrollDelta) > 10) {
-          element.style.transform = 'translateZ(0)';
+
+      // Clear any pending timer
+      if (navbarCheckTimer) {
+        clearTimeout(navbarCheckTimer);
+      }
+
+      // After scroll ends, verify navbar is still visible
+      navbarCheckTimer = window.setTimeout(function() {
+        const navbarElem = document.querySelector<HTMLElement>('header.fixed');
+        if (navbarElem) {
+          // Force a repaint to fix any rendering issues
+          navbarElem.style.transform = 'translate3d(0, 0, 0)';
         }
-      });
-      
+      }, 100);
+
       lastScrollY = currentScrollY;
     }, { passive: true });
 

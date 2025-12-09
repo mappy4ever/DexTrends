@@ -5,10 +5,10 @@ import { tcgCache } from '../../../lib/tcg-cache';
 import performanceMonitor from '../../../utils/performanceMonitor';
 import type { TCGCard } from '../../../types/api/cards';
 import type { TCGDexCard } from '../../../types/api/tcgdex';
-import { transformCard, TCGDexEndpoints, extractBestPrice } from '../../../utils/tcgdex-adapter';
+import { transformCard, TCGDexEndpoints, extractBestPrice, transformTCGPlayerPricing, transformCardMarketPricing } from '../../../utils/tcgdex-adapter';
 import { isTCGCard } from '../../../utils/typeGuards';
-import { TcgCardManager } from '../../../lib/supabase';
-// Pricing is now provided directly by TCGDex API (no pokemontcg.io dependency)
+import { TcgCardManager, PriceHistoryManager } from '../../../lib/supabase';
+// Pricing: First tries Supabase price_history table, falls back to TCGDex API
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { cardId } = req.query;
@@ -24,18 +24,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Try Supabase first (local database)
     const supabaseCard = await TcgCardManager.getCard(id);
     if (supabaseCard) {
-      const responseTime = Date.now() - startTime;
       logger.info('[TCG Card API] Supabase hit', {
         cardId: id,
-        responseTime,
         source: 'supabase'
       });
 
       // Transform Supabase card to expected format
-      const card = {
+      const card: Partial<TCGCard> = {
         id: supabaseCard.id as string,
         name: supabaseCard.name as string,
-        supertype: supabaseCard.category === 'Pokemon' ? 'Pokémon' : supabaseCard.category,
+        supertype: supabaseCard.category === 'Pokemon' ? 'Pokémon' : (supabaseCard.category as 'Trainer' | 'Energy' | 'Pokémon' | undefined),
         hp: supabaseCard.hp ? String(supabaseCard.hp) : undefined,
         types: supabaseCard.types as string[] | undefined,
         evolvesFrom: supabaseCard.evolve_from as string | undefined,
@@ -69,14 +67,119 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       };
 
+      // Fetch pricing: First try Supabase price_history, fallback to TCGDex API
+      let pricing = null;
+      let priceSource = 'none';
+
+      try {
+        // Try Supabase price_history first (fast, local)
+        const priceData = await PriceHistoryManager.getLatestPriceFromHistory(id);
+
+        if (priceData && (priceData.tcgplayer_market || priceData.cardmarket_trend)) {
+          priceSource = 'supabase';
+
+          // Transform price_history data to TCGPlayer/CardMarket format
+          if (priceData.tcgplayer_market || priceData.tcgplayer_low) {
+            card.tcgplayer = {
+              url: '',
+              updatedAt: priceData.recorded_at || new Date().toISOString(),
+              prices: {
+                holofoil: {
+                  low: priceData.tcgplayer_low,
+                  mid: priceData.tcgplayer_mid,
+                  high: priceData.tcgplayer_high,
+                  market: priceData.tcgplayer_market,
+                  directLow: null
+                }
+              }
+            };
+          }
+
+          if (priceData.cardmarket_trend || priceData.cardmarket_low) {
+            card.cardmarket = {
+              url: '',
+              updatedAt: priceData.recorded_at || new Date().toISOString(),
+              prices: {
+                averageSellPrice: priceData.cardmarket_trend,
+                lowPrice: priceData.cardmarket_low,
+                trendPrice: priceData.cardmarket_trend,
+                avg1: priceData.cardmarket_avg1,
+                avg7: priceData.cardmarket_avg7,
+                avg30: priceData.cardmarket_avg30,
+                reverseHoloSell: null,
+                reverseHoloLow: null,
+                reverseHoloTrend: null
+              }
+            };
+          }
+
+          card.currentPrice = priceData.tcgplayer_market || priceData.cardmarket_trend || undefined;
+
+          pricing = {
+            source: priceData.tcgplayer_market ? 'tcgplayer' : 'cardmarket',
+            tcgplayer: card.tcgplayer,
+            cardmarket: card.cardmarket,
+            lastUpdated: priceData.recorded_at
+          };
+
+          logger.debug('[TCG Card API] Pricing from Supabase price_history', {
+            cardId: id,
+            price: card.currentPrice,
+            recordedAt: priceData.recorded_at
+          });
+        } else {
+          // Fallback to TCGDex API if no Supabase price data
+          logger.debug('[TCG Card API] No Supabase price, trying TCGDex', { cardId: id });
+
+          const pricingUrl = TCGDexEndpoints.card(id, 'en');
+          const tcgdexData = await fetchJSON<TCGDexCard>(pricingUrl, {
+            useCache: true,
+            cacheTime: 60 * 60 * 1000,
+            timeout: 5000,
+            retries: 1,
+            throwOnError: false
+          });
+
+          if (tcgdexData?.pricing) {
+            priceSource = 'tcgdex';
+            const tcgplayer = transformTCGPlayerPricing(tcgdexData.pricing.tcgplayer);
+            const cardmarket = transformCardMarketPricing(tcgdexData.pricing.cardmarket);
+
+            if (tcgplayer) card.tcgplayer = tcgplayer;
+            if (cardmarket) card.cardmarket = cardmarket;
+            card.currentPrice = extractBestPrice(tcgdexData.pricing);
+
+            pricing = {
+              source: tcgplayer ? 'tcgplayer' : 'cardmarket',
+              tcgplayer,
+              cardmarket
+            };
+
+            logger.debug('[TCG Card API] Pricing from TCGDex fallback', {
+              cardId: id,
+              price: card.currentPrice
+            });
+          }
+        }
+      } catch (pricingError) {
+        logger.warn('[TCG Card API] Failed to fetch pricing', {
+          cardId: id,
+          error: pricingError instanceof Error ? pricingError.message : String(pricingError)
+        });
+      }
+
+      const responseTime = Date.now() - startTime;
+
       res.setHeader('X-Cache-Status', 'supabase');
       res.setHeader('X-Response-Time', `${responseTime}ms`);
-      res.setHeader('X-Data-Source', 'supabase');
-      res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
+      res.setHeader('X-Price-Source', priceSource);
+      res.setHeader('Cache-Control', priceSource === 'supabase'
+        ? 'public, s-maxage=86400, stale-while-revalidate=604800'  // 24h cache if from Supabase
+        : 'public, s-maxage=3600, stale-while-revalidate=86400');  // 1h cache if from TCGDex
 
       return res.status(200).json({
         card,
-        pricing: null, // Supabase doesn't store pricing (per user request)
+        pricing,
         cached: false,
         source: 'supabase',
         responseTime

@@ -159,6 +159,18 @@
     padding-left: env(safe-area-inset-left);
   }
 
+  /* Fixed header/navbar stability for iOS */
+  /* Prevents fixed elements from being affected by iOS address bar hide/show */
+  header[style*="position: fixed"],
+  header.fixed,
+  nav[style*="position: fixed"],
+  nav.fixed {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
   /* Margin safe area utilities */
   .mb-safe {
     margin-bottom: env(safe-area-inset-bottom);

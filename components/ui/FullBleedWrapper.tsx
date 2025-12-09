@@ -22,14 +22,17 @@ interface FullBleedWrapperProps {
 /**
  * FullBleedWrapper - A robust component that provides full-bleed backgrounds
  * Simplified version that avoids SSR issues
+ *
+ * NOTE: Layout.tsx now handles navbar offset padding for ALL pages (including fullBleed).
+ * This component just provides the gradient background - no padding needed here.
  */
-export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({ 
-  children, 
-  className = '', 
+export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
+  children,
+  className = '',
   gradient = 'pokedex',
   customGradient,
   pokemonTypes,
-  disablePadding = false
+  disablePadding = false // Kept for backwards compatibility but no longer used
 }) => {
   // Get gradient classes based on the gradient type
   const getGradientClasses = (): string => {
@@ -47,6 +50,7 @@ export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
     <div className={`min-h-screen relative ${gradientClasses} ${className} px-safe`}>
       {/* Background extender to ensure full page coverage */}
       <div className={`fixed inset-0 ${gradientClasses} -z-10`} aria-hidden="true" />
+      {/* Content wrapper - Layout.tsx handles navbar padding */}
       <div className="relative z-0 min-h-screen flex flex-col">
         {children}
       </div>
@@ -57,13 +61,17 @@ export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
 /**
  * PageBackground - A simpler alternative for pages that just need a background without full-bleed
  * Uses the same gradient system but without the fixed positioning
+ *
+ * NOTE: Layout.tsx now handles navbar offset padding for ALL pages.
+ * This component just provides the gradient background.
  */
 export const PageBackground: React.FC<FullBleedWrapperProps> = ({
   children,
   className = '',
   gradient = 'pokedex',
   customGradient,
-  pokemonTypes
+  pokemonTypes,
+  disablePadding = false // Kept for backwards compatibility but no longer used
 }) => {
   const gradients = {
     pokedex: 'bg-gradient-to-b from-[#FFFDF7] to-[#FBF8F3] dark:from-stone-900 dark:to-stone-950',
@@ -79,6 +87,7 @@ export const PageBackground: React.FC<FullBleedWrapperProps> = ({
     <div className={`min-h-screen relative ${className} px-safe`}>
       {/* Fixed background layer */}
       <div className={`fixed inset-0 ${gradients[gradient]} -z-10`} aria-hidden="true" />
+      {/* Content wrapper - Layout.tsx handles navbar padding */}
       <div className="relative z-0 min-h-screen">
         {children}
       </div>

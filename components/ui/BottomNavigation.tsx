@@ -174,7 +174,12 @@ export const BottomNavigation: React.FC = () => {
           "border-t border-stone-200 dark:border-stone-800",
           "pb-safe px-safe" // Safe area for iOS home indicator + sides
         )}
-        style={{ zIndex: Z_INDEX.bottomNav }}
+        style={{
+          zIndex: Z_INDEX.bottomNav,
+          // Force hardware acceleration for stable positioning on iOS
+          transform: 'translate3d(0, 0, 0)',
+          WebkitTransform: 'translate3d(0, 0, 0)',
+        }}
       >
         <div className="flex items-center justify-around h-[68px] px-1">
           {/* Left nav items: Home, Pokedex */}
