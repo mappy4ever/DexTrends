@@ -2,8 +2,10 @@ name: Daily Database Sync
 
 on:
   schedule:
-    # Run at 3 AM UTC every day (after scheduled tests at 2 AM)
-    - cron: '0 3 * * *'
+    # Delta sync daily at 3 AM UTC (Mon-Sat)
+    - cron: '0 3 * * 1-6'
+    # Full sync on Sunday at 3 AM UTC
+    - cron: '0 3 * * 0'
   workflow_dispatch:
     inputs:
       sync-type:
@@ -12,9 +14,10 @@ on:
         type: choice
         options:
           - all
+          - all-delta
           - pokemon-only
           - tcg-only
-        default: all
+        default: all-delta
 
 jobs:
   sync-pokemon-database:
@@ -35,8 +38,32 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Determine sync mode
+      id: mode
+      run: |
+        # Sunday = full sync, other days = delta
+        DAY_OF_WEEK=$(date +%u)
+        if [[ "${{ github.event.inputs.sync-type }}" == "all" ]]; then
+          echo "mode=full" >> $GITHUB_OUTPUT
+          echo "Running FULL sync (manual trigger)"
+        elif [[ "${{ github.event.inputs.sync-type }}" == "all-delta" ]]; then
+          echo "mode=delta" >> $GITHUB_OUTPUT
+          echo "Running DELTA sync (manual trigger)"
+        elif [[ "$DAY_OF_WEEK" == "7" ]]; then
+          echo "mode=full" >> $GITHUB_OUTPUT
+          echo "Running FULL sync (Sunday)"
+        else
+          echo "mode=delta" >> $GITHUB_OUTPUT
+          echo "Running DELTA sync (weekday)"
+        fi
+
     - name: Sync Pokemon data to Supabase
-      run: npm run db:sync-pokemon
+      run: |
+        if [[ "${{ steps.mode.outputs.mode }}" == "delta" ]]; then
+          npm run db:sync-pokemon-delta
+        else
+          npm run db:sync-pokemon
+        fi
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -44,6 +71,8 @@ jobs:
     - name: Create summary
       run: |
         echo "## Pokemon Database Sync Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Mode:** ${{ steps.mode.outputs.mode }}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "- Types, Natures, Berries synced" >> $GITHUB_STEP_SUMMARY
         echo "- Abilities synced" >> $GITHUB_STEP_SUMMARY
@@ -70,8 +99,31 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Determine sync mode
+      id: mode
+      run: |
+        DAY_OF_WEEK=$(date +%u)
+        if [[ "${{ github.event.inputs.sync-type }}" == "all" ]]; then
+          echo "mode=full" >> $GITHUB_OUTPUT
+          echo "Running FULL sync (manual trigger)"
+        elif [[ "${{ github.event.inputs.sync-type }}" == "all-delta" ]]; then
+          echo "mode=delta" >> $GITHUB_OUTPUT
+          echo "Running DELTA sync (manual trigger)"
+        elif [[ "$DAY_OF_WEEK" == "7" ]]; then
+          echo "mode=full" >> $GITHUB_OUTPUT
+          echo "Running FULL sync (Sunday)"
+        else
+          echo "mode=delta" >> $GITHUB_OUTPUT
+          echo "Running DELTA sync (weekday)"
+        fi
+
     - name: Sync TCG data to Supabase
-      run: npm run db:sync-full
+      run: |
+        if [[ "${{ steps.mode.outputs.mode }}" == "delta" ]]; then
+          npm run db:sync-delta
+        else
+          npm run db:sync-full
+        fi
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -79,6 +131,8 @@ jobs:
     - name: Create summary
       run: |
         echo "## TCG Database Sync Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Mode:** ${{ steps.mode.outputs.mode }}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "- TCG Sets synced" >> $GITHUB_STEP_SUMMARY
         echo "- TCG Cards synced" >> $GITHUB_STEP_SUMMARY

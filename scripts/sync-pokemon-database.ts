@@ -31,6 +31,23 @@ const MAX_POKEMON = 1025;
 const BATCH_SIZE = 50;
 const DELAY_MS = 100; // Delay between requests to avoid rate limiting
 
+// Check if delta mode (only sync new items)
+const isDeltaMode = process.argv.includes('--delta');
+
+// Helper to get existing IDs from Supabase
+async function getExistingIds(table: string): Promise<Set<number>> {
+  const { data, error } = await supabase
+    .from(table)
+    .select('id');
+
+  if (error) {
+    console.warn(`  Warning: Could not fetch existing ${table} IDs:`, error.message);
+    return new Set();
+  }
+
+  return new Set((data || []).map((item: { id: number }) => item.id));
+}
+
 // Helper to fetch with retry
 async function fetchWithRetry<T>(url: string, retries = 3): Promise<T | null> {
   for (let i = 0; i < retries; i++) {
@@ -59,7 +76,22 @@ function sleep(ms: number): Promise<void> {
 async function syncPokemon() {
   console.log('\n🔴 Syncing Pokemon...');
 
+  // In delta mode, only sync Pokemon that don't exist
+  let existingIds = new Set<number>();
+  if (isDeltaMode) {
+    existingIds = await getExistingIds('pokemon');
+    console.log(`  Delta mode: Found ${existingIds.size} existing Pokemon`);
+  }
+
+  let synced = 0;
+  let skipped = 0;
+
   for (let id = 1; id <= MAX_POKEMON; id++) {
+    // Skip if already exists in delta mode
+    if (isDeltaMode && existingIds.has(id)) {
+      skipped++;
+      continue;
+    }
     try {
       const pokemon = await fetchWithRetry<any>(`${POKEAPI_BASE}/pokemon/${id}`);
       if (!pokemon) {
@@ -103,8 +135,11 @@ async function syncPokemon() {
 
       if (error) {
         console.error(`  Error saving Pokemon ${id}:`, error.message);
-      } else if (id % 50 === 0) {
-        console.log(`  Progress: ${id}/${MAX_POKEMON}`);
+      } else {
+        synced++;
+        if (synced % 50 === 0) {
+          console.log(`  Progress: ${synced} synced`);
+        }
       }
 
       await sleep(DELAY_MS);
@@ -113,7 +148,11 @@ async function syncPokemon() {
     }
   }
 
-  console.log('✅ Pokemon sync complete');
+  if (isDeltaMode) {
+    console.log(`✅ Pokemon sync complete (${synced} new, ${skipped} skipped)`);
+  } else {
+    console.log('✅ Pokemon sync complete');
+  }
 }
 
 // =============================================
@@ -122,7 +161,20 @@ async function syncPokemon() {
 async function syncPokemonSpecies() {
   console.log('\n🟠 Syncing Pokemon Species...');
 
+  let existingIds = new Set<number>();
+  if (isDeltaMode) {
+    existingIds = await getExistingIds('pokemon_species');
+    console.log(`  Delta mode: Found ${existingIds.size} existing Species`);
+  }
+
+  let synced = 0;
+  let skipped = 0;
+
   for (let id = 1; id <= MAX_POKEMON; id++) {
+    if (isDeltaMode && existingIds.has(id)) {
+      skipped++;
+      continue;
+    }
     try {
       const species = await fetchWithRetry<any>(`${POKEAPI_BASE}/pokemon-species/${id}`);
       if (!species) {
@@ -176,8 +228,11 @@ async function syncPokemonSpecies() {
 
       if (error) {
         console.error(`  Error saving species ${id}:`, error.message);
-      } else if (id % 50 === 0) {
-        console.log(`  Progress: ${id}/${MAX_POKEMON}`);
+      } else {
+        synced++;
+        if (synced % 50 === 0) {
+          console.log(`  Progress: ${synced} synced`);
+        }
       }
 
       await sleep(DELAY_MS);
@@ -186,7 +241,11 @@ async function syncPokemonSpecies() {
     }
   }
 
-  console.log('✅ Pokemon Species sync complete');
+  if (isDeltaMode) {
+    console.log(`✅ Pokemon Species sync complete (${synced} new, ${skipped} skipped)`);
+  } else {
+    console.log('✅ Pokemon Species sync complete');
+  }
 }
 
 async function getPokemonIdByName(name: string): Promise<number | null> {
@@ -200,6 +259,12 @@ async function getPokemonIdByName(name: string): Promise<number | null> {
 async function syncMoves() {
   console.log('\n🟡 Syncing Moves...');
 
+  let existingIds = new Set<number>();
+  if (isDeltaMode) {
+    existingIds = await getExistingIds('moves');
+    console.log(`  Delta mode: Found ${existingIds.size} existing Moves`);
+  }
+
   // First get list of all moves
   const moveList = await fetchWithRetry<any>(`${POKEAPI_BASE}/move?limit=1000`);
   if (!moveList?.results) {
@@ -208,11 +273,19 @@ async function syncMoves() {
   }
 
   const totalMoves = moveList.results.length;
-  console.log(`  Found ${totalMoves} moves`);
+  console.log(`  Found ${totalMoves} moves in API`);
+
+  let synced = 0;
+  let skipped = 0;
 
   for (let i = 0; i < moveList.results.length; i++) {
     const moveRef = moveList.results[i];
     const moveId = parseInt(moveRef.url.split('/').filter(Boolean).pop() || '0');
+
+    if (isDeltaMode && existingIds.has(moveId)) {
+      skipped++;
+      continue;
+    }
 
     try {
       const move = await fetchWithRetry<any>(`${POKEAPI_BASE}/move/${moveId}`);
@@ -260,8 +333,11 @@ async function syncMoves() {
 
       if (error) {
         console.error(`  Error saving move ${move.name}:`, error.message);
-      } else if ((i + 1) % 100 === 0) {
-        console.log(`  Progress: ${i + 1}/${totalMoves}`);
+      } else {
+        synced++;
+        if (synced % 100 === 0) {
+          console.log(`  Progress: ${synced} synced`);
+        }
       }
 
       await sleep(DELAY_MS);
@@ -270,7 +346,11 @@ async function syncMoves() {
     }
   }
 
-  console.log('✅ Moves sync complete');
+  if (isDeltaMode) {
+    console.log(`✅ Moves sync complete (${synced} new, ${skipped} skipped)`);
+  } else {
+    console.log('✅ Moves sync complete');
+  }
 }
 
 // =============================================
@@ -279,6 +359,12 @@ async function syncMoves() {
 async function syncAbilities() {
   console.log('\n🟢 Syncing Abilities...');
 
+  let existingIds = new Set<number>();
+  if (isDeltaMode) {
+    existingIds = await getExistingIds('abilities');
+    console.log(`  Delta mode: Found ${existingIds.size} existing Abilities`);
+  }
+
   const abilityList = await fetchWithRetry<any>(`${POKEAPI_BASE}/ability?limit=400`);
   if (!abilityList?.results) {
     console.error('Failed to fetch ability list');
@@ -286,11 +372,19 @@ async function syncAbilities() {
   }
 
   const totalAbilities = abilityList.results.length;
-  console.log(`  Found ${totalAbilities} abilities`);
+  console.log(`  Found ${totalAbilities} abilities in API`);
+
+  let synced = 0;
+  let skipped = 0;
 
   for (let i = 0; i < abilityList.results.length; i++) {
     const abilityRef = abilityList.results[i];
     const abilityId = parseInt(abilityRef.url.split('/').filter(Boolean).pop() || '0');
+
+    if (isDeltaMode && existingIds.has(abilityId)) {
+      skipped++;
+      continue;
+    }
 
     try {
       const ability = await fetchWithRetry<any>(`${POKEAPI_BASE}/ability/${abilityId}`);
@@ -321,8 +415,11 @@ async function syncAbilities() {
 
       if (error) {
         console.error(`  Error saving ability ${ability.name}:`, error.message);
-      } else if ((i + 1) % 50 === 0) {
-        console.log(`  Progress: ${i + 1}/${totalAbilities}`);
+      } else {
+        synced++;
+        if (synced % 50 === 0) {
+          console.log(`  Progress: ${synced} synced`);
+        }
       }
 
       await sleep(DELAY_MS);
@@ -331,7 +428,11 @@ async function syncAbilities() {
     }
   }
 
-  console.log('✅ Abilities sync complete');
+  if (isDeltaMode) {
+    console.log(`✅ Abilities sync complete (${synced} new, ${skipped} skipped)`);
+  } else {
+    console.log('✅ Abilities sync complete');
+  }
 }
 
 // =============================================
@@ -562,7 +663,13 @@ async function main() {
   const args = process.argv.slice(2);
 
   console.log('🚀 Pokemon Database Sync');
-  console.log('========================\n');
+  console.log('========================');
+  if (isDeltaMode) {
+    console.log('📊 Mode: DELTA (only new items)');
+  } else {
+    console.log('📊 Mode: FULL (all items)');
+  }
+  console.log('');
 
   const syncAll = args.includes('--all') || args.length === 0;
 

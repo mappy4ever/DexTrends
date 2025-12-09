@@ -48,6 +48,7 @@
     "db:sync-delta": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --delta",
     "db:sync-set": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --set",
     "db:sync-pokemon": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --all",
+    "db:sync-pokemon-delta": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --all --delta",
     "db:sync-pokemon-only": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --pokemon",
     "db:sync-moves": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --moves",
     "db:sync-abilities": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --abilities",
