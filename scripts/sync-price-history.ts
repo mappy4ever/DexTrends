@@ -34,22 +34,22 @@ interface TCGDexCard {
     id: string;
     name: string;
   };
-  tcgplayer?: {
-    url?: string;
-    updatedAt?: string;
-    prices?: {
+  // TCGDex uses 'pricing' object with tcgplayer/cardmarket nested
+  pricing?: {
+    tcgplayer?: {
+      updated?: string;
+      unit?: string;
       low?: number;
       mid?: number;
       high?: number;
       market?: number;
     };
-  };
-  cardmarket?: {
-    url?: string;
-    updatedAt?: string;
-    prices?: {
-      lowPrice?: number;
-      trendPrice?: number;
+    cardmarket?: {
+      updated?: string;
+      unit?: string;
+      low?: number;
+      trend?: number;
+      avg?: number;
       avg1?: number;
       avg7?: number;
       avg30?: number;
@@ -117,8 +117,8 @@ async function getCardsWithPrices(setId: string): Promise<TCGDexCard[]> {
         const cardResponse = await fetchWithRetry(`${TCGDEX_BASE}/cards/${card.id}`);
         const fullCard: TCGDexCard = await cardResponse.json();
 
-        // Only include if it has any price data
-        if (fullCard.tcgplayer?.prices || fullCard.cardmarket?.prices) {
+        // Only include if it has any price data (TCGDex uses 'pricing' object)
+        if (fullCard.pricing?.tcgplayer || fullCard.pricing?.cardmarket) {
           cardsWithPrices.push(fullCard);
         }
 
@@ -138,20 +138,22 @@ async function getCardsWithPrices(setId: string): Promise<TCGDexCard[]> {
 
 function cardToPriceRecord(card: TCGDexCard): PriceRecord {
   const today = new Date().toISOString().split('T')[0];
+  const tcgplayer = card.pricing?.tcgplayer;
+  const cardmarket = card.pricing?.cardmarket;
 
   return {
     card_id: card.id,
     card_name: card.name,
     set_id: card.set?.id || null,
-    tcgplayer_low: card.tcgplayer?.prices?.low ?? null,
-    tcgplayer_mid: card.tcgplayer?.prices?.mid ?? null,
-    tcgplayer_high: card.tcgplayer?.prices?.high ?? null,
-    tcgplayer_market: card.tcgplayer?.prices?.market ?? null,
-    cardmarket_low: card.cardmarket?.prices?.lowPrice ?? null,
-    cardmarket_trend: card.cardmarket?.prices?.trendPrice ?? null,
-    cardmarket_avg1: card.cardmarket?.prices?.avg1 ?? null,
-    cardmarket_avg7: card.cardmarket?.prices?.avg7 ?? null,
-    cardmarket_avg30: card.cardmarket?.prices?.avg30 ?? null,
+    tcgplayer_low: tcgplayer?.low ?? null,
+    tcgplayer_mid: tcgplayer?.mid ?? null,
+    tcgplayer_high: tcgplayer?.high ?? null,
+    tcgplayer_market: tcgplayer?.market ?? null,
+    cardmarket_low: cardmarket?.low ?? null,
+    cardmarket_trend: cardmarket?.trend ?? null,
+    cardmarket_avg1: cardmarket?.avg1 ?? null,
+    cardmarket_avg7: cardmarket?.avg7 ?? null,
+    cardmarket_avg30: cardmarket?.avg30 ?? null,
     recorded_at: today,
   };
 }
