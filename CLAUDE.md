@@ -398,3 +398,38 @@ npx playwright test tests/audit/ --project=chromium
 Results are saved to:
 - `test-results/audit-screenshots/` - Screenshots from route coverage
 - `test-results/` - Visual regression snapshots and traces
+
+---
+
+## Pending Tasks (Next Session)
+
+### 1. Set Up OAuth Providers for Authentication
+
+**Step 1: Run Supabase Migration**
+- Go to Supabase SQL Editor
+- Run contents of `supabase/migrations/20241210_user_profiles.sql`
+
+**Step 2: Configure OAuth in Supabase Dashboard**
+
+All redirect URIs use: `https://ptvpxfrfkkzisihufitz.supabase.co/auth/v1/callback`
+
+| Provider | Setup URL | Notes |
+|----------|-----------|-------|
+| Google | https://console.cloud.google.com/ | APIs & Services → Credentials → OAuth Client ID |
+| GitHub | https://github.com/settings/developers | New OAuth App |
+| Discord | https://discord.com/developers/applications | New Application → OAuth2 |
+
+After getting Client ID & Secret from each provider, add them in:
+**Supabase Dashboard → Authentication → Providers**
+
+### 2. Set Up Price History Tracking
+- Create `price_history` table migration
+- Set up scheduled job to capture daily prices
+- Add price history charts to card detail pages
+
+### 3. Completed This Session
+- [x] Showdown sync added to GitHub Actions (weekly on Sundays)
+- [x] Fixed mobile navbar safe area issues (iOS notch support)
+- [x] Enabled AuthProvider for user login/signup
+- [x] Created profiles table migration
+- [x] Created /profile page with logout
