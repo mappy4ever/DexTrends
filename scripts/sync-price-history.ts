@@ -1,12 +1,15 @@
 /**
- * Price History Sync Script
+ * Price History Sync Script (Optimized)
  *
- * Fetches current prices from TCGDex and stores them in Supabase.
+ * Fetches current prices from TCGDex for cards already in Supabase.
+ * This approach reduces redundant API calls by only fetching prices
+ * for cards we already have in our database.
+ *
  * Run daily via GitHub Actions to build price history over time.
  *
  * Usage:
- *   npm run db:sync-prices           # Sync all cards with prices
- *   npm run db:sync-prices -- --set sv7  # Sync specific set only
+ *   npm run db:sync-prices                # Sync all cards with prices
+ *   npm run db:sync-prices -- --set sv7   # Sync specific set only
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -26,35 +29,37 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 const TCGDEX_BASE = 'https://api.tcgdex.net/v2/en';
 
-interface TCGDexCard {
+interface SupabaseCard {
   id: string;
   name: string;
-  localId: string;
-  set?: {
-    id: string;
-    name: string;
+  set_id: string;
+}
+
+interface TCGDexPricing {
+  tcgplayer?: {
+    updated?: string;
+    unit?: string;
+    low?: number;
+    mid?: number;
+    high?: number;
+    market?: number;
   };
-  // TCGDex uses 'pricing' object with tcgplayer/cardmarket nested
-  pricing?: {
-    tcgplayer?: {
-      updated?: string;
-      unit?: string;
-      low?: number;
-      mid?: number;
-      high?: number;
-      market?: number;
-    };
-    cardmarket?: {
-      updated?: string;
-      unit?: string;
-      low?: number;
-      trend?: number;
-      avg?: number;
-      avg1?: number;
-      avg7?: number;
-      avg30?: number;
-    };
+  cardmarket?: {
+    updated?: string;
+    unit?: string;
+    low?: number;
+    trend?: number;
+    avg?: number;
+    avg1?: number;
+    avg7?: number;
+    avg30?: number;
   };
+}
+
+interface TCGDexCardResponse {
+  id: string;
+  name: string;
+  pricing?: TCGDexPricing;
 }
 
 interface PriceRecord {
@@ -73,78 +78,74 @@ interface PriceRecord {
   recorded_at: string;
 }
 
-async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
+async function fetchWithRetry(url: string, retries = 3): Promise<Response | null> {
   for (let i = 0; i < retries; i++) {
     try {
       const response = await fetch(url);
       if (response.ok) return response;
+      if (response.status === 404) return null; // Card not found in TCGDex
       if (response.status === 429) {
-        // Rate limited - wait and retry
-        const waitTime = Math.pow(2, i) * 1000;
+        // Rate limited - wait and retry with exponential backoff
+        const waitTime = Math.pow(2, i) * 2000;
         console.log(`  Rate limited, waiting ${waitTime}ms...`);
         await new Promise(resolve => setTimeout(resolve, waitTime));
         continue;
       }
       throw new Error(`HTTP ${response.status}`);
     } catch (error) {
-      if (i === retries - 1) throw error;
+      if (i === retries - 1) return null;
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
-  throw new Error('Max retries exceeded');
+  return null;
 }
 
-async function getAllSets(): Promise<string[]> {
-  console.log('Fetching all sets...');
-  const response = await fetchWithRetry(`${TCGDEX_BASE}/sets`);
-  const sets = await response.json();
-  return sets.map((s: { id: string }) => s.id);
-}
+async function getCardsFromSupabase(setId?: string): Promise<SupabaseCard[]> {
+  console.log('Fetching cards from Supabase...');
 
-async function getCardsWithPrices(setId: string): Promise<TCGDexCard[]> {
-  try {
-    const response = await fetchWithRetry(`${TCGDEX_BASE}/sets/${setId}`);
-    const setData = await response.json();
+  let query = supabase
+    .from('tcg_cards')
+    .select('id, name, set_id')
+    .order('set_id', { ascending: true });
 
-    if (!setData.cards) return [];
+  if (setId) {
+    query = query.eq('set_id', setId);
+  }
 
-    // Filter to only cards that have price data
-    const cardsWithPrices: TCGDexCard[] = [];
+  const { data, error } = await query;
 
-    for (const card of setData.cards) {
-      // Fetch full card details to get prices
-      try {
-        const cardResponse = await fetchWithRetry(`${TCGDEX_BASE}/cards/${card.id}`);
-        const fullCard: TCGDexCard = await cardResponse.json();
-
-        // Only include if it has any price data (TCGDex uses 'pricing' object)
-        if (fullCard.pricing?.tcgplayer || fullCard.pricing?.cardmarket) {
-          cardsWithPrices.push(fullCard);
-        }
-
-        // Longer delay to be respectful to the API (100ms between cards)
-        await new Promise(resolve => setTimeout(resolve, 100));
-      } catch {
-        // Skip cards that fail to fetch
-      }
-    }
-
-    return cardsWithPrices;
-  } catch (error) {
-    console.error(`  Error fetching set ${setId}:`, error);
+  if (error) {
+    console.error('Error fetching cards from Supabase:', error.message);
     return [];
+  }
+
+  return data || [];
+}
+
+async function fetchCardPrice(cardId: string): Promise<TCGDexPricing | null> {
+  const response = await fetchWithRetry(`${TCGDEX_BASE}/cards/${cardId}`);
+  if (!response) return null;
+
+  try {
+    const card: TCGDexCardResponse = await response.json();
+    return card.pricing || null;
+  } catch {
+    return null;
   }
 }
 
-function cardToPriceRecord(card: TCGDexCard): PriceRecord {
+function createPriceRecord(
+  card: SupabaseCard,
+  pricing: TCGDexPricing
+): PriceRecord {
   const today = new Date().toISOString().split('T')[0];
-  const tcgplayer = card.pricing?.tcgplayer;
-  const cardmarket = card.pricing?.cardmarket;
+  const tcgplayer = pricing.tcgplayer;
+  const cardmarket = pricing.cardmarket;
 
   return {
     card_id: card.id,
     card_name: card.name,
-    set_id: card.set?.id || null,
+    set_id: card.set_id || null,
     tcgplayer_low: tcgplayer?.low ?? null,
     tcgplayer_mid: tcgplayer?.mid ?? null,
     tcgplayer_high: tcgplayer?.high ?? null,
@@ -158,69 +159,117 @@ function cardToPriceRecord(card: TCGDexCard): PriceRecord {
   };
 }
 
+async function savePriceRecords(records: PriceRecord[]): Promise<{ saved: number; errors: number }> {
+  let saved = 0;
+  let errors = 0;
+
+  // Upsert in batches of 100
+  const batchSize = 100;
+  for (let i = 0; i < records.length; i += batchSize) {
+    const batch = records.slice(i, i + batchSize);
+
+    const { error } = await supabase
+      .from('price_history')
+      .upsert(batch, {
+        onConflict: 'card_id,recorded_at',
+        ignoreDuplicates: false
+      });
+
+    if (error) {
+      console.error(`  Error saving batch:`, error.message);
+      errors += batch.length;
+    } else {
+      saved += batch.length;
+    }
+  }
+
+  return { saved, errors };
+}
+
 async function syncPriceHistory(specificSet?: string) {
   console.log('='.repeat(60));
-  console.log('Price History Sync');
+  console.log('Price History Sync (Optimized)');
   console.log('='.repeat(60));
   console.log(`Date: ${new Date().toISOString()}`);
   console.log();
 
-  let sets: string[];
+  // Step 1: Get cards from Supabase (not TCGDex)
+  const cards = await getCardsFromSupabase(specificSet);
 
-  if (specificSet) {
-    sets = [specificSet];
-    console.log(`Syncing specific set: ${specificSet}`);
-  } else {
-    sets = await getAllSets();
-    // Sync ALL sets to capture complete price history
-    console.log(`Syncing ALL ${sets.length} sets`);
+  if (cards.length === 0) {
+    console.log('No cards found in Supabase. Run tcg sync first.');
+    return;
   }
 
-  let totalCards = 0;
+  console.log(`Found ${cards.length} cards in Supabase`);
+  if (specificSet) {
+    console.log(`Filtering to set: ${specificSet}`);
+  }
+
+  // Group cards by set for better logging
+  const cardsBySet = new Map<string, SupabaseCard[]>();
+  for (const card of cards) {
+    const setId = card.set_id || 'unknown';
+    if (!cardsBySet.has(setId)) {
+      cardsBySet.set(setId, []);
+    }
+    cardsBySet.get(setId)!.push(card);
+  }
+
+  console.log(`Cards span ${cardsBySet.size} sets\n`);
+
+  let totalProcessed = 0;
+  let totalWithPrices = 0;
   let totalSaved = 0;
   let totalErrors = 0;
 
-  for (const setId of sets) {
-    console.log(`\nProcessing set: ${setId}`);
+  // Step 2: Process each set
+  for (const [setId, setCards] of cardsBySet) {
+    console.log(`Processing set: ${setId} (${setCards.length} cards)`);
 
-    const cards = await getCardsWithPrices(setId);
-    console.log(`  Found ${cards.length} cards with prices`);
+    const priceRecords: PriceRecord[] = [];
+    let cardsWithPrices = 0;
 
-    if (cards.length === 0) continue;
+    // Fetch prices for each card in this set
+    for (const card of setCards) {
+      const pricing = await fetchCardPrice(card.id);
 
-    const priceRecords = cards.map(cardToPriceRecord);
-    totalCards += priceRecords.length;
-
-    // Upsert in batches
-    const batchSize = 100;
-    for (let i = 0; i < priceRecords.length; i += batchSize) {
-      const batch = priceRecords.slice(i, i + batchSize);
-
-      const { error } = await supabase
-        .from('price_history')
-        .upsert(batch, {
-          onConflict: 'card_id,recorded_at',
-          ignoreDuplicates: false
-        });
-
-      if (error) {
-        console.error(`  Error saving batch:`, error.message);
-        totalErrors += batch.length;
-      } else {
-        totalSaved += batch.length;
+      if (pricing && (pricing.tcgplayer || pricing.cardmarket)) {
+        priceRecords.push(createPriceRecord(card, pricing));
+        cardsWithPrices++;
       }
+
+      totalProcessed++;
+
+      // Progress indicator every 50 cards
+      if (totalProcessed % 50 === 0) {
+        process.stdout.write(`  Processed ${totalProcessed}/${cards.length} cards\r`);
+      }
+
+      // Respectful delay between API calls (100ms)
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
 
-    console.log(`  Saved ${priceRecords.length} price records`);
+    console.log(`  Found ${cardsWithPrices} cards with prices`);
+    totalWithPrices += cardsWithPrices;
 
-    // Longer delay between sets to be respectful to the API (1 second)
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Save price records for this set
+    if (priceRecords.length > 0) {
+      const { saved, errors } = await savePriceRecords(priceRecords);
+      totalSaved += saved;
+      totalErrors += errors;
+      console.log(`  Saved ${saved} price records`);
+    }
+
+    // Small delay between sets
+    await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   console.log('\n' + '='.repeat(60));
   console.log('Sync Complete');
   console.log('='.repeat(60));
-  console.log(`Total cards processed: ${totalCards}`);
+  console.log(`Total cards in Supabase: ${cards.length}`);
+  console.log(`Cards with prices: ${totalWithPrices}`);
   console.log(`Successfully saved: ${totalSaved}`);
   console.log(`Errors: ${totalErrors}`);
 }

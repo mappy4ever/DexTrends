@@ -45,6 +45,7 @@
     "test:dev-server": "NODE_ENV=test npm run dev",
     "test:full-reset": "npm run test:clean && npm install && npm run test:stable",
     "db:sync-full": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --full",
+    "db:sync-daily": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --daily",
     "db:sync-delta": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --delta",
     "db:sync-set": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-tcg-database.ts --set",
     "db:sync-pokemon": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/sync-pokemon-database.ts --all",

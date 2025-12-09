@@ -2,10 +2,8 @@ name: Daily Database Sync
 
 on:
   schedule:
-    # Delta sync daily at 3 AM UTC (Mon-Sat)
-    - cron: '0 3 * * 1-6'
-    # Full sync on Sunday at 3 AM UTC
-    - cron: '0 3 * * 0'
+    # Daily sync at 3 AM UTC (every day)
+    - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       sync-type:
@@ -13,18 +11,18 @@ on:
         required: true
         type: choice
         options:
-          - all
-          - all-delta
+          - daily
+          - full
           - pokemon-only
           - tcg-only
           - showdown-only
-        default: all-delta
+        default: daily
 
 jobs:
   sync-pokemon-database:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    if: ${{ github.event.inputs.sync-type != 'tcg-only' }}
+    if: ${{ github.event.inputs.sync-type != 'tcg-only' && github.event.inputs.sync-type != 'showdown-only' }}
 
     steps:
     - name: Checkout code
@@ -44,12 +42,9 @@ jobs:
       run: |
         # Sunday = full sync, other days = delta
         DAY_OF_WEEK=$(date +%u)
-        if [[ "${{ github.event.inputs.sync-type }}" == "all" ]]; then
+        if [[ "${{ github.event.inputs.sync-type }}" == "full" ]]; then
           echo "mode=full" >> $GITHUB_OUTPUT
           echo "Running FULL sync (manual trigger)"
-        elif [[ "${{ github.event.inputs.sync-type }}" == "all-delta" ]]; then
-          echo "mode=delta" >> $GITHUB_OUTPUT
-          echo "Running DELTA sync (manual trigger)"
         elif [[ "$DAY_OF_WEEK" == "7" ]]; then
           echo "mode=full" >> $GITHUB_OUTPUT
           echo "Running FULL sync (Sunday)"
@@ -84,8 +79,8 @@ jobs:
 
   sync-tcg-database:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    if: ${{ github.event.inputs.sync-type != 'pokemon-only' }}
+    timeout-minutes: 360  # 6 hours - includes price sync now
+    if: ${{ github.event.inputs.sync-type != 'pokemon-only' && github.event.inputs.sync-type != 'showdown-only' }}
 
     steps:
     - name: Checkout code
@@ -103,27 +98,25 @@ jobs:
     - name: Determine sync mode
       id: mode
       run: |
+        # Sunday = full sync, other days = daily (new cards + all prices)
         DAY_OF_WEEK=$(date +%u)
-        if [[ "${{ github.event.inputs.sync-type }}" == "all" ]]; then
+        if [[ "${{ github.event.inputs.sync-type }}" == "full" ]]; then
           echo "mode=full" >> $GITHUB_OUTPUT
           echo "Running FULL sync (manual trigger)"
-        elif [[ "${{ github.event.inputs.sync-type }}" == "all-delta" ]]; then
-          echo "mode=delta" >> $GITHUB_OUTPUT
-          echo "Running DELTA sync (manual trigger)"
         elif [[ "$DAY_OF_WEEK" == "7" ]]; then
           echo "mode=full" >> $GITHUB_OUTPUT
           echo "Running FULL sync (Sunday)"
         else
-          echo "mode=delta" >> $GITHUB_OUTPUT
-          echo "Running DELTA sync (weekday)"
+          echo "mode=daily" >> $GITHUB_OUTPUT
+          echo "Running DAILY sync (new cards + all prices)"
         fi
 
-    - name: Sync TCG data to Supabase
+    - name: Sync TCG data + prices to Supabase
       run: |
-        if [[ "${{ steps.mode.outputs.mode }}" == "delta" ]]; then
-          npm run db:sync-delta
-        else
+        if [[ "${{ steps.mode.outputs.mode }}" == "full" ]]; then
           npm run db:sync-full
+        else
+          npm run db:sync-daily
         fi
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -137,51 +130,15 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "- TCG Sets synced" >> $GITHUB_STEP_SUMMARY
         echo "- TCG Cards synced" >> $GITHUB_STEP_SUMMARY
-        echo "- Pocket Sets synced" >> $GITHUB_STEP_SUMMARY
-        echo "- Pocket Cards synced" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Sync completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
-
-  sync-price-history:
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    # Run daily (every schedule) to capture price snapshots for ALL sets
-    # Extended timeout (6 hours) due to longer delays for API respect
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.x
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Sync price history to Supabase
-      run: npm run db:sync-prices
-      env:
-        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-
-    - name: Create summary
-      run: |
-        echo "## Price History Sync Complete" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "- Daily price snapshots captured" >> $GITHUB_STEP_SUMMARY
-        echo "- TCGPlayer (USD) prices recorded" >> $GITHUB_STEP_SUMMARY
-        echo "- CardMarket (EUR) prices recorded" >> $GITHUB_STEP_SUMMARY
+        echo "- **Price history recorded** (combined sync)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "Sync completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
 
   sync-showdown-database:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Run on Sundays OR when manually triggered with showdown-only/all
-    if: ${{ github.event.inputs.sync-type == 'showdown-only' || github.event.inputs.sync-type == 'all' || (github.event_name == 'schedule' && github.event.schedule == '0 3 * * 0') }}
+    # Run on Sundays OR when manually triggered with showdown-only/full
+    if: ${{ github.event.inputs.sync-type == 'showdown-only' || github.event.inputs.sync-type == 'full' || (github.event_name == 'schedule' && (contains(github.event.schedule, '0 3 * * 0') || false)) }}
 
     steps:
     - name: Checkout code
@@ -196,13 +153,25 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Check if Sunday
+      id: check-day
+      run: |
+        DAY_OF_WEEK=$(date +%u)
+        if [[ "$DAY_OF_WEEK" == "7" ]] || [[ "${{ github.event.inputs.sync-type }}" == "showdown-only" ]] || [[ "${{ github.event.inputs.sync-type }}" == "full" ]]; then
+          echo "should_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "should_run=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: Sync Showdown competitive data to Supabase
+      if: ${{ steps.check-day.outputs.should_run == 'true' }}
       run: npm run db:sync-showdown
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
     - name: Create summary
+      if: ${{ steps.check-day.outputs.should_run == 'true' }}
       run: |
         echo "## Showdown Database Sync Complete" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
@@ -217,7 +186,7 @@ jobs:
 
   notify-on-failure:
     runs-on: ubuntu-latest
-    needs: [sync-pokemon-database, sync-tcg-database, sync-price-history, sync-showdown-database]
+    needs: [sync-pokemon-database, sync-tcg-database, sync-showdown-database]
     if: failure()
 
     steps:
@@ -229,6 +198,6 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             title: `Database Sync Failed - ${new Date().toISOString().split('T')[0]}`,
-            body: `The daily database sync has failed. Please check the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.\n\n**Affected jobs:**\n- Pokemon sync: Check logs\n- TCG sync: Check logs`,
+            body: `The daily database sync has failed. Please check the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.\n\n**Affected jobs:**\n- Pokemon sync: Check logs\n- TCG sync: Check logs\n- Showdown sync: Check logs`,
             labels: ['bug', 'database', 'automated']
           });

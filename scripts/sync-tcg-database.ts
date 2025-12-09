@@ -48,7 +48,38 @@ interface SyncStats {
   cardsCreated: number;
   cardsUpdated: number;
   cardsFailed: number;
+  pricesRecorded: number;
+  pricesFailed: number;
   errors: string[];
+}
+
+interface PriceRecord {
+  card_id: string;
+  card_name: string;
+  set_id: string | null;
+  // TCGPlayer prices (USD)
+  tcgplayer_low: number | null;
+  tcgplayer_mid: number | null;
+  tcgplayer_high: number | null;
+  tcgplayer_market: number | null;
+  tcgplayer_updated_at: string | null;
+  // CardMarket regular prices (EUR)
+  cardmarket_avg: number | null;
+  cardmarket_low: number | null;
+  cardmarket_trend: number | null;
+  cardmarket_avg1: number | null;
+  cardmarket_avg7: number | null;
+  cardmarket_avg30: number | null;
+  // CardMarket holo variant prices (EUR)
+  cardmarket_avg_holo: number | null;
+  cardmarket_low_holo: number | null;
+  cardmarket_trend_holo: number | null;
+  cardmarket_avg1_holo: number | null;
+  cardmarket_avg7_holo: number | null;
+  cardmarket_avg30_holo: number | null;
+  cardmarket_updated_at: string | null;
+  // Metadata
+  recorded_at: string;
 }
 
 interface DbSeries {
@@ -171,6 +202,73 @@ function transformCard(card: TCGDexCard, setId: string): DbCard {
     legal_standard: card.legal?.standard || false,
     legal_expanded: card.legal?.expanded || true,
     last_synced_at: new Date().toISOString(),
+  };
+}
+
+interface TCGDexPricing {
+  tcgplayer?: {
+    updated?: string;
+    low?: number;
+    mid?: number;
+    high?: number;
+    market?: number;
+  };
+  cardmarket?: {
+    updated?: string;
+    avg?: number;
+    low?: number;
+    trend?: number;
+    avg1?: number;
+    avg7?: number;
+    avg30?: number;
+    'avg-holo'?: number;
+    'low-holo'?: number;
+    'trend-holo'?: number;
+    'avg1-holo'?: number;
+    'avg7-holo'?: number;
+    'avg30-holo'?: number;
+  };
+}
+
+function extractPriceRecord(card: TCGDexCard): PriceRecord | null {
+  // TCGDex uses 'pricing' object with tcgplayer/cardmarket nested
+  const pricing = (card as unknown as { pricing?: TCGDexPricing }).pricing;
+
+  if (!pricing || (!pricing.tcgplayer && !pricing.cardmarket)) {
+    return null;
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  const tcgplayer = pricing.tcgplayer;
+  const cardmarket = pricing.cardmarket;
+
+  return {
+    card_id: card.id,
+    card_name: card.name,
+    set_id: card.set?.id || null,
+    // TCGPlayer prices (USD)
+    tcgplayer_low: tcgplayer?.low ?? null,
+    tcgplayer_mid: tcgplayer?.mid ?? null,
+    tcgplayer_high: tcgplayer?.high ?? null,
+    tcgplayer_market: tcgplayer?.market ?? null,
+    tcgplayer_updated_at: tcgplayer?.updated ?? null,
+    // CardMarket regular prices (EUR)
+    cardmarket_avg: cardmarket?.avg ?? null,
+    cardmarket_low: cardmarket?.low ?? null,
+    cardmarket_trend: cardmarket?.trend ?? null,
+    cardmarket_avg1: cardmarket?.avg1 ?? null,
+    cardmarket_avg7: cardmarket?.avg7 ?? null,
+    cardmarket_avg30: cardmarket?.avg30 ?? null,
+    // CardMarket holo variant prices (EUR)
+    cardmarket_avg_holo: cardmarket?.['avg-holo'] ?? null,
+    cardmarket_low_holo: cardmarket?.['low-holo'] ?? null,
+    cardmarket_trend_holo: cardmarket?.['trend-holo'] ?? null,
+    cardmarket_avg1_holo: cardmarket?.['avg1-holo'] ?? null,
+    cardmarket_avg7_holo: cardmarket?.['avg7-holo'] ?? null,
+    cardmarket_avg30_holo: cardmarket?.['avg30-holo'] ?? null,
+    cardmarket_updated_at: cardmarket?.updated ?? null,
+    // Metadata
+    recorded_at: today,
   };
 }
 
@@ -298,7 +396,8 @@ async function syncSets(
 async function syncCardsForSet(
   supabase: SupabaseClient,
   setId: string,
-  stats: SyncStats
+  stats: SyncStats,
+  recordPrices: boolean = true
 ): Promise<void> {
   console.log(`\n🃏 Syncing cards for set: ${setId}`);
 
@@ -312,12 +411,13 @@ async function syncCardsForSet(
   console.log(`  Found ${set.cards.length} cards`);
 
   const cardBatch: DbCard[] = [];
+  const priceBatch: PriceRecord[] = [];
 
   for (let i = 0; i < set.cards.length; i++) {
     const cardBrief = set.cards[i];
     stats.cardsChecked++;
 
-    // Fetch full card details
+    // Fetch full card details (includes pricing)
     const fullCard = await fetchWithRetry<TCGDexCard>(`${TCGDEX_BASE_URL}/cards/${cardBrief.id}`);
     await sleep(RATE_LIMIT_MS);
 
@@ -329,7 +429,15 @@ async function syncCardsForSet(
 
     cardBatch.push(transformCard(fullCard, setId));
 
-    // Insert in batches
+    // Extract price data if available (same API call, no extra cost!)
+    if (recordPrices) {
+      const priceRecord = extractPriceRecord(fullCard);
+      if (priceRecord) {
+        priceBatch.push(priceRecord);
+      }
+    }
+
+    // Insert cards in batches
     if (cardBatch.length >= BATCH_SIZE || i === set.cards.length - 1) {
       const { error } = await supabase
         .from('tcg_cards')
@@ -345,9 +453,30 @@ async function syncCardsForSet(
 
       cardBatch.length = 0; // Clear batch
     }
+
+    // Insert prices in batches
+    if (recordPrices && (priceBatch.length >= BATCH_SIZE || i === set.cards.length - 1)) {
+      if (priceBatch.length > 0) {
+        const { error } = await supabase
+          .from('price_history')
+          .upsert(priceBatch, {
+            onConflict: 'card_id,recorded_at',
+            ignoreDuplicates: false
+          });
+
+        if (error) {
+          stats.pricesFailed += priceBatch.length;
+          stats.errors.push(`Failed to upsert price batch: ${error.message}`);
+        } else {
+          stats.pricesRecorded += priceBatch.length;
+        }
+
+        priceBatch.length = 0; // Clear batch
+      }
+    }
   }
 
-  console.log(`\n  ✓ Completed ${set.name}`);
+  console.log(`\n  ✓ Completed ${set.name} (${stats.pricesRecorded > 0 ? `${priceBatch.length} prices` : 'no prices'})`);
 }
 
 async function getExistingSetIds(supabase: SupabaseClient): Promise<Set<string>> {
@@ -415,7 +544,7 @@ async function updateSyncLog(
 // ============================================================================
 
 async function fullSync(supabase: SupabaseClient): Promise<SyncStats> {
-  console.log('🚀 Starting FULL sync...');
+  console.log('🚀 Starting FULL sync (cards + prices)...');
 
   const stats: SyncStats = {
     seriesChecked: 0,
@@ -428,6 +557,8 @@ async function fullSync(supabase: SupabaseClient): Promise<SyncStats> {
     cardsCreated: 0,
     cardsUpdated: 0,
     cardsFailed: 0,
+    pricesRecorded: 0,
+    pricesFailed: 0,
     errors: [],
   };
 
@@ -465,7 +596,7 @@ async function fullSync(supabase: SupabaseClient): Promise<SyncStats> {
 }
 
 async function deltaSync(supabase: SupabaseClient): Promise<SyncStats> {
-  console.log('🔄 Starting DELTA sync (new sets only)...');
+  console.log('🔄 Starting DELTA sync (new sets + all prices)...');
 
   const stats: SyncStats = {
     seriesChecked: 0,
@@ -478,6 +609,8 @@ async function deltaSync(supabase: SupabaseClient): Promise<SyncStats> {
     cardsCreated: 0,
     cardsUpdated: 0,
     cardsFailed: 0,
+    pricesRecorded: 0,
+    pricesFailed: 0,
     errors: [],
   };
 
@@ -514,8 +647,135 @@ async function deltaSync(supabase: SupabaseClient): Promise<SyncStats> {
   return stats;
 }
 
+async function dailySync(supabase: SupabaseClient): Promise<SyncStats> {
+  console.log('📅 Starting DAILY sync (new sets + prices for all existing cards)...');
+
+  const stats: SyncStats = {
+    seriesChecked: 0,
+    seriesCreated: 0,
+    seriesUpdated: 0,
+    setsChecked: 0,
+    setsCreated: 0,
+    setsUpdated: 0,
+    cardsChecked: 0,
+    cardsCreated: 0,
+    cardsUpdated: 0,
+    cardsFailed: 0,
+    pricesRecorded: 0,
+    pricesFailed: 0,
+    errors: [],
+  };
+
+  const logId = await createSyncLog(supabase, 'daily');
+
+  try {
+    // 1. Get existing set IDs
+    const existingSetIds = await getExistingSetIds(supabase);
+    console.log(`  Found ${existingSetIds.size} existing sets in database`);
+
+    // 2. Sync series (always update)
+    await syncSeries(supabase, stats);
+
+    // 3. Sync sets and identify new ones
+    const newSets = await syncSets(supabase, stats, existingSetIds);
+
+    console.log(`\n  📊 Found ${newSets.length} new sets to sync cards for`);
+
+    // 4. Sync cards for NEW sets only (full card data + prices)
+    for (const set of newSets) {
+      await syncCardsForSet(supabase, set.id, stats, true);
+    }
+
+    // 5. Sync prices for ALL EXISTING sets (prices only, no card updates)
+    console.log(`\n💰 Syncing prices for ${existingSetIds.size} existing sets...`);
+
+    for (const setId of existingSetIds) {
+      await syncPricesForSet(supabase, setId, stats);
+    }
+
+    if (logId) {
+      await updateSyncLog(supabase, logId, stats, 'completed');
+    }
+  } catch (error) {
+    stats.errors.push(`Daily sync failed: ${error}`);
+    if (logId) {
+      await updateSyncLog(supabase, logId, stats, 'failed');
+    }
+  }
+
+  return stats;
+}
+
+async function syncPricesForSet(
+  supabase: SupabaseClient,
+  setId: string,
+  stats: SyncStats
+): Promise<void> {
+  // Fetch set with cards
+  const set = await fetchWithRetry<TCGDexSet>(`${TCGDEX_BASE_URL}/sets/${setId}`);
+  if (!set || !set.cards) {
+    return; // Skip silently - set might not exist anymore
+  }
+
+  process.stdout.write(`  ${setId}: `);
+
+  const priceBatch: PriceRecord[] = [];
+  let pricesFound = 0;
+
+  for (const cardBrief of set.cards) {
+    // Fetch full card details (includes pricing)
+    const fullCard = await fetchWithRetry<TCGDexCard>(`${TCGDEX_BASE_URL}/cards/${cardBrief.id}`);
+    await sleep(RATE_LIMIT_MS);
+
+    if (!fullCard) continue;
+
+    // Extract price data
+    const priceRecord = extractPriceRecord(fullCard);
+    if (priceRecord) {
+      priceBatch.push(priceRecord);
+      pricesFound++;
+    }
+
+    // Insert prices in batches
+    if (priceBatch.length >= BATCH_SIZE) {
+      const { error } = await supabase
+        .from('price_history')
+        .upsert(priceBatch, {
+          onConflict: 'card_id,recorded_at',
+          ignoreDuplicates: false
+        });
+
+      if (error) {
+        stats.pricesFailed += priceBatch.length;
+      } else {
+        stats.pricesRecorded += priceBatch.length;
+      }
+
+      priceBatch.length = 0;
+    }
+  }
+
+  // Save remaining prices
+  if (priceBatch.length > 0) {
+    const { error } = await supabase
+      .from('price_history')
+      .upsert(priceBatch, {
+        onConflict: 'card_id,recorded_at',
+        ignoreDuplicates: false
+      });
+
+    if (error) {
+      stats.pricesFailed += priceBatch.length;
+    } else {
+      stats.pricesRecorded += priceBatch.length;
+    }
+  }
+
+  console.log(`${pricesFound} prices`);
+}
+
 async function syncSet(supabase: SupabaseClient, setId: string): Promise<SyncStats> {
-  console.log(`🎯 Syncing specific set: ${setId}`);
+  console.log(`🎯 Syncing specific set: ${setId} (cards + prices)`);
 
   const stats: SyncStats = {
     seriesChecked: 0,
@@ -528,6 +788,8 @@ async function syncSet(supabase: SupabaseClient, setId: string): Promise<SyncSta
     cardsCreated: 0,
     cardsUpdated: 0,
     cardsFailed: 0,
+    pricesRecorded: 0,
+    pricesFailed: 0,
     errors: [],
   };
 
@@ -615,6 +877,8 @@ async function main(): Promise<void> {
 
   if (args.includes('--full')) {
     stats = await fullSync(supabase);
+  } else if (args.includes('--daily')) {
+    stats = await dailySync(supabase);
   } else if (args.includes('--delta')) {
     stats = await deltaSync(supabase);
   } else if (args.includes('--set')) {
@@ -627,8 +891,9 @@ async function main(): Promise<void> {
     stats = await syncSet(supabase, setId);
   } else {
     console.log('Usage:');
-    console.log('  npx ts-node scripts/sync-tcg-database.ts --full     # Full sync');
-    console.log('  npx ts-node scripts/sync-tcg-database.ts --delta    # Delta sync (new only)');
+    console.log('  npx ts-node scripts/sync-tcg-database.ts --full     # Full sync (all cards + prices)');
+    console.log('  npx ts-node scripts/sync-tcg-database.ts --daily    # Daily sync (new cards + ALL prices)');
+    console.log('  npx ts-node scripts/sync-tcg-database.ts --delta    # Delta sync (new cards only)');
     console.log('  npx ts-node scripts/sync-tcg-database.ts --set sv3  # Sync specific set');
     process.exit(0);
   }
@@ -642,6 +907,7 @@ async function main(): Promise<void> {
   console.log(`Series: ${stats.seriesCreated} created`);
   console.log(`Sets: ${stats.setsCreated} created, ${stats.setsUpdated} updated`);
   console.log(`Cards: ${stats.cardsCreated} created, ${stats.cardsFailed} failed`);
+  console.log(`Prices: ${stats.pricesRecorded} recorded, ${stats.pricesFailed} failed`);
 
   if (stats.errors.length > 0) {
     console.log('\n⚠️  Errors:');
