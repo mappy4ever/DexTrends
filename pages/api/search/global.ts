@@ -187,13 +187,14 @@ async function searchTCGCards(query: string, limit: number, baseUrl: string): Pr
 
     return response.data
       .filter(isTCGCard)
+      .filter((card) => card.set?.id) // Exclude cards without valid set
       .map((card) => ({
         category: 'card' as const,
         id: card.id,
         name: card.name,
         description: `${card.set?.name || 'Unknown Set'} - ${card.rarity || 'Common'}`,
         image: card.images?.small,
-        url: `/tcgexpansions/${card.set?.id}#${card.id}`,
+        url: `/tcgexpansions/${card.set!.id}#${card.id}`,
         relevance: card.name.toLowerCase().startsWith(query) ? 0.9 : 0.6
       }));
   } catch (error) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import type { Pokemon, PokemonSpecies } from "../../types/api/pokemon";
@@ -567,4 +567,4 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   );
 };
 
-export default PokemonHeroSectionV3;
+export default memo(PokemonHeroSectionV3);

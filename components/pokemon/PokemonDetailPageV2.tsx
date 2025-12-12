@@ -20,6 +20,18 @@ import { cn } from '@/utils/cn';
 import type { Pokemon, PokemonSpecies, EvolutionChain, PokemonType } from '@/types/pokemon';
 import type { TCGCard } from '@/types/api/cards';
 import type { PocketCard } from '@/types/api/pocket-cards';
+import { FiTarget, FiTrendingUp, FiMaximize2, FiActivity, FiHeart } from 'react-icons/fi';
+// Domain-specific icons - documented exceptions
+import { FaEgg, FaGem } from 'react-icons/fa';
+import { GiSparkles } from 'react-icons/gi';
+import { PokemonBadges } from '@/components/ui/ClassificationBadge';
+import { EvolutionItemDisplay } from '@/components/ui/EvolutionItemIcon';
+import {
+  isUltraBeast,
+  isParadoxPast,
+  isParadoxFuture,
+  isStarter,
+} from '@/utils/pokemonClassifications';
 
 // =============================================================================
 // TYPES
@@ -218,6 +230,30 @@ const EGG_GROUP_INFO: Record<string, string> = {
 // SUB-COMPONENTS
 // =============================================================================
 
+// Classification Badges Section - extracted to avoid IIFE in JSX
+const ClassificationBadgesSection: React.FC<{
+  pokemon: Pokemon;
+  species: PokemonSpecies;
+}> = ({ pokemon, species }) => {
+  const pokemonId = typeof pokemon.id === 'string' ? parseInt(pokemon.id, 10) : pokemon.id;
+
+  return (
+    <div className="flex justify-center md:justify-start">
+      <PokemonBadges
+        pokemonId={pokemonId}
+        pokemonName={pokemon.name}
+        isLegendary={species.is_legendary}
+        isMythical={species.is_mythical}
+        isUltraBeast={isUltraBeast(pokemonId)}
+        isParadoxPast={isParadoxPast(pokemonId)}
+        isParadoxFuture={isParadoxFuture(pokemonId)}
+        isStarter={isStarter(pokemonId)}
+        size="sm"
+      />
+    </div>
+  );
+};
+
 // Shiny Sparkle Icon (not a star)
 const ShinyIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -362,13 +398,24 @@ const HeroSection: React.FC<{
           </div>
 
           {/* Pokemon Info */}
-          <div className="flex-1 text-center md:text-left space-y-4">
-            {/* Genus */}
-            {genus && (
-              <p className="text-stone-500 dark:text-stone-400 text-sm font-medium">
-                {genus}
-              </p>
-            )}
+          <div className="flex-1 text-center md:text-left space-y-3">
+            {/* Pokemon Name & Number */}
+            <div>
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-1">
+                <h1 className="text-3xl md:text-4xl font-bold text-stone-900 dark:text-white capitalize">
+                  {capitalize(pokemon.name.split('-')[0])}
+                </h1>
+                <span className="text-xl md:text-2xl font-semibold text-stone-400 dark:text-stone-500">
+                  {formatPokemonId(typeof pokemon.id === 'string' ? parseInt(pokemon.id, 10) : pokemon.id)}
+                </span>
+              </div>
+              {/* Genus */}
+              {genus && (
+                <p className="text-stone-500 dark:text-stone-400 text-sm font-medium">
+                  {genus}
+                </p>
+              )}
+            </div>
 
             {/* Types */}
             <div className="flex justify-center md:justify-start gap-2">
@@ -383,6 +430,12 @@ const HeroSection: React.FC<{
               ))}
             </div>
 
+            {/* Classification Badges */}
+            <ClassificationBadgesSection
+              pokemon={pokemon}
+              species={species}
+            />
+
             {/* Description */}
             {flavorText && (
               <p className="text-stone-600 dark:text-stone-300 text-base leading-relaxed max-w-xl">
@@ -391,34 +444,46 @@ const HeroSection: React.FC<{
             )}
 
             {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               {pokemon.height != null && (
-                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 block mb-1">Height</span>
+                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700 transition-colors hover:bg-stone-50 dark:hover:bg-stone-700/50">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <FiMaximize2 className="w-3.5 h-3.5 text-stone-400" />
+                    <span className="text-xs text-stone-500 dark:text-stone-400">Height</span>
+                  </div>
                   <span className="font-semibold text-stone-900 dark:text-white text-sm">
                     {formatHeight(pokemon.height)}
                   </span>
                 </div>
               )}
               {pokemon.weight != null && (
-                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 block mb-1">Weight</span>
+                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700 transition-colors hover:bg-stone-50 dark:hover:bg-stone-700/50">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <FiActivity className="w-3.5 h-3.5 text-stone-400" />
+                    <span className="text-xs text-stone-500 dark:text-stone-400">Weight</span>
+                  </div>
                   <span className="font-semibold text-stone-900 dark:text-white text-sm">
                     {formatWeight(pokemon.weight)}
                   </span>
                 </div>
               )}
               {species.generation && (
-                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 block mb-1">Generation</span>
+                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700 transition-colors hover:bg-stone-50 dark:hover:bg-stone-700/50">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <FiTrendingUp className="w-3.5 h-3.5 text-stone-400" />
+                    <span className="text-xs text-stone-500 dark:text-stone-400">Generation</span>
+                  </div>
                   <span className="font-semibold text-stone-900 dark:text-white text-sm">
                     {species.generation.name.replace('generation-', '').toUpperCase()}
                   </span>
                 </div>
               )}
               {species.base_happiness !== undefined && (
-                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700">
-                  <span className="text-xs text-stone-500 dark:text-stone-400 block mb-1">Base Happiness</span>
+                <div className="bg-white dark:bg-stone-800 rounded-xl p-3 shadow-sm border border-stone-100 dark:border-stone-700 transition-colors hover:bg-stone-50 dark:hover:bg-stone-700/50">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <FiHeart className="w-3.5 h-3.5 text-stone-400" />
+                    <span className="text-xs text-stone-500 dark:text-stone-400">Base Happiness</span>
+                  </div>
                   <span className="font-semibold text-stone-900 dark:text-white text-sm">
                     {species.base_happiness}
                   </span>
@@ -707,68 +772,309 @@ const AbilitiesSection: React.FC<{
   );
 };
 
-// Evolution Section
+// Helper to detect regional form suffix from Pokemon name
+const getRegionalSuffix = (pokemonName: string): string | null => {
+  const regionalPatterns = ['-alola', '-galar', '-hisui', '-paldea'];
+  for (const pattern of regionalPatterns) {
+    if (pokemonName.includes(pattern)) {
+      return pattern;
+    }
+  }
+  return null;
+};
+
+// Regional-exclusive evolutions: Pokemon that ONLY evolve from regional forms
+// These are new species (not forms) that were introduced alongside regional variants
+// NOTE: This data is also stored in Supabase (regional_exclusive_evolutions table)
+// These hardcoded values serve as fallback if Supabase is unavailable
+const REGIONAL_EXCLUSIVE_EVOLUTIONS: Record<string, string> = {
+  // Galarian exclusives (Gen 8) - species name -> required regional form suffix
+  'sirfetchd': '-galar',      // Only from Galarian Farfetch'd
+  'perrserker': '-galar',     // Only from Galarian Meowth
+  'mr-rime': '-galar',        // Only from Galarian Mr. Mime
+  'cursola': '-galar',        // Only from Galarian Corsola
+  'obstagoon': '-galar',      // Only from Galarian Linoone
+  'runerigus': '-galar',      // Only from Galarian Yamask
+  // Hisuian exclusives (Legends Arceus)
+  'sneasler': '-hisui',       // Only from Hisuian Sneasel
+  'overqwil': '-hisui',       // Only from Hisuian Qwilfish
+  'basculegion': '-hisui',    // Only from White-Striped Basculin (Hisuian)
+};
+
+// Pokemon that DON'T evolve in their base form but DO evolve in regional form
+// NOTE: This data is also stored in Supabase (base_form_no_evolution table)
+const BASE_FORM_NO_EVOLUTION: Set<string> = new Set([
+  'farfetchd',   // Regular Farfetch'd doesn't evolve
+  'corsola',     // Regular Corsola doesn't evolve
+]);
+
+// Evolution Section with comprehensive regional form support
 const EvolutionSection: React.FC<{
   evolutionChain?: EvolutionChain | null;
   currentPokemonId: number;
-}> = ({ evolutionChain, currentPokemonId }) => {
-  if (!evolutionChain?.chain) return null;
-
-  const evolutions: Array<{
+  currentPokemonName?: string;
+}> = ({ evolutionChain, currentPokemonId, currentPokemonName }) => {
+  const [evolutionData, setEvolutionData] = useState<Array<{
     name: string;
+    displayName: string;
     id: number;
+    sprite: string;
     trigger?: string;
     minLevel?: number;
     item?: string;
-  }> = [];
+  }> | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const extractEvolutions = (chain: any) => {
-    const urlParts = chain.species.url.split('/');
-    const id = parseInt(urlParts[urlParts.length - 2]);
+  // Detect if current Pokemon is a regional form
+  const regionalSuffix = currentPokemonName ? getRegionalSuffix(currentPokemonName) : null;
+  const baseSpeciesName = currentPokemonName?.split('-')[0] || '';
 
-    evolutions.push({ name: chain.species.name, id });
+  useEffect(() => {
+    if (!evolutionChain?.chain) {
+      setLoading(false);
+      return;
+    }
 
-    chain.evolves_to?.forEach((evolution: any) => {
-      const details = evolution.evolution_details?.[0];
-      const evoUrlParts = evolution.species.url.split('/');
-      const evoId = parseInt(evoUrlParts[evoUrlParts.length - 2]);
+    const buildEvolutionChain = async () => {
+      const getIdFromUrl = (url: string): number => {
+        const parts = url.split('/');
+        return parseInt(parts[parts.length - 2]);
+      };
 
-      evolutions.push({
-        name: evolution.species.name,
-        id: evoId,
-        trigger: details?.trigger?.name,
-        minLevel: details?.min_level,
-        item: details?.item?.name || details?.held_item?.name,
-      });
+      // Helper to fetch Pokemon data
+      const fetchPokemonData = async (nameOrId: string | number) => {
+        try {
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`);
+          if (response.ok) {
+            const data = await response.json();
+            return {
+              id: data.id,
+              name: data.name,
+              sprite: data.sprites?.other?.['official-artwork']?.front_default ||
+                      data.sprites?.front_default ||
+                      `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`,
+            };
+          }
+        } catch {}
+        return null;
+      };
 
-      evolution.evolves_to?.forEach((finalEvo: any) => {
-        const finalDetails = finalEvo.evolution_details?.[0];
-        const finalUrlParts = finalEvo.species.url.split('/');
-        const finalId = parseInt(finalUrlParts[finalUrlParts.length - 2]);
+      // Helper to format display name
+      const formatDisplayName = (name: string): string => {
+        const suffix = getRegionalSuffix(name);
+        if (suffix) {
+          const baseName = name.replace(suffix, '');
+          const regionNames: Record<string, string> = {
+            '-alola': 'Alolan',
+            '-galar': 'Galarian',
+            '-hisui': 'Hisuian',
+            '-paldea': 'Paldean',
+          };
+          return `${regionNames[suffix] || ''} ${capitalize(baseName)}`;
+        }
+        return capitalize(name.replace(/-/g, ' '));
+      };
 
-        evolutions.push({
-          name: finalEvo.species.name,
-          id: finalId,
-          trigger: finalDetails?.trigger?.name,
-          minLevel: finalDetails?.min_level,
-          item: finalDetails?.item?.name || finalDetails?.held_item?.name,
+      // Build flat list of all evolutions in chain with parent info
+      interface ChainNode {
+        name: string;
+        speciesId: number;
+        parentName: string | null;
+        trigger?: string;
+        minLevel?: number;
+        item?: string;
+      }
+
+      const allNodes: ChainNode[] = [];
+
+      const traverseChain = (node: any, parentName: string | null = null) => {
+        const speciesId = getIdFromUrl(node.species.url);
+        const details = node.evolution_details?.[0];
+
+        allNodes.push({
+          name: node.species.name,
+          speciesId,
+          parentName,
+          trigger: details?.trigger?.name,
+          minLevel: details?.min_level,
+          item: details?.item?.name || details?.held_item?.name,
         });
-      });
-    });
-  };
 
-  extractEvolutions(evolutionChain.chain);
+        node.evolves_to?.forEach((evo: any) => {
+          traverseChain(evo, node.species.name);
+        });
+      };
 
-  const uniqueEvolutions = evolutions.filter(
-    (evo, index, self) => self.findIndex(e => e.id === evo.id) === index
-  );
+      traverseChain(evolutionChain.chain);
 
-  if (uniqueEvolutions.length <= 1) return null;
+      // CASE 1: Viewing a REGIONAL FORM
+      if (regionalSuffix) {
+        const result: typeof evolutionData = [];
+
+        // Find the path in the base chain that corresponds to current Pokemon
+        const currentBaseNode = allNodes.find(n => n.name === baseSpeciesName);
+        if (!currentBaseNode) {
+          setLoading(false);
+          return;
+        }
+
+        // Build path: get ancestors (pre-evolutions)
+        const ancestors: ChainNode[] = [];
+        let current: ChainNode | undefined = currentBaseNode;
+        while (current?.parentName) {
+          const parent = allNodes.find(n => n.name === current!.parentName);
+          if (parent) {
+            ancestors.unshift(parent);
+            current = parent;
+          } else {
+            break;
+          }
+        }
+
+        // Add ancestors as regional forms
+        for (const ancestor of ancestors) {
+          const regionalName = `${ancestor.name}${regionalSuffix}`;
+          const data = await fetchPokemonData(regionalName);
+          if (data) {
+            result.push({
+              ...data,
+              displayName: formatDisplayName(data.name),
+              trigger: ancestor.trigger,
+              minLevel: ancestor.minLevel,
+              item: ancestor.item,
+            });
+          }
+        }
+
+        // Add current Pokemon (the regional form we're viewing)
+        const currentData = await fetchPokemonData(currentPokemonName!);
+        if (currentData) {
+          result.push({
+            ...currentData,
+            displayName: formatDisplayName(currentData.name),
+            trigger: currentBaseNode.trigger,
+            minLevel: currentBaseNode.minLevel,
+            item: currentBaseNode.item,
+          });
+        }
+
+        // Find evolutions from current base species
+        const evolutions = allNodes.filter(n => n.parentName === baseSpeciesName);
+
+        for (const evo of evolutions) {
+          // Check if this evolution requires this specific regional form
+          const requiredRegion = REGIONAL_EXCLUSIVE_EVOLUTIONS[evo.name];
+
+          if (requiredRegion === regionalSuffix) {
+            // This evolution is exclusive to our regional form - show it
+            const data = await fetchPokemonData(evo.name);
+            if (data) {
+              result.push({
+                ...data,
+                displayName: formatDisplayName(data.name),
+                trigger: evo.trigger,
+                minLevel: evo.minLevel,
+                item: evo.item,
+              });
+            }
+          } else if (!requiredRegion) {
+            // Not regional-exclusive - check if regional form of evolution exists
+            const regionalEvoName = `${evo.name}${regionalSuffix}`;
+            const regionalData = await fetchPokemonData(regionalEvoName);
+
+            if (regionalData) {
+              result.push({
+                ...regionalData,
+                displayName: formatDisplayName(regionalData.name),
+                trigger: evo.trigger,
+                minLevel: evo.minLevel,
+                item: evo.item,
+              });
+            }
+          }
+          // If requiredRegion exists but doesn't match our suffix, skip (wrong regional line)
+        }
+
+        if (result.length > 0) {
+          setEvolutionData(result);
+        }
+      }
+      // CASE 2: Viewing a BASE FORM
+      else {
+        // Check if this base form doesn't evolve
+        if (BASE_FORM_NO_EVOLUTION.has(baseSpeciesName)) {
+          setLoading(false);
+          return;
+        }
+
+        // Find path from root to current Pokemon
+        const findPathToTarget = (targetId: number, targetName: string): ChainNode[] => {
+          const path: ChainNode[] = [];
+
+          // Find the target node
+          const targetNode = allNodes.find(n =>
+            n.speciesId === targetId || n.name === targetName
+          );
+
+          if (!targetNode) return [];
+
+          // Build path from target back to root
+          let current: ChainNode | undefined = targetNode;
+          while (current) {
+            path.unshift(current);
+            if (current.parentName) {
+              current = allNodes.find(n => n.name === current!.parentName);
+            } else {
+              break;
+            }
+          }
+
+          return path;
+        };
+
+        const path = findPathToTarget(currentPokemonId, baseSpeciesName);
+
+        if (path.length > 0) {
+          const result: typeof evolutionData = [];
+
+          for (const node of path) {
+            // Skip regional-exclusive evolutions for base forms
+            if (REGIONAL_EXCLUSIVE_EVOLUTIONS[node.name]) {
+              continue;
+            }
+
+            const data = await fetchPokemonData(node.speciesId);
+            if (data) {
+              result.push({
+                ...data,
+                displayName: formatDisplayName(data.name),
+                trigger: node.trigger,
+                minLevel: node.minLevel,
+                item: node.item,
+              });
+            }
+          }
+
+          if (result.length > 0) {
+            setEvolutionData(result);
+          }
+        }
+      }
+
+      setLoading(false);
+    };
+
+    buildEvolutionChain();
+  }, [evolutionChain, currentPokemonId, currentPokemonName, regionalSuffix, baseSpeciesName]);
+
+  if (loading || !evolutionData || evolutionData.length <= 1) {
+    return null;
+  }
 
   return (
     <Section title="Evolution Chain">
       <div className="flex items-center justify-center gap-2 md:gap-6 overflow-x-auto py-4 px-2">
-        {uniqueEvolutions.map((evo, index) => (
+        {evolutionData.map((evo, index) => (
           <React.Fragment key={evo.id}>
             {index > 0 && (
               <div className="flex flex-col items-center text-stone-400 flex-shrink-0 px-2">
@@ -779,7 +1085,9 @@ const EvolutionSection: React.FC<{
                   <span className="text-xs font-medium mt-1">Lv. {evo.minLevel}</span>
                 )}
                 {evo.item && (
-                  <span className="text-xs mt-1">{capitalize(evo.item)}</span>
+                  <div className="mt-1">
+                    <EvolutionItemDisplay item={evo.item} size="sm" labelPosition="bottom" />
+                  </div>
                 )}
               </div>
             )}
@@ -795,14 +1103,14 @@ const EvolutionSection: React.FC<{
             >
               <div className="w-20 h-20 md:w-24 md:h-24 relative">
                 <Image
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${evo.id}.png`}
-                  alt={evo.name}
+                  src={evo.sprite}
+                  alt={evo.displayName}
                   fill
                   className="object-contain drop-shadow-md"
                 />
               </div>
-              <span className="text-sm font-medium text-stone-700 dark:text-stone-300 mt-2">
-                {capitalize(evo.name)}
+              <span className="text-sm font-medium text-stone-700 dark:text-stone-300 mt-2 text-center">
+                {evo.displayName}
               </span>
               <span className="text-xs text-stone-500 dark:text-stone-400">
                 #{evo.id.toString().padStart(4, '0')}
@@ -843,13 +1151,28 @@ const TrainingBreedingSection: React.FC<{ species: PokemonSpecies; pokemon: Poke
 
           <div className="grid grid-cols-2 gap-3">
             {catchRate !== undefined && (
-              <InfoCard label="Catch Rate" value={String(catchRate)} hint={catchRate <= 45 ? 'Difficult' : catchRate >= 200 ? 'Easy' : 'Moderate'} />
+              <InfoCard
+                label="Catch Rate"
+                value={String(catchRate)}
+                hint={catchRate <= 45 ? 'Difficult' : catchRate >= 200 ? 'Easy' : 'Moderate'}
+                icon={<FiTarget className="w-3.5 h-3.5" />}
+              />
             )}
             {baseExp !== undefined && (
-              <InfoCard label="Base EXP" value={String(baseExp)} />
+              <InfoCard
+                label="Base EXP"
+                value={String(baseExp)}
+                icon={<FiTrendingUp className="w-3.5 h-3.5" />}
+              />
             )}
             {growthInfo && (
-              <InfoCard label="Growth Rate" value={growthInfo.label} hint={growthInfo.description} className="col-span-2" />
+              <InfoCard
+                label="Growth Rate"
+                value={growthInfo.label}
+                hint={growthInfo.description}
+                icon={<FiActivity className="w-3.5 h-3.5" />}
+                className="col-span-2"
+              />
             )}
           </div>
         </div>
@@ -904,6 +1227,7 @@ const TrainingBreedingSection: React.FC<{ species: PokemonSpecies; pokemon: Poke
               label="Egg Cycles"
               value={`${species.hatch_counter} cycles`}
               hint={`~${hatchSteps.toLocaleString()} steps`}
+              icon={<FaEgg className="w-3.5 h-3.5" />}
             />
           )}
         </div>
@@ -913,9 +1237,18 @@ const TrainingBreedingSection: React.FC<{ species: PokemonSpecies; pokemon: Poke
 };
 
 // Info Card component for consistent styling
-const InfoCard: React.FC<{ label: string; value: string; hint?: string; className?: string }> = ({ label, value, hint, className }) => (
-  <div className={cn("bg-stone-50 dark:bg-stone-800/50 rounded-xl p-3", className)}>
-    <span className="text-xs text-stone-500 dark:text-stone-400 block mb-1">{label}</span>
+const InfoCard: React.FC<{
+  label: string;
+  value: string;
+  hint?: string;
+  icon?: React.ReactNode;
+  className?: string;
+}> = ({ label, value, hint, icon, className }) => (
+  <div className={cn("bg-stone-50 dark:bg-stone-800/50 rounded-xl p-3 transition-colors hover:bg-stone-100 dark:hover:bg-stone-800/70", className)}>
+    <div className="flex items-center gap-1.5 mb-1">
+      {icon && <span className="text-stone-400 dark:text-stone-500">{icon}</span>}
+      <span className="text-xs text-stone-500 dark:text-stone-400">{label}</span>
+    </div>
     <span className="font-semibold text-stone-900 dark:text-white">{value}</span>
     {hint && <span className="text-xs text-stone-500 dark:text-stone-400 block mt-0.5">{hint}</span>}
   </div>
@@ -1141,6 +1474,256 @@ const MovesSection: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
   );
 };
 
+// Mega & Special Forms Section
+interface MegaFormData {
+  name: string;
+  id: number;
+  sprite: string;
+  types: string[];
+  stats?: { name: string; value: number }[];
+}
+
+const MegaFormsSection: React.FC<{
+  species: PokemonSpecies;
+  currentPokemonId: number;
+}> = ({ species, currentPokemonId }) => {
+  const [megaForms, setMegaForms] = useState<MegaFormData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMegaForms = async () => {
+      if (!species?.varieties) {
+        setLoading(false);
+        return;
+      }
+
+      // Filter for mega, gmax, and regional forms
+      const specialVarieties = species.varieties.filter(v =>
+        !v.is_default && (
+          v.pokemon.name.includes('-mega') ||
+          v.pokemon.name.includes('-gmax') ||
+          v.pokemon.name.includes('-alola') ||
+          v.pokemon.name.includes('-galar') ||
+          v.pokemon.name.includes('-hisui') ||
+          v.pokemon.name.includes('-paldea')
+        )
+      );
+
+      if (specialVarieties.length === 0) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const formsData = await Promise.all(
+          specialVarieties.map(async (variety) => {
+            const response = await fetch(variety.pokemon.url);
+            const data = await response.json();
+            return {
+              name: variety.pokemon.name,
+              id: data.id,
+              sprite: data.sprites?.other?.['official-artwork']?.front_default ||
+                      data.sprites?.front_default,
+              types: data.types?.map((t: { type: { name: string } }) => t.type.name) || [],
+              stats: data.stats?.map((s: { stat: { name: string }; base_stat: number }) => ({
+                name: s.stat.name,
+                value: s.base_stat
+              }))
+            };
+          })
+        );
+        setMegaForms(formsData);
+      } catch (error) {
+        console.error('Failed to fetch mega forms:', error);
+      }
+      setLoading(false);
+    };
+
+    fetchMegaForms();
+  }, [species?.varieties]);
+
+  if (loading) {
+    return null; // Don't show section while loading
+  }
+
+  if (megaForms.length === 0) {
+    return null;
+  }
+
+  // Helper to get form display name
+  const getFormDisplayName = (name: string): string => {
+    if (name.includes('-mega-x')) return 'Mega X';
+    if (name.includes('-mega-y')) return 'Mega Y';
+    if (name.includes('-mega')) return 'Mega';
+    if (name.includes('-gmax')) return 'Gigantamax';
+    if (name.includes('-alola')) return 'Alolan';
+    if (name.includes('-galar')) return 'Galarian';
+    if (name.includes('-hisui')) return 'Hisuian';
+    if (name.includes('-paldea')) return 'Paldean';
+    return name;
+  };
+
+  // Helper to get form badge color
+  const getFormBadgeColor = (name: string): string => {
+    if (name.includes('-mega-x')) return 'from-blue-500 to-indigo-600';
+    if (name.includes('-mega-y')) return 'from-red-500 to-pink-600';
+    if (name.includes('-mega')) return 'from-purple-500 to-violet-600';
+    if (name.includes('-gmax')) return 'from-red-500 to-orange-600';
+    if (name.includes('-alola')) return 'from-amber-400 to-orange-500';
+    if (name.includes('-galar')) return 'from-pink-500 to-rose-600';
+    if (name.includes('-hisui')) return 'from-teal-500 to-cyan-600';
+    if (name.includes('-paldea')) return 'from-violet-500 to-purple-600';
+    return 'from-stone-500 to-stone-600';
+  };
+
+  // Helper to check if form is regional
+  const isRegionalForm = (name: string): boolean => {
+    return name.includes('-alola') ||
+           name.includes('-galar') ||
+           name.includes('-hisui') ||
+           name.includes('-paldea');
+  };
+
+  // Helper to get mega stone name
+  const getMegaStoneName = (pokemonName: string): string => {
+    const baseName = pokemonName.split('-')[0];
+    if (pokemonName.includes('-mega-x')) return `${capitalize(baseName)}ite X`;
+    if (pokemonName.includes('-mega-y')) return `${capitalize(baseName)}ite Y`;
+    if (pokemonName.includes('-mega')) return `${capitalize(baseName)}ite`;
+    if (pokemonName.includes('-gmax')) return 'Max Soup';
+    return '';
+  };
+
+  // Helper to get region description
+  const getRegionDescription = (name: string): string => {
+    if (name.includes('-alola')) return 'Found in the Alola region';
+    if (name.includes('-galar')) return 'Found in the Galar region';
+    if (name.includes('-hisui')) return 'Found in ancient Hisui';
+    if (name.includes('-paldea')) return 'Found in the Paldea region';
+    return '';
+  };
+
+  // Helper to get full form name (e.g., "Mega Venusaur", "Alolan Raichu")
+  const getFullFormName = (name: string): string => {
+    const baseName = name.split('-')[0];
+    const capitalizedBase = capitalize(baseName);
+
+    if (name.includes('-mega-x')) return `Mega ${capitalizedBase} X`;
+    if (name.includes('-mega-y')) return `Mega ${capitalizedBase} Y`;
+    if (name.includes('-mega')) return `Mega ${capitalizedBase}`;
+    if (name.includes('-gmax')) return `Gigantamax ${capitalizedBase}`;
+    if (name.includes('-alola')) return `Alolan ${capitalizedBase}`;
+    if (name.includes('-galar')) return `Galarian ${capitalizedBase}`;
+    if (name.includes('-hisui')) return `Hisuian ${capitalizedBase}`;
+    if (name.includes('-paldea')) return `Paldean ${capitalizedBase}`;
+    return capitalizedBase;
+  };
+
+  return (
+    <Section title="Special Forms" subtitle={`${megaForms.length} form${megaForms.length > 1 ? 's' : ''} available`}>
+      <div className="grid gap-4 md:grid-cols-2">
+        {megaForms.map((form) => (
+          <Link
+            key={form.name}
+            href={`/pokedex/${currentPokemonId}?form=${form.name.split('-').slice(1).join('-')}`}
+            className="group relative bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 p-4 hover:shadow-lg transition-all hover:border-stone-300 dark:hover:border-stone-600"
+          >
+            <div className="flex items-start gap-4">
+              {/* Form Image */}
+              <div className="relative w-24 h-24 flex-shrink-0">
+                {form.sprite ? (
+                  <Image
+                    src={form.sprite}
+                    alt={form.name}
+                    fill
+                    className="object-contain drop-shadow-md group-hover:scale-105 transition-transform"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-stone-200 dark:bg-stone-700 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">?</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Form Info */}
+              <div className="flex-1 min-w-0">
+                {/* Form Name */}
+                <h4 className="font-semibold text-stone-900 dark:text-white mb-1">
+                  {getFullFormName(form.name)}
+                </h4>
+
+                {/* Form Badge */}
+                <span className={cn(
+                  "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-bold text-white mb-2",
+                  "bg-gradient-to-r",
+                  getFormBadgeColor(form.name)
+                )}>
+                  <GiSparkles className="w-3 h-3" />
+                  {getFormDisplayName(form.name)}
+                </span>
+
+                {/* Types */}
+                <div className="flex gap-1.5 mb-2">
+                  {form.types.map(type => (
+                    <span
+                      key={type}
+                      className="px-2 py-0.5 rounded-full text-xs font-semibold text-white"
+                      style={{ backgroundColor: getTypeColor(type) }}
+                    >
+                      {capitalize(type)}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Requirement / Description */}
+                <div className="flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400">
+                  {form.name.includes('-mega') ? (
+                    <>
+                      <FaGem className="w-3 h-3 text-purple-500" />
+                      <span>Requires {getMegaStoneName(form.name)}</span>
+                    </>
+                  ) : form.name.includes('-gmax') ? (
+                    <>
+                      <GiSparkles className="w-3 h-3 text-red-500" />
+                      <span>Requires Max Soup</span>
+                    </>
+                  ) : isRegionalForm(form.name) ? (
+                    <>
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span>{getRegionDescription(form.name)}</span>
+                    </>
+                  ) : null}
+                </div>
+
+                {/* Quick Stats Preview */}
+                {form.stats && (
+                  <div className="mt-2 flex gap-2 text-xs">
+                    <span className="text-stone-500 dark:text-stone-400">
+                      BST: <span className="font-semibold text-stone-700 dark:text-stone-300">
+                        {form.stats.reduce((acc, s) => acc + s.value, 0)}
+                      </span>
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Arrow indicator */}
+              <div className="text-stone-400 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </Section>
+  );
+};
+
 // Section Container
 const Section: React.FC<{
   title: string;
@@ -1350,6 +1933,13 @@ const PokemonDetailPageV2: React.FC<PokemonDetailPageV2Props> = ({
               {/* Evolution */}
               <EvolutionSection
                 evolutionChain={evolutionChain}
+                currentPokemonId={pokemonId}
+                currentPokemonName={pokemon.name}
+              />
+
+              {/* Mega & Special Forms */}
+              <MegaFormsSection
+                species={species}
                 currentPokemonId={pokemonId}
               />
 

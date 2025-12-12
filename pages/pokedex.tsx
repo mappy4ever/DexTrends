@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { fetchJSON } from '@/utils/unifiedFetch';
-import { UnifiedGrid } from '@/components/unified/UnifiedGrid';
 import { PokemonDisplay as PokemonCardRenderer } from '@/components/ui/PokemonDisplay';
 import { TypeBadge } from '@/components/ui/TypeBadge';
-import { PageHeader } from '@/components/ui/BreadcrumbNavigation';
 import Container from '@/components/ui/Container';
 import Modal from '@/components/ui/Modal';
 import { FiX, FiFilter, FiSearch } from 'react-icons/fi';
 import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
 import { getGeneration } from '@/utils/pokemonutils';
 import { useDebounce } from '@/hooks/useDebounce';
-import { useViewport } from '@/hooks/useViewport';
+import {
+  isUltraBeast,
+  isParadoxPokemon,
+  isParadoxPast,
+  isParadoxFuture,
+} from '@/utils/pokemonClassifications';
 import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
-import { SkeletonPokemonCard } from '@/components/ui/Skeleton';
-import { SectionDivider } from '@/components/ui/SectionDivider';
 import { NoSearchResults } from '@/components/ui/EmptyState';
 import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
@@ -41,19 +42,13 @@ interface Pokemon {
   isLegendary?: boolean;
   isMythical?: boolean;
   isStarter?: boolean;
+  isUltraBeast?: boolean;
+  isParadox?: boolean;
+  paradoxType?: 'past' | 'future';
   height?: number;
   weight?: number;
   stats?: Array<{ base_stat: number; stat: { name: string } }>;
   totalStats?: number;
-}
-
-interface PokemonGridItem {
-  id: number;
-  image: string;
-  title: string;
-  subtitle: string;
-  types: string[];
-  raw: Pokemon;
 }
 
 const ALL_TYPES = [
@@ -68,6 +63,8 @@ const CATEGORIES = [
   { value: 'starter', label: 'Starters', icon: '🌟' },
   { value: 'legendary', label: 'Legendary', icon: '⚡' },
   { value: 'mythical', label: 'Mythical', icon: '✨' },
+  { value: 'ultra-beast', label: 'Ultra Beast', icon: '🌀' },
+  { value: 'paradox', label: 'Paradox', icon: '⏳' },
 ] as const;
 
 const TOTAL_POKEMON = 1025;
@@ -81,7 +78,6 @@ const STARTER_IDS = new Set([
 
 const UnifiedPokedex: NextPage = () => {
   const router = useRouter();
-  const viewport = useViewport();
 
   // Data state
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
@@ -147,6 +143,9 @@ const UnifiedPokedex: NextPage = () => {
               isStarter: STARTER_IDS.has(numId),
               isLegendary: speciesData?.is_legendary || false,
               isMythical: speciesData?.is_mythical || false,
+              isUltraBeast: isUltraBeast(numId),
+              isParadox: isParadoxPokemon(numId),
+              paradoxType: isParadoxPast(numId) ? 'past' : isParadoxFuture(numId) ? 'future' : undefined,
               height: pokemonData.height,
               weight: pokemonData.weight,
               stats: pokemonData.stats,
@@ -233,6 +232,12 @@ const UnifiedPokedex: NextPage = () => {
         case 'mythical':
           filtered = filtered.filter(p => p.isMythical);
           break;
+        case 'ultra-beast':
+          filtered = filtered.filter(p => p.isUltraBeast);
+          break;
+        case 'paradox':
+          filtered = filtered.filter(p => p.isParadox);
+          break;
       }
     }
 
@@ -249,42 +254,6 @@ const UnifiedPokedex: NextPage = () => {
 
     return filtered;
   }, [pokemon, debouncedSearch, selectedTypes, selectedGeneration, selectedCategory, sortBy]);
-
-  // Transform to grid items
-  const gridItems: PokemonGridItem[] = useMemo(() =>
-    filteredPokemon.map(p => ({
-      id: p.id,
-      image: p.sprite,
-      title: p.name,
-      subtitle: `#${String(p.id).padStart(3, '0')}`,
-      types: p.types,
-      raw: p
-    })),
-    [filteredPokemon]
-  );
-
-  const handlePokemonClick = useCallback((item: PokemonGridItem) => {
-    router.push(`/pokedex/${item.id}`);
-  }, [router]);
-
-  const renderPokemonCard = useCallback((item: PokemonGridItem, _index: number, dimensions: { width: number; height: number }) => {
-    return (
-      <PokemonCardRenderer
-        id={item.raw.id}
-        name={item.raw.name}
-        sprite={item.raw.sprite}
-        types={item.raw.types}
-        onClick={() => handlePokemonClick(item)}
-        width={Math.min(dimensions.width - 24, 80)}
-        height={Math.min(dimensions.height - 60, 80)}
-        // Use listing variant for clean, minimal cards
-        variant="listing"
-        // Don't show stats or badges in listing - those are for detail page
-        showStats={false}
-        showBadges={false}
-      />
-    );
-  }, [handlePokemonClick]);
 
   const toggleType = (type: string) => {
     setSelectedTypes(prev =>
@@ -305,15 +274,6 @@ const UnifiedPokedex: NextPage = () => {
   const activeFilterCount = selectedTypes.length + (selectedGeneration ? 1 : 0) + (selectedCategory ? 1 : 0) + (sortBy !== 'id' ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0 || searchTerm;
 
-  // Responsive column config using Tailwind breakpoints
-  const columnConfig = {
-    mobile: 2,
-    tablet: 4,
-    laptop: 5,
-    desktop: 6,
-    wide: 7
-  };
-
   return (
     <>
       <Head>
@@ -321,82 +281,76 @@ const UnifiedPokedex: NextPage = () => {
         <meta name="description" content="Browse all Pokémon with our elegant, responsive Pokédex" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-page-bg to-sidebar-bg dark:from-stone-900 dark:to-stone-950">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
-
-          {/* Page Header */}
-          <PageHeader
-            title="Pokédex"
-            description={`Explore all ${TOTAL_POKEMON} Pokémon`}
-            breadcrumbs={[
-              { title: 'Home', href: '/', icon: '🏠', isActive: false },
-              { title: 'Pokédex', href: '/pokedex', icon: '📚', isActive: true },
-            ]}
-          >
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-sm font-medium rounded-full">
-                {filteredPokemon.length} found
-              </span>
-              {loading && (
-                <span className="px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm rounded-full animate-pulse">
-                  Loading...
+      <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
+        {/* Compact Header */}
+        <div className="sticky top-0 z-30 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-200 dark:border-stone-800">
+          <div className="max-w-[1600px] mx-auto px-3 sm:px-4 lg:px-6">
+            {/* Top bar with title and count */}
+            <div className="flex items-center justify-between py-2 sm:py-3">
+              <div className="flex items-center gap-3">
+                <h1 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-white">Pokédex</h1>
+                <span className="px-2.5 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs sm:text-sm font-semibold rounded-full">
+                  {filteredPokemon.length.toLocaleString()}
                 </span>
-              )}
-            </div>
-          </PageHeader>
+                {loading && (
+                  <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                )}
+              </div>
 
-          {/* Search & Filter Bar - Sticky below navbar */}
-          <div className="sticky top-[48px] md:top-[64px] z-20 -mx-3 sm:-mx-4 lg:-mx-6 px-3 sm:px-4 lg:px-6 py-3 bg-page-bg dark:bg-stone-900 shadow-sm mb-4">
-            {/* Search Input - Prominent, full width */}
-            <div className="relative mb-3">
-              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-amber-500" />
-              <input
-                type="text"
-                placeholder="Search Pokemon by name or number..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full min-h-[52px] pl-12 pr-16 py-3 bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
-                aria-label="Search Pokemon by name or number"
-                style={{ fontSize: '16px' }}
-              />
-              {searchTerm ? (
-                <button
-                  onClick={() => setSearchTerm('')}
-                  className="absolute right-14 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full transition-colors active:scale-95"
-                >
-                  <FiX className="w-4 h-4 text-stone-400" />
-                </button>
-              ) : null}
-              {/* Filter button inside search bar */}
+              {/* Filter button */}
               <button
                 onClick={() => setFilterModalOpen(true)}
                 className={cn(
-                  'absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center rounded-xl transition-all touch-manipulation active:scale-95',
+                  'flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all',
                   hasActiveFilters
                     ? 'bg-amber-500 text-white shadow-md'
-                    : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
+                    : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                 )}
               >
-                <FiFilter className="w-5 h-5" />
+                <FiFilter className="w-4 h-4" />
+                <span className="hidden sm:inline">Filters</span>
                 {activeFilterCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-amber-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                  <span className="w-5 h-5 bg-white text-amber-600 text-xs font-bold rounded-full flex items-center justify-center">
                     {activeFilterCount}
                   </span>
                 )}
               </button>
             </div>
 
-            {/* Quick Type Filter Pills - Horizontal scroll */}
-            <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-3 px-3 scrollbar-hide">
+            {/* Search bar - compact */}
+            <div className="pb-2 sm:pb-3">
+              <div className="relative">
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+                <input
+                  type="text"
+                  placeholder="Search by name or number..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full h-10 pl-10 pr-10 bg-stone-100 dark:bg-stone-800 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all placeholder:text-stone-400"
+                  style={{ fontSize: '16px' }}
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 rounded-full"
+                  >
+                    <FiX className="w-3.5 h-3.5 text-stone-400" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Type pills - single row horizontal scroll */}
+            <div className="flex gap-1.5 overflow-x-auto pb-2 sm:pb-3 -mx-3 px-3 scrollbar-hide">
               {ALL_TYPES.map(type => (
                 <button
                   key={type}
                   onClick={() => toggleType(type)}
                   className={cn(
-                    'flex-shrink-0 px-3 py-2 rounded-full text-xs font-medium transition-all touch-manipulation min-h-[36px] active:scale-95',
+                    'flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold transition-all',
                     selectedTypes.includes(type)
-                      ? 'text-white shadow-sm'
-                      : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                      ? 'text-white shadow-sm scale-105'
+                      : 'bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-300 dark:hover:bg-stone-700'
                   )}
                   style={{
                     backgroundColor: selectedTypes.includes(type)
@@ -409,56 +363,53 @@ const UnifiedPokedex: NextPage = () => {
               ))}
             </div>
 
-            {/* Active Non-Type Filters */}
+            {/* Active filters row - only if filters active */}
             {(selectedGeneration || selectedCategory || sortBy !== 'id') && (
-              <div className="flex items-center gap-2 mt-2 overflow-x-auto pb-1 -mb-1 scrollbar-hide">
+              <div className="flex items-center gap-2 pb-2 overflow-x-auto scrollbar-hide">
                 {selectedGeneration && (
                   <button
                     onClick={() => setSelectedGeneration('')}
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                    className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium"
                   >
                     Gen {selectedGeneration}
-                    <FiX className="w-3.5 h-3.5" />
+                    <FiX className="w-3 h-3" />
                   </button>
                 )}
                 {selectedCategory && (
                   <button
                     onClick={() => setSelectedCategory('')}
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors capitalize"
+                    className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium capitalize"
                   >
                     {selectedCategory}
-                    <FiX className="w-3.5 h-3.5" />
+                    <FiX className="w-3 h-3" />
                   </button>
                 )}
                 {sortBy !== 'id' && (
                   <button
                     onClick={() => setSortBy('id')}
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 rounded-full text-sm hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
+                    className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300 rounded-full text-xs font-medium"
                   >
-                    Sort: {sortBy === 'name' ? 'A-Z' : 'Stats'}
-                    <FiX className="w-3.5 h-3.5" />
+                    {sortBy === 'name' ? 'A-Z' : 'Stats'}
+                    <FiX className="w-3 h-3" />
                   </button>
                 )}
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearFilters}
-                    className="flex-shrink-0 px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
-                  >
-                    Clear all
-                  </button>
-                )}
+                <button
+                  onClick={clearFilters}
+                  className="flex-shrink-0 px-2 py-1 text-xs text-red-600 dark:text-red-400 font-medium"
+                >
+                  Clear
+                </button>
               </div>
             )}
           </div>
+        </div>
 
-          {/* Subtle divider before grid */}
-          <SectionDivider variant="space" spacing="sm" />
-
-          {/* Pokemon Grid */}
+        {/* Pokemon Grid - Full width, tighter spacing */}
+        <div className="max-w-[1600px] mx-auto px-2 sm:px-3 lg:px-4 py-3 sm:py-4">
           {loading && pokemon.length === 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
-              {Array.from({ length: 18 }).map((_, index) => (
-                <SkeletonPokemonCard key={index} />
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-2 sm:gap-3">
+              {Array.from({ length: 24 }).map((_, index) => (
+                <div key={index} className="aspect-[3/4] rounded-2xl bg-stone-200 dark:bg-stone-800 animate-pulse" />
               ))}
             </div>
           ) : filteredPokemon.length === 0 ? (
@@ -470,17 +421,21 @@ const UnifiedPokedex: NextPage = () => {
               />
             </Container>
           ) : (
-            <UnifiedGrid
-              items={gridItems}
-              onItemClick={handlePokemonClick}
-              columns={columnConfig}
-              gap="responsive"
-              virtualize={true}
-              loading={false}
-              renderItem={renderPokemonCard}
-              enableHaptics={true}
-              className="min-h-[400px]"
-            />
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-2 sm:gap-3">
+              {filteredPokemon.map((p) => (
+                <PokemonCardRenderer
+                  key={p.id}
+                  id={p.id}
+                  name={p.name}
+                  sprite={p.sprite}
+                  types={p.types}
+                  onClick={() => router.push(`/pokedex/${p.id}`)}
+                  variant="listing"
+                  showStats={false}
+                  showBadges={false}
+                />
+              ))}
+            </div>
           )}
 
           {/* Filter Modal */}

@@ -15,6 +15,7 @@ import { GiTwoCoins, GiStoneSphere } from 'react-icons/gi';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { hasRegionalEvolution, getRegionalEvolution, isRegionalEvolution } from '../../../utils/regionalEvolutions';
+import { EvolutionItemDisplay } from '../../ui/EvolutionItemIcon';
 
 interface EvolutionTabV3Props {
   pokemon: Pokemon;
@@ -216,10 +217,10 @@ const EvolutionArrow = ({
       parts.push(`Lv. ${detail.minLevel}`);
     }
     
-    // Item-based evolution
-    if (detail.item) {
-      parts.push(formatItemName(detail.item));
-    }
+    // Item-based evolution - handled separately with icon
+    // if (detail.item) {
+    //   parts.push(formatItemName(detail.item));
+    // }
     
     // Trade evolution
     if (detail.trigger === 'trade') {
@@ -287,9 +288,12 @@ const EvolutionArrow = ({
   };
   
   const evolutionText = getEvolutionText();
-  
+  const detail = evolutionDetails?.[0];
+  const hasItem = detail?.item;
+  const hasHeldItem = detail?.heldItem;
+
   return (
-    <motion.div 
+    <motion.div
       className={cn(
         "flex flex-col items-center gap-1",
         horizontal ? "mx-4" : "my-4"
@@ -298,6 +302,21 @@ const EvolutionArrow = ({
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.2 }}
     >
+      {/* Evolution item icon */}
+      {hasItem && detail?.item && (
+        <EvolutionItemDisplay
+          item={detail.item}
+          size="sm"
+          labelPosition="bottom"
+        />
+      )}
+      {hasHeldItem && !hasItem && detail?.heldItem && (
+        <EvolutionItemDisplay
+          item={detail.heldItem}
+          size="sm"
+          labelPosition="bottom"
+        />
+      )}
       {evolutionText && (
         <div className="text-xs text-stone-600 dark:text-stone-300 font-medium text-center max-w-[120px]">
           {evolutionText}

@@ -1,408 +1,538 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { motion, useInView, useSpring, useTransform } from 'framer-motion';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { NextPage } from 'next';
-import { FiSmartphone, FiStar, FiTrendingUp, FiHeart } from 'react-icons/fi';
+import { FiArrowRight, FiMap, FiGrid, FiLayers, FiTrendingUp } from 'react-icons/fi';
 
 // Components
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { GlobalSearch } from '../components/home/GlobalSearch';
-import { ProgressiveImage } from '../components/ui/ProgressiveImage';
 import { Container } from '../components/ui/Container';
 import { cn } from '../utils/cn';
-import { TYPOGRAPHY, TRANSITION, SPRING_PHYSICS } from '../components/ui/design-system/glass-constants';
-import { SectionHeader } from '../components/ui/SectionHeader';
-import { SectionDivider } from '../components/ui/SectionDivider';
-
-// Icons
-import { Book, CardList, CrossedSwords, Bulb } from '../utils/icons';
+import { TRANSITION } from '../components/ui/design-system/glass-constants';
+import { useHomepageData } from '../hooks/useHomepageData';
 
 // ===========================================
-// ANIMATED COUNTER COMPONENT
+// TYPE COLORS - Muted, professional palette
 // ===========================================
+const TYPE_COLORS: Record<string, string> = {
+  fire: 'from-orange-400 to-orange-500',
+  water: 'from-sky-400 to-sky-500',
+  grass: 'from-emerald-400 to-emerald-500',
+  electric: 'from-amber-400 to-amber-500',
+  psychic: 'from-fuchsia-400 to-fuchsia-500',
+  dragon: 'from-violet-500 to-violet-600',
+  dark: 'from-stone-500 to-stone-600',
+  fighting: 'from-rose-500 to-rose-600',
+  steel: 'from-slate-400 to-slate-500',
+  fairy: 'from-pink-400 to-pink-500',
+  normal: 'from-stone-400 to-stone-500',
+  flying: 'from-indigo-400 to-indigo-500',
+  poison: 'from-purple-400 to-purple-500',
+  ground: 'from-amber-500 to-amber-600',
+  rock: 'from-stone-500 to-stone-600',
+  bug: 'from-lime-400 to-lime-500',
+  ghost: 'from-violet-500 to-violet-600',
+  ice: 'from-cyan-400 to-cyan-500',
+};
 
-interface AnimatedCounterProps {
-  value: number;
-  suffix?: string;
-  duration?: number;
-}
-
-function AnimatedCounter({ value, suffix = '', duration = 2 }: AnimatedCounterProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const spring = useSpring(0, { duration: duration * 1000 });
-  const display = useTransform(spring, (current) =>
-    Math.round(current).toLocaleString()
-  );
-
-  useEffect(() => {
-    if (isInView) {
-      spring.set(value);
-    }
-  }, [isInView, spring, value]);
-
+// ===========================================
+// SKELETON COMPONENTS
+// ===========================================
+function PokemonSkeleton() {
   return (
-    <span ref={ref} className="tabular-nums">
-      <motion.span>{display}</motion.span>
-      {suffix}
-    </span>
+    <div className="animate-pulse bg-stone-100 dark:bg-stone-800 rounded-2xl p-4 aspect-square">
+      <div className="w-16 h-16 bg-stone-200 dark:bg-stone-700 rounded-full mx-auto mb-3" />
+      <div className="h-3 bg-stone-200 dark:bg-stone-700 rounded w-16 mx-auto mb-2" />
+      <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded w-10 mx-auto" />
+    </div>
   );
 }
 
-// ===========================================
-// FEATURE CARD COMPONENT
-// ===========================================
-
-interface FeatureCardProps {
-  href: string;
-  icon: React.ReactNode;
-  iconBg: string;
-  title: string;
-  description: string;
-  badge?: string;
-}
-
-function FeatureCard({ href, icon, iconBg, title, description, badge }: FeatureCardProps) {
+function CardSkeleton() {
   return (
-    <Link href={href} className="h-full touch-target group">
-      <motion.div
-        whileHover={{ y: -4 }}
-        whileTap={{ scale: 0.98 }}
-        transition={SPRING_PHYSICS.snappy}
-        className={cn(
-          'bg-white dark:bg-stone-800/90 rounded-xl',
-          'shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]',
-          'transition-shadow duration-150 ease-out',
-          'p-4 sm:p-5 md:p-6 cursor-pointer h-full flex flex-col min-h-[140px]',
-          'border border-stone-100 dark:border-stone-700/50',
-          'relative overflow-hidden'
-        )}
-      >
-        {badge && (
-          <span className="absolute top-2 right-2 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-medium rounded-full">
-            {badge}
-          </span>
-        )}
-        <div className="flex flex-col items-center text-center flex-1">
-          <div className={cn(
-            'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full',
-            'flex items-center justify-center mb-3 sm:mb-4',
-            'group-hover:scale-105 transition-transform duration-150',
-            iconBg
-          )}>
-            {icon}
-          </div>
-          <h3 className="text-sm sm:text-base md:text-xl font-semibold text-stone-800 dark:text-white mb-1 sm:mb-2">
-            {title}
-          </h3>
-          <p className="text-stone-500 dark:text-stone-300 text-xs sm:text-sm hidden sm:block">
-            {description}
-          </p>
-        </div>
-      </motion.div>
-    </Link>
+    <div className="animate-pulse">
+      <div className="aspect-[2.5/3.5] bg-stone-200 dark:bg-stone-700 rounded-lg mb-2" />
+      <div className="h-3 bg-stone-200 dark:bg-stone-700 rounded w-3/4 mb-1" />
+      <div className="h-2 bg-stone-200 dark:bg-stone-700 rounded w-1/2" />
+    </div>
+  );
+}
+
+function SetSkeleton() {
+  return (
+    <div className="animate-pulse flex items-center gap-3 p-4 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700">
+      <div className="w-10 h-10 bg-stone-200 dark:bg-stone-700 rounded-lg" />
+      <div className="flex-1">
+        <div className="h-4 bg-stone-200 dark:bg-stone-700 rounded w-28 mb-2" />
+        <div className="h-3 bg-stone-200 dark:bg-stone-700 rounded w-20" />
+      </div>
+    </div>
   );
 }
 
 // ===========================================
-// STATS DATA
+// NAVIGATION CARDS - Cohesive amber/stone palette
 // ===========================================
-
-const STATS = [
-  { value: 1025, label: 'Pokémon', suffix: '' },
-  { value: 150, label: 'TCG Sets', suffix: '+' },
-  { value: 15000, label: 'Cards', suffix: '+' },
-  { value: 919, label: 'Moves', suffix: '' },
-];
-
-// ===========================================
-// FEATURES DATA
-// ===========================================
-
-const FEATURES = [
+const NAV_SECTIONS = [
   {
     href: '/pokedex',
-    icon: <Book className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-600 dark:text-red-400" />,
-    iconBg: 'bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/20',
+    icon: FiGrid,
     title: 'Pokédex',
-    description: 'Browse all 1,025 Pokémon with stats',
+    description: 'All 1,025 Pokémon with stats and moves',
+    color: 'bg-gradient-to-br from-stone-700 to-stone-900 dark:from-stone-600 dark:to-stone-800',
   },
   {
     href: '/tcgexpansions',
-    icon: <CardList className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-amber-600 dark:text-amber-400" />,
-    iconBg: 'bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/20',
-    title: 'TCG Cards',
-    description: 'Explore all TCG sets and cards',
-  },
-  {
-    href: '/type-effectiveness',
-    icon: <CrossedSwords className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-orange-600 dark:text-orange-400" />,
-    iconBg: 'bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/20',
-    title: 'Battle Tools',
-    description: 'Type calculator & team builder',
-  },
-  {
-    href: '/pocketmode',
-    icon: <FiSmartphone className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-pink-600 dark:text-pink-400" />,
-    iconBg: 'bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/20',
-    title: 'TCG Pocket',
-    description: 'Pocket cards, decks & pack opening',
-    badge: 'New',
+    icon: FiLayers,
+    title: 'TCG Database',
+    description: 'Every card from every set',
+    color: 'bg-gradient-to-br from-amber-500 to-amber-700 dark:from-amber-600 dark:to-amber-800',
   },
   {
     href: '/market',
-    icon: <FiTrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-600 dark:text-green-400" />,
-    iconBg: 'bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20',
-    title: 'Market',
-    description: 'Price trends & market analytics',
-  },
-  {
-    href: '/favorites',
-    icon: <FiHeart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-rose-600 dark:text-rose-400" />,
-    iconBg: 'bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/30 dark:to-rose-800/20',
-    title: 'Favorites',
-    description: 'Your saved Pokémon & cards',
+    icon: FiTrendingUp,
+    title: 'Price Tracker',
+    description: 'Live prices from TCGPlayer & CardMarket',
+    color: 'bg-gradient-to-br from-stone-600 to-stone-800 dark:from-stone-500 dark:to-stone-700',
   },
   {
     href: '/pokemon/regions',
-    icon: <Bulb className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-600 dark:text-purple-400" />,
-    iconBg: 'bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/20',
+    icon: FiMap,
     title: 'Regions',
     description: 'Explore Kanto to Paldea',
+    color: 'bg-gradient-to-br from-amber-600 to-orange-700 dark:from-amber-700 dark:to-orange-800',
   },
-  {
-    href: '/fun',
-    icon: <FiStar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-cyan-600 dark:text-cyan-400" />,
-    iconBg: 'bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/30 dark:to-cyan-800/20',
-    title: 'Fun',
-    description: 'Quizzes, random & mini games',
-  },
-];
-
-// ===========================================
-// QUICK LINKS DATA
-// ===========================================
-
-const QUICK_LINKS = [
-  { href: '/battle-simulator/damage-calc', label: 'Damage Calculator' },
-  { href: '/team-builder/ev-optimizer', label: 'EV Optimizer' },
-  { href: '/pokemon/starters', label: 'Starter Pokémon' },
-  { href: '/trending', label: 'Trending Cards' },
 ];
 
 // ===========================================
 // MAIN COMPONENT
 // ===========================================
-
 const HomePage: NextPage = () => {
+  const { featuredPokemon, featuredCards, latestSets, latestPocketSets, loading } = useHomepageData();
+
   return (
     <>
       <Head>
-        <title>DexTrends - Everything Pokémon in One Place</title>
-        <meta name="description" content="The complete Pokémon resource: Pokédex, TCG database, battle tools, and more. Search across all Pokémon data instantly." />
-        <meta name="keywords" content="Pokemon, Pokedex, TCG, Pokemon cards, battle calculator, type effectiveness" />
+        <title>DexTrends - Pokémon Database & TCG Price Tracker</title>
+        <meta name="description" content="Complete Pokémon database with all 1,025 species. TCG card database with live prices from TCGPlayer and CardMarket. Your ultimate Pokémon resource." />
+        <meta property="og:title" content="DexTrends - Pokémon Database & TCG Price Tracker" />
+        <meta property="og:description" content="Complete Pokémon database and TCG card tracker with live market prices." />
+        <meta property="og:type" content="website" />
       </Head>
 
       <FullBleedWrapper gradient="pokedex">
         <div className="min-h-screen">
           {/* Hero Section */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-6 sm:pb-8">
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-16 pb-10 sm:pb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              {/* Logo */}
-              <div className="mb-4 sm:mb-6 h-20 xs:h-24 sm:h-32 md:h-40 flex items-center justify-center">
-                <ProgressiveImage
+              {/* Logo - Larger, clearer */}
+              <div className="mb-5 flex items-center justify-center">
+                <Image
                   src="/dextrendslogo.png"
                   alt="DexTrends"
-                  className="h-full w-auto mx-auto"
-                  imgClassName="filter brightness-90 contrast-110 object-contain"
-                  priority={true}
-                  aspectRatio="5/6"
+                  width={280}
+                  height={70}
+                  className="h-14 sm:h-16 md:h-20 w-auto"
+                  priority
+                  unoptimized
                 />
               </div>
 
               {/* Tagline */}
-              <h1 className={cn(TYPOGRAPHY.heading.h1, 'mb-2 sm:mb-3 px-4')}>
-                Everything Pokémon in One Place
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-stone-700 dark:text-stone-200 mb-2">
+                Pokémon Database & TCG Price Tracker
               </h1>
-              <p className={cn(TYPOGRAPHY.body.base, 'text-amber-600 dark:text-amber-400 mb-6 sm:mb-8 max-w-2xl mx-auto px-4')}>
-                Search across Pokédex, TCG cards, moves, items, and more
+              <p className="text-stone-500 dark:text-stone-400 mb-8 text-sm sm:text-base">
+                Search 1,025 Pokémon and 15,000+ cards with live market prices
               </p>
 
-              {/* Global Search */}
-              <GlobalSearch />
+              {/* Search */}
+              <div className="max-w-xl mx-auto">
+                <GlobalSearch />
+              </div>
             </motion.div>
           </section>
 
-          {/* Animated Stats Bar - solid bg for iOS performance */}
-          <section className="border-y border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center">
-                {STATS.map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 * index }}
-                    className="flex flex-col items-center justify-center py-1"
-                  >
-                    <p className="text-2xl sm:text-3xl font-bold text-stone-800 dark:text-white leading-tight">
-                      <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                    </p>
-                    <p className="text-xs sm:text-sm text-amber-600 dark:text-amber-400 mt-1 font-medium">
-                      {stat.label}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
+          {/* Navigation Cards */}
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {NAV_SECTIONS.map((section, index) => (
+                <motion.div
+                  key={section.href}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + index * 0.05 }}
+                >
+                  <Link href={section.href} className="block group h-full">
+                    <div className={cn(
+                      'relative overflow-hidden rounded-xl p-4 h-full min-h-[100px]',
+                      section.color,
+                      'shadow-sm hover:shadow-md transition-shadow duration-200'
+                    )}>
+                      <section.icon className="w-5 h-5 sm:w-6 sm:h-6 mb-2" style={{ color: 'white' }} />
+                      <h3 className="font-semibold text-sm sm:text-base mb-0.5" style={{ color: 'white' }}>
+                        {section.title}
+                      </h3>
+                      <p className="text-xs leading-snug hidden sm:block" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                        {section.description}
+                      </p>
+                      <FiArrowRight className="absolute bottom-3 right-3 w-4 h-4 group-hover:translate-x-1 transition-transform" style={{ color: 'white' }} />
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </section>
 
-          {/* Main Features Grid */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-            <SectionHeader
-              title="Explore"
-              subtitle="Jump into any section"
-              size="md"
-              className="mb-4"
-            />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5"
-            >
-              {FEATURES.map((feature, index) => (
-                <motion.div
-                  key={feature.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 * index }}
+          {/* Featured Pokémon */}
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-lg sm:text-xl font-semibold text-stone-800 dark:text-white">
+                Featured Pokémon
+              </h2>
+              <Link
+                href="/pokedex"
+                className={cn(
+                  'text-sm font-medium text-amber-600 dark:text-amber-400',
+                  'flex items-center gap-1 hover:gap-2',
+                  TRANSITION.fast
+                )}
+              >
+                View all <FiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+              {loading ? (
+                Array.from({ length: 6 }).map((_, i) => <PokemonSkeleton key={i} />)
+              ) : (
+                featuredPokemon.map((pokemon, index) => (
+                  <motion.div
+                    key={pokemon.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link href={`/pokedex/${pokemon.id}`} className="block group">
+                      <div className={cn(
+                        'relative rounded-xl p-3 overflow-hidden aspect-square flex flex-col items-center justify-center',
+                        'bg-gradient-to-br',
+                        TYPE_COLORS[pokemon.types[0]] || 'from-stone-400 to-stone-500',
+                        'shadow-sm hover:shadow-md transition-all'
+                      )}>
+                        <Image
+                          src={pokemon.sprite}
+                          alt={pokemon.name}
+                          width={80}
+                          height={80}
+                          className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow group-hover:scale-110 transition-transform"
+                        />
+                        <p className="text-white font-medium text-center text-xs sm:text-sm mt-1 truncate w-full">
+                          {pokemon.name}
+                        </p>
+                        <p className="text-white/80 text-center text-xs font-medium">
+                          #{String(pokemon.id).padStart(3, '0')}
+                        </p>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </section>
+
+          {/* TCG Cards */}
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-lg sm:text-xl font-semibold text-stone-800 dark:text-white">
+                TCG Cards
+              </h2>
+              <Link
+                href="/tcgexpansions"
+                className={cn(
+                  'text-sm font-medium text-amber-600 dark:text-amber-400',
+                  'flex items-center gap-1 hover:gap-2',
+                  TRANSITION.fast
+                )}
+              >
+                Browse all <FiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+              {loading ? (
+                Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)
+              ) : featuredCards.length > 0 ? (
+                featuredCards.map((card, index) => (
+                  <motion.div
+                    key={card.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link href={`/tcg-cards/${card.id}`} className="block group">
+                      <div className="relative">
+                        <Image
+                          src={card.image}
+                          alt={card.name}
+                          width={180}
+                          height={250}
+                          className="w-full rounded-lg shadow group-hover:shadow-lg group-hover:scale-[1.02] transition-all"
+                        />
+                        {card.price && (
+                          <div className="absolute bottom-1.5 left-1.5 right-1.5 bg-black/75 backdrop-blur-sm rounded px-2 py-1">
+                            <p className="text-white font-semibold text-xs text-center">
+                              ${card.price.toFixed(2)}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-stone-700 dark:text-stone-300 text-xs font-medium mt-2 truncate">
+                        {card.name}
+                      </p>
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
+                // Fallback: Show placeholder cards linking to TCG expansions
+                Array.from({ length: 6 }).map((_, i) => (
+                  <Link key={i} href="/tcgexpansions" className="block group">
+                    <div className="aspect-[2.5/3.5] bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-700 dark:to-stone-800 rounded-lg flex items-center justify-center">
+                      <FiLayers className="w-8 h-8 text-stone-400 dark:text-stone-500" />
+                    </div>
+                    <p className="text-stone-500 text-xs mt-2 text-center">Browse cards</p>
+                  </Link>
+                ))
+              )}
+            </div>
+          </section>
+
+          {/* Latest TCG Sets */}
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-lg sm:text-xl font-semibold text-stone-800 dark:text-white">
+                Latest TCG Sets
+              </h2>
+              <Link
+                href="/tcgexpansions"
+                className={cn(
+                  'text-sm font-medium text-amber-600 dark:text-amber-400',
+                  'flex items-center gap-1 hover:gap-2',
+                  TRANSITION.fast
+                )}
+              >
+                All sets <FiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {loading ? (
+                Array.from({ length: 3 }).map((_, i) => <SetSkeleton key={i} />)
+              ) : latestSets.length > 0 ? (
+                latestSets.map((set, index) => (
+                  <motion.div
+                    key={set.id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link href={`/tcgexpansions/${set.id}`} className="block group">
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                        {set.logo ? (
+                          <Image
+                            src={set.logo}
+                            alt={set.name}
+                            width={48}
+                            height={48}
+                            className="w-12 h-12 object-contain"
+                            unoptimized
+                          />
+                        ) : set.symbol ? (
+                          <Image
+                            src={set.symbol}
+                            alt={set.name}
+                            width={40}
+                            height={40}
+                            className="w-10 h-10 object-contain"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-stone-100 dark:bg-stone-700 rounded-lg flex items-center justify-center">
+                            <FiLayers className="w-5 h-5 text-stone-400" />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-stone-800 dark:text-white text-sm truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                            {set.name}
+                          </p>
+                          <p className="text-stone-500 dark:text-stone-400 text-xs">
+                            {set.cardCount} cards
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
+                // Fallback
+                Array.from({ length: 3 }).map((_, i) => (
+                  <Link key={i} href="/tcgexpansions" className="block">
+                    <div className="flex items-center gap-3 p-3 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700">
+                      <div className="w-10 h-10 bg-stone-100 dark:bg-stone-700 rounded-lg flex items-center justify-center">
+                        <FiLayers className="w-5 h-5 text-stone-400" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-stone-600 dark:text-stone-300 text-sm">Browse sets</p>
+                        <p className="text-stone-400 text-xs">View all expansions</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              )}
+            </div>
+          </section>
+
+          {/* TCG Pocket Sets */}
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-lg sm:text-xl font-semibold text-stone-800 dark:text-white">
+                TCG Pocket Sets
+              </h2>
+              <Link
+                href="/pocketmode"
+                className={cn(
+                  'text-sm font-medium text-amber-600 dark:text-amber-400',
+                  'flex items-center gap-1 hover:gap-2',
+                  TRANSITION.fast
+                )}
+              >
+                View all <FiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {loading ? (
+                Array.from({ length: 3 }).map((_, i) => <SetSkeleton key={i} />)
+              ) : latestPocketSets.length > 0 ? (
+                latestPocketSets.map((set, index) => (
+                  <motion.div
+                    key={set.id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link href={`/pocketmode/sets/${set.id}`} className="block group">
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                        {set.logo ? (
+                          <Image
+                            src={set.logo}
+                            alt={set.name}
+                            width={48}
+                            height={48}
+                            className="w-12 h-12 object-contain"
+                            unoptimized
+                          />
+                        ) : set.symbol ? (
+                          <Image
+                            src={set.symbol}
+                            alt={set.name}
+                            width={40}
+                            height={40}
+                            className="w-10 h-10 object-contain"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">P</span>
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-stone-800 dark:text-white text-sm truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                            {set.name}
+                          </p>
+                          <p className="text-stone-500 dark:text-stone-400 text-xs">
+                            {set.cardCount} cards
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
+                // Fallback
+                Array.from({ length: 3 }).map((_, i) => (
+                  <Link key={i} href="/pocketmode" className="block">
+                    <div className="flex items-center gap-3 p-3 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">P</span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-stone-600 dark:text-stone-300 text-sm">Browse Pocket</p>
+                        <p className="text-stone-400 text-xs">View all Pocket sets</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              )}
+            </div>
+          </section>
+
+          {/* More Features */}
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-12">
+            <h2 className="text-lg sm:text-xl font-semibold text-stone-800 dark:text-white mb-5 text-center">
+              More to Explore
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { href: '/pocketmode', label: 'TCG Pocket', sub: 'Mobile game' },
+                { href: '/type-effectiveness', label: 'Type Chart', sub: 'Battle matchups' },
+                { href: '/favorites', label: 'Collections', sub: 'Your favorites' },
+                { href: '/trending', label: 'Trending', sub: 'Popular cards' },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'block p-4 rounded-xl text-center',
+                    'bg-white dark:bg-stone-800',
+                    'border border-stone-200 dark:border-stone-700',
+                    'hover:border-amber-400 dark:hover:border-amber-600',
+                    'transition-colors'
+                  )}
                 >
-                  <FeatureCard {...feature} />
-                </motion.div>
+                  <p className="font-medium text-stone-700 dark:text-white text-sm">
+                    {item.label}
+                  </p>
+                  <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
+                    {item.sub}
+                  </p>
+                </Link>
               ))}
-            </motion.div>
-          </section>
-
-          {/* Quick Access Section */}
-          <SectionDivider variant="fade" spacing="md" />
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 md:pb-10">
-            <Container variant="outline" className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  <h2 className={cn(TYPOGRAPHY.heading.h5, 'mb-1')}>Quick Access</h2>
-                  <p className="text-sm text-stone-500 dark:text-stone-300">Jump to popular tools</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {QUICK_LINKS.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={cn(
-                        'px-4 py-2.5 rounded-full text-sm font-medium min-h-[44px] flex items-center touch-manipulation',
-                        'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300',
-                        'hover:bg-amber-100 dark:hover:bg-amber-900/30 hover:text-amber-700 dark:hover:text-amber-300',
-                        'active:bg-amber-200 dark:active:bg-amber-900/50',
-                        TRANSITION.fast
-                      )}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </Container>
-          </section>
-
-          {/* What's New Section */}
-          <SectionDivider variant="line" spacing="lg" />
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 md:pb-12">
-            <SectionHeader
-              title="What's New"
-              subtitle="Latest updates and trending"
-              size="md"
-              className="mb-4"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-              {/* Featured Pokemon */}
-              <Container variant="default" hover className="p-5 md:p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl">🔥</span>
-                  <h3 className={cn(TYPOGRAPHY.heading.h5)}>Trending</h3>
-                </div>
-                <div className="space-y-2">
-                  {['Charizard', 'Pikachu', 'Gardevoir', 'Lucario'].map((name, i) => (
-                    <Link
-                      key={name}
-                      href={`/pokedex/${[6, 25, 282, 448][i]}`}
-                      className="flex items-center justify-between text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
-                    >
-                      <span>#{i + 1} {name}</span>
-                      <span className="text-xs text-green-600 dark:text-green-400">↑</span>
-                    </Link>
-                  ))}
-                </div>
-              </Container>
-
-              {/* Latest TCG */}
-              <Container variant="default" hover className="p-5 md:p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl">🃏</span>
-                  <h3 className={cn(TYPOGRAPHY.heading.h5)}>Latest Sets</h3>
-                </div>
-                <div className="space-y-2">
-                  <Link href="/tcgexpansions" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
-                    Scarlet & Violet Series
-                  </Link>
-                  <Link href="/pocketmode/expansions" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
-                    TCG Pocket: Genetic Apex
-                  </Link>
-                  <Link href="/tcgexpansions" className="text-amber-600 dark:text-amber-400 text-sm font-medium inline-flex items-center gap-1 mt-2">
-                    Browse All Sets →
-                  </Link>
-                </div>
-              </Container>
-
-              {/* Quick Links */}
-              <Container variant="default" hover className="p-5 md:p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl">⚡</span>
-                  <h3 className={cn(TYPOGRAPHY.heading.h5)}>Explore</h3>
-                </div>
-                <div className="space-y-2">
-                  <Link href="/pokemon/starters" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
-                    Starter Pokémon
-                  </Link>
-                  <Link href="/pokemon/games" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
-                    Pokémon Games
-                  </Link>
-                  <Link href="/battle-simulator" className="block text-sm text-stone-600 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
-                    Battle Simulator
-                  </Link>
-                </div>
-              </Container>
             </div>
           </section>
 
           {/* Footer */}
-          <footer className="border-t border-stone-100 dark:border-stone-800 mt-8 md:mt-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-              <div className="text-center text-stone-500 dark:text-stone-300">
-                <p className="mb-2 text-sm">© {new Date().getFullYear()} DexTrends. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
-                <p className="text-xs">
-                  Data provided by{' '}
-                  <a href="https://pokeapi.co" className="text-amber-600 hover:text-amber-700 dark:text-amber-400 transition-colors" target="_blank" rel="noopener noreferrer">
+          <footer className="border-t border-stone-200 dark:border-stone-800">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              <div className="text-center text-stone-500 dark:text-stone-400 text-xs">
+                <p className="mb-1">
+                  Not affiliated with Nintendo, Game Freak, or The Pokémon Company.
+                </p>
+                <p>
+                  Data from{' '}
+                  <a href="https://pokeapi.co" className="text-amber-600 hover:underline" target="_blank" rel="noopener noreferrer">
                     PokéAPI
-                  </a>{' '}
-                  and{' '}
-                  <a href="https://tcgdex.dev" className="text-amber-600 hover:text-amber-700 dark:text-amber-400 transition-colors" target="_blank" rel="noopener noreferrer">
+                  </a>
+                  {' '}and{' '}
+                  <a href="https://tcgdex.dev" className="text-amber-600 hover:underline" target="_blank" rel="noopener noreferrer">
                     TCGDex
                   </a>
                 </p>
@@ -415,7 +545,6 @@ const HomePage: NextPage = () => {
   );
 };
 
-// Tell layout to use full bleed
 (HomePage as any).fullBleed = true;
 
 export default HomePage;

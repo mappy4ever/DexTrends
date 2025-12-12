@@ -7,19 +7,58 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { FiUser, FiMail, FiCalendar, FiEdit2, FiLogOut, FiHeart, FiFolder, FiBell } from 'react-icons/fi';
+import { FiUser, FiMail, FiCalendar, FiEdit2, FiLogOut, FiHeart, FiFolder, FiBell, FiSave, FiX } from 'react-icons/fi';
 import { useAuth } from '@/context/AuthContext';
 import { ModernCard } from '@/components/ui/ModernCard';
 import FullBleedWrapper from '@/components/ui/FullBleedWrapper';
 import Container from '@/components/ui/Container';
 import StyledBackButton from '@/components/ui/StyledBackButton';
+import { Modal } from '@/components/ui/Modal';
 import Link from 'next/link';
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
-  const { user, profile, loading, signOut } = useAuth();
+  const { user, profile, loading, signOut, updateProfile } = useAuth();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Edit profile modal state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editUsername, setEditUsername] = useState('');
+  const [editAvatarUrl, setEditAvatarUrl] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Initialize form when modal opens
+  useEffect(() => {
+    if (isEditModalOpen && profile) {
+      setEditUsername(profile.username || '');
+      setEditAvatarUrl(profile.avatar_url || '');
+      setSaveError(null);
+    }
+  }, [isEditModalOpen, profile]);
+
+  const handleSaveProfile = async () => {
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      const { error } = await updateProfile({
+        username: editUsername.trim() || undefined,
+        avatar_url: editAvatarUrl.trim() || undefined,
+      });
+
+      if (error) {
+        setSaveError(error.message);
+      } else {
+        setIsEditModalOpen(false);
+      }
+    } catch {
+      setSaveError('Failed to update profile. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -163,7 +202,7 @@ const ProfilePage: React.FC = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
-                onClick={() => {/* TODO: Add edit profile modal */}}
+                onClick={() => setIsEditModalOpen(true)}
               >
                 <FiEdit2 className="w-5 h-5" />
                 Edit Profile
@@ -186,6 +225,87 @@ const ProfilePage: React.FC = () => {
           </motion.div>
         </Container>
       </FullBleedWrapper>
+
+      {/* Edit Profile Modal */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        title="Edit Profile"
+        size="sm"
+      >
+        <div className="space-y-4">
+          {/* Username Field */}
+          <div>
+            <label
+              htmlFor="edit-username"
+              className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1"
+            >
+              Username
+            </label>
+            <input
+              id="edit-username"
+              type="text"
+              value={editUsername}
+              onChange={(e) => setEditUsername(e.target.value)}
+              placeholder="Enter username"
+              className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          {/* Avatar URL Field */}
+          <div>
+            <label
+              htmlFor="edit-avatar"
+              className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1"
+            >
+              Avatar URL
+            </label>
+            <input
+              id="edit-avatar"
+              type="url"
+              value={editAvatarUrl}
+              onChange={(e) => setEditAvatarUrl(e.target.value)}
+              placeholder="https://example.com/avatar.jpg"
+              className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+            />
+            <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+              Enter a URL to an image for your profile picture
+            </p>
+          </div>
+
+          {/* Error Message */}
+          {saveError && (
+            <div className="p-3 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm">
+              {saveError}
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-2">
+            <button
+              type="button"
+              onClick={() => setIsEditModalOpen(false)}
+              className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+            >
+              <FiX className="w-4 h-4" />
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSaveProfile}
+              disabled={isSaving}
+              className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors disabled:opacity-50"
+            >
+              {isSaving ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <FiSave className="w-4 h-4" />
+              )}
+              Save
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

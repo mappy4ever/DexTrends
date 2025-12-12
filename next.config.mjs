@@ -244,6 +244,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'archives.bulbagarden.net',
         pathname: '/**', // Allow all paths for Bulbapedia images
+      },
+      {
+        protocol: 'https',
+        hostname: 'play.pokemonshowdown.com',
+        pathname: '/sprites/**', // Pokemon Showdown item sprites
       }
     ],
   },

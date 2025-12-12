@@ -374,64 +374,90 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
       );
       
     case 'listing':
-      // Clean, minimal card for Pokedex grid listing
-      // Shows: number, image, name, type indicators
-      // No stats, no badges, no gradients
-      // Mobile-optimized: compact layout, no overflow
+      // Type-colored card for Pokedex grid
+      // Single type = solid color, dual type = diagonal split
+      // Using lower opacity for subtle, non-distracting look
+      const type1Color = TYPE_COLORS[typeNames[0]] || '#A8A878';
+      const type2Color = typeNames[1] ? TYPE_COLORS[typeNames[1]] : type1Color;
+      const isDualType = typeNames.length >= 2 && typeNames[0] !== typeNames[1];
+
+      // Convert hex to rgba with opacity
+      const hexToRgba = (hex: string, alpha: number) => {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      };
+
+      const type1ColorLight = hexToRgba(type1Color, 0.25);
+      const type2ColorLight = hexToRgba(type2Color, 0.25);
+
       return (
         <motion.div
-          whileHover={animated ? { y: -2, boxShadow: '0 8px 25px -5px rgba(0,0,0,0.1)' } : undefined}
-          whileTap={animated ? { scale: 0.97 } : undefined}
+          whileHover={animated ? { y: -3 } : undefined}
+          whileTap={animated ? { scale: 0.98 } : undefined}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
           tabIndex={0}
           role="button"
           aria-label={`View ${name}`}
           className={cn(
-            'relative overflow-hidden rounded-xl cursor-pointer',
-            'bg-white dark:bg-stone-800/95',
-            'border border-stone-200 dark:border-stone-700/50',
-            'shadow-sm',
-            'p-2 sm:p-3',
-            'h-full w-full min-h-[120px] sm:min-h-[140px]',
-            'flex flex-col',
-            'transition-shadow duration-150',
+            'group relative overflow-hidden rounded-xl cursor-pointer',
+            'h-full w-full aspect-[4/5]',
+            'bg-white dark:bg-stone-800',
+            'border border-stone-200 dark:border-stone-700',
+            'transition-all duration-200',
+            'hover:shadow-lg',
             'focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none',
             className
           )}
         >
-          {/* Pokemon Number - top left, subtle */}
-          <span className="text-[10px] sm:text-[11px] text-stone-400 dark:text-stone-500 font-medium">
-            #{String(id).padStart(3, '0')}
-          </span>
+          {/* Type color overlay with low opacity */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: isDualType
+                ? `linear-gradient(135deg, ${type1ColorLight} 50%, ${type2ColorLight} 50%)`
+                : type1ColorLight
+            }}
+          />
 
-          {/* Pokemon Image - centered, fixed responsive size */}
-          <div className="flex-1 flex items-center justify-center py-1">
-            <Image
-              src={imageSrc}
-              alt={name}
-              width={width || 56}
-              height={height || 56}
-              className="object-contain drop-shadow-sm w-12 h-12 sm:w-16 sm:h-16"
-              onError={() => setImgError(true)}
-            />
-          </div>
+          {/* Content */}
+          <div className="relative h-full flex flex-col p-2 sm:p-2.5">
+            {/* Top row: Number */}
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] sm:text-xs font-bold text-stone-500 dark:text-stone-400">
+                #{String(id).padStart(3, '0')}
+              </span>
+              {/* Type dots */}
+              <div className="flex gap-1">
+                {typeNames.slice(0, 2).map(type => (
+                  <span
+                    key={type}
+                    className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shadow-sm"
+                    style={{ backgroundColor: TYPE_COLORS[type] || '#A8A878' }}
+                    title={type}
+                  />
+                ))}
+              </div>
+            </div>
 
-          {/* Name - bottom, centered, no truncate for short names */}
-          <h3 className="text-center font-semibold text-stone-800 dark:text-white capitalize text-[11px] sm:text-xs leading-tight">
-            {name.length > 10 ? name.slice(0, 10) + '...' : name}
-          </h3>
-
-          {/* Type dots instead of badges on mobile - prevents overlap */}
-          <div className="flex justify-center gap-1 mt-1">
-            {typeNames.slice(0, 2).map(type => (
-              <span
-                key={type}
-                className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full"
-                style={{ backgroundColor: TYPE_COLORS[type] || '#A8A878' }}
-                title={type}
+            {/* Pokemon Image - centered, larger */}
+            <div className="flex-1 flex items-center justify-center -my-1">
+              <Image
+                src={imageSrc}
+                alt={name}
+                width={width || 88}
+                height={height || 88}
+                className="object-contain w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] drop-shadow group-hover:scale-110 transition-transform duration-200"
+                onError={() => setImgError(true)}
               />
-            ))}
+            </div>
+
+            {/* Name - bottom */}
+            <h3 className="text-center font-semibold text-stone-800 dark:text-stone-100 capitalize text-xs sm:text-sm leading-tight truncate">
+              {name.replace(/-/g, ' ')}
+            </h3>
           </div>
         </motion.div>
       );

@@ -94,6 +94,39 @@ Located in `/components/ui/design-system/glass-constants.ts`:
 - Add `any` types without justification
 - Use glass effects on content cards (only modals/sheets)
 
+## Data Fetching Strategy (IMPORTANT)
+
+**Prefer Supabase over external APIs.** Most data is synced daily to our Supabase database:
+
+| Data Type | Source | Sync Frequency |
+|-----------|--------|----------------|
+| TCG Cards | `tcg_cards` table | Daily |
+| TCG Sets | `tcg_sets` table | Daily |
+| Pokemon Moves | `pokemon_moves` table | As needed |
+| Price History | `price_history` table | Daily |
+| Showdown Data | `showdown_*` tables | Weekly |
+
+**When to use Supabase:**
+- All TCG card/set data
+- Pokemon competitive data (Showdown)
+- Historical price data
+- User collections and favorites
+
+**When to use external APIs:**
+- PokeAPI: Pokemon sprites and detailed species data (not synced)
+- TCGDex: Fallback when Supabase data is missing
+- Real-time data that can't be cached
+
+**Example - TCG Cards:**
+```typescript
+// GOOD: Use TcgCardManager (queries Supabase)
+import { TcgCardManager } from '@/lib/supabase';
+const cards = await TcgCardManager.searchCards({ name: 'Pikachu' });
+
+// AVOID: Direct API calls when data exists in Supabase
+const cards = await fetchJSON('https://api.tcgdex.net/v2/cards?name=Pikachu');
+```
+
 ## Key Utilities
 
 ```typescript

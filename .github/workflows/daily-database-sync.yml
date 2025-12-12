@@ -16,6 +16,7 @@ on:
           - pokemon-only
           - tcg-only
           - showdown-only
+          - evolution-only
         default: daily
 
 jobs:
@@ -64,6 +65,13 @@ jobs:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
+    - name: Sync Evolution Chains (Sunday or manual)
+      if: ${{ steps.mode.outputs.mode == 'full' || github.event.inputs.sync-type == 'evolution-only' }}
+      run: npm run db:sync-evolution
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
     - name: Create summary
       run: |
         echo "## Pokemon Database Sync Complete" >> $GITHUB_STEP_SUMMARY
@@ -74,6 +82,10 @@ jobs:
         echo "- Abilities synced" >> $GITHUB_STEP_SUMMARY
         echo "- Pokemon and Species synced" >> $GITHUB_STEP_SUMMARY
         echo "- Moves synced" >> $GITHUB_STEP_SUMMARY
+        if [[ "${{ steps.mode.outputs.mode }}" == "full" ]]; then
+          echo "- Evolution Chains synced" >> $GITHUB_STEP_SUMMARY
+          echo "- Pokemon Forms synced" >> $GITHUB_STEP_SUMMARY
+        fi
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "Sync completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
 

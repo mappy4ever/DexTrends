@@ -56,7 +56,8 @@ export const GlobalSearch: React.FC = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+  const latestSearchRef = useRef<string>(''); // Track latest search to prevent race conditions
+
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Load recent searches
@@ -88,22 +89,33 @@ export const GlobalSearch: React.FC = () => {
   }, [debouncedSearchTerm]);
 
   const performSearch = async (query: string) => {
+    // Track this search to detect if newer search supersedes it
+    latestSearchRef.current = query;
     setLoading(true);
     setError(null);
     try {
       const response = await fetchJSON<SearchResponse>(
         `/api/search/global?q=${encodeURIComponent(query)}&limit=10`
       );
+      // Only update if this is still the latest search (prevents race conditions)
+      if (latestSearchRef.current !== query) return;
+
       if (response?.results) {
         setResults(response.results);
         setShowResults(true);
       }
     } catch (err) {
+      // Only update error if this is still the latest search
+      if (latestSearchRef.current !== query) return;
+
       logger.error('Search error:', { error: err });
       setResults([]);
       setError('Search unavailable. Please try again.');
     } finally {
-      setLoading(false);
+      // Only clear loading if this is still the latest search
+      if (latestSearchRef.current === query) {
+        setLoading(false);
+      }
     }
   };
 
@@ -167,12 +179,12 @@ export const GlobalSearch: React.FC = () => {
             onFocus={() => setShowResults(true)}
             onKeyDown={handleKeyDown}
             placeholder="Search Pokémon, cards, moves..."
-            className="w-full h-12 pl-11 pr-10 text-base bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all duration-150 touch-manipulation"
+            className="w-full h-14 pl-14 pr-12 text-base bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all duration-150 touch-manipulation"
             style={{ fontSize: '16px' }}
           />
 
           {/* Search Icon */}
-          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
             <Search className="w-5 h-5 text-stone-400" />
           </div>
 
