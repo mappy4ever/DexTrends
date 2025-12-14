@@ -15,27 +15,35 @@ import { TRANSITION } from '../components/ui/design-system/glass-constants';
 import { useHomepageData } from '../hooks/useHomepageData';
 
 // ===========================================
-// TYPE COLORS - Muted, professional palette
+// TYPE COLORS - Hex values for consistency with Pokedex
 // ===========================================
-const TYPE_COLORS: Record<string, string> = {
-  fire: 'from-orange-400 to-orange-500',
-  water: 'from-sky-400 to-sky-500',
-  grass: 'from-emerald-400 to-emerald-500',
-  electric: 'from-amber-400 to-amber-500',
-  psychic: 'from-fuchsia-400 to-fuchsia-500',
-  dragon: 'from-violet-500 to-violet-600',
-  dark: 'from-stone-500 to-stone-600',
-  fighting: 'from-rose-500 to-rose-600',
-  steel: 'from-slate-400 to-slate-500',
-  fairy: 'from-pink-400 to-pink-500',
-  normal: 'from-stone-400 to-stone-500',
-  flying: 'from-indigo-400 to-indigo-500',
-  poison: 'from-purple-400 to-purple-500',
-  ground: 'from-amber-500 to-amber-600',
-  rock: 'from-stone-500 to-stone-600',
-  bug: 'from-lime-400 to-lime-500',
-  ghost: 'from-violet-500 to-violet-600',
-  ice: 'from-cyan-400 to-cyan-500',
+const TYPE_COLORS_HEX: Record<string, string> = {
+  normal: '#A8A878',
+  fire: '#F08030',
+  water: '#6890F0',
+  electric: '#F8D030',
+  grass: '#78C850',
+  ice: '#98D8D8',
+  fighting: '#C03028',
+  poison: '#A040A0',
+  ground: '#E0C068',
+  flying: '#A890F0',
+  psychic: '#F85888',
+  bug: '#A8B820',
+  rock: '#B8A038',
+  ghost: '#705898',
+  dragon: '#7038F8',
+  dark: '#705848',
+  steel: '#B8B8D0',
+  fairy: '#EE99AC',
+};
+
+// Helper to convert hex to rgba
+const hexToRgba = (hex: string, alpha: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
 // ===========================================
@@ -214,37 +222,62 @@ const HomePage: NextPage = () => {
               {loading ? (
                 Array.from({ length: 6 }).map((_, i) => <PokemonSkeleton key={i} />)
               ) : (
-                featuredPokemon.map((pokemon, index) => (
-                  <motion.div
-                    key={pokemon.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <Link href={`/pokedex/${pokemon.id}`} className="block group">
-                      <div className={cn(
-                        'relative rounded-xl p-3 overflow-hidden aspect-square flex flex-col items-center justify-center',
-                        'bg-gradient-to-br',
-                        TYPE_COLORS[pokemon.types[0]] || 'from-stone-400 to-stone-500',
-                        'shadow-sm hover:shadow-md transition-all'
-                      )}>
-                        <Image
-                          src={pokemon.sprite}
-                          alt={pokemon.name}
-                          width={80}
-                          height={80}
-                          className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow group-hover:scale-110 transition-transform"
-                        />
-                        <p className="text-white font-medium text-center text-xs sm:text-sm mt-1 truncate w-full">
-                          {pokemon.name}
-                        </p>
-                        <p className="text-white/80 text-center text-xs font-medium">
-                          #{String(pokemon.id).padStart(3, '0')}
-                        </p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))
+                featuredPokemon.map((pokemon, index) => {
+                  const type1 = pokemon.types[0];
+                  const type2 = pokemon.types[1];
+                  const type1Color = TYPE_COLORS_HEX[type1] || '#A8A878';
+                  const type2Color = type2 ? TYPE_COLORS_HEX[type2] : type1Color;
+                  const isDualType = type2 && type1 !== type2;
+
+                  const bgStyle = isDualType
+                    ? {
+                        background: `linear-gradient(135deg, ${hexToRgba(type1Color, 0.25)} 0%, ${hexToRgba(type1Color, 0.25)} 50%, ${hexToRgba(type2Color, 0.25)} 50%, ${hexToRgba(type2Color, 0.25)} 100%)`
+                      }
+                    : {
+                        background: hexToRgba(type1Color, 0.25)
+                      };
+
+                  return (
+                    <motion.div
+                      key={pokemon.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Link href={`/pokedex/${pokemon.id}`} className="block group">
+                        <div
+                          className={cn(
+                            'relative rounded-xl overflow-hidden aspect-[4/5]',
+                            'bg-white dark:bg-stone-800',
+                            'border border-stone-200 dark:border-stone-700',
+                            'hover:shadow-lg hover:border-stone-300 dark:hover:border-stone-600',
+                            'transition-all duration-200'
+                          )}
+                        >
+                          {/* Type color overlay */}
+                          <div className="absolute inset-0" style={bgStyle} />
+
+                          {/* Content */}
+                          <div className="relative z-10 h-full flex flex-col items-center justify-center p-2">
+                            <Image
+                              src={pokemon.sprite}
+                              alt={pokemon.name}
+                              width={88}
+                              height={88}
+                              className="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-md group-hover:scale-110 transition-transform"
+                            />
+                            <p className="text-stone-800 dark:text-white font-semibold text-center text-xs sm:text-sm mt-1 truncate w-full capitalize">
+                              {pokemon.name}
+                            </p>
+                            <p className="text-stone-500 dark:text-stone-400 text-center text-xs font-medium">
+                              #{String(pokemon.id).padStart(3, '0')}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  );
+                })
               )}
             </div>
           </section>
@@ -492,28 +525,34 @@ const HomePage: NextPage = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { href: '/pocketmode', label: 'TCG Pocket', sub: 'Mobile game' },
-                { href: '/type-effectiveness', label: 'Type Chart', sub: 'Battle matchups' },
-                { href: '/favorites', label: 'Collections', sub: 'Your favorites' },
-                { href: '/trending', label: 'Trending', sub: 'Popular cards' },
+                { href: '/pocketmode', label: 'TCG Pocket', sub: 'Mobile game', color: TYPE_COLORS_HEX.psychic },
+                { href: '/type-effectiveness', label: 'Type Chart', sub: 'Battle matchups', color: TYPE_COLORS_HEX.fighting },
+                { href: '/favorites', label: 'Collections', sub: 'Your favorites', color: TYPE_COLORS_HEX.fairy },
+                { href: '/trending', label: 'Trending', sub: 'Popular cards', color: TYPE_COLORS_HEX.electric },
               ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'block p-4 rounded-xl text-center',
+                    'block p-4 rounded-xl text-center relative overflow-hidden',
                     'bg-white dark:bg-stone-800',
                     'border border-stone-200 dark:border-stone-700',
-                    'hover:border-amber-400 dark:hover:border-amber-600',
-                    'transition-colors'
+                    'hover:shadow-md hover:border-stone-300 dark:hover:border-stone-600',
+                    'transition-all duration-200'
                   )}
                 >
-                  <p className="font-medium text-stone-700 dark:text-white text-sm">
-                    {item.label}
-                  </p>
-                  <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
-                    {item.sub}
-                  </p>
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: hexToRgba(item.color, 0.15) }}
+                  />
+                  <div className="relative z-10">
+                    <p className="font-semibold text-stone-800 dark:text-white text-sm">
+                      {item.label}
+                    </p>
+                    <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
+                      {item.sub}
+                    </p>
+                  </div>
                 </Link>
               ))}
             </div>
