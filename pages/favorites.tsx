@@ -260,7 +260,7 @@ const FavoritesPage: NextPage = () => {
         <meta name="description" content="View and manage your favorite Pokemon and cards in one place" />
       </Head>
       <FullBleedWrapper gradient="pokedex">
-        <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           {/* PageHeader with Breadcrumbs */}
           <PageHeader
             title="Favorites"

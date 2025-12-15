@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/utils/cn';
 import logger from '@/utils/logger';
+import { FOCUS, TRANSITION } from './design-system/glass-constants';
 
 interface RarityIconProps {
   rarity: string;
@@ -243,7 +244,7 @@ export const RarityIcon: React.FC<RarityIconProps> = ({
     <div
       className={cn(
         'inline-flex items-center gap-1',
-        onClick && 'cursor-pointer hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded',
+        onClick && cn('cursor-pointer hover:scale-110 rounded', TRANSITION.medium, FOCUS.styles.default),
         isActive && 'scale-110',
         className
       )}

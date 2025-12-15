@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { TeamBuilderPanel, TeamPokemon } from '@/components/team-builder/TeamBuilderPanel';
 import { Container } from '@/components/ui/Container';
+import { PageHeader } from '@/components/ui/BreadcrumbNavigation';
 import { cn } from '@/utils/cn';
 import logger from '@/utils/logger';
 
@@ -123,18 +124,11 @@ export default function TeamBuilderPage() {
       <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
         {/* Page Header */}
         <div className="bg-gradient-to-b from-blue-50 to-stone-50 dark:from-stone-800 dark:to-stone-900 border-b border-stone-200 dark:border-stone-700">
-          <div className="max-w-5xl mx-auto px-4 py-8">
-            <nav className="text-sm text-stone-500 dark:text-stone-400 mb-4">
-              <Link href="/" className="hover:text-amber-600">Home</Link>
-              <span className="mx-2">/</span>
-              <span className="text-stone-800 dark:text-white">Team Builder</span>
-            </nav>
-            <h1 className="text-3xl font-bold text-stone-800 dark:text-white">
-              Pokemon Team Builder
-            </h1>
-            <p className="text-stone-600 dark:text-stone-300 mt-2">
-              Create balanced teams with type coverage analysis and synergy scoring
-            </p>
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            <PageHeader
+              title="Pokemon Team Builder"
+              description="Create balanced teams with type coverage analysis and synergy scoring"
+            />
           </div>
         </div>
 

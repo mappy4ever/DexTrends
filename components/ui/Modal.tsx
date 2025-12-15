@@ -302,7 +302,7 @@ export const Modal: React.FC<ModalProps> = ({
                 'pointer-events-auto',
                 'w-full',
                 sizeStyles[size],
-                shouldRenderAsSheet && 'rounded-b-none rounded-t-3xl max-w-full',
+                shouldRenderAsSheet && 'rounded-b-none rounded-t-2xl max-w-full', // 16px per design spec
                 // Hardware acceleration for mobile rendering
                 'transform-gpu',
                 className

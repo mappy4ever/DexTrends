@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/utils/cn';
 import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
-import { TYPE_GRADIENTS } from './design-system/glass-constants';
+import { TYPE_GRADIENTS, SHADOW, FOCUS } from './design-system/glass-constants';
 
 interface TypeBadgeProps {
   type: string;
@@ -69,9 +69,10 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
   const badge = variant === 'gradient' ? (
     <span
       className={cn(
-        'rounded-full font-semibold text-white inline-flex items-center justify-center shadow-sm',
+        'rounded-full font-semibold text-white inline-flex items-center justify-center',
+        SHADOW.sm,
         'bg-gradient-to-r',
-        showTooltip && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2',
+        showTooltip && cn('cursor-pointer', FOCUS.styles.default),
         gradientClass,
         sizeClasses[size],
         className
@@ -84,7 +85,7 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
     <span
       className={cn(
         'rounded-full font-medium text-white inline-flex items-center justify-center',
-        showTooltip && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2',
+        showTooltip && cn('cursor-pointer', FOCUS.styles.default),
         sizeClasses[size],
         className
       )}

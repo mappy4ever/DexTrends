@@ -18,6 +18,7 @@ import { cn } from '@/utils/cn';
 import { FiZap, FiStar, FiGlobe } from 'react-icons/fi';
 // Domain-specific icons - documented exceptions
 import { GiSparkles, GiPortal, GiClockwork, GiSunrise } from 'react-icons/gi';
+import { TRANSITION, SHADOW } from './design-system/glass-constants';
 
 export type ClassificationBadgeType =
   | 'legendary'
@@ -143,8 +144,11 @@ export const ClassificationBadge: React.FC<ClassificationBadgeProps> = memo(({
   return (
     <span
       className={cn(
-        'inline-flex items-center font-semibold rounded-full shadow-sm',
-        'transition-transform hover:scale-105',
+        'inline-flex items-center font-semibold rounded-full',
+        SHADOW.sm,
+        TRANSITION.medium,
+        'hover:scale-105',
+        'focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2',
         config.colors,
         SIZE_CONFIG[size],
         className
