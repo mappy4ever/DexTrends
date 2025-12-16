@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Container } from '@/components/ui/Container';
+import { PageHeader } from '@/components/ui/BreadcrumbNavigation';
 import { FiCommand, FiHelpCircle, FiZap, FiBook, FiMail, FiSend, FiCheckCircle, FiClock, FiStar } from 'react-icons/fi';
 
 interface HelpSection {
@@ -376,22 +377,17 @@ export default function SupportPage() {
       </Head>
 
       <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
-        {/* Header */}
+        {/* Page Header */}
         <div className="bg-gradient-to-b from-amber-50 to-stone-50 dark:from-stone-800 dark:to-stone-900 border-b border-stone-200 dark:border-stone-700">
-          <div className="max-w-4xl mx-auto px-4 py-12">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                <FiHelpCircle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100">Support & Help</h1>
-                <p className="text-stone-600 dark:text-stone-300">Tips, shortcuts, and guides to help you get the most out of DexTrends</p>
-              </div>
-            </div>
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            <PageHeader
+              title="Support & Help"
+              description="Tips, shortcuts, and guides to help you get the most out of DexTrends"
+            />
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+        <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
           {/* Quick Tips */}
           <Container variant="elevated" className="p-6">
             <div className="flex items-center gap-3 mb-4">

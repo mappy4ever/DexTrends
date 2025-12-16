@@ -27,12 +27,13 @@ import ExportButton from '../components/ui/ExportButton';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { AnalyticsDashboardData, AnalyticsMetric, AnalyticsFilters, ChartDataPoint, TimeSeriesData, PopularItem } from '../types/analytics';
 import { exportData, ExportFormat } from '../utils/exportData';
+import { fetchJSON } from '../utils/unifiedFetch';
 import logger from '../utils/logger';
 import { cn } from '../utils/cn';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 
-// Mock data generator for development
-const generateMockAnalyticsData = (): AnalyticsDashboardData => {
+// Fallback mock data generator (used when API returns no data)
+const generateFallbackAnalyticsData = (): AnalyticsDashboardData => {
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
   
@@ -232,13 +233,89 @@ const Analytics: NextPage = () => {
     const loadAnalytics = async () => {
       setIsLoading(true);
       try {
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const data = generateMockAnalyticsData();
-        setAnalyticsData(data);
-        logger.info('Analytics data loaded successfully');
+        // Fetch real analytics data from Supabase via API
+        const daysBack = Math.ceil(
+          (filters.dateRange.end.getTime() - filters.dateRange.start.getTime()) / (24 * 60 * 60 * 1000)
+        );
+
+        const response = await fetchJSON<{
+          success: boolean;
+          data?: {
+            userBehavior?: {
+              overview?: {
+                totalEvents?: number;
+                uniqueSessions?: number;
+                uniqueUsers?: number;
+              };
+              popularCards?: [string, number][];
+              searchTerms?: [string, number][];
+            };
+            searchAnalytics?: {
+              overview?: {
+                totalSearches?: number;
+              };
+              queryAnalysis?: {
+                topQueries?: [string, number][];
+              };
+              trends?: {
+                byDay?: Record<string, number>;
+              };
+            };
+          };
+        }>(`/api/analytics?type=overview&daysBack=${daysBack}`);
+
+        if (response?.success && response.data) {
+          // Transform API response to dashboard data format
+          const apiData = response.data;
+          const fallbackData = generateFallbackAnalyticsData();
+
+          // Merge real data with fallback structure
+          const transformedData: AnalyticsDashboardData = {
+            ...fallbackData,
+            overview: {
+              ...fallbackData.overview,
+              totalViews: {
+                ...fallbackData.overview.totalViews,
+                value: apiData.userBehavior?.overview?.totalEvents || fallbackData.overview.totalViews.value
+              },
+              uniqueVisitors: {
+                ...fallbackData.overview.uniqueVisitors,
+                value: apiData.userBehavior?.overview?.uniqueUsers || fallbackData.overview.uniqueVisitors.value
+              },
+              pokemonSearches: {
+                ...fallbackData.overview.pokemonSearches,
+                value: apiData.searchAnalytics?.overview?.totalSearches || fallbackData.overview.pokemonSearches.value
+              }
+            },
+            // Transform search trends from API
+            searchTrends: apiData.searchAnalytics?.trends?.byDay
+              ? Object.entries(apiData.searchAnalytics.trends.byDay).map(([date, value]) => ({
+                  date,
+                  value,
+                  label: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                }))
+              : fallbackData.searchTrends,
+            // Transform popular cards from API
+            popularPokemon: apiData.userBehavior?.popularCards?.slice(0, 8).map(([name, count], index) => ({
+              id: index,
+              name,
+              count,
+              percentage: 0,
+              type: ''
+            })) || fallbackData.popularPokemon,
+          };
+
+          setAnalyticsData(transformedData);
+          logger.info('Analytics data loaded from Supabase');
+        } else {
+          // Use fallback data if API returns no data
+          logger.warn('No analytics data from API, using fallback');
+          setAnalyticsData(generateFallbackAnalyticsData());
+        }
       } catch (error) {
-        logger.error('Failed to load analytics data', { error });
+        logger.error('Failed to load analytics data, using fallback', { error });
+        // Use fallback data on error
+        setAnalyticsData(generateFallbackAnalyticsData());
       } finally {
         setIsLoading(false);
       }

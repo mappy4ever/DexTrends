@@ -115,7 +115,7 @@ export default async function handler(
 
     logger.debug('Supabase returned no Pokemon, falling back to PokeAPI');
 
-    // Fallback to PokeAPI
+    // Fallback to PokeAPI - get list only, no individual requests (avoids N+1)
     const pokeApiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${pageSizeNum}&offset=${offset}`;
     const pokeApiData = await fetchJSON<{
       count: number;
@@ -130,38 +130,20 @@ export default async function handler(
       return res.status(500).json({ error: 'Failed to fetch Pokemon data' });
     }
 
-    // Fetch basic details for each Pokemon (parallel)
-    const pokemonDetails = await Promise.all(
-      pokeApiData.results.map(async (pokemon, index) => {
-        const id = offset + index + 1;
-        try {
-          const details = await fetchJSON<{
-            id: number;
-            name: string;
-            types: Array<{ type: { name: string } }>;
-            sprites: { front_default: string };
-          }>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-            cacheTime: 86400000, // 24 hours
-            timeout: 10000
-          });
+    // Build Pokemon list from the list endpoint directly (no N+1 individual requests)
+    // We construct sprite URLs from the ID - types won't be available in fallback mode
+    const pokemonDetails = pokeApiData.results.map((pokemon, index) => {
+      // Extract ID from URL (format: https://pokeapi.co/api/v2/pokemon/25/)
+      const urlParts = pokemon.url.split('/').filter(Boolean);
+      const id = parseInt(urlParts[urlParts.length - 1], 10) || (offset + index + 1);
 
-          return {
-            id: details?.id || id,
-            name: details?.name || pokemon.name,
-            types: details?.types?.map(t => t.type.name) || [],
-            sprite: details?.sprites?.front_default ||
-              `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
-          };
-        } catch {
-          return {
-            id,
-            name: pokemon.name,
-            types: [],
-            sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
-          };
-        }
-      })
-    );
+      return {
+        id,
+        name: pokemon.name,
+        types: [], // Types not available without individual API calls - Supabase should be used
+        sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+      };
+    });
 
     res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
     res.setHeader('X-Data-Source', 'pokeapi');

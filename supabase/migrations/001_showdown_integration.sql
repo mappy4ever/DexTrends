@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS type_effectiveness (
 );
 
 -- Indexes for type effectiveness
-CREATE INDEX idx_type_effectiveness_attacking ON type_effectiveness(attacking_type);
-CREATE INDEX idx_type_effectiveness_defending ON type_effectiveness(defending_type);
+CREATE INDEX IF NOT EXISTS idx_type_effectiveness_attacking ON type_effectiveness(attacking_type);
+CREATE INDEX IF NOT EXISTS idx_type_effectiveness_defending ON type_effectiveness(defending_type);
 
 -- Competitive tiers table
 CREATE TABLE IF NOT EXISTS competitive_tiers (
@@ -29,9 +29,9 @@ CREATE TABLE IF NOT EXISTS competitive_tiers (
 );
 
 -- Indexes for competitive tiers
-CREATE INDEX idx_competitive_tiers_name ON competitive_tiers(pokemon_name);
-CREATE INDEX idx_competitive_tiers_singles ON competitive_tiers(singles_tier);
-CREATE INDEX idx_competitive_tiers_doubles ON competitive_tiers(doubles_tier);
+CREATE INDEX IF NOT EXISTS idx_competitive_tiers_name ON competitive_tiers(pokemon_name);
+CREATE INDEX IF NOT EXISTS idx_competitive_tiers_singles ON competitive_tiers(singles_tier);
+CREATE INDEX IF NOT EXISTS idx_competitive_tiers_doubles ON competitive_tiers(doubles_tier);
 
 -- Pokemon learnsets table
 CREATE TABLE IF NOT EXISTS pokemon_learnsets (
@@ -45,11 +45,11 @@ CREATE TABLE IF NOT EXISTS pokemon_learnsets (
 );
 
 -- Indexes for learnsets
-CREATE INDEX idx_learnsets_pokemon ON pokemon_learnsets(pokemon_id);
-CREATE INDEX idx_learnsets_move ON pokemon_learnsets(move_name);
-CREATE INDEX idx_learnsets_generation ON pokemon_learnsets(generation);
-CREATE INDEX idx_learnsets_method ON pokemon_learnsets(learn_method);
-CREATE INDEX idx_learnsets_pokemon_gen ON pokemon_learnsets(pokemon_id, generation);
+CREATE INDEX IF NOT EXISTS idx_learnsets_pokemon ON pokemon_learnsets(pokemon_id);
+CREATE INDEX IF NOT EXISTS idx_learnsets_move ON pokemon_learnsets(move_name);
+CREATE INDEX IF NOT EXISTS idx_learnsets_generation ON pokemon_learnsets(generation);
+CREATE INDEX IF NOT EXISTS idx_learnsets_method ON pokemon_learnsets(learn_method);
+CREATE INDEX IF NOT EXISTS idx_learnsets_pokemon_gen ON pokemon_learnsets(pokemon_id, generation);
 
 -- Move competitive data
 CREATE TABLE IF NOT EXISTS move_competitive_data (
@@ -71,9 +71,9 @@ CREATE TABLE IF NOT EXISTS move_competitive_data (
 );
 
 -- Indexes for move competitive data
-CREATE INDEX idx_move_competitive_name ON move_competitive_data(name);
-CREATE INDEX idx_move_competitive_category ON move_competitive_data(category);
-CREATE INDEX idx_move_competitive_priority ON move_competitive_data(priority);
+CREATE INDEX IF NOT EXISTS idx_move_competitive_name ON move_competitive_data(name);
+CREATE INDEX IF NOT EXISTS idx_move_competitive_category ON move_competitive_data(category);
+CREATE INDEX IF NOT EXISTS idx_move_competitive_priority ON move_competitive_data(priority);
 
 -- Ability ratings
 CREATE TABLE IF NOT EXISTS ability_ratings (
@@ -88,8 +88,8 @@ CREATE TABLE IF NOT EXISTS ability_ratings (
 );
 
 -- Indexes for ability ratings
-CREATE INDEX idx_ability_ratings_name ON ability_ratings(name);
-CREATE INDEX idx_ability_ratings_rating ON ability_ratings(rating);
+CREATE INDEX IF NOT EXISTS idx_ability_ratings_name ON ability_ratings(name);
+CREATE INDEX IF NOT EXISTS idx_ability_ratings_rating ON ability_ratings(rating);
 
 -- Create update trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -101,19 +101,23 @@ END;
 $$ language 'plpgsql';
 
 -- Apply update triggers to tables with updated_at columns
-CREATE TRIGGER update_type_effectiveness_updated_at 
+DROP TRIGGER IF EXISTS update_type_effectiveness_updated_at ON type_effectiveness;
+CREATE TRIGGER update_type_effectiveness_updated_at
   BEFORE UPDATE ON type_effectiveness
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_competitive_tiers_updated_at 
+DROP TRIGGER IF EXISTS update_competitive_tiers_updated_at ON competitive_tiers;
+CREATE TRIGGER update_competitive_tiers_updated_at
   BEFORE UPDATE ON competitive_tiers
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_move_competitive_data_updated_at 
+DROP TRIGGER IF EXISTS update_move_competitive_data_updated_at ON move_competitive_data;
+CREATE TRIGGER update_move_competitive_data_updated_at
   BEFORE UPDATE ON move_competitive_data
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_ability_ratings_updated_at 
+DROP TRIGGER IF EXISTS update_ability_ratings_updated_at ON ability_ratings;
+CREATE TRIGGER update_ability_ratings_updated_at
   BEFORE UPDATE ON ability_ratings
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
